@@ -1,4 +1,4 @@
-package com.quetoquenana.template.exception;
+package com.quetoquenana.pedalpal.exception;
 
 import lombok.Getter;
 

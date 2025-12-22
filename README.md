@@ -1,18 +1,18 @@
-# Template Spring Boot Project
+# PedalPal Spring Boot Project
 
-This repository is a template for creating new Spring Boot projects with a pre-configured set of essential dependencies and features. It is designed to help you quickly bootstrap robust, production-ready applications.
+This repository is a PedalPal Spring Boot project
 
 ## Project Information
 
 - **Group:** `com.quetoquenana`
-- **Artifact:** `template`
-- **Name:** `Template`
-- **Description:** Template to create new Spring Boot projects
-- **Package name:** `com.quetoquenana.template`
+- **Artifact:** `pedalpal`
+- **Name:** `PedalPal`
+- **Description:** PedalPal Spring Boot project
+- **Package name:** `com.quetoquenana.PedalPal`
 
 ## Included Dependencies
 
-This template includes the following dependencies by default (as listed in `pom.xml`):
+This pedalpal includes the following dependencies by default (as listed in `pom.xml`):
 
 - **Spring Boot Actuator** (`spring-boot-starter-actuator`): Monitoring and management endpoints.
 - **Spring Data JPA** (`spring-boot-starter-data-jpa`): Simplifies data access and ORM with JPA.
@@ -30,40 +30,26 @@ This template includes the following dependencies by default (as listed in `pom.
 
 ## Security Configuration
 
-This template uses Spring Security with the following configuration:
+This uses Spring Security with the following configuration:
 
-- **HTTP Basic Authentication** is enabled for all endpoints except `GET /api/executions`, which is public.
+- **HTTP Basic Authentication** is enabled for all endpoints.
 - **User Details:**
   - Username: `user`
   - Password: `password` (BCrypt encoded)
-  - Role: `SYSTEM`
+  - Role: ``
 - **Access Rules:**
-  - `GET /api/executions`: Public (no authentication required)
-  - All other endpoints: Require authentication and the `SYSTEM` role
-- **Configuration Location:** See `src/main/java/com/quetoquenana/template/config/SecurityConfig.java` for details.
-
-## Example Feature: Execution Tracking Table
-
-This template includes a complete example of tracking application executions:
-
-- **Database Table:** Automatically created using Flyway migrations (`executions` table).
-- **Model:** Java entity for executions, using @JsonView for API responses.
-- **Repository:** Spring Data JPA repository for CRUD operations.
-- **Service:** Business logic for saving and retrieving executions, including paginated queries.
-- **Controller:** REST API to view executions (`/api/executions`), with endpoints for list, detail, and paginated results. The app uses the artifactId as context path, so the full path is `/template/api/executions`.
-- **Startup Logic:** Records a new execution each time the app starts.
-- **Unit Tests:** Comprehensive test cases for the controller and service, including JsonView and pagination.
-- **Postman Collection:** Example requests to test the API, stored in the `.postman` folder.
+  - All endpoints: Require authentication and the `` role
+- **Configuration Location:** See `src/main/java/com/quetoquenana/pedalpal/config/SecurityConfig.java` for details.
 
 ## Internationalization (i18n) Support
 
-This template is ready for multi-language support using Spring Boot's internationalization features:
+This project is ready for multi-language support using Spring Boot's internationalization features:
 
 - **Message Resource Files:**
   - `src/main/resources/messages.properties` (default, English)
   - `src/main/resources/messages_es.properties` (Spanish)
 - **Configuration:**
-  - See `src/main/java/com/quetoquenana/template/config/I18nConfig.java` for MessageSource and LocaleResolver beans.
+  - See `src/main/java/com/quetoquenana/pedalpal/config/I18nConfig.java` for MessageSource and LocaleResolver beans.
 - **Usage:**
   - Inject `MessageSource` into your services or controllers and use `messageSource.getMessage("welcome.message", null, locale)` to retrieve localized messages.
   - The default locale is English; you can switch locales using the `SessionLocaleResolver` or by customizing locale resolution.
@@ -94,10 +80,6 @@ public String getWelcomeMessage(Locale locale) {
 
 4. **Access the API:**
 
-   - List executions: `GET /api/executions` (public)
-   - Get execution by ID: `GET /api/executions/{id}` (requires authentication)
-   - Paginated executions: `GET /api/executions/page?page=0&size=10` (requires authentication)
-   - Monitor API: `GET /actuator/health` (requires authentication)
 
 5. **Test with Postman:**
    - Import the collection from the `postman/collections` folder and run example requests.
@@ -110,4 +92,4 @@ public String getWelcomeMessage(Locale locale) {
 
 ## License
 
-This template is provided as-is for bootstrapping new Spring Boot projects.
+This project is provided as-is for bootstrapping new Spring Boot projects.

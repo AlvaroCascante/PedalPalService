@@ -1,10 +1,10 @@
-package com.quetoquenana.template;
+package com.quetoquenana.pedalpal;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TemplateApplicationTests {
+class PedalPalApplicationTests {
 
 	@Test
 	void contextLoads() {

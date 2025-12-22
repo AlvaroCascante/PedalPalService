@@ -1,4 +1,4 @@
-package com.quetoquenana.template.config;
+package com.quetoquenana.pedalpal.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,6 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/executions").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults());

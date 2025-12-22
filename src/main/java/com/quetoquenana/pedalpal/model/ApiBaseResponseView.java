@@ -1,4 +1,4 @@
-package com.quetoquenana.template.model;
+package com.quetoquenana.pedalpal.model;
 
 public class ApiBaseResponseView {
     public static class Always {}

@@ -1,6 +1,6 @@
-package com.quetoquenana.template.exception;
+package com.quetoquenana.pedalpal.exception;
 
-import com.quetoquenana.template.model.ApiResponse;
+import com.quetoquenana.pedalpal.model.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

@@ -1,13 +1,13 @@
-package com.quetoquenana.template;
+package com.quetoquenana.pedalpal;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TemplateApplication {
+public class PedalPalApplication {
 
     static void main(String[] args) {
-		SpringApplication.run(TemplateApplication.class, args);
+		SpringApplication.run(PedalPalApplication.class, args);
 	}
 
 }

@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.quetoquenana</groupId>
-	<artifactId>template</artifactId>
+	<artifactId>pedalpal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Template</name>
-	<description>Template to create new Spring Booh projects</description>
+	<name>PedalPal</name>
+	<description>PedalPal Spring Both project</description>
 	<url/>
 	<licenses>
 		<license/>
