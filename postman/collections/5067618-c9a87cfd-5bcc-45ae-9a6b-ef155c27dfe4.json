@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "5067618-c9a87cfd-5bcc-45ae-9a6b-ef155c27dfe4",
+		"name": "PedalPal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"id": "5067618-4333a58e-06cc-4e10-8bf0-a0a045f40e8c",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/{{path}}/actuator/health",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"{{path}}",
+						"actuator",
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "73edd5e3-2104-40da-aa35-1d187bfd9f77",
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "70f1956a-b279-4891-897c-fc86460cb9b9",
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "path",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
