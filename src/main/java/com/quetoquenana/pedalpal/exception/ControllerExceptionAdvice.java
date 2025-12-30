@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Slf4j
 @ControllerAdvice
@@ -32,5 +35,20 @@ public class ControllerExceptionAdvice {
         String message = messageSource.getMessage(ex.getMessageKey(), ex.getMessageArgs(), locale);
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ApiResponse(message, HttpStatus.NOT_FOUND.value()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse> handleValidationException(MethodArgumentNotValidException ex, Locale locale) {
+        BindingResult br = ex.getBindingResult();
+        String details = br.getFieldErrors().stream()
+                .map(fieldError -> {
+                    String msg = messageSource.getMessage(fieldError, locale);
+                    return fieldError.getField() + ": " + msg;
+                })
+                .collect(Collectors.joining("; "));
+        String summary = messageSource.getMessage("validation.failed", null, locale);
+        String full = summary + ": " + details;
+        log.warn("Validation failed: {}", full);
+        return ResponseEntity.badRequest().body(new ApiResponse(full, HttpStatus.BAD_REQUEST.value()));
     }
 }
