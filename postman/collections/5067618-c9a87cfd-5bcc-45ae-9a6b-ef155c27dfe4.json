@@ -9,7 +9,7 @@
 			"name": "Monitor",
 			"item": [
 				{
-					"name": "Health Check",
+					"name": "Actuator",
 					"id": "5067618-4333a58e-06cc-4e10-8bf0-a0a045f40e8c",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -47,7 +47,7 @@
 					"response": []
 				},
 				{
-					"name": "Health Check Copy",
+					"name": "Health Check",
 					"id": "5067618-22691f3c-95d9-41ae-85c4-147ade3ac9c8",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
