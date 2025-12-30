@@ -6,40 +6,58 @@
 	},
 	"item": [
 		{
-			"name": "Health Check",
-			"id": "5067618-4333a58e-06cc-4e10-8bf0-a0a045f40e8c",
+			"name": "Monitor",
+			"item": [
+				{
+					"name": "Health Check",
+					"id": "5067618-4333a58e-06cc-4e10-8bf0-a0a045f40e8c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/{{path}}/actuator/health",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"{{path}}",
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "5067618-71f054f9-f4f4-4721-bf6b-61137412ab8c"
+		},
+		{
+			"name": "New Request",
+			"id": "5067618-b08d10dc-15d6-4994-bf47-6b1fbe1134a8",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "password",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "user",
-							"type": "string"
-						}
-					]
-				},
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{HOST}}/{{path}}/actuator/health",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"{{path}}",
-						"actuator",
-						"health"
-					]
-				}
+				"header": []
 			},
 			"response": []
 		}
