@@ -45,6 +45,44 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Health Check Copy",
+					"id": "5067618-22691f3c-95d9-41ae-85c4-147ade3ac9c8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/{{path}}/actuator/health",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"{{path}}",
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"id": "5067618-71f054f9-f4f4-4721-bf6b-61137412ab8c"
