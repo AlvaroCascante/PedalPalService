@@ -108,7 +108,36 @@
 					"response": []
 				}
 			],
-			"id": "5067618-70d982b3-b395-4b44-a275-a252297369b9"
+			"id": "5067618-70d982b3-b395-4b44-a275-a252297369b9",
+			"auth": {
+				"type": "bearer"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e1b68f56-c799-4ce4-bbcb-71ab3c5de0b0",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1426c19c-8f52-40b3-8d1d-4197c445327c",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
 		}
 	],
 	"event": [
