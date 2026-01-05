@@ -78,7 +78,7 @@
 			"name": "LandinItems",
 			"item": [
 				{
-					"name": "New Request",
+					"name": "Get By ID",
 					"id": "5067618-8c72628a-1020-4ae5-a40a-0e2880d1276e",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
