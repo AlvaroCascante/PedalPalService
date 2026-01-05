@@ -110,13 +110,20 @@
 			],
 			"id": "5067618-70d982b3-b395-4b44-a275-a252297369b9",
 			"auth": {
-				"type": "bearer"
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{user_token}}",
+						"type": "string"
+					}
+				]
 			},
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "e1b68f56-c799-4ce4-bbcb-71ab3c5de0b0",
+						"id": "b6879ccd-94a3-4326-9e7a-4a50af4914cb",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
@@ -128,7 +135,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "1426c19c-8f52-40b3-8d1d-4197c445327c",
+						"id": "c4c809c8-6970-43fb-b824-e46cd9f3d33b",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
