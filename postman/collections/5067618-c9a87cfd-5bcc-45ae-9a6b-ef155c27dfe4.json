@@ -151,7 +151,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "0197a166-0114-47b0-a781-1a47428e3d6e",
+				"id": "ca05c811-a642-43b1-a00d-a99fc67f7d0e",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
@@ -163,7 +163,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "4231b3b4-6e7e-41cf-83fb-0610bee1fa76",
+				"id": "9f88e26f-7ec3-4962-9dcb-02c5ef8742aa",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
@@ -176,6 +176,10 @@
 	"variable": [
 		{
 			"key": "path",
+			"value": ""
+		},
+		{
+			"key": "usera_token",
 			"value": ""
 		}
 	]
