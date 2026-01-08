@@ -97,9 +97,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/{{path}}/api/landing-items/:id",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/landing-items/:id",
 							"host": [
-								"{{HOST}}"
+								"{{host_pedal_pal}}"
 							],
 							"path": [
 								"{{path}}",
