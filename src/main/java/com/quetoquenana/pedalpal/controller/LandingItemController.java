@@ -49,7 +49,6 @@ public class LandingItemController {
 
     @GetMapping("/page")
     @JsonView(LandingItem.LandingList.class)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> getPage(
             @RequestParam(defaultValue = PAGE) int page,
             @RequestParam(defaultValue = PAGE_SIZE) int size
@@ -61,7 +60,6 @@ public class LandingItemController {
 
     @GetMapping("/page/status")
     @JsonView(LandingItem.LandingList.class)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> getByStatus(
             @RequestParam String status,
             @RequestParam(defaultValue = PAGE) int page,
@@ -74,7 +72,6 @@ public class LandingItemController {
 
     @GetMapping("/page/category")
     @JsonView(LandingItem.LandingList.class)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> getByCategory(
             @RequestParam String category,
             @RequestParam(defaultValue = PAGE) int page,

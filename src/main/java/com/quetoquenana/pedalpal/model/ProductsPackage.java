@@ -28,11 +28,11 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-public class ServicePackage extends Auditable {
+public class ProductsPackage extends Auditable {
 
     // JSON Views
-    public static class ServicePackageList extends ApiBaseResponseView.Always {}
-    public static class ServicePackageDetail extends ServicePackage.ServicePackageList {}
+    public static class PackageList extends ApiBaseResponseView.Always {}
+    public static class PackageDetail extends ProductsPackage.PackageList {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -50,10 +50,10 @@ public class ServicePackage extends Auditable {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "package_products",
+            name = "packages_products",
             joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private Set<Product> products = new HashSet<>();
+    private Set<Product> products;
 }
 

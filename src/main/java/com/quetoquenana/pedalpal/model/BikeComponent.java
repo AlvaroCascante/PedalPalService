@@ -20,8 +20,6 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Entity
-@Table(name = "bike_components")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -69,15 +69,15 @@ public class Appointment extends Auditable {
 
     // Service package selected for the appointment (nullable)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_package_id")
-    private ServicePackage servicePackage;
+    @JoinColumn(name = "package_id")
+    private ProductsPackage productsPackage;
 
     // Individual products selected for the appointment
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "appointment_products",
+            name = "appointments_products",
             joinColumns = @JoinColumn(name = "appointment_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private Set<Product> products = new HashSet<>();
+    private Set<Product> products;
 }

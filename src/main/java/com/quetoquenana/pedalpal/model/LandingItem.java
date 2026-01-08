@@ -43,7 +43,6 @@ public class LandingItem extends Auditable {
     @Column(name = "description", columnDefinition = "text")
     private String description;
 
-    // category and status are modeled as enums in the application; persisted as text
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false, columnDefinition = "text")
     private LandingCategory category;

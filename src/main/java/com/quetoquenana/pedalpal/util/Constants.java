@@ -3,6 +3,21 @@ package com.quetoquenana.pedalpal.util;
 import java.time.format.DateTimeFormatter;
 
 public class Constants {
+
+    public static class JWTClaims {
+        public static final String KEY_FACTORY_ALGORITHM = "RSA";
+        public static final String KEY_NAME = "name";
+        public static final String KEY_ROLES = "roles";
+        public static final String KEY_TYPE = "type";
+
+        public static final String KEY_SUB = "sub";
+
+        public static final String ROLE_SUFFIX = "ROLE_";
+
+        public static final String TYPE_AUTH = "auth";
+        public static final String TYPE_REFRESH = "refresh";
+    }
+
     public static class Headers {
         public static final String APP_NAME = "X-Application-Name";
         public static final String CONTENT_TYPE = "Content-Type";

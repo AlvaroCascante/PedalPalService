@@ -50,3 +50,6 @@ Thumbs.db
 
 mvnw
 mvnw.cmd
+
+# Local environment variables (do not commit secrets)
+local-conf.env

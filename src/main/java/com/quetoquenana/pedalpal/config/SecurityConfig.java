@@ -8,11 +8,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.List;
+
+import static com.quetoquenana.pedalpal.util.Constants.JWTClaims.KEY_ROLES;
+import static com.quetoquenana.pedalpal.util.Constants.JWTClaims.KEY_SUB;
+import static com.quetoquenana.pedalpal.util.Constants.Roles.ROLE_PREFIX;
 
 
 @EnableMethodSecurity
@@ -20,13 +28,17 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final String issuer;
-
-    private final String jwkSetUri = "user-service.quetoquenana.com/userservice/.well-known/jwks.json";
+    private final String jwkSetUri;
+    private final String audience;
 
     public SecurityConfig(
-            @Value("${security.jwt.issuer:user-service}") String issuer)
+            @Value("${security.jwt.issuer}") String issuer,
+            @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}") String jwkSetUri,
+            @Value("${security.jwt.aud}") String audience)
     {
         this.issuer = issuer;
+        this.jwkSetUri = jwkSetUri;
+        this.audience = audience;
     }
 
     @Bean
@@ -35,6 +47,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
@@ -43,19 +56,20 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Convert token 'roles' claim to authorities like ROLE_X
     private JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        // by default JwtGrantedAuthoritiesConverter looks for "scope" or "scp" claims.
-        // We'll provide a custom converter that reads our "roles" claim
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
-        grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_"); // will produce ROLE_<role>
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        converter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
-        return converter;
+        JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        authoritiesConverter.setAuthoritiesClaimName(KEY_ROLES);
+        // we will prefix authorities with ROLE_ so that hasRole('X') checks work
+        authoritiesConverter.setAuthorityPrefix(ROLE_PREFIX);
+
+        JwtAuthenticationConverter jwtAuthConverter = new JwtAuthenticationConverter();
+        jwtAuthConverter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
+
+        jwtAuthConverter.setPrincipalClaimName(KEY_SUB);
+        return jwtAuthConverter;
     }
 
-    // Use JWK set URI and validate issuer
+    // Use JWK set URI and validate issuer + timestamps + audience + alg
     @Bean
     public JwtDecoder jwtDecoder() {
         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
@@ -63,11 +77,56 @@ public class SecurityConfig {
         // Configure issuer validator + default timestamp validator
         OAuth2TokenValidator<Jwt> withIssuer = JwtValidators.createDefaultWithIssuer(issuer);
         OAuth2TokenValidator<Jwt> withTimestamp = new JwtTimestampValidator();
-        OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(withTimestamp, withIssuer);
+
+        // Audience validator ensures token was intended for this resource server
+        OAuth2TokenValidator<Jwt> audienceValidator = new AudienceValidator(audience);
+
+        // Algorithm validator (optional) - ensure token uses expected signing algorithm
+        OAuth2TokenValidator<Jwt> algValidator = new AlgorithmValidator("RS256");
+
+        OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(withTimestamp, withIssuer, audienceValidator, algValidator);
 
         jwtDecoder.setJwtValidator(validator);
         return jwtDecoder;
     }
 
+    // Validates the 'aud' claim contains the expected audience
+    static class AudienceValidator implements OAuth2TokenValidator<Jwt> {
+        private final String audience;
+        private final OAuth2Error error = new OAuth2Error("invalid_token", "The required audience is missing", null);
+
+        AudienceValidator(String audience) {
+            this.audience = audience;
+        }
+
+        @Override
+        public OAuth2TokenValidatorResult validate(Jwt token) {
+            List<String> audiences = token.getAudience();
+            if (audiences != null && audiences.contains(audience)) {
+                return OAuth2TokenValidatorResult.success();
+            }
+            return OAuth2TokenValidatorResult.failure(error);
+        }
+    }
+
+    // Simple validator that checks the JWT header 'alg' value (optional but can help prevent alg confusion attacks)
+    static class AlgorithmValidator implements OAuth2TokenValidator<Jwt> {
+        private final String expectedAlg;
+        private final OAuth2Error error;
+
+        AlgorithmValidator(String expectedAlg) {
+            this.expectedAlg = expectedAlg;
+            this.error = new OAuth2Error("invalid_token", "Unexpected signing algorithm", null);
+        }
+
+        @Override
+        public OAuth2TokenValidatorResult validate(Jwt token) {
+            Object algObj = token.getHeaders().get("alg");
+            if (algObj instanceof String && expectedAlg.equals(algObj)) {
+                return OAuth2TokenValidatorResult.success();
+            }
+            return OAuth2TokenValidatorResult.failure(error);
+        }
+    }
 
 }
