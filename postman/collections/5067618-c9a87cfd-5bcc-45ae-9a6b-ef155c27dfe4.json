@@ -199,6 +199,47 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Create",
+					"id": "5067618-d084089a-04b2-4fc4-ab4a-d4cb0f4a5197",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/landing-items/:id",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"landing-items",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "b6ce1241-a55a-4a84-b8ba-70892f736f2c",
+									"key": "id",
+									"value": "85b97a83-ad66-440f-affe-13904f0e6ab7"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"id": "5067618-56d616ab-eda0-4c3d-abbc-5ee8c30f5d1e",
