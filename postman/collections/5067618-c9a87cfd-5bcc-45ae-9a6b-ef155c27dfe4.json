@@ -155,6 +155,89 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "Bike",
+			"item": [
+				{
+					"name": "Get By ID",
+					"id": "5067618-3fe0398f-8e72-4278-acd7-f7276760639e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/landing-items/:id",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"landing-items",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "b6ce1241-a55a-4a84-b8ba-70892f736f2c",
+									"key": "id",
+									"value": "85b97a83-ad66-440f-affe-13904f0e6ab7"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "5067618-56d616ab-eda0-4c3d-abbc-5ee8c30f5d1e",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{user_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b6879ccd-94a3-4326-9e7a-4a50af4914cb",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c4c809c8-6970-43fb-b824-e46cd9f3d33b",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
 		}
 	],
 	"event": [
