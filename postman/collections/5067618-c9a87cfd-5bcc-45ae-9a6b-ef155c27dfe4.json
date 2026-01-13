@@ -217,25 +217,26 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\"ownerId\": \"d290f1ee-6c54-4b01-90e6-d701748f0851\",\n    \"name\": \"City Cruiser\",\n    \"brand\": \"Acme Bikes\",\n    \"model\": \"Cruiser 3000\",\n    \"year\": 2022,\n    \"type\": \"ROAD\",\n    \"serialNumber\": \"SN-1234567890\",\n    \"notes\": \"Purchased at local store; needs light maintenance.\"\n  },",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/landing-items/:id",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
 							"path": [
 								"{{path}}",
 								"api",
-								"landing-items",
-								":id"
-							],
-							"variable": [
-								{
-									"id": "b6ce1241-a55a-4a84-b8ba-70892f736f2c",
-									"key": "id",
-									"value": "85b97a83-ad66-440f-affe-13904f0e6ab7"
-								}
+								"bikes"
 							]
 						}
 					},
