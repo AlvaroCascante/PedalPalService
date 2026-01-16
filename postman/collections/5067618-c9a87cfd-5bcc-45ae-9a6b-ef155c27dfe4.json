@@ -253,7 +253,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/active",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/all",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
@@ -261,7 +261,7 @@
 								"{{path}}",
 								"api",
 								"bikes",
-								"active"
+								"all"
 							]
 						}
 					},
