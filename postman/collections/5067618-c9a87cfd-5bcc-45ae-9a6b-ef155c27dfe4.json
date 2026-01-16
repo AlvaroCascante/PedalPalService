@@ -200,6 +200,47 @@
 					"response": []
 				},
 				{
+					"name": "Get By ID Copy",
+					"id": "5067618-d59e0aae-a378-470b-97e8-bf8b7125aac2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"bikes",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "db57dc0e-a799-4136-984a-f8c5b8ca4dd8",
+									"key": "id",
+									"value": "81b21366-274d-41b2-80a7-52eedae53137"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create",
 					"id": "5067618-d084089a-04b2-4fc4-ab4a-d4cb0f4a5197",
 					"protocolProfileBehavior": {
