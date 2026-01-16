@@ -1,8 +1,7 @@
 package com.quetoquenana.pedalpal.exception;
 
-import com.quetoquenana.pedalpal.model.ApiResponse;
+import com.quetoquenana.pedalpal.dto.api.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +16,19 @@ import java.util.stream.Collectors;
 @Slf4j
 @ControllerAdvice
 public class ControllerExceptionAdvice {
-    @Autowired
-    private MessageSource messageSource;
 
-    @ExceptionHandler(ImmutableFieldModificationException.class)
-    public ResponseEntity<ApiResponse> handleImmutableFieldModificationException(
-            ImmutableFieldModificationException ex, Locale locale) {
-        log.error("Attempted to modify immutable field: {}", ex.getMessage());
+    private final MessageSource messageSource;
+
+    public ControllerExceptionAdvice(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
+    @ExceptionHandler(ForbiddenAccessException.class)
+    public ResponseEntity<ApiResponse> handleForbiddenAccessExceptionException(
+            ForbiddenAccessException ex, Locale locale) {
+        log.error("ForbiddenAccessException: {}", ex.getMessage());
         String message = messageSource.getMessage(ex.getMessageKey(), ex.getMessageArgs(), locale);
-        return ResponseEntity.badRequest().body(new ApiResponse(message, HttpStatus.BAD_REQUEST.value()));
+        return ResponseEntity.badRequest().body(new ApiResponse(message, HttpStatus.UNAUTHORIZED.value()));
     }
 
     @ExceptionHandler(RecordNotFoundException.class)
@@ -39,8 +42,8 @@ public class ControllerExceptionAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse> handleValidationException(MethodArgumentNotValidException ex, Locale locale) {
-        BindingResult br = ex.getBindingResult();
-        String details = br.getFieldErrors().stream()
+        BindingResult bindingResult = ex.getBindingResult();
+        String details = bindingResult.getFieldErrors().stream()
                 .map(fieldError -> {
                     String msg = messageSource.getMessage(fieldError, locale);
                     return fieldError.getField() + ": " + msg;

@@ -1,6 +1,5 @@
 package com.quetoquenana.pedalpal.controller;
 
-import com.quetoquenana.pedalpal.model.ComponentType;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +18,5 @@ public class ComponentTypeController {
         this.messageSource = messageSource;
     }
 
-    @GetMapping
-    public List<ComponentType.Option> list(Locale locale) {
-        return ComponentType.localizedOptions(messageSource, locale);
-    }
 }
 

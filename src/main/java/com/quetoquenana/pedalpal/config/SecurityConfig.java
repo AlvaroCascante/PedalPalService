@@ -18,8 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.List;
 
-import static com.quetoquenana.pedalpal.util.Constants.JWTClaims.KEY_ROLES;
-import static com.quetoquenana.pedalpal.util.Constants.JWTClaims.KEY_SUB;
+import static com.quetoquenana.pedalpal.util.Constants.JWTClaims.*;
 import static com.quetoquenana.pedalpal.util.Constants.Roles.ROLE_PREFIX;
 
 
@@ -59,13 +58,10 @@ public class SecurityConfig {
     private JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
         authoritiesConverter.setAuthoritiesClaimName(KEY_ROLES);
-        // we will prefix authorities with ROLE_ so that hasRole('X') checks work
         authoritiesConverter.setAuthorityPrefix(ROLE_PREFIX);
 
         JwtAuthenticationConverter jwtAuthConverter = new JwtAuthenticationConverter();
         jwtAuthConverter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
-
-        jwtAuthConverter.setPrincipalClaimName(KEY_SUB);
         return jwtAuthConverter;
     }
 
@@ -82,7 +78,7 @@ public class SecurityConfig {
         OAuth2TokenValidator<Jwt> audienceValidator = new AudienceValidator(audience);
 
         // Algorithm validator (optional) - ensure token uses expected signing algorithm
-        OAuth2TokenValidator<Jwt> algValidator = new AlgorithmValidator("RS256");
+        OAuth2TokenValidator<Jwt> algValidator = new AlgorithmValidator(KEY_FACTORY_ALGORITHM);
 
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(withTimestamp, withIssuer, audienceValidator, algValidator);
 

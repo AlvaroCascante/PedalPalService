@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.util;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.quetoquenana.pedalpal.model.ApiBaseResponseView;
+import com.quetoquenana.pedalpal.dto.api.response.ApiBaseResponseView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

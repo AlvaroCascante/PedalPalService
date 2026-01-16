@@ -1,14 +1,16 @@
 package com.quetoquenana.pedalpal.util;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class Constants {
 
     public static class JWTClaims {
-        public static final String KEY_FACTORY_ALGORITHM = "RSA";
+        public static final String KEY_FACTORY_ALGORITHM = "RS256";
         public static final String KEY_NAME = "name";
         public static final String KEY_ROLES = "roles";
         public static final String KEY_TYPE = "type";
+        public static final String KEY_USER_ID = "userId";
 
         public static final String KEY_SUB = "sub";
 
@@ -29,6 +31,8 @@ public class Constants {
         public static final String ROLE_SYSTEM = "ROLE_SYSTEM";
         public static final String ROLE_ADMIN = "ROLE_ADMIN";
         public static final String ROLE_USER = "ROLE_USER";
+        public static final String ADMIN = "ADMIN";
+        public static final String USER = "USER";
     }
 
     public static class MessageSource {
@@ -44,5 +48,22 @@ public class Constants {
     public static class Pagination {
         public static final String PAGE = "0";
         public static final String PAGE_SIZE = "10";
+    }
+
+    public static class SystemCodes {
+        public static final String BIKE_TYPE = "BIKE_TYPE";
+        public static final String BIKE_STATUS = "BIKE_STATUS";
+        public static final String BIKE_STATUS_ACTIVE = "ACTIVE";
+        public static final String BIKE_STATUS_INACTIVE = "INACTIVE";
+        public static final String BIKE_STATUS_STOLEN = "STOLEN";
+        public static final String BIKE_STATUS_SOLD = "SOLD";
+        public static final String BIKE_STATUS_DELETED = "DELETED";
+
+        public static final List<String> BIKE_ALL_STATUSES = List.of(
+                BIKE_STATUS_ACTIVE,
+                BIKE_STATUS_INACTIVE,
+                BIKE_STATUS_STOLEN,
+                BIKE_STATUS_SOLD
+        );
     }
 }
