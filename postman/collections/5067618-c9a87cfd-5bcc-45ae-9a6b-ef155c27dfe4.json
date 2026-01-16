@@ -234,6 +234,40 @@
 					"response": []
 				},
 				{
+					"name": "FetchActive Copy",
+					"id": "5067618-ba3f843b-5371-4140-9145-7d291ebd3657",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/active",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"bikes",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create",
 					"id": "5067618-d084089a-04b2-4fc4-ab4a-d4cb0f4a5197",
 					"protocolProfileBehavior": {
