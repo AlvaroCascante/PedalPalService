@@ -219,7 +219,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/active",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
@@ -227,14 +227,7 @@
 								"{{path}}",
 								"api",
 								"bikes",
-								":id"
-							],
-							"variable": [
-								{
-									"id": "db57dc0e-a799-4136-984a-f8c5b8ca4dd8",
-									"key": "id",
-									"value": "81b21366-274d-41b2-80a7-52eedae53137"
-								}
+								"active"
 							]
 						}
 					},
