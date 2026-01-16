@@ -155,13 +155,171 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "Bike",
+			"item": [
+				{
+					"name": "Get By ID",
+					"id": "5067618-3fe0398f-8e72-4278-acd7-f7276760639e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"bikes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "81b21366-274d-41b2-80a7-52eedae53137"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FetchActive",
+					"id": "5067618-d59e0aae-a378-470b-97e8-bf8b7125aac2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/active",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"bikes",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"id": "5067618-d084089a-04b2-4fc4-ab4a-d4cb0f4a5197",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ownerId\": \"ff4cced4-29a0-4e77-b0a9-429f26fc90b4\",\n    \"name\": \"City Cruiser\",\n    \"brand\": \"Acme Bikes\",\n    \"model\": \"Cruiser 3000\",\n    \"year\": 2022,\n    \"type\": \"ROAD\",\n    \"serialNumber\": \"SN-1234567890\",\n    \"notes\": \"Purchased at local store.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"bikes"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "5067618-56d616ab-eda0-4c3d-abbc-5ee8c30f5d1e",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{user_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b6879ccd-94a3-4326-9e7a-4a50af4914cb",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c4c809c8-6970-43fb-b824-e46cd9f3d33b",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "efaf9f4b-868a-47cd-8ff2-283104a8acb0",
+				"id": "e7ed27ec-7253-42f4-a51e-8c7245b4559e",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
@@ -173,7 +331,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "52f74e92-3d6b-4665-a4a1-e04b78a05361",
+				"id": "87c812e1-8210-42bb-86a5-790d4acf35ed",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
