@@ -586,7 +586,7 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Product Get By ID",
 					"id": "5067618-b70debe3-686c-4681-af26-f7e7d5724d90",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
