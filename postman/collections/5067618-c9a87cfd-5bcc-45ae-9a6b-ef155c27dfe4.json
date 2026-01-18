@@ -376,7 +376,7 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -388,22 +388,20 @@
 							}
 						},
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id/components",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/components/:id",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
 							"path": [
 								"{{path}}",
 								"api",
-								"bikes",
-								":id",
-								"components"
+								"components",
+								":id"
 							],
 							"variable": [
 								{
-									"id": "9597638d-8c71-4392-8ac6-71f8a87d6257",
 									"key": "id",
-									"value": "990a9f48-7aa6-4b48-8c0b-33d573b5cc58"
+									"value": "9a590946-53a2-43bb-bcc6-24a94c5e4a13"
 								}
 							]
 						}
