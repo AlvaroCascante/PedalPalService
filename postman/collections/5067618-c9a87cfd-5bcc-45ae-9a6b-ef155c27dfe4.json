@@ -234,7 +234,7 @@
 					"response": []
 				},
 				{
-					"name": "FetchAll",
+					"name": "Bikes Fetch All",
 					"id": "5067618-ba3f843b-5371-4140-9145-7d291ebd3657",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
