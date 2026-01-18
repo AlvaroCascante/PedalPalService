@@ -447,6 +447,56 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "ReplaceComponent",
+					"id": "5067618-5b06f0c7-80d3-4120-a693-9155b3e87fc9",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"model\": \"B07X-CER\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/components/:id",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"components",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "d59331c8-f7a6-44ec-8679-b6795daaf6ab",
+									"key": "id",
+									"value": "b9f99fc4-df29-432a-ab99-0fd31ac7b082"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"id": "5067618-56d616ab-eda0-4c3d-abbc-5ee8c30f5d1e",
