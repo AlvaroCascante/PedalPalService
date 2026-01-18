@@ -407,6 +407,56 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "RemoveComponent Copy",
+					"id": "5067618-6ab77cf7-fb70-4470-874a-097257d98f3f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"componentType\": \"BRAKE_PADS\",\n  \"name\": \"Shimano Ceramic Brake Pad\",\n  \"brand\": \"Shimano\",\n  \"model\": \"B07X-CER\",\n  \"notes\": \"Front brake pad set for road bikes — ceramic compound, low noise. Installed 2026-01-17 for testing.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/components/:id",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"components",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "743cf848-2aa2-4dd6-8baf-5d523240163b",
+									"key": "id",
+									"value": "9a590946-53a2-43bb-bcc6-24a94c5e4a13"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"id": "5067618-56d616ab-eda0-4c3d-abbc-5ee8c30f5d1e",
