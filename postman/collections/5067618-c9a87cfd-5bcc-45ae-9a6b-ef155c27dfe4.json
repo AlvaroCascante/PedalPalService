@@ -560,7 +560,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/products",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/products?page=0&size=5",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
@@ -568,6 +568,18 @@
 								"{{path}}",
 								"api",
 								"products"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"type": "text"
+								}
 							]
 						}
 					},
