@@ -360,7 +360,7 @@
 					"response": []
 				},
 				{
-					"name": "Add Component Copy",
+					"name": "RemoveComponent",
 					"id": "5067618-615171f1-1317-4ea7-b95b-b61c2627c0b4",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
