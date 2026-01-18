@@ -541,7 +541,7 @@
 			"name": "Products",
 			"item": [
 				{
-					"name": "FetchProducts",
+					"name": "Products Fetch All",
 					"id": "5067618-d87999ba-09f7-49a1-ac7d-2eca186ea391",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
