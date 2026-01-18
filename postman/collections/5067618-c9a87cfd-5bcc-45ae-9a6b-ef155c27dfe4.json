@@ -548,7 +548,18 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/products",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"products"
+							]
+						}
 					},
 					"response": []
 				}
