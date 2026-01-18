@@ -420,7 +420,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"model\": \"B08X-CER\",\n}",
+							"raw": "{\n  \"model\": \"B08X-CER\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
