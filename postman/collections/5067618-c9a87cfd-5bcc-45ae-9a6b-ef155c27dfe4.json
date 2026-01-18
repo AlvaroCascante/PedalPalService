@@ -192,7 +192,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "81b21366-274d-41b2-80a7-52eedae53137"
+									"value": "990a9f48-7aa6-4b48-8c0b-33d573b5cc58"
 								}
 							]
 						}
@@ -234,6 +234,40 @@
 					"response": []
 				},
 				{
+					"name": "FetchAll",
+					"id": "5067618-ba3f843b-5371-4140-9145-7d291ebd3657",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/all",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"bikes",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create",
 					"id": "5067618-d084089a-04b2-4fc4-ab4a-d4cb0f4a5197",
 					"protocolProfileBehavior": {
@@ -254,7 +288,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"ownerId\": \"ff4cced4-29a0-4e77-b0a9-429f26fc90b4\",\n    \"name\": \"City Cruiser\",\n    \"brand\": \"Acme Bikes\",\n    \"model\": \"Cruiser 3000\",\n    \"year\": 2022,\n    \"type\": \"ROAD\",\n    \"serialNumber\": \"SN-1234567890\",\n    \"notes\": \"Purchased at local store.\"\n}",
+							"raw": "{\n    \"name\": \"Mountain Cruiser\",\n    \"brand\": \"Acme Bikes\",\n    \"model\": \"Mountain Cruiser 3000\",\n    \"year\": 2024,\n    \"type\": \"MOUNTAIN\",\n    \"serialNumber\": \"SN-123456789M\",\n    \"notes\": \"Purchased at local store.\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -270,6 +304,195 @@
 								"{{path}}",
 								"api",
 								"bikes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Component",
+					"id": "5067618-46d1b097-3722-4850-b6f5-0d76419513b2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"componentType\": \"BRAKE_PADS\",\n  \"name\": \"Shimano Ceramic Brake Pad\",\n  \"brand\": \"Shimano\",\n  \"model\": \"B07X-CER\",\n  \"notes\": \"Front brake pad set for road bikes — ceramic compound, low noise. Installed 2026-01-17 for testing.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id/components",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"bikes",
+								":id",
+								"components"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "990a9f48-7aa6-4b48-8c0b-33d573b5cc58"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveComponent",
+					"id": "5067618-615171f1-1317-4ea7-b95b-b61c2627c0b4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/components/:id",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"components",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9a590946-53a2-43bb-bcc6-24a94c5e4a13"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateComponent",
+					"id": "5067618-6ab77cf7-fb70-4470-874a-097257d98f3f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"model\": \"B07X-CER\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/components/:id",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"components",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "b9f99fc4-df29-432a-ab99-0fd31ac7b082"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ReplaceComponent",
+					"id": "5067618-5b06f0c7-80d3-4120-a693-9155b3e87fc9",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"componentType\": \"BRAKE_PADS\",\n  \"name\": \"Shimano Ceramic Brake Pad\",\n  \"brand\": \"Shimano\",\n  \"model\": \"B08X-CER\",\n  \"notes\": \"Front brake pad set for road bikes — ceramic compound, low noise. Installed 2026-01-17 for testing.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/components/replace/:id",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"components",
+								"replace",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "b9f99fc4-df29-432a-ab99-0fd31ac7b082"
+								}
 							]
 						}
 					},
@@ -319,7 +542,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "e7ed27ec-7253-42f4-a51e-8c7245b4559e",
+				"id": "2857db39-6ee3-4962-af2f-eb41942161fa",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
@@ -331,7 +554,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "87c812e1-8210-42bb-86a5-790d4acf35ed",
+				"id": "65baa218-7c97-42d4-913a-e0f8b2ca4d18",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
