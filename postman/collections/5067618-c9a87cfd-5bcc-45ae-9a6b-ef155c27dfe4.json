@@ -409,7 +409,7 @@
 					"response": []
 				},
 				{
-					"name": "RemoveComponent Copy",
+					"name": "UpdateComponent",
 					"id": "5067618-6ab77cf7-fb70-4470-874a-097257d98f3f",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -425,7 +425,7 @@
 								}
 							]
 						},
-						"method": "DELETE",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -449,7 +449,6 @@
 							],
 							"variable": [
 								{
-									"id": "743cf848-2aa2-4dd6-8baf-5d523240163b",
 									"key": "id",
 									"value": "9a590946-53a2-43bb-bcc6-24a94c5e4a13"
 								}
