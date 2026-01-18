@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateComponentRequest {
     private String componentType;
+    private String status;
     private String name;
     private String brand;
     private String model;

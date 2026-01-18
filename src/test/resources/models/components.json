@@ -1,0 +1,21 @@
+[
+  {
+    "id": "f1e2d3c4-b5a6-47d8-9c0b-111122223333",
+    "componentType": { "label": "Brake" },
+    "name": "Shimano Ceramic Brake Pad",
+    "brand": "Shimano",
+    "model": "B07X-CER",
+    "notes": "Front brake pad; ceramic compound; replaced 2025-12-15",
+    "status": { "label": "Active" }
+  },
+  {
+    "id": "a9b8c7d6-e5f4-4a3b-9c8d-444455556666",
+    "componentType": { "label": "Saddle" },
+    "name": "Comfort Saddle Pro",
+    "brand": "ComfyCo",
+    "model": "CSP-1",
+    "notes": "Gel-padded saddle, good for city rides.",
+    "status": { "label": "Active" }
+  }
+]
+

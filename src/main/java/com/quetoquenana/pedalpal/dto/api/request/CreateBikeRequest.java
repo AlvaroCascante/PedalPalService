@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateBikeRequest {
-    @NotBlank(message = "{bike.create.owner.blank}")
-    private String ownerId;
 
     @NotBlank(message = "{bike.create.name.blank}")
     private String name;

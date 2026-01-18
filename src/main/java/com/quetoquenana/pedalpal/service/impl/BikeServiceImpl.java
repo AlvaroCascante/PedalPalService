@@ -1,12 +1,15 @@
 package com.quetoquenana.pedalpal.service.impl;
 
 import com.quetoquenana.pedalpal.dto.api.request.CreateBikeRequest;
+import com.quetoquenana.pedalpal.dto.api.request.CreateComponentRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateBikeRequest;
 import com.quetoquenana.pedalpal.dto.util.SecurityUser;
 import com.quetoquenana.pedalpal.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.model.data.Bike;
+import com.quetoquenana.pedalpal.model.data.BikeComponent;
 import com.quetoquenana.pedalpal.model.data.SystemCode;
+import com.quetoquenana.pedalpal.repository.BikeComponentRepository;
 import com.quetoquenana.pedalpal.repository.BikeRepository;
 import com.quetoquenana.pedalpal.service.BikeService;
 import com.quetoquenana.pedalpal.service.SystemCodeService;
@@ -18,16 +21,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import static com.quetoquenana.pedalpal.util.Constants.BikeComponents.COMPONENT_TYPE;
 import static com.quetoquenana.pedalpal.util.Constants.SystemCodes.*;
 
 @Service
 public class BikeServiceImpl implements BikeService {
 
     private final BikeRepository bikeRepository;
+    private final BikeComponentRepository componentRepository;
     private final SystemCodeService systemCodeService;
 
-    public BikeServiceImpl(BikeRepository bikeRepository, SystemCodeService systemCodeService) {
+    public BikeServiceImpl(BikeRepository bikeRepository, BikeComponentRepository componentRepository, SystemCodeService systemCodeService) {
         this.bikeRepository = bikeRepository;
+        this.componentRepository = componentRepository;
         this.systemCodeService = systemCodeService;
     }
 
@@ -51,18 +57,30 @@ public class BikeServiceImpl implements BikeService {
 
     @Override
     @Transactional
+    public Bike createBikeForCustomer(UUID idCustomer, CreateBikeRequest request) {
+        SecurityUser user = SecurityUtils.getCurrentUser().orElseThrow(
+                () -> new ForbiddenAccessException("authentication.required")
+        );
+        return createBike(user, idCustomer, request);
+    }
+
+    @Override
+    @Transactional
     public Bike createBike(CreateBikeRequest request) {
         SecurityUser user = SecurityUtils.getCurrentUser().orElseThrow(
                 () -> new ForbiddenAccessException("authentication.required")
         );
+        return createBike(user, user.userId(), request);
+    }
 
+    private Bike createBike(SecurityUser user, UUID idCustomer, CreateBikeRequest request) {
         SystemCode typeCode = systemCodeService.findByCategoryAndCode(BIKE_TYPE, request.getType())
                 .orElseThrow(() -> new RecordNotFoundException("bike.type.not.found", request.getType()));
 
         SystemCode statusCode = systemCodeService.findByCategoryAndCode(BIKE_STATUS, BIKE_STATUS_ACTIVE)
                 .orElseThrow(() -> new RecordNotFoundException("bike.status.not.found", BIKE_STATUS_ACTIVE));
 
-        Bike bike = Bike.createFromRequest(request, typeCode, statusCode);
+        Bike bike = Bike.createFromRequest(request, idCustomer, statusCode, typeCode);
         LocalDateTime now = LocalDateTime.now();
         bike.setCreatedAt(now);
         bike.setUpdatedAt(now);
@@ -100,6 +118,25 @@ public class BikeServiceImpl implements BikeService {
         Bike bike = getBikeIfOwnerOrAdmin(id);
         bike.setStatus(statusCode);
         bikeRepository.save(bike);
+    }
+
+    @Override
+    @Transactional
+    public BikeComponent addComponent(UUID bikeId, CreateComponentRequest request) {
+        Bike bike = getBikeIfOwnerOrAdmin(bikeId);
+
+        SystemCode componentType = systemCodeService.findByCategoryAndCode(COMPONENT_TYPE, request.getComponentType())
+                .orElseThrow(() -> new RecordNotFoundException("component.type.not.found", request.getComponentType()));
+
+        BikeComponent component = BikeComponent.createFromRequest(bike, request, componentType);
+
+        LocalDateTime now = LocalDateTime.now();
+        component.setCreatedAt(now);
+        component.setUpdatedAt(now);
+        component.setCreatedBy(bike.getUpdatedBy());
+        component.setUpdatedBy(bike.getUpdatedBy());
+
+        return componentRepository.save(component);
     }
 
     @Override

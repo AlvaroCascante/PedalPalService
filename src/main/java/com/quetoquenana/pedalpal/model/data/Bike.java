@@ -1,5 +1,6 @@
 package com.quetoquenana.pedalpal.model.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.quetoquenana.pedalpal.dto.api.request.CreateBikeRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateBikeRequest;
@@ -7,7 +8,7 @@ import com.quetoquenana.pedalpal.dto.api.response.ApiBaseResponseView;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Bike extends Auditable {
 
     // //JSON Views to control serialization responses
@@ -73,12 +75,18 @@ public class Bike extends Auditable {
     @JsonView(BikeDetail.class)
     private SystemCode status;
 
+    // components for this bike
+    @OneToMany(mappedBy = "bike", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonView(BikeDetail.class)
+    private List<BikeComponent> components;
+
     // Create a Bike entity from a CreateBikeRequest DTO
     public static Bike createFromRequest(CreateBikeRequest request,
+                                         UUID idCustomer,
                                          SystemCode statusCode,
                                          SystemCode typeCode) {
         return Bike.builder()
-                .ownerId(UUID.fromString(request.getOwnerId()))
+                .ownerId(idCustomer)
                 .name(request.getName())
                 .brand(request.getBrand())
                 .model(request.getModel())

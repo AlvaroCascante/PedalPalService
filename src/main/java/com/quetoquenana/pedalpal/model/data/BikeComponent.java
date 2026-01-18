@@ -1,5 +1,7 @@
 package com.quetoquenana.pedalpal.model.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.quetoquenana.pedalpal.dto.api.request.CreateComponentRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateComponentRequest;
 import com.quetoquenana.pedalpal.dto.api.response.ApiBaseResponseView;
@@ -15,11 +17,13 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-public class BikeComponent {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class BikeComponent extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
+    @JsonView({Bike.BikeDetail.class, BikeComponentList.class})
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -28,27 +32,32 @@ public class BikeComponent {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "component_type")
+    @JsonView({Bike.BikeDetail.class, BikeComponentList.class})
     private SystemCode componentType;
 
     @Column(name = "name", nullable = false, length = 100)
+    @JsonView({Bike.BikeDetail.class, BikeComponentList.class})
     private String name;
 
     @Column(name = "brand", length = 100)
+    @JsonView({Bike.BikeDetail.class, BikeComponentList.class})
     private String brand;
 
     @Column(name = "model", length = 100)
+    @JsonView({Bike.BikeDetail.class, BikeComponentList.class})
     private String model;
 
     @Column(name = "notes", columnDefinition = "text")
+    @JsonView({BikeComponentDetail.class})
     private String notes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_id")
-    private SystemCode status;
-
     // create from DTO
-    public static BikeComponent createFromRequest(CreateComponentRequest request, SystemCode componentType) {
+    public static BikeComponent createFromRequest(
+            Bike bike,
+            CreateComponentRequest request,
+            SystemCode componentType) {
         return BikeComponent.builder()
+                .bike(bike)
                 .componentType(componentType)
                 .name(request.getName())
                 .brand(request.getBrand())
@@ -57,9 +66,8 @@ public class BikeComponent {
                 .build();
     }
 
-    public void updateFromRequest(UpdateComponentRequest request, SystemCode componentType, SystemCode status) {
+    public void updateFromRequest(UpdateComponentRequest request, SystemCode componentType) {
         if (componentType != null) this.componentType = componentType;
-        if (status != null) this.status = status;
         if (request.getName() != null) this.name = request.getName();
         if (request.getBrand() != null) this.brand = request.getBrand();
         if (request.getModel() != null) this.model = request.getModel();

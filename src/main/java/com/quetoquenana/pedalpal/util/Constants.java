@@ -5,6 +5,18 @@ import java.util.List;
 
 public class Constants {
 
+    public static class BikeComponents {
+        // Component-related categories/codes
+        public static final String COMPONENT_TYPE = "COMPONENT_TYPE";
+        public static final String COMPONENT_STATUS = "COMPONENT_STATUS";
+        public static final String COMPONENT_STATUS_ACTIVE = "ACTIVE";
+    }
+
+    public static class Dates {
+        public static final String YEAR_MONTH_FORMAT = "yyyy-MM";
+        public static final DateTimeFormatter YEAR_MONTH = DateTimeFormatter.ofPattern(YEAR_MONTH_FORMAT);
+    }
+
     public static class JWTClaims {
         public static final String KEY_FACTORY_ALGORITHM = "RS256";
         public static final String KEY_NAME = "name";
@@ -21,9 +33,22 @@ public class Constants {
     }
 
     public static class Headers {
-        public static final String APP_NAME = "X-Application-Name";
-        public static final String CONTENT_TYPE = "Content-Type";
-        public static final String AUTHORIZATION = "Authorization";
+        public static final String LOCATION = "Location";
+    }
+
+    public static class MessageSource {
+        public static final String BASE_NAME = "classpath:messages";
+        public static final String DEFAULT = "UTF-8";
+    }
+
+    public static class Pagination {
+        public static final String PAGE = "0";
+        public static final String PAGE_SIZE = "10";
+    }
+
+    public static class ResponseValues{
+        public static final String SUCCESS = "Success";
+        public static final Integer DEFAULT_ERROR_CODE = 0;
     }
 
     public static class Roles {
@@ -33,21 +58,6 @@ public class Constants {
         public static final String ROLE_USER = "ROLE_USER";
         public static final String ADMIN = "ADMIN";
         public static final String USER = "USER";
-    }
-
-    public static class MessageSource {
-        public static final String BASENAME = "classpath:messages";
-        public static final String DEFAULT = "UTF-8";
-    }
-
-    public static class Dates {
-        public static final String YEAR_MONTH_FORMAT = "yyyy-MM";
-        public static final DateTimeFormatter YEAR_MONTH = DateTimeFormatter.ofPattern(YEAR_MONTH_FORMAT);
-    }
-
-    public static class Pagination {
-        public static final String PAGE = "0";
-        public static final String PAGE_SIZE = "10";
     }
 
     public static class SystemCodes {
@@ -66,4 +76,5 @@ public class Constants {
                 BIKE_STATUS_SOLD
         );
     }
+
 }

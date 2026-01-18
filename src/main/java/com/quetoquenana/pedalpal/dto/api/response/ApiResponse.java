@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static com.quetoquenana.pedalpal.util.Constants.ResponseValues.DEFAULT_ERROR_CODE;
+import static com.quetoquenana.pedalpal.util.Constants.ResponseValues.SUCCESS;
+
 /**
  * Generic API response wrapper for REST endpoints.
  */
@@ -14,8 +17,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse {
-    private static final String DEFAULT_SUCCESS_MESSAGE = "Success";
-    private static final Integer DEFAULT_ERROR_CODE = 0;
 
     @JsonView(ApiBaseResponseView.Always.class)
     private String message;
@@ -33,7 +34,7 @@ public class ApiResponse {
     }
 
     public ApiResponse(Object data) {
-        this.message = DEFAULT_SUCCESS_MESSAGE;
+        this.message = SUCCESS;
         this.errorCode = DEFAULT_ERROR_CODE;
         this.data = data;
     }

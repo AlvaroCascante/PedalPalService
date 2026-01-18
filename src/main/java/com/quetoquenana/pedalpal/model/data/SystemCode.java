@@ -1,5 +1,6 @@
 package com.quetoquenana.pedalpal.model.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SystemCode {
 
     @Id
@@ -36,7 +38,7 @@ public class SystemCode {
     private String code;
 
     @Column(name = "label")
-    @JsonView(Bike.BikeDetail.class)
+    @JsonView({Bike.BikeDetail.class, BikeComponent.BikeComponentList.class})
     private String label;
 
     @Column(name = "description")

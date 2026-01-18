@@ -1,0 +1,9 @@
+{
+  "name": "Mountain Cruiser",
+  "brand": "Acme Bikes",
+  "model": "Mountain Cruiser 3000",
+  "year": 2024,
+  "type": "MOUNTAIN",
+  "serialNumber": "SN-123456789M",
+  "notes": "Purchased at local store."
+}
