@@ -538,6 +538,11 @@
 			]
 		},
 		{
+			"name": "Products",
+			"item": [],
+			"id": "5067618-981f044e-0411-4bd0-84de-878e07eb920a"
+		},
+		{
 			"name": "FetchProducts",
 			"id": "5067618-d87999ba-09f7-49a1-ac7d-2eca186ea391",
 			"protocolProfileBehavior": {
