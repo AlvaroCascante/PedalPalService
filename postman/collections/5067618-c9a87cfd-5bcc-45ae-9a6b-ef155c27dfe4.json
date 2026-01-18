@@ -378,15 +378,6 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"componentType\": \"BRAKE_PADS\",\n  \"name\": \"Shimano Ceramic Brake Pad\",\n  \"brand\": \"Shimano\",\n  \"model\": \"B07X-CER\",\n  \"notes\": \"Front brake pad set for road bikes — ceramic compound, low noise. Installed 2026-01-17 for testing.\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "{{host_pedal_pal}}/{{path}}/api/components/:id",
 							"host": [
@@ -425,7 +416,7 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
