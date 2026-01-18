@@ -592,8 +592,36 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/products/?id=7e9c8e5b-824a-4f2c-afe2-17e5461a5d65",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"products",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "7e9c8e5b-824a-4f2c-afe2-17e5461a5d65"
+								}
+							]
+						}
 					},
 					"response": []
 				}
