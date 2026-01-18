@@ -288,7 +288,49 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"ownerId\": \"ff4cced4-29a0-4e77-b0a9-429f26fc90b4\",\n    \"name\": \"City Cruiser\",\n    \"brand\": \"Acme Bikes\",\n    \"model\": \"Cruiser 3000\",\n    \"year\": 2022,\n    \"type\": \"ROAD\",\n    \"serialNumber\": \"SN-1234567890\",\n    \"notes\": \"Purchased at local store.\"\n}",
+							"raw": "{\n    \"name\": \"Mountain Cruiser\",\n    \"brand\": \"Acme Bikes\",\n    \"model\": \"Mountain Cruiser 3000\",\n    \"year\": 2024,\n    \"type\": \"MOUNTAIN\",\n    \"serialNumber\": \"SN-123456789M\",\n    \"notes\": \"Purchased at local store.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"bikes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Component",
+					"id": "5067618-46d1b097-3722-4850-b6f5-0d76419513b2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Mountain Cruiser\",\n    \"brand\": \"Acme Bikes\",\n    \"model\": \"Mountain Cruiser 3000\",\n    \"year\": 2024,\n    \"type\": \"MOUNTAIN\",\n    \"serialNumber\": \"SN-123456789M\",\n    \"notes\": \"Purchased at local store.\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
