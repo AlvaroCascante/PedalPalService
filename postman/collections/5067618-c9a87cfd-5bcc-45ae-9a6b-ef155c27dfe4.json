@@ -627,6 +627,24 @@
 				}
 			],
 			"id": "5067618-981f044e-0411-4bd0-84de-878e07eb920a"
+		},
+		{
+			"name": "SystemCodes",
+			"item": [
+				{
+					"name": "New Request",
+					"id": "5067618-9b5ebcdc-2b3e-4b4a-abe5-1e15a55f8150",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			],
+			"id": "5067618-26a90c92-e6ae-4d52-922d-53bd64c41b69"
 		}
 	],
 	"event": [
