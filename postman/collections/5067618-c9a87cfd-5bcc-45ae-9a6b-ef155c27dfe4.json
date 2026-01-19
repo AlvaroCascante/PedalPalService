@@ -684,14 +684,22 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/system-codes",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/system-codes/category/:category",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
 							"path": [
 								"{{path}}",
 								"api",
-								"system-codes"
+								"system-codes",
+								"category",
+								":category"
+							],
+							"variable": [
+								{
+									"key": "category",
+									"value": "COMPONENT_TYPE"
+								}
 							]
 						}
 					},
