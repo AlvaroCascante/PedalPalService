@@ -662,7 +662,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "2857db39-6ee3-4962-af2f-eb41942161fa",
+				"id": "e7896308-d28e-4dea-952b-6802a70b681b",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
@@ -674,7 +674,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "65baa218-7c97-42d4-913a-e0f8b2ca4d18",
+				"id": "e46a3aa0-d803-4f7b-8966-9bc8bfc660de",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
@@ -695,6 +695,10 @@
 		},
 		{
 			"key": "host_pedal_pal",
+			"value": ""
+		},
+		{
+			"key": "user_admin_token",
 			"value": ""
 		}
 	]
