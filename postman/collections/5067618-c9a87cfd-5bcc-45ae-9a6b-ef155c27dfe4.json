@@ -234,7 +234,7 @@
 					"response": []
 				},
 				{
-					"name": "FetchAll",
+					"name": "Bikes Fetch All",
 					"id": "5067618-ba3f843b-5371-4140-9145-7d291ebd3657",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -536,6 +536,97 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Products Fetch All",
+					"id": "5067618-d87999ba-09f7-49a1-ac7d-2eca186ea391",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/products?page=0&size=5",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"type": "text"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product Get By ID",
+					"id": "5067618-b70debe3-686c-4681-af26-f7e7d5724d90",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/products/:id",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "7e9c8e5b-824a-4f2c-afe2-17e5461a5d65"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "5067618-981f044e-0411-4bd0-84de-878e07eb920a"
 		}
 	],
 	"event": [
