@@ -662,7 +662,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "e7896308-d28e-4dea-952b-6802a70b681b",
+				"id": "9a558e52-65d7-4a9e-b649-5ce93f970845",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
@@ -674,7 +674,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "e46a3aa0-d803-4f7b-8966-9bc8bfc660de",
+				"id": "031beec0-48e5-46ce-836e-86282bfa9c42",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
@@ -690,7 +690,7 @@
 			"value": ""
 		},
 		{
-			"key": "usera_token",
+			"key": "user_token",
 			"value": ""
 		},
 		{
