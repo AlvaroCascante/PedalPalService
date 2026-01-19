@@ -665,7 +665,7 @@
 					"response": []
 				},
 				{
-					"name": "SystemCodes FetchAll Copy",
+					"name": "SystemCodes FetchByCategory",
 					"id": "5067618-c4817feb-eaab-43cf-a073-ad232759054f",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
