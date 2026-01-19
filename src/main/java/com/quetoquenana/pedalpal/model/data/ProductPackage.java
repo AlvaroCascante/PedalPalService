@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -51,5 +52,23 @@ public class ProductPackage extends Auditable {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private Set<Product> products;
-}
 
+    public static ProductPackage createFromRequest(com.quetoquenana.pedalpal.dto.api.request.CreateProductPackageRequest request, SystemCode status, Set<Product> products) {
+        ProductPackage pkg = ProductPackage.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .price(request.getPrice())
+                .status(status)
+                .build();
+        pkg.setProducts(products == null ? new HashSet<>() : products);
+        return pkg;
+    }
+
+    public void updateFromRequest(com.quetoquenana.pedalpal.dto.api.request.UpdateProductPackageRequest request, SystemCode status, Set<Product> products) {
+        if (request.getName() != null) this.name = request.getName();
+        if (request.getDescription() != null) this.description = request.getDescription();
+        if (request.getPrice() != null) this.price = request.getPrice();
+        if (status != null) this.status = status;
+        if (products != null) this.products = products;
+    }
+}

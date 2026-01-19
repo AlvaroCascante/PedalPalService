@@ -1,5 +1,7 @@
 package com.quetoquenana.pedalpal.model.data;
 
+import com.quetoquenana.pedalpal.dto.api.request.CreateStoreLocationRequest;
+import com.quetoquenana.pedalpal.dto.api.request.UpdateStoreLocationRequest;
 import com.quetoquenana.pedalpal.dto.api.response.ApiBaseResponseView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -63,4 +65,27 @@ public class StoreLocation extends Auditable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
     private SystemCode status;
+
+    // Create a StoreLocation entity from CreateStoreLocationRequest and parent Store
+    public static StoreLocation createFromRequest(CreateStoreLocationRequest request, Store store) {
+        return StoreLocation.builder()
+                .store(store)
+                .name(request.getName())
+                .website(request.getWebsite())
+                .address(request.getAddress())
+                .latitude(request.getLatitude())
+                .longitude(request.getLongitude())
+                .phone(request.getPhone())
+                .build();
+    }
+
+    // Update fields from UpdateStoreLocationRequest (partial)
+    public void updateFromRequest(UpdateStoreLocationRequest request) {
+        if (request.getName() != null) this.name = request.getName();
+        if (request.getWebsite() != null) this.website = request.getWebsite();
+        if (request.getAddress() != null) this.address = request.getAddress();
+        if (request.getLatitude() != null) this.latitude = request.getLatitude();
+        if (request.getLongitude() != null) this.longitude = request.getLongitude();
+        if (request.getPhone() != null) this.phone = request.getPhone();
+    }
 }

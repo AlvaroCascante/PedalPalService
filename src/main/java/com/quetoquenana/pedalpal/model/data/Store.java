@@ -1,5 +1,9 @@
 package com.quetoquenana.pedalpal.model.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.quetoquenana.pedalpal.dto.api.request.CreateStoreRequest;
+import com.quetoquenana.pedalpal.dto.api.request.UpdateStoreRequest;
 import com.quetoquenana.pedalpal.dto.api.response.ApiBaseResponseView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,6 +26,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Store extends Auditable {
 
     // //JSON Views to control serialization responses
@@ -31,8 +36,22 @@ public class Store extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
+    @JsonView(StoreList.class)
     private UUID id;
 
     @Column(name = "name", nullable = false, length = 100)
+    @JsonView(StoreList.class)
     private String name;
+
+    // Create a Store entity from a CreateStoreRequest DTO
+    public static Store createFromRequest(CreateStoreRequest request) {
+        return Store.builder()
+                .name(request.getName())
+                .build();
+    }
+
+    // Update this Store from UpdateStoreRequest (partial updates)
+    public void updateFromRequest(UpdateStoreRequest request) {
+        if (request.getName() != null) this.name = request.getName();
+    }
 }

@@ -1,5 +1,7 @@
 package com.quetoquenana.pedalpal.model.data;
 
+import com.quetoquenana.pedalpal.dto.api.request.CreateAppointmentTaskRequest;
+import com.quetoquenana.pedalpal.dto.api.request.UpdateAppointmentTaskRequest;
 import com.quetoquenana.pedalpal.dto.api.response.ApiBaseResponseView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,4 +47,17 @@ public class AppointmentTask extends Auditable {
 
     @Column(name = "description", nullable = false, length = 255)
     private String description;
+
+    public static AppointmentTask createFromRequest(CreateAppointmentTaskRequest request, Appointment appointment) {
+        return AppointmentTask.builder()
+                .appointment(appointment)
+                .name(request.getName())
+                .description(request.getDescription())
+                .build();
+    }
+
+    public void updateFromRequest(UpdateAppointmentTaskRequest request) {
+        if (request.getName() != null) this.name = request.getName();
+        if (request.getDescription() != null) this.description = request.getDescription();
+    }
 }

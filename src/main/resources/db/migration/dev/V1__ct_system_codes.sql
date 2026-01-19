@@ -29,7 +29,7 @@ INSERT INTO system_codes (category, code, label, description, is_active, code_ke
  ('BIKE_TYPE', 'GRAVEL', 'Gravel', 'Gravel bike', true, 'bike.type.gravel', 4),
  ('BIKE_TYPE', 'ELECTRIC', 'Electric', 'Electric bike (e-bike)', true, 'bike.type.electric', 5),
  ('BIKE_TYPE', 'URBAN', 'Urban', 'Urban/City bike', true, 'bike.type.urban', 6),
-('COMPONENT_TYPE', 'CHAIN', 'Chain', 'Chain', true, 'component.chain', 1),
+ ('COMPONENT_TYPE', 'CHAIN', 'Chain', 'Chain', true, 'component.chain', 1),
  ('COMPONENT_TYPE', 'CASSETTE', 'Cassette', 'Cassette', true, 'component.cassette', 2),
  ('COMPONENT_TYPE', 'CHAINRINGS', 'Chainrings', 'Chainrings', true, 'component.chainrings', 3),
  ('COMPONENT_TYPE', 'DERAILLEUR_FRONT', 'Front derailleur', 'Front derailleur', true, 'component.derailleur_front', 4),
@@ -76,4 +76,7 @@ INSERT INTO system_codes (category, code, label, description, is_active, code_ke
  ('LANDING_PAGE_CATEGORY', 'NEWS', 'News', 'News', true, 'landing.category.news', 2),
  ('LANDING_PAGE_CATEGORY', 'ARTICLE', 'Article', 'Article', true, 'landing.category.article', 3),
  ('LANDING_PAGE_CATEGORY', 'PROMO', 'Promotion', 'Promotion', true, 'landing.category.promo', 4),
- ('LANDING_PAGE_CATEGORY', 'OTHER', 'Other', 'Other', true, 'landing.category.other', 5);
+ ('LANDING_PAGE_CATEGORY', 'OTHER', 'Other', 'Other', true, 'landing.category.other', 5),
+ ('GENERAL_STATUS', 'ACTIVE', 'Active', 'Active', true, 'general.status.active', 1),
+ ('GENERAL_STATUS', 'INACTIVE', 'Inactive', 'Inactive', true, 'general.status.inactive', 2);
+;

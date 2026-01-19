@@ -2,6 +2,8 @@ package com.quetoquenana.pedalpal.model.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.quetoquenana.pedalpal.dto.api.request.CreateSystemCodeRequest;
+import com.quetoquenana.pedalpal.dto.api.request.UpdateSystemCodeRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,7 +40,9 @@ public class SystemCode {
     private String code;
 
     @Column(name = "label")
-    @JsonView({Bike.BikeDetail.class, BikeComponent.BikeComponentList.class})
+    @JsonView({Bike.BikeDetail.class,
+            BikeComponent.BikeComponentList.class,
+            Product.ProductDetail.class})
     private String label;
 
     @Column(name = "description")
@@ -52,4 +56,28 @@ public class SystemCode {
 
     @Column(name = "position")
     private Integer position;
+
+    // Factory helper to create from request DTO
+    public static SystemCode createFromRequest(CreateSystemCodeRequest request) {
+        return SystemCode.builder()
+                .category(request.getCategory())
+                .code(request.getCode())
+                .label(request.getLabel())
+                .description(request.getDescription())
+                .isActive(request.getIsActive() == null ? true : request.getIsActive())
+                .codeKey(request.getCodeKey())
+                .position(request.getPosition())
+                .build();
+    }
+
+    // Update this entity from request DTO
+    public void updateFromRequest(UpdateSystemCodeRequest request) {
+        if (request.getCategory() != null) this.category = request.getCategory();
+        if (request.getCode() != null) this.code = request.getCode();
+        if (request.getLabel() != null) this.label = request.getLabel();
+        if (request.getDescription() != null) this.description = request.getDescription();
+        if (request.getIsActive() != null) this.isActive = request.getIsActive();
+        if (request.getCodeKey() != null) this.codeKey = request.getCodeKey();
+        if (request.getPosition() != null) this.position = request.getPosition();
+    }
 }

@@ -75,6 +75,13 @@ public class Constants {
                 BIKE_STATUS_STOLEN,
                 BIKE_STATUS_SOLD
         );
+
+        // General status used for products and other entities
+        public static final String GENERAL_STATUS = "GENERAL_STATUS";
+        public static final String GENERAL_STATUS_ACTIVE = "ACTIVE";
+        public static final String GENERAL_STATUS_INACTIVE = "INACTIVE";
+
+        public static final String SUGGESTION_TYPE = "SUGGESTION_TYPE";
     }
 
 }

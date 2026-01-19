@@ -60,4 +60,35 @@ public class CfImage extends Auditable {
     @Column(columnDefinition = "jsonb")
     private Map<String, Object> metadata;
 
+    // Create helper
+    public static CfImage createFromRequest(com.quetoquenana.pedalpal.dto.api.request.CreateCfImageRequest req) {
+        return CfImage.builder()
+                .id(java.util.UUID.randomUUID())
+                .provider(req.getProvider())
+                .providerAssetId(req.getProviderAssetId())
+                .ownerId(req.getOwnerId())
+                .contextCode(req.getContextCode())
+                .referenceId(req.getReferenceId())
+                .position(req.getPosition() == null ? 0 : req.getPosition())
+                .isPrimary(req.getIsPrimary() != null && req.getIsPrimary())
+                .title(req.getTitle())
+                .altText(req.getAltText())
+                .metadata(req.getMetadata())
+                .build();
+    }
+
+    // Update helper
+    public void updateFromRequest(com.quetoquenana.pedalpal.dto.api.request.UpdateCfImageRequest req) {
+        if (req.getProvider() != null) this.provider = req.getProvider();
+        if (req.getProviderAssetId() != null) this.providerAssetId = req.getProviderAssetId();
+        if (req.getOwnerId() != null) this.ownerId = req.getOwnerId();
+        if (req.getContextCode() != null) this.contextCode = req.getContextCode();
+        if (req.getReferenceId() != null) this.referenceId = req.getReferenceId();
+        if (req.getPosition() != null) this.position = req.getPosition();
+        if (req.getIsPrimary() != null) this.isPrimary = req.getIsPrimary();
+        if (req.getTitle() != null) this.title = req.getTitle();
+        if (req.getAltText() != null) this.altText = req.getAltText();
+        if (req.getMetadata() != null) this.metadata = req.getMetadata();
+    }
+
 }

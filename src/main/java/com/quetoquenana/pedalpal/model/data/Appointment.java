@@ -1,5 +1,7 @@
 package com.quetoquenana.pedalpal.model.data;
 
+import com.quetoquenana.pedalpal.dto.api.request.CreateAppointmentRequest;
+import com.quetoquenana.pedalpal.dto.api.request.UpdateAppointmentRequest;
 import com.quetoquenana.pedalpal.dto.api.response.ApiBaseResponseView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -79,4 +81,25 @@ public class Appointment extends Auditable {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private Set<Product> products;
+
+    // Create from DTO
+    public static Appointment createFromRequest(CreateAppointmentRequest request, Bike bike, StoreLocation storeLocation, SystemCode status) {
+        return Appointment.builder()
+                .bike(bike)
+                .storeLocation(storeLocation)
+                .appointmentDate(request.getAppointmentDate())
+                .odometerKm(request.getOdometerKm())
+                .notes(request.getNotes())
+                .status(status)
+                .build();
+    }
+
+    // Partial update from DTO
+    public void updateFromRequest(UpdateAppointmentRequest request, SystemCode status, StoreLocation storeLocation) {
+        if (request.getAppointmentDate() != null) this.appointmentDate = request.getAppointmentDate();
+        if (request.getOdometerKm() != null) this.odometerKm = request.getOdometerKm();
+        if (request.getNotes() != null) this.notes = request.getNotes();
+        if (status != null) this.status = status;
+        if (storeLocation != null) this.storeLocation = storeLocation;
+    }
 }
