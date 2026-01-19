@@ -45,7 +45,7 @@ public class AppointmentTask extends Auditable {
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "description", nullable = false, length = 255)
+    @Column(name = "description", nullable = false)
     private String description;
 
     public static AppointmentTask createFromRequest(CreateAppointmentTaskRequest request, Appointment appointment) {

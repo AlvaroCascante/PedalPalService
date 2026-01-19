@@ -1,6 +1,5 @@
 package com.quetoquenana.pedalpal.service.impl;
 
-import com.quetoquenana.pedalpal.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.service.SecurityService;
 import com.quetoquenana.pedalpal.util.Constants;
 import org.springframework.security.core.Authentication;

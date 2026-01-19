@@ -64,7 +64,7 @@ public class SystemCode {
                 .code(request.getCode())
                 .label(request.getLabel())
                 .description(request.getDescription())
-                .isActive(request.getIsActive() == null ? true : request.getIsActive())
+                .isActive(request.getIsActive() == null || request.getIsActive())
                 .codeKey(request.getCodeKey())
                 .position(request.getPosition())
                 .build();

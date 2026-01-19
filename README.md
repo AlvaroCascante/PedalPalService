@@ -81,7 +81,7 @@ public String getWelcomeMessage(Locale locale) {
 4. **Access the API:**
 
 
-5. **Test with Postman:**
+5.**Test with Postman:**
    - Import the collection from the `postman/collections` folder and run example requests.
 
 ## Customization

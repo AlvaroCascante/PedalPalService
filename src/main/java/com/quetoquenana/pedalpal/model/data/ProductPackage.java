@@ -1,5 +1,7 @@
 package com.quetoquenana.pedalpal.model.data;
 
+import com.quetoquenana.pedalpal.dto.api.request.CreateProductPackageRequest;
+import com.quetoquenana.pedalpal.dto.api.request.UpdateProductPackageRequest;
 import com.quetoquenana.pedalpal.dto.api.response.ApiBaseResponseView;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,7 +33,7 @@ public class ProductPackage extends Auditable {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "name", nullable = false, length = 255)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "description", columnDefinition = "text")
@@ -53,7 +55,7 @@ public class ProductPackage extends Auditable {
     )
     private Set<Product> products;
 
-    public static ProductPackage createFromRequest(com.quetoquenana.pedalpal.dto.api.request.CreateProductPackageRequest request, SystemCode status, Set<Product> products) {
+    public static ProductPackage createFromRequest(CreateProductPackageRequest request, SystemCode status, Set<Product> products) {
         ProductPackage pkg = ProductPackage.builder()
                 .name(request.getName())
                 .description(request.getDescription())
@@ -64,7 +66,7 @@ public class ProductPackage extends Auditable {
         return pkg;
     }
 
-    public void updateFromRequest(com.quetoquenana.pedalpal.dto.api.request.UpdateProductPackageRequest request, SystemCode status, Set<Product> products) {
+    public void updateFromRequest(UpdateProductPackageRequest request, SystemCode status, Set<Product> products) {
         if (request.getName() != null) this.name = request.getName();
         if (request.getDescription() != null) this.description = request.getDescription();
         if (request.getPrice() != null) this.price = request.getPrice();

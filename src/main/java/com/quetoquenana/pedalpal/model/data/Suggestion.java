@@ -59,7 +59,7 @@ public class Suggestion extends Auditable {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Column(name = "name", nullable = false, length = 255)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "description", columnDefinition = "text", nullable = false)

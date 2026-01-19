@@ -62,10 +62,10 @@ public class Product extends Auditable {
     }
 
     // Update fields from UpdateProductRequest
-    public void updateFromRequest(UpdateProductRequest request, SystemCode status) {
-        if (request.getName() != null) this.name = request.getName();
-        if (request.getDescription() != null) this.description = request.getDescription();
-        if (request.getPrice() != null) this.price = request.getPrice();
+    public void updateFromRequest(UpdateProductRequest updateProductRequest, SystemCode status) {
+        if (updateProductRequest.getName() != null) this.name = updateProductRequest.getName();
+        if (updateProductRequest.getDescription() != null) this.description = updateProductRequest.getDescription();
+        if (updateProductRequest.getPrice() != null) this.price = updateProductRequest.getPrice();
         if (status != null) this.status = status;
     }
 }

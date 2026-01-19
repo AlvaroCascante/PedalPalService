@@ -60,7 +60,7 @@ public class Appointment extends Auditable {
     @Column(name = "total_cost", precision = 10, scale = 2)
     private BigDecimal totalCost;
 
-    @Column(name = "notes", length = 255)
+    @Column(name = "notes")
     private String notes;
 
     // Status references system_codes.id
