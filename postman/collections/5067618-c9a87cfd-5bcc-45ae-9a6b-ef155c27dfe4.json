@@ -632,14 +632,25 @@
 			"name": "SystemCodes",
 			"item": [
 				{
-					"name": "New Request",
+					"name": "SystemCodes FetchAll",
 					"id": "5067618-9b5ebcdc-2b3e-4b4a-abe5-1e15a55f8150",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/system-codes",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"system-codes"
+							]
+						}
 					},
 					"response": []
 				}
