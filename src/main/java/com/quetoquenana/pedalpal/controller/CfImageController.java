@@ -3,7 +3,7 @@ package com.quetoquenana.pedalpal.controller;
 import com.quetoquenana.pedalpal.dto.api.request.CreateCfImageRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateCfImageRequest;
 import com.quetoquenana.pedalpal.dto.api.response.ApiResponse;
-import com.quetoquenana.pedalpal.model.data.CfImage;
+import com.quetoquenana.pedalpal.model.local.CfImage;
 import com.quetoquenana.pedalpal.service.CfImageService;
 import com.quetoquenana.pedalpal.util.JsonViewPageUtil;
 import jakarta.validation.Valid;

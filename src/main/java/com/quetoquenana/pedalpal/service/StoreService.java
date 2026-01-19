@@ -4,8 +4,8 @@ import com.quetoquenana.pedalpal.dto.api.request.CreateStoreRequest;
 import com.quetoquenana.pedalpal.dto.api.request.CreateStoreLocationRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateStoreLocationRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateStoreRequest;
-import com.quetoquenana.pedalpal.model.data.Store;
-import com.quetoquenana.pedalpal.model.data.StoreLocation;
+import com.quetoquenana.pedalpal.model.local.Store;
+import com.quetoquenana.pedalpal.model.local.StoreLocation;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.model.data;
+package com.quetoquenana.pedalpal.model.local;
 
 import com.quetoquenana.pedalpal.dto.api.request.CreateAppointmentTaskRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateAppointmentTaskRequest;

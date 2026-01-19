@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.model.data;
+package com.quetoquenana.pedalpal.model.local;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;

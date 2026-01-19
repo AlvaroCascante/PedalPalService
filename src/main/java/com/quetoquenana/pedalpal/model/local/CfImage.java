@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.model.data;
+package com.quetoquenana.pedalpal.model.local;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
