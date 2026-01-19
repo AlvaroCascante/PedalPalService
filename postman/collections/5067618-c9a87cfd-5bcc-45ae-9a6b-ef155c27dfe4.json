@@ -682,7 +682,13 @@
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "es",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{host_pedal_pal}}/{{path}}/api/system-codes/category/:category",
 							"host": [
