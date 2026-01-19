@@ -663,6 +663,39 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "SystemCodes FetchAll Copy",
+					"id": "5067618-c4817feb-eaab-43cf-a073-ad232759054f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/system-codes",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"system-codes"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"id": "5067618-26a90c92-e6ae-4d52-922d-53bd64c41b69"
@@ -672,7 +705,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "9a558e52-65d7-4a9e-b649-5ce93f970845",
+				"id": "be2ae2f2-ff25-450d-b164-d950b27df4fb",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
@@ -684,7 +717,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "031beec0-48e5-46ce-836e-86282bfa9c42",
+				"id": "a9bfeaab-c7e3-447f-b651-924c7bbb9628",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
