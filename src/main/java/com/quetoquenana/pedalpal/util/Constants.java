@@ -38,7 +38,7 @@ public class Constants {
 
     public static class MessageSource {
         public static final String BASE_NAME = "classpath:messages";
-        public static final String DEFAULT = "UTF-8";
+        public static final String DEFAULT_ENCODING = "UTF-8";
     }
 
     public static class Pagination {

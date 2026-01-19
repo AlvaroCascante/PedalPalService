@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.repository;
 
-import com.quetoquenana.pedalpal.model.data.Product;
+import com.quetoquenana.pedalpal.model.local.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

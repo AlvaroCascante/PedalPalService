@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.quetoquenana.pedalpal.dto.api.request.CreateLandingItemRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateLandingItemRequest;
 import com.quetoquenana.pedalpal.dto.api.response.ApiResponse;
-import com.quetoquenana.pedalpal.model.data.LandingPageItem;
+import com.quetoquenana.pedalpal.model.local.LandingPageItem;
 import com.quetoquenana.pedalpal.service.LandingItemService;
 import com.quetoquenana.pedalpal.util.JsonViewPageUtil;
 import jakarta.validation.Valid;

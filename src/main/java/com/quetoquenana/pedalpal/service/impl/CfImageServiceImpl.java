@@ -5,7 +5,7 @@ import com.quetoquenana.pedalpal.dto.api.request.UpdateCfImageRequest;
 import com.quetoquenana.pedalpal.dto.util.SecurityUser;
 import com.quetoquenana.pedalpal.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.exception.RecordNotFoundException;
-import com.quetoquenana.pedalpal.model.data.CfImage;
+import com.quetoquenana.pedalpal.model.local.CfImage;
 import com.quetoquenana.pedalpal.repository.CfImageRepository;
 import com.quetoquenana.pedalpal.service.CfImageService;
 import com.quetoquenana.pedalpal.util.SecurityUtils;

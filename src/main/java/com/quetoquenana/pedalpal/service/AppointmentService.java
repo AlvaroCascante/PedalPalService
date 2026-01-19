@@ -2,7 +2,7 @@ package com.quetoquenana.pedalpal.service;
 
 import com.quetoquenana.pedalpal.dto.api.request.CreateAppointmentRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateAppointmentRequest;
-import com.quetoquenana.pedalpal.model.data.Appointment;
+import com.quetoquenana.pedalpal.model.local.Appointment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

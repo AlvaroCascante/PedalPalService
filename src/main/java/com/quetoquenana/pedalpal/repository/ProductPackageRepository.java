@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.repository;
 
-import com.quetoquenana.pedalpal.model.data.ProductPackage;
+import com.quetoquenana.pedalpal.model.local.ProductPackage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

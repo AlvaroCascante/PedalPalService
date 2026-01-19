@@ -2,7 +2,7 @@ package com.quetoquenana.pedalpal.service;
 
 import com.quetoquenana.pedalpal.dto.api.request.CreateAppointmentTaskRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateAppointmentTaskRequest;
-import com.quetoquenana.pedalpal.model.data.AppointmentTask;
+import com.quetoquenana.pedalpal.model.local.AppointmentTask;
 
 import java.util.UUID;
 

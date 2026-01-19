@@ -2,7 +2,7 @@ package com.quetoquenana.pedalpal.service;
 
 import com.quetoquenana.pedalpal.dto.api.request.CreateCfImageRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateCfImageRequest;
-import com.quetoquenana.pedalpal.model.data.CfImage;
+import com.quetoquenana.pedalpal.model.local.CfImage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

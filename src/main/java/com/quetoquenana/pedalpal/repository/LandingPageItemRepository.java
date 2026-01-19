@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.repository;
 
-import com.quetoquenana.pedalpal.model.data.LandingPageItem;
+import com.quetoquenana.pedalpal.model.local.LandingPageItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

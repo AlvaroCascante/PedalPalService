@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.quetoquenana.pedalpal.dto.api.request.CreateProductRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateProductRequest;
 import com.quetoquenana.pedalpal.dto.api.response.ApiResponse;
-import com.quetoquenana.pedalpal.model.data.Product;
+import com.quetoquenana.pedalpal.model.local.Product;
 import com.quetoquenana.pedalpal.service.ProductService;
 import com.quetoquenana.pedalpal.util.JsonViewPageUtil;
 import jakarta.validation.Valid;

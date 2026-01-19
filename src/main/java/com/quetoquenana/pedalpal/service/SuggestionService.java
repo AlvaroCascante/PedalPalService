@@ -2,7 +2,7 @@ package com.quetoquenana.pedalpal.service;
 
 import com.quetoquenana.pedalpal.dto.api.request.CreateSuggestionRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateSuggestionRequest;
-import com.quetoquenana.pedalpal.model.data.Suggestion;
+import com.quetoquenana.pedalpal.model.local.Suggestion;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.repository;
 
-import com.quetoquenana.pedalpal.model.data.Store;
+import com.quetoquenana.pedalpal.model.local.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

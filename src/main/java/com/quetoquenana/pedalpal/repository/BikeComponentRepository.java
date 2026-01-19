@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.repository;
 
-import com.quetoquenana.pedalpal.model.data.BikeComponent;
+import com.quetoquenana.pedalpal.model.local.BikeComponent;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package com.quetoquenana.pedalpal.service;
 
 import com.quetoquenana.pedalpal.dto.api.request.CreateSystemCodeRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateSystemCodeRequest;
-import com.quetoquenana.pedalpal.model.data.SystemCode;
+import com.quetoquenana.pedalpal.model.local.SystemCode;
 
 import java.util.Optional;
 import java.util.UUID;

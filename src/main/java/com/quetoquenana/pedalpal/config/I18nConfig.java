@@ -7,14 +7,17 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
+import static com.quetoquenana.pedalpal.util.Constants.MessageSource.BASE_NAME;
+import static com.quetoquenana.pedalpal.util.Constants.MessageSource.DEFAULT_ENCODING;
+
 @Configuration
 public class I18nConfig {
 
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:messages");
-        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setBasename(BASE_NAME);
+        messageSource.setDefaultEncoding(DEFAULT_ENCODING);
         return messageSource;
     }
 

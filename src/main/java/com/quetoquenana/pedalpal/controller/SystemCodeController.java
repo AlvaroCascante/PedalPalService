@@ -4,7 +4,7 @@ import com.quetoquenana.pedalpal.dto.api.request.CreateSystemCodeRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateSystemCodeRequest;
 import com.quetoquenana.pedalpal.dto.api.response.ApiResponse;
 import com.quetoquenana.pedalpal.dto.api.response.SystemCodeResponse;
-import com.quetoquenana.pedalpal.model.data.SystemCode;
+import com.quetoquenana.pedalpal.model.local.SystemCode;
 import com.quetoquenana.pedalpal.service.SystemCodeDtoService;
 import com.quetoquenana.pedalpal.service.SystemCodeService;
 import com.quetoquenana.pedalpal.util.JsonViewPageUtil;

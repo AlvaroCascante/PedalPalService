@@ -4,7 +4,7 @@ import com.quetoquenana.pedalpal.dto.api.request.CreateSystemCodeRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateSystemCodeRequest;
 import com.quetoquenana.pedalpal.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.exception.RecordNotFoundException;
-import com.quetoquenana.pedalpal.model.data.SystemCode;
+import com.quetoquenana.pedalpal.model.local.SystemCode;
 import com.quetoquenana.pedalpal.repository.SystemCodeRepository;
 import com.quetoquenana.pedalpal.service.SystemCodeService;
 import com.quetoquenana.pedalpal.util.SecurityUtils;

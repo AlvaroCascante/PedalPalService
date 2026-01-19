@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.quetoquenana.pedalpal.dto.api.request.CreateAppointmentRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateAppointmentRequest;
 import com.quetoquenana.pedalpal.dto.api.response.ApiResponse;
-import com.quetoquenana.pedalpal.model.data.Appointment;
+import com.quetoquenana.pedalpal.model.local.Appointment;
 import com.quetoquenana.pedalpal.service.AppointmentService;
 import com.quetoquenana.pedalpal.util.JsonViewPageUtil;
 import jakarta.validation.Valid;

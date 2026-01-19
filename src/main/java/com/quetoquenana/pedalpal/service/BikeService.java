@@ -3,8 +3,8 @@ package com.quetoquenana.pedalpal.service;
 import com.quetoquenana.pedalpal.dto.api.request.CreateBikeRequest;
 import com.quetoquenana.pedalpal.dto.api.request.CreateComponentRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateBikeRequest;
-import com.quetoquenana.pedalpal.model.data.Bike;
-import com.quetoquenana.pedalpal.model.data.BikeComponent;
+import com.quetoquenana.pedalpal.model.local.Bike;
+import com.quetoquenana.pedalpal.model.local.BikeComponent;
 
 import java.util.List;
 import java.util.UUID;

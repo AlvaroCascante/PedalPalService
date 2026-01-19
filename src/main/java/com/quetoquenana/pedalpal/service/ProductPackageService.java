@@ -2,7 +2,7 @@ package com.quetoquenana.pedalpal.service;
 
 import com.quetoquenana.pedalpal.dto.api.request.CreateProductPackageRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateProductPackageRequest;
-import com.quetoquenana.pedalpal.model.data.ProductPackage;
+import com.quetoquenana.pedalpal.model.local.ProductPackage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

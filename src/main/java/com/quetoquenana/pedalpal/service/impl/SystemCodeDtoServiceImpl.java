@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.service.impl;
 
 import com.quetoquenana.pedalpal.dto.api.response.SystemCodeResponse;
-import com.quetoquenana.pedalpal.model.data.SystemCode;
+import com.quetoquenana.pedalpal.model.local.SystemCode;
 import com.quetoquenana.pedalpal.repository.SystemCodeRepository;
 import com.quetoquenana.pedalpal.service.SystemCodeDtoService;
 import lombok.RequiredArgsConstructor;

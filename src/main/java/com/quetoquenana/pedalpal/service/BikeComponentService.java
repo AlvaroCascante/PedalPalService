@@ -2,7 +2,7 @@ package com.quetoquenana.pedalpal.service;
 
 import com.quetoquenana.pedalpal.dto.api.request.CreateComponentRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateComponentRequest;
-import com.quetoquenana.pedalpal.model.data.BikeComponent;
+import com.quetoquenana.pedalpal.model.local.BikeComponent;
 
 import java.util.UUID;
 

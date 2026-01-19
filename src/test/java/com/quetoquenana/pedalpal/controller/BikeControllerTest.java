@@ -5,7 +5,7 @@ import com.quetoquenana.pedalpal.dto.api.request.CreateBikeRequest;
 import com.quetoquenana.pedalpal.dto.api.request.CreateComponentRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateBikeRequest;
 import com.quetoquenana.pedalpal.exception.RecordNotFoundException;
-import com.quetoquenana.pedalpal.model.data.Bike;
+import com.quetoquenana.pedalpal.model.local.Bike;
 import com.quetoquenana.pedalpal.service.BikeService;
 import com.quetoquenana.pedalpal.util.JsonObjectBuilder;
 import org.junit.jupiter.api.BeforeEach;

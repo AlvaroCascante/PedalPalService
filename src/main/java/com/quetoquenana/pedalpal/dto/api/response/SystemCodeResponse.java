@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.dto.api.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.quetoquenana.pedalpal.model.data.SystemCode;
+import com.quetoquenana.pedalpal.model.local.SystemCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

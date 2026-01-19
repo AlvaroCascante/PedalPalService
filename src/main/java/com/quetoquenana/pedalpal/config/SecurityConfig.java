@@ -124,5 +124,4 @@ public class SecurityConfig {
             return OAuth2TokenValidatorResult.failure(error);
         }
     }
-
 }

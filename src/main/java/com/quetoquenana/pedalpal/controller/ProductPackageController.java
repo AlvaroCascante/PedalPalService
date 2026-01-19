@@ -3,7 +3,7 @@ package com.quetoquenana.pedalpal.controller;
 import com.quetoquenana.pedalpal.dto.api.request.CreateProductPackageRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateProductPackageRequest;
 import com.quetoquenana.pedalpal.dto.api.response.ApiResponse;
-import com.quetoquenana.pedalpal.model.data.ProductPackage;
+import com.quetoquenana.pedalpal.model.local.ProductPackage;
 import com.quetoquenana.pedalpal.service.ProductPackageService;
 import com.quetoquenana.pedalpal.util.JsonViewPageUtil;
 import jakarta.validation.Valid;

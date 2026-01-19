@@ -3,7 +3,7 @@ package com.quetoquenana.pedalpal.controller;
 import com.quetoquenana.pedalpal.dto.api.request.CreateSuggestionRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateSuggestionRequest;
 import com.quetoquenana.pedalpal.dto.api.response.ApiResponse;
-import com.quetoquenana.pedalpal.model.data.Suggestion;
+import com.quetoquenana.pedalpal.model.local.Suggestion;
 import com.quetoquenana.pedalpal.service.SuggestionService;
 import com.quetoquenana.pedalpal.util.JsonViewPageUtil;
 import jakarta.validation.Valid;

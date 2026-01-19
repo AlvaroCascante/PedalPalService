@@ -3,7 +3,7 @@ package com.quetoquenana.pedalpal.controller;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
 import com.quetoquenana.pedalpal.dto.api.request.CreateComponentRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateComponentRequest;
-import com.quetoquenana.pedalpal.model.data.BikeComponent;
+import com.quetoquenana.pedalpal.model.local.BikeComponent;
 import com.quetoquenana.pedalpal.service.BikeComponentService;
 import com.quetoquenana.pedalpal.util.JsonObjectBuilder;
 import org.junit.jupiter.api.BeforeEach;

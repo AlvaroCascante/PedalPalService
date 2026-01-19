@@ -2,7 +2,7 @@ package com.quetoquenana.pedalpal.service;
 
 import com.quetoquenana.pedalpal.dto.api.request.CreateLandingItemRequest;
 import com.quetoquenana.pedalpal.dto.api.request.UpdateLandingItemRequest;
-import com.quetoquenana.pedalpal.model.data.LandingPageItem;
+import com.quetoquenana.pedalpal.model.local.LandingPageItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
