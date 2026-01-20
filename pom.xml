@@ -12,7 +12,7 @@
 	<artifactId>pedalpal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>PedalPalService</name>
-	<description>PedalPal Service Spring Both Project</description>
+	<description>PedalPal Service Spring Boot Project</description>
 	<url/>
 	<licenses>
 		<license/>
