@@ -552,7 +552,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{usera_token}}",
+									"value": "{{user_admin_token}}",
 									"type": "string"
 								}
 							]
@@ -560,7 +560,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/products?page=0&size=5",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/products?page=0&size=20",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
@@ -576,7 +576,7 @@
 								},
 								{
 									"key": "size",
-									"value": "5"
+									"value": "20"
 								}
 							]
 						}
