@@ -279,7 +279,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{useru_token}}",
+									"value": "{{user_token}}",
 									"type": "string"
 								}
 							]
