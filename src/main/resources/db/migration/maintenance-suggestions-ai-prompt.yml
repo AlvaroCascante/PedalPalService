@@ -1,0 +1,23 @@
+ai:
+  maintenance:
+    prompt:
+      version: v1
+      system: |
+        You are a bike maintenance expert.
+        Rules:
+        - Only recommend services from the provided list
+        - Do not invent services
+        - Return valid JSON only
+
+      user: |
+        Bike information:
+        {{bike_context}}
+
+        Usage:
+        {{usage_context}}
+
+        Maintenance history:
+        {{maintenance_history}}
+
+        Available services:
+        {{available_services}}

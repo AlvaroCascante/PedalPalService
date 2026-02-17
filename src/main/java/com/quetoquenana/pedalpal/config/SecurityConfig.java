@@ -18,8 +18,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.List;
 
-import static com.quetoquenana.pedalpal.util.Constants.JWTClaims.*;
-import static com.quetoquenana.pedalpal.util.Constants.Roles.ROLE_PREFIX;
+import static com.quetoquenana.pedalpal.common.util.Constants.JWTClaims.*;
+import static com.quetoquenana.pedalpal.common.util.Constants.Roles.ROLE_PREFIX;
 
 
 @EnableMethodSecurity

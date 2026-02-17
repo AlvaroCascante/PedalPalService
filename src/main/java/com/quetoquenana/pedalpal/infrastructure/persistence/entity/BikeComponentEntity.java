@@ -1,0 +1,49 @@
+package com.quetoquenana.pedalpal.infrastructure.persistence.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.UUID;
+
+@Entity
+@Table(name = "bike_components")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class BikeComponentEntity extends AuditableEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "bike_id", nullable = false)
+    private BikeEntity bike;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "component_type")
+    private SystemCodeEntity componentType;
+
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
+
+    @Column(name = "brand", length = 100)
+    private String brand;
+
+    @Column(name = "model", length = 100)
+    private String model;
+
+    @Column(name = "notes", columnDefinition = "text")
+    private String notes;
+
+    @Column(name = "odometer_km")
+    private Integer odometerKm;
+
+    @Column(name = "usage_time_minutes")
+    private Integer usageTimeMinutes;
+}

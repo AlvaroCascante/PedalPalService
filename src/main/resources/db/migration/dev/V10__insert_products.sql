@@ -1,5 +1,5 @@
--- Insert sample products
-INSERT INTO products (name, description, price, status_id, created_by) VALUES
+-- Insert sample productEntities
+INSERT INTO productEntities (name, description, price, status_id, created_by) VALUES
 ('Engrase General Premium', 'Engrase General Premium (doble suspensión)', 40000.00,
 (select id from system_codes where category = 'GENERAL_STATUS' and code = 'ACTIVE'), 'system'),
 

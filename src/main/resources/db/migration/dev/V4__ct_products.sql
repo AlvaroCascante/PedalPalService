@@ -1,4 +1,4 @@
-CREATE TABLE products (
+CREATE TABLE productEntities (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     name varchar NOT NULL,
     description varchar,
@@ -38,5 +38,5 @@ CREATE TABLE packages_products (
 
     PRIMARY KEY (package_id, product_id),
     CONSTRAINT fk_pp_package FOREIGN KEY (package_id) REFERENCES packages(id),
-CONSTRAINT fk_pp_product FOREIGN KEY (product_id) REFERENCES products(id)
+CONSTRAINT fk_pp_product FOREIGN KEY (product_id) REFERENCES productEntities(id)
 );

@@ -1,0 +1,66 @@
+package com.quetoquenana.pedalpal.infrastructure.persistence.entity;
+
+import com.quetoquenana.pedalpal.domain.enums.BikeType;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@Entity
+@Table(name = "bikes")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
+public class BikeEntity extends AuditableEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+
+    @Column(name = "owner_id", nullable = false)
+    private UUID ownerId;
+
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false, length = 50)
+    private BikeType type;
+
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
+
+    @Column(name = "is_public")
+    private boolean isPublic;
+
+    @Column(name = "is_external_sync")
+    private boolean isExternalSync;
+
+    @Column(name = "brand", length = 100)
+    private String brand;
+
+    @Column(name = "model", length = 100)
+    private String model;
+
+    @Column(name = "year")
+    private Integer year;
+
+    @Column(name = "serial_number", unique = true, length = 100)
+    private String serialNumber;
+
+    @Column(name = "notes", columnDefinition = "text")
+    private String notes;
+
+    @Column(name = "odometer_km")
+    private Integer odometerKm;
+
+    @Column(name = "usage_time_minutes")
+    private Integer usageTimeMinutes;
+
+    @OneToMany(mappedBy = "bike", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<BikeComponentEntity> components;
+}

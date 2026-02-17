@@ -15,14 +15,13 @@ This document specifies the default set of rules for Copilot to use when generat
 - Use inline comments to explain complex logic.
 
 ### 3. Structure
-- Organize code into appropriate packages by layer (e.g., controller, service, model, repository, exception).
-- Keep classes focused on a single responsibility.
-- Create interfaces for services.
-- Model layer would work as database representation, no DTO's are going to be used.
-- For each Model in the same class create two public static classes as:
-  - `public static class ModelNameList extends ResponseView.Always {}`
-  - `public static class ModelNameDetail extends ModelNameList {}`
-- Annotate Model classes and rest controllers with `@JsonView`, this would make the works instead the DTO's.
+- Organize code into appropriate packages using clean architecture (application, common, config, domain, infrastructure, presentation).
+- For application layer, create command, job, query, useCase
+- For common layer, create exceptions(CustomExceptions, ControllerExceptionAdvice), utils(constants)
+- For config layer, create configuration classes for database, security, also properties files.
+- For domain layer, create models, enums and repositories.
+- For infrastructure layer, create persistence(entities, mappers repository).
+- For presentation layer, create rest controllers and dto's.
 - Annotate classes with Lombok annotations.
 - Use `@Slf4j` for logging, add informational logs on API calls and error logs for exceptions.
 - For rest controllers respond with `ResponseEntity<T>`.
@@ -60,4 +59,7 @@ This document specifies the default set of rules for Copilot to use when generat
 - Keep methods short and focused.
 - Use Lombok annotations to reduce boilerplate, but document their usage.
 
+### 11. General Best Practices
+- Follow Clean architecture principles
+- Never run maven verifications
 ---
