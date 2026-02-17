@@ -288,7 +288,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Mountain Cruiser\",\n    \"brand\": \"Acme Bikes\",\n    \"model\": \"Mountain Cruiser 3000\",\n    \"year\": 2024,\n    \"type\": \"MOUNTAIN\",\n    \"serialNumber\": \"SN-123456789M\",\n    \"notes\": \"Purchased at local store.\"\n}",
+							"raw": "{\n    \"name\": \"Pilsen\",\n    \"brand\": \"Pinarello\",\n    \"model\": \"Razha\",\n    \"year\": 2017,\n    \"type\": \"ROAD\",\n    \"serialNumber\": \"SN-123456789M\",\n    \"notes\": \"Purchased at local store.\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
