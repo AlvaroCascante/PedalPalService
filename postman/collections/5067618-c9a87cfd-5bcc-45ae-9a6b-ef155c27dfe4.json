@@ -296,9 +296,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/bikes",
 							"host": [
-								"{{host_pedal_pal}}"
+								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
