@@ -379,7 +379,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"serialNumber\": \"SN-PIN123456789M\"\n}",
+							"raw": "{\n    \"status\": \"ACTIVE\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -387,7 +387,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/bikes/:id",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/bikes/:id/status",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
@@ -395,13 +395,13 @@
 								"{{path}}",
 								"api",
 								"bikes",
-								":id"
+								":id",
+								"status"
 							],
 							"variable": [
 								{
-									"id": "f3c70a19-c6fb-495f-8136-3186aa768798",
 									"key": "id",
-									"value": "ac30cbf7-f9d6-4d7d-bf98-08e27c6208e9"
+									"value": "555fe682-4ad2-416b-a310-7eafc7c1a705"
 								}
 							]
 						}
