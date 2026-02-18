@@ -310,7 +310,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Copy",
+					"name": "Update Bike",
 					"id": "5067618-aaafee6d-3842-4de2-b9ba-c3997172f6b4",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -326,7 +326,7 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
