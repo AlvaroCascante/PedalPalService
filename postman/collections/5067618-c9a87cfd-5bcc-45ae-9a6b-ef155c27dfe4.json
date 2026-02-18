@@ -310,6 +310,48 @@
 					"response": []
 				},
 				{
+					"name": "Create Copy",
+					"id": "5067618-aaafee6d-3842-4de2-b9ba-c3997172f6b4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Pilsen\",\n    \"type\": \"ROAD\",\n    \"brand\": \"Pinarello\",\n    \"model\": \"Razha\",\n    \"year\": 2017,\n    \"serialNumber\": \"SN-123456789M\",\n    \"notes\": \"Purchased at local store.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/bikes",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"bikes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Add Component",
 					"id": "5067618-46d1b097-3722-4850-b6f5-0d76419513b2",
 					"protocolProfileBehavior": {
