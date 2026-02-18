@@ -5,8 +5,7 @@ import com.quetoquenana.pedalpal.domain.enums.BikeType;
 import com.quetoquenana.pedalpal.presentation.dto.api.request.CreateBikeRequest;
 import com.quetoquenana.pedalpal.presentation.dto.api.request.UpdateBikeRequest;
 import com.quetoquenana.pedalpal.presentation.dto.api.request.UpdateBikeStatusRequest;
-import com.quetoquenana.pedalpal.presentation.dto.api.response.CreateBikeResponse;
-import com.quetoquenana.pedalpal.presentation.dto.api.response.UpdateBikeResponse;
+import com.quetoquenana.pedalpal.presentation.dto.api.response.BikeResponse;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
@@ -43,27 +42,6 @@ public class BikeApiMapper {
                 .build();
     }
 
-    public CreateBikeResponse toResponse(
-            CreateBikeResult result
-    ) {
-        Locale locale = LocaleContextHolder.getLocale();
-        String typeLabel = messageSource.getMessage(BikeType.valueOf(result.type()).getKey(), null, locale);
-
-        return new CreateBikeResponse(
-                result.id(),
-                result.name(),
-                typeLabel,
-                result.isPublic(),
-                result.isExternalSync(),
-                result.brand(),
-                result.model(),
-                result.year(),
-                result.serialNumber(),
-                result.notes(),
-                result.odometerKm(),
-                result.usageTimeMinutes()
-        );
-    }
 
     public UpdateBikeCommand toCommand(UpdateBikeRequest request, UUID bikeId, UUID authenticatedUserId) {
         return new UpdateBikeCommand(
@@ -83,11 +61,11 @@ public class BikeApiMapper {
         );
     }
 
-    public UpdateBikeResponse toResponse(UpdateBikeResult result) {
+    public BikeResponse toResponse(BikeResult result) {
         Locale locale = LocaleContextHolder.getLocale();
         String typeLabel = messageSource.getMessage(BikeType.valueOf(result.type()).getKey(), null, locale);
 
-        return new UpdateBikeResponse(
+        return new BikeResponse(
                 result.id(),
                 result.name(),
                 typeLabel,

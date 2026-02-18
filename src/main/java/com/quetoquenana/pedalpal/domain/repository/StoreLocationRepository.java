@@ -2,7 +2,6 @@ package com.quetoquenana.pedalpal.domain.repository;
 
 import com.quetoquenana.pedalpal.domain.model.StoreLocation;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

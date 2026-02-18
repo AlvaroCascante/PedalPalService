@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.application.useCase;
 
-import com.quetoquenana.pedalpal.application.command.UpdateBikeResult;
+import com.quetoquenana.pedalpal.application.command.BikeResult;
 import com.quetoquenana.pedalpal.application.command.UpdateBikeStatusCommand;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
@@ -16,7 +16,7 @@ public class UpdateBikeStatusUseCase {
 
     private final BikeRepository bikeRepository;
 
-    public UpdateBikeResult execute(UpdateBikeStatusCommand command) {
+    public BikeResult execute(UpdateBikeStatusCommand command) {
         Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
                 .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
 
@@ -24,10 +24,11 @@ public class UpdateBikeStatusUseCase {
 
         Bike saved = bikeRepository.save(bike);
 
-        return new UpdateBikeResult(
+        return new BikeResult(
                 saved.getId(),
                 saved.getName(),
                 saved.getType().name(),
+                saved.getStatus().name(),
                 saved.isPublic(),
                 saved.isExternalSync(),
                 saved.getBrand(),
@@ -35,7 +36,6 @@ public class UpdateBikeStatusUseCase {
                 saved.getYear(),
                 saved.getSerialNumber(),
                 saved.getNotes(),
-                saved.getStatus().name(),
                 saved.getOdometerKm() == null ? 0 : saved.getOdometerKm(),
                 saved.getUsageTimeMinutes() == null ? 0 : saved.getUsageTimeMinutes()
         );

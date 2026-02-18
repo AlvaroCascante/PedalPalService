@@ -1,9 +1,8 @@
 package com.quetoquenana.pedalpal.util;
 
 import com.quetoquenana.pedalpal.application.command.CreateBikeCommand;
-import com.quetoquenana.pedalpal.application.command.CreateBikeResult;
 import com.quetoquenana.pedalpal.application.command.UpdateBikeCommand;
-import com.quetoquenana.pedalpal.application.command.UpdateBikeResult;
+import com.quetoquenana.pedalpal.application.command.BikeResult;
 import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
 import com.quetoquenana.pedalpal.domain.model.Bike;
@@ -16,24 +15,6 @@ import java.util.UUID;
 public final class TestBikeData {
 
     private TestBikeData() {}
-
-    public static UpdateBikeResult updateBikeResult(UUID bikeId) {
-        return new UpdateBikeResult(
-                bikeId,
-                "New name",
-                "ROAD",
-                true,
-                false,
-                "Brand",
-                "Model",
-                2020,
-                null,
-                null,
-                BikeStatus.ACTIVE.name(),
-                0,
-                0
-        );
-    }
 
     public static UpdateBikeCommand updateBikeCommand_nameOnly(UUID bikeId, UUID ownerId, String name) {
         return new UpdateBikeCommand(
@@ -177,12 +158,12 @@ public final class TestBikeData {
         return updateBikeCommand_nameOnly(bikeId, ownerId, "New name");
     }
 
-    public static CreateBikeResult createBikeResult(UUID bikeId, UUID ownerId) {
-        return CreateBikeResult.builder()
+    public static BikeResult bikeResult(UUID bikeId) {
+        return BikeResult.builder()
                 .id(bikeId)
-                .ownerId(ownerId)
                 .name("My bike")
                 .type("ROAD")
+                .status("ACTIVE")
                 .isPublic(false)
                 .isExternalSync(false)
                 .brand("Brand")
@@ -195,21 +176,59 @@ public final class TestBikeData {
                 .build();
     }
 
-    public static com.quetoquenana.pedalpal.application.command.UpdateBikeResult updateBikeResultWithStatus(UUID bikeId, String status) {
-        return new com.quetoquenana.pedalpal.application.command.UpdateBikeResult(
-                bikeId,
-                "New name",
-                "ROAD",
-                true,
-                false,
-                "Brand",
-                "Model",
-                2020,
-                null,
-                null,
-                status,
-                0,
-                0
-        );
+    public static BikeResult bikeResultUpdated(UUID bikeId) {
+        return BikeResult.builder()
+                .id(bikeId)
+                .name("New name")
+                .type("ROAD")
+                .status("ACTIVE")
+                .isPublic(true)
+                .isExternalSync(false)
+                .brand("Brand")
+                .model("Model")
+                .year(2020)
+                .serialNumber(null)
+                .notes(null)
+                .odometerKm(0)
+                .usageTimeMinutes(0)
+                .build();
     }
+
+    public static BikeResult bikeResultWithStatus(UUID bikeId, String status) {
+        return BikeResult.builder()
+                .id(bikeId)
+                .name("New name")
+                .type("ROAD")
+                .status(status)
+                .isPublic(true)
+                .isExternalSync(false)
+                .brand("Brand")
+                .model("Model")
+                .year(2020)
+                .serialNumber(null)
+                .notes(null)
+                .odometerKm(0)
+                .usageTimeMinutes(0)
+                .build();
+    }
+
+    public static BikeResult bikeResultQuery(UUID bikeId) {
+        return BikeResult.builder()
+                .id(bikeId)
+                .name("My bike")
+                .type("ROAD")
+                .status("ACTIVE")
+                .isPublic(false)
+                .isExternalSync(false)
+                .brand("Brand")
+                .model("Model")
+                .year(2020)
+                .serialNumber(null)
+                .notes(null)
+                .odometerKm(0)
+                .usageTimeMinutes(0)
+                .build();
+    }
+
+    // NOTE: older CreateBikeResult/UpdateBikeResult factories keep existing unit tests working.
 }

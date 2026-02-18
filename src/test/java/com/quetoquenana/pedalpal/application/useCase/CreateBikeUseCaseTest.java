@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.application.useCase;
 
+import com.quetoquenana.pedalpal.application.command.BikeResult;
 import com.quetoquenana.pedalpal.application.command.CreateBikeCommand;
-import com.quetoquenana.pedalpal.application.command.CreateBikeResult;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
@@ -50,7 +50,7 @@ class CreateBikeUseCaseTest {
                 return toSave;
             });
 
-            CreateBikeResult result = useCase.execute(command);
+            BikeResult result = useCase.execute(command);
 
             verify(bikeRepository, never()).existsBySerialNumber(anyString());
             verify(bikeRepository, times(1)).save(bikeCaptor.capture());
@@ -64,7 +64,6 @@ class CreateBikeUseCaseTest {
             assertEquals(BikeStatus.ACTIVE, saved.getStatus());
 
             assertEquals(saved.getId(), result.id());
-            assertEquals(ownerId, result.ownerId());
             assertEquals(command.name(), result.name());
             assertEquals("ROAD", result.type());
             assertNull(result.serialNumber());
@@ -79,7 +78,7 @@ class CreateBikeUseCaseTest {
             when(bikeRepository.existsBySerialNumber(command.serialNumber())).thenReturn(false);
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
 
-            CreateBikeResult result = useCase.execute(command);
+            BikeResult result = useCase.execute(command);
 
             verify(bikeRepository, times(1)).existsBySerialNumber(command.serialNumber());
             verify(bikeRepository, times(1)).save(bikeCaptor.capture());
@@ -100,7 +99,6 @@ class CreateBikeUseCaseTest {
             assertEquals(command.odometerKm(), saved.getOdometerKm());
             assertEquals(command.usageTimeMinutes(), saved.getUsageTimeMinutes());
 
-            assertEquals(ownerId, result.ownerId());
             assertEquals("ROAD", result.type());
             assertEquals(command.serialNumber(), result.serialNumber());
         }

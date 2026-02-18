@@ -14,11 +14,9 @@ public interface BikeRepository {
 
     void deleteById(UUID bikeId);
 
-    List<Bike> findByOwnerId(UUID ownerId);
-
-    List<Bike> findByOwnerIdAndStatusCodes(UUID ownerId, List<String> codes);
-
     boolean existsBySerialNumber(String serialNumber);
 
     Optional<Bike> findByIdAndOwnerId(UUID id, UUID ownerId);
+
+    List<Bike> findByOwnerIdAndStatus(UUID ownerId, String bikeStatus);
 }

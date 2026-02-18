@@ -1,9 +1,7 @@
 package com.quetoquenana.pedalpal.domain.repository;
 
 import com.quetoquenana.pedalpal.domain.model.MaintenanceSuggestion;
-import com.quetoquenana.pedalpal.domain.model.MaintenanceSuggestionItem;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

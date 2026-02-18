@@ -37,16 +37,6 @@ public class BikeRepositoryImpl implements BikeRepository {
     }
 
     @Override
-    public List<Bike> findByOwnerId(UUID ownerId) {
-        return List.of();
-    }
-
-    @Override
-    public List<Bike> findByOwnerIdAndStatusCodes(UUID ownerId, List<String> codes) {
-        return List.of();
-    }
-
-    @Override
     public boolean existsBySerialNumber(String serialNumber) {
         return repository.existsBySerialNumber(serialNumber);
     }
@@ -54,6 +44,13 @@ public class BikeRepositoryImpl implements BikeRepository {
     @Override
     public Optional<Bike> findByIdAndOwnerId(UUID id, UUID ownerId) {
         return repository.findByIdAndOwnerId(id, ownerId).map(mapper::toDomain);
+    }
+
+    @Override
+    public List<Bike> findByOwnerIdAndStatus(UUID ownerId, String bikeStatus) {
+        return repository.findByOwnerIdAndStatus(ownerId, bikeStatus).stream()
+                .map(mapper::toDomain)
+                .toList();
     }
 }
 

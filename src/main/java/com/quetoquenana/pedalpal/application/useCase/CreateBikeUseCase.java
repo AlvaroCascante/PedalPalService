@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.application.useCase;
 
+import com.quetoquenana.pedalpal.application.command.BikeResult;
 import com.quetoquenana.pedalpal.application.command.CreateBikeCommand;
-import com.quetoquenana.pedalpal.application.command.CreateBikeResult;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
@@ -17,7 +17,7 @@ public class CreateBikeUseCase {
 
     private final BikeRepository bikeRepository;
 
-    public CreateBikeResult execute(CreateBikeCommand command) {
+    public BikeResult execute(CreateBikeCommand command) {
 
         if (command.serialNumber() != null &&
                 bikeRepository.existsBySerialNumber(command.serialNumber())) {
@@ -43,9 +43,8 @@ public class CreateBikeUseCase {
         try {
             Bike savedBike = bikeRepository.save(bike);
 
-            return CreateBikeResult.builder()
+            return BikeResult.builder()
                     .id(savedBike.getId())
-                    .ownerId(savedBike.getOwnerId())
                     .name(savedBike.getName())
                     .type(savedBike.getType().name())
                     .brand(savedBike.getBrand())

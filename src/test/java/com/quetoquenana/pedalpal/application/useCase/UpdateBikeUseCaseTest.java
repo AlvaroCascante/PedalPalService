@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.application.useCase;
 
 import com.quetoquenana.pedalpal.application.command.UpdateBikeCommand;
-import com.quetoquenana.pedalpal.application.command.UpdateBikeResult;
+import com.quetoquenana.pedalpal.application.command.BikeResult;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.domain.model.Bike;
@@ -18,8 +18,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,7 +47,7 @@ class UpdateBikeUseCaseTest {
 
             UpdateBikeCommand command = TestBikeData.updateBikeCommand_nameOnly(bikeId, ownerId, "New name");
 
-            UpdateBikeResult result = useCase.execute(command);
+            BikeResult result = useCase.execute(command);
 
             assertEquals("New name", result.name());
             assertEquals("Old brand", result.brand());
@@ -72,7 +70,7 @@ class UpdateBikeUseCaseTest {
 
             UpdateBikeCommand command = TestBikeData.updateBikeCommand_allFields(bikeId, ownerId);
 
-            UpdateBikeResult result = useCase.execute(command);
+            BikeResult result = useCase.execute(command);
 
             assertEquals("New name", result.name());
             assertEquals("MTB", result.type());
@@ -101,7 +99,7 @@ class UpdateBikeUseCaseTest {
 
             UpdateBikeCommand command = TestBikeData.updateBikeCommand_noFields(bikeId, ownerId);
 
-            UpdateBikeResult result = useCase.execute(command);
+            BikeResult result = useCase.execute(command);
 
             assertEquals("Old name", result.name());
             assertEquals("Old brand", result.brand());

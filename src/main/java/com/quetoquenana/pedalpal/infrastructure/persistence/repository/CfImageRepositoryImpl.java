@@ -3,10 +3,8 @@ package com.quetoquenana.pedalpal.infrastructure.persistence.repository;
 import com.quetoquenana.pedalpal.domain.model.CfImage;
 import com.quetoquenana.pedalpal.domain.repository.CfImageRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

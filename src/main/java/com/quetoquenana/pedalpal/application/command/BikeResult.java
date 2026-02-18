@@ -1,8 +1,11 @@
-package com.quetoquenana.pedalpal.presentation.dto.api.response;
+package com.quetoquenana.pedalpal.application.command;
+
+import lombok.Builder;
 
 import java.util.UUID;
 
-public record UpdateBikeResponse(
+@Builder
+public record BikeResult(
         UUID id,
         String name,
         String type,

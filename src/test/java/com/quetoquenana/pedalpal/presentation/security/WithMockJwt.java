@@ -6,7 +6,6 @@ import java.lang.annotation.*;
 
 /**
  * Test annotation that sets a JwtAuthenticationToken in the SecurityContext.
- *
  * It matches the expectations of {@link com.quetoquenana.pedalpal.common.util.SecurityUtils}
  * (JWT principal with a userId claim).
  */
