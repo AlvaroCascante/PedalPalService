@@ -12,8 +12,6 @@ public interface BikeRepository {
 
     Bike save(Bike bike);
 
-    Bike update(UUID bikeId, Bike bike);
-
     void deleteById(UUID bikeId);
 
     List<Bike> findByOwnerId(UUID ownerId);
@@ -21,4 +19,6 @@ public interface BikeRepository {
     List<Bike> findByOwnerIdAndStatusCodes(UUID ownerId, List<String> codes);
 
     boolean existsBySerialNumber(String serialNumber);
+
+    Optional<Bike> findByIdAndOwnerId(UUID id, UUID ownerId);
 }

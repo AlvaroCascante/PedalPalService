@@ -19,7 +19,6 @@ public class StartupLogger implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         log.info("--- Application properties (selected) ---");
-
         for (String key : getKeys()) {
             if (key == null || key.isBlank()) continue;
             String value = env.getProperty(key);
@@ -36,6 +35,7 @@ public class StartupLogger implements ApplicationRunner {
         return new String[]{
                     "spring.security.oauth2.resourceserver.jwt.jwk-set-uri",
                     "security.jwt.issuer",
+                    "security.jwt.aud",
                     "spring.datasource.url",
                     "spring.datasource.username",
                     "app.support.email"

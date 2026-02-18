@@ -20,16 +20,10 @@ public class BikeRepositoryImpl implements BikeRepository {
 
     @Override
     public Bike save(Bike bike) {
-
         // Map the Bike domain model to a BikeEntity
         BikeEntity entity = mapper.toEntity(bike);
 
         return mapper.toDomain(repository.save(entity));
-    }
-
-    @Override
-    public Bike update(UUID bikeId, Bike bike) {
-        return null;
     }
 
     @Override
@@ -55,6 +49,11 @@ public class BikeRepositoryImpl implements BikeRepository {
     @Override
     public boolean existsBySerialNumber(String serialNumber) {
         return repository.existsBySerialNumber(serialNumber);
+    }
+
+    @Override
+    public Optional<Bike> findByIdAndOwnerId(UUID id, UUID ownerId) {
+        return repository.findByIdAndOwnerId(id, ownerId).map(mapper::toDomain);
     }
 }
 

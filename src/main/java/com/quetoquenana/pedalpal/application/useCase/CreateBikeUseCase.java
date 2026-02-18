@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
-
 @Transactional
 @RequiredArgsConstructor
 public class CreateBikeUseCase {
@@ -27,7 +25,6 @@ public class CreateBikeUseCase {
         }
 
         Bike bike = Bike.builder()
-                .id(UUID.randomUUID())
                 .ownerId(command.ownerId())
                 .name(command.name())
                 .type(BikeType.valueOf(command.type()))

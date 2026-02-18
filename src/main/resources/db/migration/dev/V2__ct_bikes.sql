@@ -15,7 +15,7 @@ CREATE TABLE bikes (
     odometer_km int,
     usage_time_minutes int,
 
-    version bigint NOT NULL,
+    version bigint NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL,
     created_by uuid NOT NULL,
     updated_at TIMESTAMP NULL,

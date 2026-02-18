@@ -7,6 +7,7 @@ import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
 import com.quetoquenana.pedalpal.domain.model.Bike;
 import com.quetoquenana.pedalpal.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.util.TestBikeData;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -41,14 +43,7 @@ class CreateBikeUseCaseTest {
         void shouldCreateBikeSuccessfully_whenAllDataIsValid_andSerialIsNull() {
             UUID ownerId = UUID.randomUUID();
 
-            CreateBikeCommand command = CreateBikeCommand.builder()
-                    .ownerId(ownerId)
-                    .name("My bike")
-                    .type("ROAD")
-                    .serialNumber(null)
-                    .isPublic(false)
-                    .isExternalSync(false)
-                    .build();
+            CreateBikeCommand command = TestBikeData.createBikeCommand_minimal(ownerId);
 
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
 
@@ -58,7 +53,7 @@ class CreateBikeUseCaseTest {
             verify(bikeRepository, times(1)).save(bikeCaptor.capture());
 
             Bike saved = bikeCaptor.getValue();
-            assertNotNull(saved.getId());
+
             assertEquals(ownerId, saved.getOwnerId());
             assertEquals(BikeType.ROAD, saved.getType());
             assertNull(saved.getSerialNumber());
@@ -75,20 +70,7 @@ class CreateBikeUseCaseTest {
         void shouldCreateBikeSuccessfully_withSerialNumber_whenSerialIsUnique() {
             UUID ownerId = UUID.randomUUID();
 
-            CreateBikeCommand command = CreateBikeCommand.builder()
-                    .ownerId(ownerId)
-                    .name("Canyon Ultimate")
-                    .type("ROAD")
-                    .serialNumber("SN-123")
-                    .isPublic(true)
-                    .isExternalSync(true)
-                    .brand("Canyon")
-                    .model("Ultimate")
-                    .year(2022)
-                    .notes("Some notes")
-                    .odometerKm(1234)
-                    .usageTimeMinutes(5678)
-                    .build();
+            CreateBikeCommand command = TestBikeData.createBikeCommand_withSerial(ownerId, "SN-123");
 
             when(bikeRepository.existsBySerialNumber(command.serialNumber())).thenReturn(false);
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
@@ -99,7 +81,6 @@ class CreateBikeUseCaseTest {
             verify(bikeRepository, times(1)).save(bikeCaptor.capture());
 
             Bike saved = bikeCaptor.getValue();
-            assertNotNull(saved.getId(), "Use case should assign an id");
             assertEquals(ownerId, saved.getOwnerId());
             assertEquals(command.name(), saved.getName());
             assertEquals(BikeType.ROAD, saved.getType());
@@ -115,7 +96,6 @@ class CreateBikeUseCaseTest {
             assertEquals(command.odometerKm(), saved.getOdometerKm());
             assertEquals(command.usageTimeMinutes(), saved.getUsageTimeMinutes());
 
-            assertEquals(saved.getId(), result.id());
             assertEquals(ownerId, result.ownerId());
             assertEquals("ROAD", result.type());
             assertEquals(command.serialNumber(), result.serialNumber());
@@ -127,14 +107,7 @@ class CreateBikeUseCaseTest {
 
         @Test
         void shouldFail_whenSerialNumberAlreadyExists_andNotPersistAnything() {
-            CreateBikeCommand command = CreateBikeCommand.builder()
-                    .ownerId(UUID.randomUUID())
-                    .name("My bike")
-                    .type("ROAD")
-                    .serialNumber("SN-123")
-                    .isPublic(false)
-                    .isExternalSync(false)
-                    .build();
+            CreateBikeCommand command = TestBikeData.createBikeCommand_duplicateSerial();
 
             when(bikeRepository.existsBySerialNumber(command.serialNumber())).thenReturn(true);
 
@@ -147,14 +120,7 @@ class CreateBikeUseCaseTest {
 
         @Test
         void shouldNotCheckSerialUniqueness_whenSerialIsNull_andStillPersist() {
-            CreateBikeCommand command = CreateBikeCommand.builder()
-                    .ownerId(UUID.randomUUID())
-                    .name("My bike")
-                    .type("ROAD")
-                    .serialNumber(null)
-                    .isPublic(false)
-                    .isExternalSync(false)
-                    .build();
+            CreateBikeCommand command = TestBikeData.createBikeCommand_minimal(UUID.randomUUID());
 
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
 
@@ -166,14 +132,7 @@ class CreateBikeUseCaseTest {
 
         @Test
         void shouldFail_withBusinessException_whenRepositoryThrowsDataIntegrityViolation() {
-            CreateBikeCommand command = CreateBikeCommand.builder()
-                    .ownerId(UUID.randomUUID())
-                    .name("My bike")
-                    .type("ROAD")
-                    .serialNumber("SN-123")
-                    .isPublic(false)
-                    .isExternalSync(false)
-                    .build();
+            CreateBikeCommand command = TestBikeData.createBikeCommand_duplicateSerial();
 
             when(bikeRepository.existsBySerialNumber(command.serialNumber())).thenReturn(false);
             when(bikeRepository.save(any(Bike.class))).thenThrow(new DataIntegrityViolationException("dup"));
@@ -192,14 +151,7 @@ class CreateBikeUseCaseTest {
         void shouldMapCommandToDomainBikeCorrectly_beforeSaving() {
             UUID ownerId = UUID.randomUUID();
 
-            CreateBikeCommand command = CreateBikeCommand.builder()
-                    .ownerId(ownerId)
-                    .name("Bike")
-                    .type("ROAD")
-                    .serialNumber("SN-999")
-                    .isPublic(true)
-                    .isExternalSync(false)
-                    .build();
+            CreateBikeCommand command = TestBikeData.createBikeCommand_basicWithSerial(ownerId, "SN-999");
 
             when(bikeRepository.existsBySerialNumber(command.serialNumber())).thenReturn(false);
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
@@ -219,14 +171,7 @@ class CreateBikeUseCaseTest {
 
         @Test
         void shouldSetDefaultStatusToActive() {
-            CreateBikeCommand command = CreateBikeCommand.builder()
-                    .ownerId(UUID.randomUUID())
-                    .name("Bike")
-                    .type("ROAD")
-                    .serialNumber(null)
-                    .isPublic(false)
-                    .isExternalSync(false)
-                    .build();
+            CreateBikeCommand command = TestBikeData.createBikeCommand_basicNoSerial(UUID.randomUUID());
 
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
 
@@ -242,14 +187,7 @@ class CreateBikeUseCaseTest {
 
         @Test
         void shouldNotCallSave_whenValidationFails_dueToDuplicateSerial() {
-            CreateBikeCommand command = CreateBikeCommand.builder()
-                    .ownerId(UUID.randomUUID())
-                    .name("Bike")
-                    .type("ROAD")
-                    .serialNumber("SN-123")
-                    .isPublic(false)
-                    .isExternalSync(false)
-                    .build();
+            CreateBikeCommand command = TestBikeData.createBikeCommand_duplicateSerial();
 
             when(bikeRepository.existsBySerialNumber(command.serialNumber())).thenReturn(true);
 
@@ -258,7 +196,4 @@ class CreateBikeUseCaseTest {
             verify(bikeRepository, never()).save(any());
         }
     }
-
-    // NOTE: Bike type validation happens via BikeType.valueOf(command.type()) (IllegalArgumentException if invalid).
-    // If you want a BusinessException for invalid type, implement it in the use case and add tests.
 }
