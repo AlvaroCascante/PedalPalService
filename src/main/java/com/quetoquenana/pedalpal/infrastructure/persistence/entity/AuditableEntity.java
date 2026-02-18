@@ -19,6 +19,7 @@ import java.util.UUID;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Getter
+@Setter
 public abstract class AuditableEntity {
 
     @Version

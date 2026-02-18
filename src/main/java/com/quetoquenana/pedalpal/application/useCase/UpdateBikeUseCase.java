@@ -23,7 +23,6 @@ public class UpdateBikeUseCase {
         Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
                 .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
 
-
         if (command.serialNumber() != null) {
             String newSerial = command.serialNumber();
             if (!Objects.equals(newSerial, bike.getSerialNumber()) && bikeRepository.existsBySerialNumber(newSerial)) {
@@ -46,6 +45,7 @@ public class UpdateBikeUseCase {
                 saved.getYear(),
                 saved.getSerialNumber(),
                 saved.getNotes(),
+                saved.getStatus().name(),
                 saved.getOdometerKm() == null ? 0 : saved.getOdometerKm(),
                 saved.getUsageTimeMinutes() == null ? 0 : saved.getUsageTimeMinutes()
         );

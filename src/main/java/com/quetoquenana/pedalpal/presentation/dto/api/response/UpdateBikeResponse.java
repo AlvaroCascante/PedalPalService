@@ -6,6 +6,7 @@ public record UpdateBikeResponse(
         UUID id,
         String name,
         String type,
+        String status,
         boolean isPublic,
         boolean isExternalSync,
         String brand,

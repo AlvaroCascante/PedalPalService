@@ -19,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -45,7 +44,11 @@ class CreateBikeUseCaseTest {
 
             CreateBikeCommand command = TestBikeData.createBikeCommand_minimal(ownerId);
 
-            when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
+            when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> {
+                Bike toSave = inv.getArgument(0, Bike.class);
+                toSave.setId(UUID.randomUUID());
+                return toSave;
+            });
 
             CreateBikeResult result = useCase.execute(command);
 
@@ -54,6 +57,7 @@ class CreateBikeUseCaseTest {
 
             Bike saved = bikeCaptor.getValue();
 
+            assertNotNull(saved.getId());
             assertEquals(ownerId, saved.getOwnerId());
             assertEquals(BikeType.ROAD, saved.getType());
             assertNull(saved.getSerialNumber());

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class BikeMapper {
 
     public Bike toDomain(BikeEntity entity) {
-        return Bike.builder()
+        Bike model = Bike.builder()
                 .id(entity.getId())
                 .ownerId(entity.getOwnerId())
                 .name(entity.getName())
@@ -25,23 +25,28 @@ public class BikeMapper {
                 .odometerKm(entity.getOdometerKm())
                 .usageTimeMinutes(entity.getUsageTimeMinutes())
                 .build();
+        model.setVersion(entity.getVersion());
+        return model;
     }
 
-    public BikeEntity toEntity(Bike entity) {
-        return BikeEntity.builder()
-                .ownerId(entity.getOwnerId())
-                .name(entity.getName())
-                .type(entity.getType())
-                .status(entity.getStatus().name())
-                .isPublic(entity.isPublic())
-                .isExternalSync(entity.isExternalSync())
-                .brand(entity.getBrand())
-                .model(entity.getModel())
-                .year(entity.getYear())
-                .serialNumber(entity.getSerialNumber())
-                .notes(entity.getNotes())
-                .odometerKm(entity.getOdometerKm())
-                .usageTimeMinutes(entity.getUsageTimeMinutes())
+    public BikeEntity toEntity(Bike model) {
+        BikeEntity entity = BikeEntity.builder()
+                .id(model.getId())
+                .ownerId(model.getOwnerId())
+                .name(model.getName())
+                .type(model.getType())
+                .status(model.getStatus().name())
+                .isPublic(model.isPublic())
+                .isExternalSync(model.isExternalSync())
+                .brand(model.getBrand())
+                .model(model.getModel())
+                .year(model.getYear())
+                .serialNumber(model.getSerialNumber())
+                .notes(model.getNotes())
+                .odometerKm(model.getOdometerKm())
+                .usageTimeMinutes(model.getUsageTimeMinutes())
                 .build();
+        entity.setVersion(model.getVersion());
+        return entity;
     }
 }

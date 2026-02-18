@@ -1,12 +1,10 @@
 package com.quetoquenana.pedalpal.presentation.mapper;
 
-import com.quetoquenana.pedalpal.application.command.CreateBikeCommand;
-import com.quetoquenana.pedalpal.application.command.CreateBikeResult;
-import com.quetoquenana.pedalpal.application.command.UpdateBikeCommand;
-import com.quetoquenana.pedalpal.application.command.UpdateBikeResult;
+import com.quetoquenana.pedalpal.application.command.*;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
 import com.quetoquenana.pedalpal.presentation.dto.api.request.CreateBikeRequest;
 import com.quetoquenana.pedalpal.presentation.dto.api.request.UpdateBikeRequest;
+import com.quetoquenana.pedalpal.presentation.dto.api.request.UpdateBikeStatusRequest;
 import com.quetoquenana.pedalpal.presentation.dto.api.response.CreateBikeResponse;
 import com.quetoquenana.pedalpal.presentation.dto.api.response.UpdateBikeResponse;
 import org.springframework.context.MessageSource;
@@ -93,6 +91,7 @@ public class BikeApiMapper {
                 result.id(),
                 result.name(),
                 typeLabel,
+                result.status(),
                 result.isPublic(),
                 result.isExternalSync(),
                 result.brand(),
@@ -102,6 +101,14 @@ public class BikeApiMapper {
                 result.notes(),
                 result.odometerKm(),
                 result.usageTimeMinutes()
+        );
+    }
+
+    public UpdateBikeStatusCommand toCommand(UpdateBikeStatusRequest request, UUID bikeId, UUID authenticatedUserId) {
+        return new UpdateBikeStatusCommand(
+                bikeId,
+                authenticatedUserId,
+                request.getStatus()
         );
     }
 }

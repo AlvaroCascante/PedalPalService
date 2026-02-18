@@ -1,6 +1,7 @@
 package com.quetoquenana.pedalpal.util;
 
 import com.quetoquenana.pedalpal.application.command.CreateBikeCommand;
+import com.quetoquenana.pedalpal.application.command.CreateBikeResult;
 import com.quetoquenana.pedalpal.application.command.UpdateBikeCommand;
 import com.quetoquenana.pedalpal.application.command.UpdateBikeResult;
 import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
@@ -28,6 +29,7 @@ public final class TestBikeData {
                 2020,
                 null,
                 null,
+                BikeStatus.ACTIVE.name(),
                 0,
                 0
         );
@@ -173,5 +175,41 @@ public final class TestBikeData {
 
     public static UpdateBikeCommand updateBikeCommand_nameOnlyNotFound(UUID bikeId, UUID ownerId) {
         return updateBikeCommand_nameOnly(bikeId, ownerId, "New name");
+    }
+
+    public static CreateBikeResult createBikeResult(UUID bikeId, UUID ownerId) {
+        return CreateBikeResult.builder()
+                .id(bikeId)
+                .ownerId(ownerId)
+                .name("My bike")
+                .type("ROAD")
+                .isPublic(false)
+                .isExternalSync(false)
+                .brand("Brand")
+                .model("Model")
+                .year(2020)
+                .serialNumber(null)
+                .notes(null)
+                .odometerKm(0)
+                .usageTimeMinutes(0)
+                .build();
+    }
+
+    public static com.quetoquenana.pedalpal.application.command.UpdateBikeResult updateBikeResultWithStatus(UUID bikeId, String status) {
+        return new com.quetoquenana.pedalpal.application.command.UpdateBikeResult(
+                bikeId,
+                "New name",
+                "ROAD",
+                true,
+                false,
+                "Brand",
+                "Model",
+                2020,
+                null,
+                null,
+                status,
+                0,
+                0
+        );
     }
 }

@@ -13,6 +13,14 @@ public final class TestJsonBodies {
         return "{\"name\":\"" + escapeJson(name) + "\"}";
     }
 
+    public static String createBikeMinimal(String name, String type) {
+        return "{\"name\":\"" + escapeJson(name) + "\",\"type\":\"" + escapeJson(type) + "\"}";
+    }
+
+    public static String patchBikeStatus(String status) {
+        return "{\"status\":\"" + escapeJson(status) + "\"}";
+    }
+
     private static String escapeJson(String value) {
         if (value == null) return "";
         return value
@@ -23,4 +31,3 @@ public final class TestJsonBodies {
                 .replace("\t", "\\t");
     }
 }
-

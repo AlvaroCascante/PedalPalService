@@ -13,6 +13,7 @@ public record UpdateBikeResult(
         Integer year,
         String serialNumber,
         String notes,
+        String status,
         int odometerKm,
         int usageTimeMinutes
 ) { }

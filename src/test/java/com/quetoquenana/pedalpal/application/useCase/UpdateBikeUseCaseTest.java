@@ -41,7 +41,11 @@ class UpdateBikeUseCaseTest {
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
 
             when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(bike));
-            when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
+            when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> {
+                Bike toSave = inv.getArgument(0, Bike.class);
+                toSave.setId(bikeId);
+                return toSave;
+            });
 
             UpdateBikeCommand command = TestBikeData.updateBikeCommand_nameOnly(bikeId, ownerId, "New name");
 

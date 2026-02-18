@@ -9,7 +9,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-public class Bike {
+public class Bike extends Auditable {
     private UUID id;
     private UUID ownerId;
     private String name;

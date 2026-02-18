@@ -1,15 +1,14 @@
 package com.quetoquenana.pedalpal.presentation.controller;
 
-import com.quetoquenana.pedalpal.application.command.CreateBikeCommand;
-import com.quetoquenana.pedalpal.application.command.CreateBikeResult;
-import com.quetoquenana.pedalpal.application.command.UpdateBikeCommand;
-import com.quetoquenana.pedalpal.application.command.UpdateBikeResult;
+import com.quetoquenana.pedalpal.application.command.*;
 import com.quetoquenana.pedalpal.application.useCase.CreateBikeUseCase;
+import com.quetoquenana.pedalpal.application.useCase.UpdateBikeStatusUseCase;
 import com.quetoquenana.pedalpal.application.useCase.UpdateBikeUseCase;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.common.util.SecurityUtils;
 import com.quetoquenana.pedalpal.presentation.dto.api.request.CreateBikeRequest;
 import com.quetoquenana.pedalpal.presentation.dto.api.request.UpdateBikeRequest;
+import com.quetoquenana.pedalpal.presentation.dto.api.request.UpdateBikeStatusRequest;
 import com.quetoquenana.pedalpal.presentation.dto.api.response.ApiResponse;
 import com.quetoquenana.pedalpal.presentation.dto.api.response.CreateBikeResponse;
 import com.quetoquenana.pedalpal.presentation.dto.api.response.UpdateBikeResponse;
@@ -23,6 +22,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/api/bikes")
@@ -32,6 +32,7 @@ public class BikeController {
 
     private final CreateBikeUseCase  createBikeUseCase;
     private final UpdateBikeUseCase updateBikeUseCase;
+    private final UpdateBikeStatusUseCase updateBikeStatusUseCase;
     private final BikeApiMapper bikeApiMapper;
 
     @PostMapping
@@ -61,7 +62,7 @@ public class BikeController {
     @PatchMapping("/{id}")
     @PreAuthorize("(hasRole('USER'))")
     public ResponseEntity<ApiResponse> update(
-            @PathVariable("id") java.util.UUID id,
+            @PathVariable("id") UUID id,
             @Valid @RequestBody UpdateBikeRequest request
     ) {
         log.info("PATCH /v1/api/bikes/{} Received request to update bike: {}", id, request);
@@ -72,6 +73,25 @@ public class BikeController {
 
         UpdateBikeCommand command = bikeApiMapper.toCommand(request, id, user.userId());
         UpdateBikeResult result = updateBikeUseCase.execute(command);
+        UpdateBikeResponse response = bikeApiMapper.toResponse(result);
+
+        return ResponseEntity.ok(new ApiResponse(response));
+    }
+
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("(hasRole('USER'))")
+    public ResponseEntity<ApiResponse> updateStatus(
+            @PathVariable("id") UUID id,
+            @Valid @RequestBody UpdateBikeStatusRequest request
+    ) {
+        log.info("PATCH /v1/api/bikes/{}/status Received request to update bike status: {}", id, request);
+
+        SecurityUser user = SecurityUtils.getCurrentUser().orElseThrow(
+                () -> new ForbiddenAccessException("authentication.required")
+        );
+
+        UpdateBikeStatusCommand command = bikeApiMapper.toCommand(request, id, user.userId());
+        UpdateBikeResult result = updateBikeStatusUseCase.execute(command);
         UpdateBikeResponse response = bikeApiMapper.toResponse(result);
 
         return ResponseEntity.ok(new ApiResponse(response));
