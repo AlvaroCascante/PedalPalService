@@ -200,7 +200,7 @@
 					"response": []
 				},
 				{
-					"name": "FetchActive",
+					"name": "Find Active",
 					"id": "5067618-d59e0aae-a378-470b-97e8-bf8b7125aac2",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -228,40 +228,6 @@
 								"api",
 								"bikes",
 								"active"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Bikes Fetch All",
-					"id": "5067618-ba3f843b-5371-4140-9145-7d291ebd3657",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{usera_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/all",
-							"host": [
-								"{{host_pedal_pal}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"bikes",
-								"all"
 							]
 						}
 					},
@@ -409,7 +375,7 @@
 					"response": []
 				},
 				{
-					"name": "Add Component",
+					"name": "Add Bike Component",
 					"id": "5067618-46d1b097-3722-4850-b6f5-0d76419513b2",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
