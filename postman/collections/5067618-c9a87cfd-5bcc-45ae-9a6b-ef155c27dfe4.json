@@ -359,6 +359,56 @@
 					"response": []
 				},
 				{
+					"name": "Update Bike Status",
+					"id": "5067618-0705c9f4-3fdf-4359-8df5-a83b523c908d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"serialNumber\": \"SN-PIN123456789M\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/bikes/:id",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"bikes",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "f3c70a19-c6fb-495f-8136-3186aa768798",
+									"key": "id",
+									"value": "ac30cbf7-f9d6-4d7d-bf98-08e27c6208e9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Add Component",
 					"id": "5067618-46d1b097-3722-4850-b6f5-0d76419513b2",
 					"protocolProfileBehavior": {
