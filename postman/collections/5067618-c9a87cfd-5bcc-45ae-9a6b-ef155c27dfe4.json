@@ -330,7 +330,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Pilsen\",\n    \"type\": \"ROAD\",\n    \"brand\": \"Pinarello\",\n    \"model\": \"Razha\",\n    \"year\": 2017,\n    \"serialNumber\": \"SN-123456789M\",\n    \"notes\": \"Purchased at local store.\"\n}",
+							"raw": "{\n    \"serialNumber\": \"SN-PIN123456789M\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -338,14 +338,21 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/bikes",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/bikes/:id",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
 								"api",
-								"bikes"
+								"bikes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ac30cbf7-f9d6-4d7d-bf98-08e27c6208e9"
+								}
 							]
 						}
 					},
