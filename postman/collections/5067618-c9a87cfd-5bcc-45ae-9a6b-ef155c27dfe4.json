@@ -425,47 +425,7 @@
 					"response": []
 				},
 				{
-					"name": "RemoveComponent",
-					"id": "5067618-615171f1-1317-4ea7-b95b-b61c2627c0b4",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{usera_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/components/:id",
-							"host": [
-								"{{host_pedal_pal}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"components",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "9a590946-53a2-43bb-bcc6-24a94c5e4a13"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "UpdateComponent",
+					"name": "Update Bike Component",
 					"id": "5067618-6ab77cf7-fb70-4470-874a-097257d98f3f",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -507,6 +467,46 @@
 								{
 									"key": "id",
 									"value": "b9f99fc4-df29-432a-ab99-0fd31ac7b082"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveComponent",
+					"id": "5067618-615171f1-1317-4ea7-b95b-b61c2627c0b4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usera_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/components/:id",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"components",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9a590946-53a2-43bb-bcc6-24a94c5e4a13"
 								}
 							]
 						}
