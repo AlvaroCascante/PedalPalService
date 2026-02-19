@@ -453,20 +453,26 @@
 							}
 						},
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/components/:id",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:bikeId/components/:componentId",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
 							"path": [
 								"{{path}}",
 								"api",
+								"bikes",
+								":bikeId",
 								"components",
-								":id"
+								":componentId"
 							],
 							"variable": [
 								{
-									"key": "id",
-									"value": "b9f99fc4-df29-432a-ab99-0fd31ac7b082"
+									"key": "bikeId",
+									"value": ""
+								},
+								{
+									"key": "componentId",
+									"value": ""
 								}
 							]
 						}
