@@ -500,7 +500,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"odometerKm\": 100\n}",
+							"raw": "{\n    \"status\": \"INACTIVE\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -508,7 +508,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:bikeId/components/:componentId",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:bikeId/components/:componentId/status",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
@@ -518,16 +518,15 @@
 								"bikes",
 								":bikeId",
 								"components",
-								":componentId"
+								":componentId",
+								"status"
 							],
 							"variable": [
 								{
-									"id": "0d25668f-cc27-42a6-9e2e-b00ff320030a",
 									"key": "bikeId",
-									"value": "a172fb86-bd3e-4053-9a45-0d91cb0dbc82"
+									"value": "a0512331-f1f1-48c3-84fe-13f7292320f0"
 								},
 								{
-									"id": "a9631645-cba5-401a-b969-e0781a69a4ad",
 									"key": "componentId",
 									"value": "6d36396b-7203-4591-8050-c3df35fa747c"
 								}
