@@ -395,7 +395,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Shimano Ceramic Brake Pad\",\n  \"type\": \"BRAKE_PADS\",\n  \"brand\": \"Shimano\",\n  \"model\": \"B07X-CER\",\n  \"notes\": \"Front brake pad set for road bikes\"\n}",
+							"raw": "{\n  \"name\": \"Shimano Ceramic Center\",\n  \"type\": \"CASSETTE\",\n  \"brand\": \"Shimano\",\n  \"model\": \"B07X-CER\",\n  \"notes\": \"CEramic center\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
