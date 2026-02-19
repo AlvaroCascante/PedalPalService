@@ -564,7 +564,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:bikeId/components/:componentId",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:bikeId/components/:componentId/replace",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
@@ -574,7 +574,8 @@
 								"bikes",
 								":bikeId",
 								"components",
-								":componentId"
+								":componentId",
+								"replace"
 							],
 							"variable": [
 								{
