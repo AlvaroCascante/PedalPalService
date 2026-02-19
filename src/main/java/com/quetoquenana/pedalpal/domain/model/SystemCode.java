@@ -14,6 +14,8 @@ public class SystemCode {
     private String category;
     private String code;
     private String label;
+    private String description;
+    private String codeKey;
     private Boolean isActive;
     private Integer position;
 }

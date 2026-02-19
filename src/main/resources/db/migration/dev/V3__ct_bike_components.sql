@@ -4,6 +4,8 @@ CREATE TABLE bike_components (
 
     component_type uuid NOT NULL,
     name varchar NOT NULL,
+    status varchar NOT NULL,
+
     brand varchar,
     model varchar,
     notes text,

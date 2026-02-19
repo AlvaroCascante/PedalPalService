@@ -1,12 +1,10 @@
 package com.quetoquenana.pedalpal.application.command;
 
+import lombok.Builder;
+
 import java.util.UUID;
 
-/**
- * Application command for PATCH bike updates.
- * ownerId is intentionally not present (cannot be updated).
- * Nullable fields represent "not provided".
- */
+@Builder
 public record UpdateBikeCommand(
         UUID bikeId,
         UUID authenticatedUserId,

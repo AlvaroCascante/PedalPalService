@@ -4,15 +4,13 @@ CREATE TABLE productEntities (
     description varchar,
     price decimal(10,2),
 
-    status_id uuid NOT NULL,
+    status varchar NOT NULL,
 
     version bigint NOT NULL DEFAULT 0,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP,
     created_by varchar NOT NULL,
     updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
-    updated_by varchar,
-
-CONSTRAINT fk_products_status FOREIGN KEY (status_id) REFERENCES system_codes(id)
+    updated_by varchar
 );
 
 CREATE TABLE packages (
@@ -21,15 +19,13 @@ CREATE TABLE packages (
     description varchar,
     price decimal(10,2),
 
-    status_id uuid NOT NULL,
+    status varchar NOT NULL,
 
     version bigint NOT NULL DEFAULT 0,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP,
     created_by varchar NOT NULL,
     updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
-    updated_by varchar,
-
-CONSTRAINT fk_packages_status FOREIGN KEY (status_id) REFERENCES system_codes(id)
+    updated_by varchar
 );
 
 CREATE TABLE packages_products (
@@ -38,5 +34,5 @@ CREATE TABLE packages_products (
 
     PRIMARY KEY (package_id, product_id),
     CONSTRAINT fk_pp_package FOREIGN KEY (package_id) REFERENCES packages(id),
-CONSTRAINT fk_pp_product FOREIGN KEY (product_id) REFERENCES productEntities(id)
+    CONSTRAINT fk_pp_product FOREIGN KEY (product_id) REFERENCES productEntities(id)
 );

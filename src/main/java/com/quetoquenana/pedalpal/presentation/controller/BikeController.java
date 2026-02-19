@@ -6,10 +6,10 @@ import com.quetoquenana.pedalpal.application.result.BikeResult;
 import com.quetoquenana.pedalpal.application.useCase.*;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.common.util.SecurityUtils;
-import com.quetoquenana.pedalpal.presentation.dto.api.request.*;
-import com.quetoquenana.pedalpal.presentation.dto.api.response.ApiResponse;
-import com.quetoquenana.pedalpal.presentation.dto.api.response.BikeResponse;
-import com.quetoquenana.pedalpal.presentation.dto.util.SecurityUser;
+import com.quetoquenana.pedalpal.presentation.dto.request.*;
+import com.quetoquenana.pedalpal.presentation.dto.response.ApiResponse;
+import com.quetoquenana.pedalpal.presentation.dto.response.BikeResponse;
+import com.quetoquenana.pedalpal.common.util.SecurityUser;
 import com.quetoquenana.pedalpal.presentation.mapper.BikeApiMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +33,7 @@ public class BikeController {
     private final BikeQueryService bikeQueryService;
     private final CreateBikeUseCase  createBikeUseCase;
     private final UpdateBikeComponentUseCase updateBikeComponentUseCase;
+    private final UpdateBikeComponentStatusUseCase updateBikeComponentStatusUseCase;
     private final UpdateBikeStatusUseCase updateBikeStatusUseCase;
     private final UpdateBikeUseCase updateBikeUseCase;
 
@@ -169,6 +170,26 @@ public class BikeController {
 
         UpdateBikeComponentCommand command = bikeApiMapper.toCommand(bikeId, componentId, user.userId(), request);
         BikeResult result = updateBikeComponentUseCase.execute(command);
+        BikeResponse response = bikeApiMapper.toResponse(result);
+
+        return ResponseEntity.ok(new ApiResponse(response));
+    }
+
+    @PatchMapping("/{bikeId}/components/{componentId}/status")
+    @PreAuthorize("(hasRole('USER'))")
+    public ResponseEntity<ApiResponse> updateComponentStatus(
+            @PathVariable("bikeId") UUID bikeId,
+            @PathVariable("componentId") UUID componentId,
+            @Valid @RequestBody UpdateBikeComponentStatusRequest request
+    ) {
+        log.info("PATCH /v1/api/bikes/{}/components/{}/status Received request to update bike component status: {}", bikeId, componentId, request);
+
+        SecurityUser user = SecurityUtils.getCurrentUser().orElseThrow(
+                () -> new ForbiddenAccessException("authentication.required")
+        );
+
+        UpdateBikeComponentStatusCommand command = bikeApiMapper.toCommand(bikeId, componentId, user.userId(), request);
+        BikeResult result = updateBikeComponentStatusUseCase.execute(command);
         BikeResponse response = bikeApiMapper.toResponse(result);
 
         return ResponseEntity.ok(new ApiResponse(response));

@@ -4,6 +4,7 @@ import com.quetoquenana.pedalpal.application.command.UpdateBikeComponentCommand;
 import com.quetoquenana.pedalpal.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.application.result.BikeResult;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
+import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.domain.model.Bike;
 import com.quetoquenana.pedalpal.domain.model.BikeComponent;
@@ -11,29 +12,36 @@ import com.quetoquenana.pedalpal.domain.model.SystemCode;
 import com.quetoquenana.pedalpal.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.domain.repository.SystemCodeRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.quetoquenana.pedalpal.common.util.Constants.BikeComponents.COMPONENT_TYPE;
 
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class UpdateBikeComponentUseCase {
 
     private final BikeRepository bikeRepository;
     private final SystemCodeRepository systemCodeRepository;
 
     public BikeResult execute(UpdateBikeComponentCommand command) {
-        Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
-                .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
+        try {
+            Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
+                    .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
 
-        BikeComponent component = bike.getComponents().stream()
-                .filter(c -> c.getId().equals(command.componentId()))
-                .findFirst()
-                .orElseThrow(() -> new RecordNotFoundException("bike.component.not.found"));
+            BikeComponent component = bike.getComponents().stream()
+                    .filter(c -> c.getId().equals(command.componentId()))
+                    .findFirst()
+                    .orElseThrow(() -> new RecordNotFoundException("bike.component.not.found"));
 
-        applyPatch(component, command);
+            applyPatch(component, command);
 
-        return BikeMapper.toBikeResult(bikeRepository.save(bike));
+            return BikeMapper.toBikeResult(bikeRepository.save(bike));
+        } catch (RuntimeException ex) {
+            log.error("RuntimeException on UpdateBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
+            throw new BusinessException("bike.component.update.failed");
+        }
     }
 
     private void applyPatch(BikeComponent component, UpdateBikeComponentCommand command) {

@@ -1,10 +1,12 @@
 package com.quetoquenana.pedalpal.infrastructure.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,8 +34,9 @@ public class BikeEntity extends AuditableEntity {
     @Column(name = "type", nullable = false, length = 50)
     private BikeType type;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)
-    private String status;
+    private BikeStatus status;
 
     @Column(name = "is_public")
     private boolean isPublic;
@@ -65,4 +68,12 @@ public class BikeEntity extends AuditableEntity {
     @OneToMany(mappedBy = "bike", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<BikeComponentEntity> components;
+
+    public void addComponent(BikeComponentEntity component) {
+        if (this.components == null) {
+            this.components = new HashSet<>();
+        }
+        this.components.add(component);
+        component.setBike(this);
+    }
 }

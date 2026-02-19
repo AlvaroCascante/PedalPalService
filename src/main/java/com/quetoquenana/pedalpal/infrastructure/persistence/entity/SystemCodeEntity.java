@@ -28,6 +28,12 @@ public class SystemCodeEntity {
     @Column(name = "label")
     private String label;
 
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "code_key")
+    private String codeKey;
+
     @Column(name = "is_active")
     private Boolean isActive;
 

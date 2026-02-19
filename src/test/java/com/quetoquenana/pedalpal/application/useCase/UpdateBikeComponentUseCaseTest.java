@@ -258,7 +258,6 @@ class UpdateBikeComponentUseCaseTest {
             UUID ownerId = UUID.randomUUID();
 
             Bike bikeWithoutComponent = TestBikeData.existingBike(bikeId, ownerId);
-            bikeWithoutComponent.setComponents(Set.of());
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bikeWithoutComponent));
 
@@ -323,7 +322,7 @@ class UpdateBikeComponentUseCaseTest {
                 .build();
 
         Bike bike = TestBikeData.existingBike(bikeId, ownerId);
-        bike.setComponents(Set.of(component));
+        bike.addComponent(component);
         return bike;
     }
 }

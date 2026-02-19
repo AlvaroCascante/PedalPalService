@@ -1,12 +1,12 @@
 package com.quetoquenana.pedalpal.domain.model;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 import java.util.UUID;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Getter
 @Setter

@@ -2,7 +2,9 @@ package com.quetoquenana.pedalpal.domain.model;
 
 import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,12 +29,9 @@ public class Bike extends Auditable {
     private Integer odometerKm;
     private Integer usageTimeMinutes;
 
-    private Set<BikeComponent> components;
+    private final Set<BikeComponent> components = new HashSet<>();
 
     public void addComponent(BikeComponent component) {
-        if (this.components == null) {
-            this.components = new HashSet<>();
-        }
         components.add(component);
     }
 

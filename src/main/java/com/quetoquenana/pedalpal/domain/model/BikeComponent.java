@@ -1,31 +1,23 @@
 package com.quetoquenana.pedalpal.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import com.quetoquenana.pedalpal.domain.enums.BikeComponentStatus;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Getter
 @Setter
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Builder
 public class BikeComponent extends Auditable {
-
     private UUID id;
-
     private SystemCode componentType;
-
     private String name;
-
+    private BikeComponentStatus status;
     private String brand;
-
     private String model;
-
     private String notes;
-
     private Integer odometerKm;
-
     private Integer usageTimeMinutes;
 }

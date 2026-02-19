@@ -2,6 +2,7 @@ package com.quetoquenana.pedalpal.infrastructure.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.quetoquenana.pedalpal.domain.enums.BikeComponentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,6 +34,10 @@ public class BikeComponentEntity extends AuditableEntity {
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 50)
+    private BikeComponentStatus status;
 
     @Column(name = "brand", length = 100)
     private String brand;

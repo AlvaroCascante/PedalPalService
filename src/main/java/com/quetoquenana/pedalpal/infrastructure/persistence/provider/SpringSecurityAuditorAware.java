@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.infrastructure.persistence.provider;
 
 import com.quetoquenana.pedalpal.common.util.SecurityUtils;
-import com.quetoquenana.pedalpal.presentation.dto.util.SecurityUser;
+import com.quetoquenana.pedalpal.common.util.SecurityUser;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;

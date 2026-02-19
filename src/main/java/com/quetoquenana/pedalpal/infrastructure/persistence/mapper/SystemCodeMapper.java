@@ -13,6 +13,8 @@ public class SystemCodeMapper {
                 .category(entity.getCategory())
                 .code(entity.getCode())
                 .label(entity.getLabel())
+                .description(entity.getDescription())
+                .codeKey(entity.getCodeKey())
                 .isActive(entity.getIsActive())
                 .position(entity.getPosition())
                 .build();
@@ -24,6 +26,8 @@ public class SystemCodeMapper {
                 .category(domain.getCategory())
                 .code(domain.getCode())
                 .label(domain.getLabel())
+                .description(domain.getDescription())
+                .codeKey(domain.getCodeKey())
                 .isActive(domain.getIsActive())
                 .position(domain.getPosition())
                 .build();

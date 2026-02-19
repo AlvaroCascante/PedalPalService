@@ -39,4 +39,9 @@ public class UseCaseConfig {
     ) {
         return new UpdateBikeComponentUseCase(bikeRepository, systemCodeRepository);
     }
+
+    @Bean
+    public UpdateBikeComponentStatusUseCase createUpdateBikeComponentStatusUseCase(BikeRepository bikeRepository) {
+        return new UpdateBikeComponentStatusUseCase(bikeRepository);
+    }
 }

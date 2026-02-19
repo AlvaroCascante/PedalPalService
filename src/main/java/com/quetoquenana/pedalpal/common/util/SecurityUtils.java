@@ -1,6 +1,5 @@
 package com.quetoquenana.pedalpal.common.util;
 
-import com.quetoquenana.pedalpal.presentation.dto.util.SecurityUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;

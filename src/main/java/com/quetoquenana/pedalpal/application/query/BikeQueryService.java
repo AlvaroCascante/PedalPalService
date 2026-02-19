@@ -23,7 +23,7 @@ public class BikeQueryService {
     }
 
     public List<BikeResult> fetchActiveByOwnerId(UUID ownerId) {
-        List<Bike> bikes = bikeRepository.findByOwnerIdAndStatus(ownerId, BikeStatus.ACTIVE.name());
+        List<Bike> bikes = bikeRepository.findByOwnerIdAndStatus(ownerId, BikeStatus.ACTIVE);
 
         return bikes.stream()
                 .map(BikeMapper::toBikeResult)

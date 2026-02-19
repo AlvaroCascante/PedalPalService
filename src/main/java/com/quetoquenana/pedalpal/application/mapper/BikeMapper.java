@@ -4,13 +4,12 @@ import com.quetoquenana.pedalpal.application.command.AddBikeComponentCommand;
 import com.quetoquenana.pedalpal.application.command.CreateBikeCommand;
 import com.quetoquenana.pedalpal.application.result.BikeComponentResult;
 import com.quetoquenana.pedalpal.application.result.BikeResult;
+import com.quetoquenana.pedalpal.domain.enums.BikeComponentStatus;
 import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
 import com.quetoquenana.pedalpal.domain.model.Bike;
 import com.quetoquenana.pedalpal.domain.model.BikeComponent;
 
-import java.util.Collections;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BikeMapper {
@@ -19,7 +18,7 @@ public class BikeMapper {
         return Bike.builder()
                 .ownerId(command.ownerId())
                 .name(command.name())
-                .type(BikeType.valueOf(command.type()))
+                .type(BikeType.from(command.type()))
                 .status(BikeStatus.ACTIVE)
                 .isPublic(command.isPublic())
                 .isExternalSync(command.isExternalSync())
@@ -30,13 +29,14 @@ public class BikeMapper {
                 .notes(command.notes())
                 .odometerKm(command.odometerKm())
                 .usageTimeMinutes(command.usageTimeMinutes())
-                .components(Collections.emptySet())
                 .build();
     }
 
     public static BikeComponent toBikeComponent(AddBikeComponentCommand command) {
+        // Type is determined by the component type (database), so it is not set here
         return BikeComponent.builder()
                 .name(command.name())
+                .status(BikeComponentStatus.ACTIVE)
                 .brand(command.brand())
                 .model(command.model())
                 .notes(command.notes())
@@ -45,36 +45,36 @@ public class BikeMapper {
                 .build();
     }
 
-    public static BikeResult toBikeResult(Bike bike) {
-        Set<BikeComponent> components = bike.getComponents() == null ? Collections.emptySet() : bike.getComponents();
+    public static BikeResult toBikeResult(Bike model) {
         return new BikeResult(
-                bike.getId(),
-                bike.getName(),
-                bike.getType().name(),
-                bike.getStatus().name(),
-                bike.isPublic(),
-                bike.isExternalSync(),
-                bike.getBrand(),
-                bike.getModel(),
-                bike.getYear(),
-                bike.getSerialNumber(),
-                bike.getNotes(),
-                bike.getOdometerKm() == null ? 0 : bike.getOdometerKm(),
-                bike.getUsageTimeMinutes() == null ? 0 : bike.getUsageTimeMinutes(),
-                components.stream().map(BikeMapper::toComponentResult).collect(Collectors.toSet())
+                model.getId(),
+                model.getName(),
+                model.getType().name(),
+                model.getStatus().name(),
+                model.isPublic(),
+                model.isExternalSync(),
+                model.getBrand(),
+                model.getModel(),
+                model.getYear(),
+                model.getSerialNumber(),
+                model.getNotes(),
+                model.getOdometerKm() == null ? 0 : model.getOdometerKm(),
+                model.getUsageTimeMinutes() == null ? 0 : model.getUsageTimeMinutes(),
+                model.getComponents().stream().map(BikeMapper::toComponentResult).collect(Collectors.toSet())
         );
     }
 
-    public static BikeComponentResult toComponentResult(BikeComponent component) {
+    public static BikeComponentResult toComponentResult(BikeComponent model) {
         return new BikeComponentResult(
-                component.getId(),
-                component.getComponentType().getCode(),
-                component.getName(),
-                component.getBrand(),
-                component.getModel(),
-                component.getNotes(),
-                component.getOdometerKm() == null ? 0 : component.getOdometerKm(),
-                component.getUsageTimeMinutes() == null ? 0 : component.getUsageTimeMinutes()
+                model.getId(),
+                model.getComponentType(),
+                model.getName(),
+                model.getStatus().name(),
+                model.getBrand(),
+                model.getModel(),
+                model.getNotes(),
+                model.getOdometerKm() == null ? 0 : model.getOdometerKm(),
+                model.getUsageTimeMinutes() == null ? 0 : model.getUsageTimeMinutes()
         );
     }
 }

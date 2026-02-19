@@ -5,7 +5,7 @@ CREATE TABLE appointments (
     package_id uuid,
 
     appointment_date timestamp NOT NULL,
-    status_id uuid NOT NULL,
+    status varchar NOT NULL,
 
     odometer_km int,
     total_cost decimal(10,2),
@@ -19,8 +19,7 @@ CREATE TABLE appointments (
 
     CONSTRAINT fk_a_bike FOREIGN KEY (bike_id) REFERENCES bikes(id),
     CONSTRAINT fk_a_store_location FOREIGN KEY (store_location_id) REFERENCES store_locations(id),
-    CONSTRAINT fk_a_package FOREIGN KEY (package_id) REFERENCES packages(id),
-    CONSTRAINT fk_a_status FOREIGN KEY (status_id) REFERENCES system_codes(id)
+    CONSTRAINT fk_a_package FOREIGN KEY (package_id) REFERENCES packages(id)
 );
 
 CREATE TABLE appointments_products (

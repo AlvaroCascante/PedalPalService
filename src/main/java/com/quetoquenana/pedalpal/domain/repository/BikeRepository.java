@@ -1,5 +1,6 @@
 package com.quetoquenana.pedalpal.domain.repository;
 
+import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
 import com.quetoquenana.pedalpal.domain.model.Bike;
 
 import java.util.List;
@@ -18,5 +19,5 @@ public interface BikeRepository {
 
     Optional<Bike> findByIdAndOwnerId(UUID id, UUID ownerId);
 
-    List<Bike> findByOwnerIdAndStatus(UUID ownerId, String bikeStatus);
+    List<Bike> findByOwnerIdAndStatus(UUID ownerId, BikeStatus bikeStatus);
 }

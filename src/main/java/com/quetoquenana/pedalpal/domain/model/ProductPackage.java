@@ -6,8 +6,6 @@ import java.math.BigDecimal;
 import java.util.Set;
 import java.util.UUID;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Getter
 @Setter

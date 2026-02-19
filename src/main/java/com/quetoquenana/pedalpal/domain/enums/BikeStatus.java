@@ -7,12 +7,12 @@ import java.util.Locale;
 
 @Getter
 public enum BikeStatus {
-        ACTIVE("bikeEntity.status.active"),
-        INACTIVE("bikeEntity.status.inactive"),
-        STOLEN("bikeEntity.status.stolen"),
-        SOLD("bikeEntity.status.sold"),
-        DELETED("bikeEntity.status.deleted"),
-        UNKNOWN("bikeEntity.status.unknown");
+        ACTIVE("bike.status.active"),
+        INACTIVE("bike.status.inactive"),
+        STOLEN("bike.status.stolen"),
+        SOLD("bike.status.sold"),
+        DELETED("bike.status.deleted"),
+        UNKNOWN("bike.status.unknown");
 
     private final String key;
 
