@@ -1,9 +1,6 @@
 package com.quetoquenana.pedalpal.config;
 
-import com.quetoquenana.pedalpal.application.useCase.AddBikeComponentUseCase;
-import com.quetoquenana.pedalpal.application.useCase.CreateBikeUseCase;
-import com.quetoquenana.pedalpal.application.useCase.UpdateBikeStatusUseCase;
-import com.quetoquenana.pedalpal.application.useCase.UpdateBikeUseCase;
+import com.quetoquenana.pedalpal.application.useCase.*;
 import com.quetoquenana.pedalpal.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.domain.repository.SystemCodeRepository;
 import org.springframework.context.annotation.Bean;
@@ -26,12 +23,20 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public UpdateBikeUseCase updateBikeUseCase(BikeRepository bikeRepository) {
+    public UpdateBikeStatusUseCase createUpdateBikeStatusUseCase(BikeRepository bikeRepository) {
+        return new UpdateBikeStatusUseCase(bikeRepository);
+    }
+
+    @Bean
+    public UpdateBikeUseCase createUpdateBikeUseCase(BikeRepository bikeRepository) {
         return new UpdateBikeUseCase(bikeRepository);
     }
 
     @Bean
-    public UpdateBikeStatusUseCase updateBikeStatusUseCase(BikeRepository bikeRepository) {
-        return new UpdateBikeStatusUseCase(bikeRepository);
+    public UpdateBikeComponentUseCase createUpdateBikeComponentUseCase(
+            BikeRepository bikeRepository,
+            SystemCodeRepository systemCodeRepository
+    ) {
+        return new UpdateBikeComponentUseCase(bikeRepository, systemCodeRepository);
     }
 }

@@ -1,14 +1,13 @@
 package com.quetoquenana.pedalpal.application.mapper;
 
 import com.quetoquenana.pedalpal.application.command.AddBikeComponentCommand;
+import com.quetoquenana.pedalpal.application.command.CreateBikeCommand;
 import com.quetoquenana.pedalpal.application.result.BikeComponentResult;
 import com.quetoquenana.pedalpal.application.result.BikeResult;
-import com.quetoquenana.pedalpal.application.command.CreateBikeCommand;
 import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
 import com.quetoquenana.pedalpal.domain.model.Bike;
 import com.quetoquenana.pedalpal.domain.model.BikeComponent;
-import com.quetoquenana.pedalpal.domain.model.SystemCode;
 
 import java.util.Collections;
 import java.util.Set;
@@ -35,9 +34,8 @@ public class BikeMapper {
                 .build();
     }
 
-    public static BikeComponent toBikeComponent(SystemCode componentType, AddBikeComponentCommand command) {
+    public static BikeComponent toBikeComponent(AddBikeComponentCommand command) {
         return BikeComponent.builder()
-                .componentType(componentType)
                 .name(command.name())
                 .brand(command.brand())
                 .model(command.model())

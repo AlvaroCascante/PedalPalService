@@ -5,6 +5,7 @@ import com.quetoquenana.pedalpal.application.result.BikeResult;
 import com.quetoquenana.pedalpal.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.domain.model.Bike;
+import com.quetoquenana.pedalpal.domain.model.BikeComponent;
 import com.quetoquenana.pedalpal.domain.model.SystemCode;
 import com.quetoquenana.pedalpal.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.domain.repository.SystemCodeRepository;
@@ -27,7 +28,10 @@ public class AddBikeComponentUseCase {
         SystemCode componentType = systemCodeRepository.findByCategoryAndCode(COMPONENT_TYPE, command.type())
                 .orElseThrow(() -> new RecordNotFoundException("bike.component.type.not.found", command.type()));
 
-        bike.addComponent(BikeMapper.toBikeComponent(componentType, command));
+        BikeComponent component = BikeMapper.toBikeComponent(command);
+        component.setComponentType(componentType);
+
+        bike.addComponent(component);
 
         return BikeMapper.toBikeResult(bikeRepository.save(bike));
     }

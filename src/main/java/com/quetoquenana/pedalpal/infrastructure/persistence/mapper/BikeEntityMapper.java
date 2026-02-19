@@ -73,7 +73,7 @@ public class BikeEntityMapper {
     }
 
     public BikeComponentEntity toBikeComponentEntity(BikeEntity bikeEntity, BikeComponent model) {
-        return BikeComponentEntity.builder()
+        BikeComponentEntity entity = BikeComponentEntity.builder()
                 .id(model.getId())
                 .bike(bikeEntity)
                 .componentType(toSystemCodeEntity(model.getComponentType()))
@@ -84,6 +84,8 @@ public class BikeEntityMapper {
                 .odometerKm(model.getOdometerKm())
                 .usageTimeMinutes(model.getUsageTimeMinutes())
                 .build();
+        entity.setVersion(model.getVersion());
+        return entity;
     }
 
     public SystemCode toSystemCode(SystemCodeEntity entity) {

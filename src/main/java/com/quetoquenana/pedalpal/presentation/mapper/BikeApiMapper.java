@@ -4,12 +4,10 @@ import com.quetoquenana.pedalpal.application.command.*;
 import com.quetoquenana.pedalpal.application.result.BikeComponentResult;
 import com.quetoquenana.pedalpal.application.result.BikeResult;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
-import com.quetoquenana.pedalpal.presentation.dto.api.request.AddBikeComponentRequest;
-import com.quetoquenana.pedalpal.presentation.dto.api.request.CreateBikeRequest;
-import com.quetoquenana.pedalpal.presentation.dto.api.request.UpdateBikeRequest;
-import com.quetoquenana.pedalpal.presentation.dto.api.request.UpdateBikeStatusRequest;
+import com.quetoquenana.pedalpal.presentation.dto.api.request.*;
 import com.quetoquenana.pedalpal.presentation.dto.api.response.BikeComponentResponse;
 import com.quetoquenana.pedalpal.presentation.dto.api.response.BikeResponse;
+import jakarta.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
@@ -30,8 +28,8 @@ public class BikeApiMapper {
     }
 
     public CreateBikeCommand toCommand(
-            CreateBikeRequest request,
-            UUID ownerId
+            UUID ownerId,
+            CreateBikeRequest request
     )   {
         return CreateBikeCommand.builder()
                 .ownerId(ownerId)
@@ -49,7 +47,11 @@ public class BikeApiMapper {
                 .build();
     }
 
-    public UpdateBikeCommand toCommand(UpdateBikeRequest request, UUID bikeId, UUID authenticatedUserId) {
+    public UpdateBikeCommand toCommand(
+            UUID bikeId,
+            UUID authenticatedUserId,
+            UpdateBikeRequest request
+    ) {
         return new UpdateBikeCommand(
                 bikeId,
                 authenticatedUserId,
@@ -106,7 +108,11 @@ public class BikeApiMapper {
         );
     }
 
-    public UpdateBikeStatusCommand toCommand(UpdateBikeStatusRequest request, UUID bikeId, UUID authenticatedUserId) {
+    public UpdateBikeStatusCommand toCommand(
+            UUID bikeId,
+            UUID authenticatedUserId,
+            UpdateBikeStatusRequest request
+    ) {
         return new UpdateBikeStatusCommand(
                 bikeId,
                 authenticatedUserId,
@@ -116,12 +122,32 @@ public class BikeApiMapper {
 
     public AddBikeComponentCommand toCommand(
             UUID bikeId,
-            UUID ownerId,
+            UUID authenticatedUserId,
             AddBikeComponentRequest request
     )   {
         return AddBikeComponentCommand.builder()
                 .bikeId(bikeId)
-                .authenticatedUserId(ownerId)
+                .authenticatedUserId(authenticatedUserId)
+                .type(request.getType())
+                .name(request.getName())
+                .brand(request.getBrand())
+                .model(request.getModel())
+                .notes(request.getNotes())
+                .odometerKm(request.getOdometerKm())
+                .usageTimeMinutes(request.getUsageTimeMinutes())
+                .build();
+    }
+
+    public UpdateBikeComponentCommand toCommand(
+            UUID bikeId,
+            UUID componentId,
+            UUID authenticatedUserId,
+            UpdateBikeComponentRequest request
+    ) {
+        return UpdateBikeComponentCommand.builder()
+                .bikeId(bikeId)
+                .componentId(componentId)
+                .authenticatedUserId(authenticatedUserId)
                 .type(request.getType())
                 .name(request.getName())
                 .brand(request.getBrand())
