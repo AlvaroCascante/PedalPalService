@@ -436,16 +436,16 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{usera_token}}",
+									"value": "{{user_token}}",
 									"type": "string"
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"model\": \"B07X-CER\"\n}",
+							"raw": "{\n  \"notes\": \"Front and back brake pad set for road bikes\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -468,11 +468,11 @@
 							"variable": [
 								{
 									"key": "bikeId",
-									"value": ""
+									"value": "420e2ef6-83ef-40da-a1b9-24168b57c84e"
 								},
 								{
 									"key": "componentId",
-									"value": ""
+									"value": "41a62ef6-ad03-472f-8d95-93ae5855101d"
 								}
 							]
 						}
