@@ -21,6 +21,10 @@ public final class TestJsonBodies {
         return "{\"status\":\"" + escapeJson(status) + "\"}";
     }
 
+    public static String addBikeComponentMinimal(String name, String type) {
+        return "{\"name\":\"" + escapeJson(name) + "\",\"type\":\"" + escapeJson(type) + "\"}";
+    }
+
     private static String escapeJson(String value) {
         if (value == null) return "";
         return value

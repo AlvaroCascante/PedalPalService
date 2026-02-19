@@ -20,24 +20,24 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 
 ### Path parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `id` | UUID | yes | Bike identifier whose status will be updated |
+| Name | Type | Required | Description                                  |
+|------|------|----------|----------------------------------------------|
+| `id` | UUID | yes      | Bike identifier whose status will be updated |
 
 ### Headers
 
-| Header | Required | Example |
-|--------|----------|---------|
-| `Content-Type` | yes | `application/json` |
-| `Authorization` | yes | `Bearer <jwt>` |
+| Header          | Required | Example            |
+|-----------------|----------|--------------------|
+| `Content-Type`  | yes      | `application/json` |
+| `Authorization` | yes      | `Bearer <jwt>`     |
 
 ### Body (`UpdateBikeStatusRequest`)
 
 The request body contains only one field:
 
-| Field | Type | Required | Validation | Description |
-|------|------|----------|------------|-------------|
-| `status` | string | yes | `@NotNull` (`{bike.update.status.required}`) | New status code |
+| Field    | Type   | Required | Validation                                   | Description     |
+|----------|--------|----------|----------------------------------------------|-----------------|
+| `status` | string | yes      | `@NotNull` (`{bike.update.status.required}`) | New status code |
 
 Notes:
 
@@ -69,7 +69,8 @@ Returns an `ApiResponse` whose `data` is an `UpdateBikeResponse`.
     "serialNumber": null,
     "notes": null,
     "odometerKm": 0,
-    "usageTimeMinutes": 0
+    "usageTimeMinutes": 0,
+    "components": []
   },
   "message": "Success",
   "errorCode": 0
@@ -148,4 +149,3 @@ Authorization: Bearer <jwt>
 ```
 
 Result: **400 Bad Request**.
-

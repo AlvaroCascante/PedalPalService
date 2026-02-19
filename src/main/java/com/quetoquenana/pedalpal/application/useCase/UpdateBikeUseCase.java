@@ -1,7 +1,8 @@
 package com.quetoquenana.pedalpal.application.useCase;
 
 import com.quetoquenana.pedalpal.application.command.UpdateBikeCommand;
-import com.quetoquenana.pedalpal.application.command.BikeResult;
+import com.quetoquenana.pedalpal.application.result.BikeResult;
+import com.quetoquenana.pedalpal.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
@@ -34,21 +35,7 @@ public class UpdateBikeUseCase {
 
         Bike saved = bikeRepository.save(bike);
 
-        return new BikeResult(
-                saved.getId(),
-                saved.getName(),
-                saved.getType().name(),
-                saved.getStatus().name(),
-                saved.isPublic(),
-                saved.isExternalSync(),
-                saved.getBrand(),
-                saved.getModel(),
-                saved.getYear(),
-                saved.getSerialNumber(),
-                saved.getNotes(),
-                saved.getOdometerKm() == null ? 0 : saved.getOdometerKm(),
-                saved.getUsageTimeMinutes() == null ? 0 : saved.getUsageTimeMinutes()
-        );
+        return BikeMapper.toBikeResult(saved);
     }
 
     private void applyPatch(Bike bike, UpdateBikeCommand command) {

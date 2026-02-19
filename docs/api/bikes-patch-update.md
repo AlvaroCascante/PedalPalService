@@ -18,16 +18,16 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 
 ### Path parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `id` | UUID | yes | Bike identifier to update |
+| Name | Type | Required | Description               |
+|------|------|----------|---------------------------|
+| `id` | UUID | yes      | Bike identifier to update |
 
 ### Headers
 
-| Header | Required | Example |
-|--------|----------|---------|
-| `Content-Type` | yes | `application/json` |
-| `Authorization` | yes | `Bearer <jwt>` |
+| Header          | Required | Example            |
+|-----------------|----------|--------------------|
+| `Content-Type`  | yes      | `application/json` |
+| `Authorization` | yes      | `Bearer <jwt>`     |
 
 ### Body (`UpdateBikeRequest`)
 
@@ -42,19 +42,19 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 
 #### Fields
 
-| Field | Type | Optional | Validation | Description |
-|------|------|----------|------------|-------------|
-| `name` | string | yes | min length 1 (`{bike.update.name.blank}`) | Bike name |
-| `brand` | string | yes | min length 1 (`{bike.update.brand.blank}`) | Brand |
-| `model` | string | yes | min length 1 (`{bike.update.model.blank}`) | Model |
-| `year` | integer | yes | `>= 1900` (`{bike.update.year.invalid}`) | Model year |
-| `type` | string | yes | min length 1 (`{bike.update.type.blank}`) | Bike type code (validated in use case; invalid → `{bike.update.type.invalid}`) |
-| `serialNumber` | string | yes | min length 1 (`{bike.update.serial.blank}`) | Serial number (if changed, uniqueness is checked) |
-| `notes` | string | yes | min length 1 (`{bike.update.notes.blank}`) | Notes |
-| `odometerKm` | integer | yes | `>= 0` (`{bike.update.odometer.invalid}`) | Odometer in km |
-| `usageTimeMinutes` | integer | yes | `>= 0` (`{bike.update.usage.invalid}`) | Usage time in minutes |
-| `isPublic` | boolean | yes | (no bean validation) | Public visibility |
-| `isExternalSync` | boolean | yes | (no bean validation) | External sync flag |
+| Field              | Type    | Optional | Validation                                  | Description                                                                    |
+|--------------------|---------|----------|---------------------------------------------|--------------------------------------------------------------------------------|
+| `name`             | string  | yes      | min length 1 (`{bike.update.name.blank}`)   | Bike name                                                                      |
+| `brand`            | string  | yes      | min length 1 (`{bike.update.brand.blank}`)  | Brand                                                                          |
+| `model`            | string  | yes      | min length 1 (`{bike.update.model.blank}`)  | Model                                                                          |
+| `year`             | integer | yes      | `>= 1900` (`{bike.update.year.invalid}`)    | Model year                                                                     |
+| `type`             | string  | yes      | min length 1 (`{bike.update.type.blank}`)   | Bike type code (validated in use case; invalid → `{bike.update.type.invalid}`) |
+| `serialNumber`     | string  | yes      | min length 1 (`{bike.update.serial.blank}`) | Serial number (if changed, uniqueness is checked)                              |
+| `notes`            | string  | yes      | min length 1 (`{bike.update.notes.blank}`)  | Notes                                                                          |
+| `odometerKm`       | integer | yes      | `>= 0` (`{bike.update.odometer.invalid}`)   | Odometer in km                                                                 |
+| `usageTimeMinutes` | integer | yes      | `>= 0` (`{bike.update.usage.invalid}`)      | Usage time in minutes                                                          |
+| `isPublic`         | boolean | yes      | (no bean validation)                        | Public visibility                                                              |
+| `isExternalSync`   | boolean | yes      | (no bean validation)                        | External sync flag                                                             |
 
 ---
 
@@ -62,16 +62,17 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 
 ### 200 OK
 
-Returns an `ApiResponse` whose `data` is an `UpdateBikeResponse`.
+Returns an `ApiResponse` whose `data` is a `BikeResponse`.
 
-#### Body (`UpdateBikeResponse`)
+#### Body (`BikeResponse`)
 
 ```json
 {
   "data": {
     "id": "9c84b698-b3fc-4c9d-91f1-9bab8a53a466",
     "name": "New name",
-    "type": "ROAD",
+    "type": "Road",
+    "status": "ACTIVE",
     "isPublic": true,
     "isExternalSync": false,
     "brand": "Brand",
@@ -80,7 +81,8 @@ Returns an `ApiResponse` whose `data` is an `UpdateBikeResponse`.
     "serialNumber": null,
     "notes": null,
     "odometerKm": 0,
-    "usageTimeMinutes": 0
+    "usageTimeMinutes": 0,
+    "components": []
   },
   "message": "Success",
   "errorCode": 0
@@ -181,4 +183,3 @@ Authorization: Bearer <jwt>
 ```
 
 Result: **400 Bad Request**.
-

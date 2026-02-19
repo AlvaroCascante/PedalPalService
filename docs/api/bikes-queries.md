@@ -42,13 +42,26 @@ Both endpoints respond with an `ApiResponse` wrapper whose `data` is:
   "serialNumber": "SN-123",
   "notes": "Some notes",
   "odometerKm": 1234,
-  "usageTimeMinutes": 5678
+  "usageTimeMinutes": 5678,
+  "components": [
+    {
+      "id": "4e100290-fc14-4d1f-b1f8-9f9338702612",
+      "type": "CHAIN",
+      "name": "Chain",
+      "brand": "Shimano",
+      "model": "HG",
+      "notes": "New chain",
+      "odometerKm": 10,
+      "usageTimeMinutes": 20
+    }
+  ]
 }
 ```
 
 Notes:
 
 - `type` is a **localized label**, resolved by `BikeApiMapper` via `MessageSource` using the domain enum key.
+- `components` is an array of `BikeComponentResponse`. When no components exist, the API returns `components: []`.
 
 ---
 
@@ -81,7 +94,8 @@ Fetches a single bike by id for the authenticated user.
     "serialNumber": null,
     "notes": null,
     "odometerKm": 0,
-    "usageTimeMinutes": 0
+    "usageTimeMinutes": 0,
+    "components": []
   },
   "message": "Success",
   "errorCode": 0
@@ -136,7 +150,8 @@ Fetches all bikes with status `ACTIVE` for the authenticated user.
       "serialNumber": null,
       "notes": null,
       "odometerKm": 0,
-      "usageTimeMinutes": 0
+      "usageTimeMinutes": 0,
+      "components": []
     }
   ],
   "message": "Success",
@@ -178,4 +193,3 @@ Authorization: Bearer <jwt>
 GET /v1/api/bikes/active
 Authorization: Bearer <jwt>
 ```
-

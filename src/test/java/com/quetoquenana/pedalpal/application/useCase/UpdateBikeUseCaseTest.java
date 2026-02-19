@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.application.useCase;
 
 import com.quetoquenana.pedalpal.application.command.UpdateBikeCommand;
-import com.quetoquenana.pedalpal.application.command.BikeResult;
+import com.quetoquenana.pedalpal.application.result.BikeResult;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.domain.model.Bike;

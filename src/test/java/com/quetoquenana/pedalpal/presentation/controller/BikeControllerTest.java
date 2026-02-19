@@ -4,6 +4,7 @@ import com.quetoquenana.pedalpal.application.query.BikeQueryService;
 import com.quetoquenana.pedalpal.application.useCase.CreateBikeUseCase;
 import com.quetoquenana.pedalpal.application.useCase.UpdateBikeStatusUseCase;
 import com.quetoquenana.pedalpal.application.useCase.UpdateBikeUseCase;
+import com.quetoquenana.pedalpal.application.useCase.AddBikeComponentUseCase;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
 import com.quetoquenana.pedalpal.presentation.mapper.BikeApiMapper;
@@ -38,6 +39,7 @@ class BikeControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
     @MockitoBean
     MessageSource messageSource;
 
@@ -52,6 +54,9 @@ class BikeControllerTest {
 
     @MockitoBean
     BikeQueryService bikeQueryService;
+
+    @MockitoBean
+    AddBikeComponentUseCase addBikeComponentUseCase;
 
     @Test
     void shouldReturn200_whenGetById() throws Exception {
@@ -185,6 +190,51 @@ class BikeControllerTest {
         mockMvc.perform(patch("/v1/api/bikes/{id}/status", bikeId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(TestJsonBodies.patchBikeStatus("ACTIVE")))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturn201_whenValidAddBikeComponent() throws Exception {
+        UUID bikeId = UUID.randomUUID();
+
+        when(messageSource.getMessage(any(String.class), any(), any(Locale.class)))
+                .thenReturn("Road");
+
+        when(addBikeComponentUseCase.execute(any()))
+                .thenReturn(TestBikeData.bikeResultUpdated(bikeId));
+
+        mockMvc.perform(post("/v1/api/bikes/{id}/components", bikeId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestJsonBodies.addBikeComponentMinimal("Chain", "CHAIN")))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data.id").value(bikeId.toString()));
+    }
+
+    @Test
+    void shouldReturn400_whenAddBikeComponentValidationFails_missingName() throws Exception {
+        when(messageSource.getMessage(any(FieldError.class), any(Locale.class)))
+                .thenReturn("Name is required");
+        when(messageSource.getMessage(eq("validation.failed"), any(), any(Locale.class)))
+                .thenReturn("Validation failed");
+
+        UUID bikeId = UUID.randomUUID();
+
+        mockMvc.perform(post("/v1/api/bikes/{id}/components", bikeId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"type\":\"CHAIN\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturn404_whenAddBikeComponentBikeNotFound() throws Exception {
+        UUID bikeId = UUID.randomUUID();
+
+        when(addBikeComponentUseCase.execute(any()))
+                .thenThrow(new RecordNotFoundException("bike.not.found"));
+
+        mockMvc.perform(post("/v1/api/bikes/{id}/components", bikeId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestJsonBodies.addBikeComponentMinimal("Chain", "CHAIN")))
                 .andExpect(status().isNotFound());
     }
 }

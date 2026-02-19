@@ -1,5 +1,6 @@
 package com.quetoquenana.pedalpal.infrastructure.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,6 +24,7 @@ public class BikeComponentEntity extends AuditableEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "bike_id", nullable = false)
+    @JsonBackReference
     private BikeEntity bike;
 
     @ManyToOne(fetch = FetchType.LAZY)

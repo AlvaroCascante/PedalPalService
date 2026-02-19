@@ -1,10 +1,11 @@
 package com.quetoquenana.pedalpal.infrastructure.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -62,5 +63,6 @@ public class BikeEntity extends AuditableEntity {
     private Integer usageTimeMinutes;
 
     @OneToMany(mappedBy = "bike", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<BikeComponentEntity> components;
+    @JsonManagedReference
+    private Set<BikeComponentEntity> components;
 }

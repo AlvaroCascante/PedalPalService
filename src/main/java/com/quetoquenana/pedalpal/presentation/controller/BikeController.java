@@ -2,11 +2,14 @@ package com.quetoquenana.pedalpal.presentation.controller;
 
 import com.quetoquenana.pedalpal.application.command.*;
 import com.quetoquenana.pedalpal.application.query.BikeQueryService;
+import com.quetoquenana.pedalpal.application.result.BikeResult;
+import com.quetoquenana.pedalpal.application.useCase.AddBikeComponentUseCase;
 import com.quetoquenana.pedalpal.application.useCase.CreateBikeUseCase;
 import com.quetoquenana.pedalpal.application.useCase.UpdateBikeStatusUseCase;
 import com.quetoquenana.pedalpal.application.useCase.UpdateBikeUseCase;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.common.util.SecurityUtils;
+import com.quetoquenana.pedalpal.presentation.dto.api.request.AddBikeComponentRequest;
 import com.quetoquenana.pedalpal.presentation.dto.api.request.CreateBikeRequest;
 import com.quetoquenana.pedalpal.presentation.dto.api.request.UpdateBikeRequest;
 import com.quetoquenana.pedalpal.presentation.dto.api.request.UpdateBikeStatusRequest;
@@ -31,6 +34,7 @@ import java.util.UUID;
 @Slf4j
 public class BikeController {
 
+    private final AddBikeComponentUseCase addBikeComponentUseCase;
     private final CreateBikeUseCase  createBikeUseCase;
     private final UpdateBikeUseCase updateBikeUseCase;
     private final UpdateBikeStatusUseCase updateBikeStatusUseCase;
@@ -55,7 +59,7 @@ public class BikeController {
 
     @GetMapping("/active")
     @PreAuthorize("(hasRole('USER'))")
-    public ResponseEntity<ApiResponse> fetchActive() {
+    public ResponseEntity<ApiResponse> findActive() {
         log.info("GET /v1/api/bikes/active Received request to fetch active bikes");
 
         SecurityUser user = SecurityUtils.getCurrentUser().orElseThrow(
@@ -127,5 +131,30 @@ public class BikeController {
         BikeResponse response = bikeApiMapper.toResponse(result);
 
         return ResponseEntity.ok(new ApiResponse(response));
+    }
+
+    @PostMapping("/{id}/components")
+    @PreAuthorize("(hasRole('USER'))")
+    public ResponseEntity<ApiResponse> addBikeComponent(
+            @PathVariable("id") UUID id,
+            @Valid @RequestBody AddBikeComponentRequest request
+    ) {
+        log.info("POST /v1/api/bikes/{}/components Received request to add a bike component: {}", id, request);
+
+        SecurityUser user = SecurityUtils.getCurrentUser().orElseThrow(
+                () -> new ForbiddenAccessException("authentication.required")
+        );
+
+        // Map the incoming request to a command object
+        AddBikeComponentCommand command = bikeApiMapper.toCommand(id, user.userId(), request);
+
+        // Execute the use case to create the bike
+        BikeResult result = addBikeComponentUseCase.execute(command);
+
+        // Map the result to a response DTO
+        BikeResponse response = bikeApiMapper.toResponse(result);
+
+        return ResponseEntity.created(URI.create("/api/bikes/" + response.id()))
+                .body(new ApiResponse(response));
     }
 }

@@ -18,26 +18,26 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 
 ### Headers
 
-| Header | Required | Example |
-|--------|----------|---------|
-| `Content-Type` | yes | `application/json` |
-| `Authorization` | yes | `Bearer <jwt>` |
+| Header          | Required | Example            |
+|-----------------|----------|--------------------|
+| `Content-Type`  | yes      | `application/json` |
+| `Authorization` | yes      | `Bearer <jwt>`     |
 
 ### Body (`CreateBikeRequest`)
 
-| Field | Type | Required | Validation | Description |
-|------|------|----------|------------|-------------|
-| `name` | string | yes | `@NotBlank` (`{bike.create.name.blank}`) | Bike name |
-| `isPublic` | boolean | no | — | Public visibility |
-| `type` | string | yes | `@NotNull` (`{bike.create.type.required}`) | Bike type (string code) |
-| `brand` | string | no | max 100 (`{bike.create.brand.max}`) | Brand |
-| `model` | string | no | max 100 (`{bike.create.model.max}`) | Model |
-| `year` | integer | no | `>= 1900` (`{bike.create.year.invalid}`) | Model year |
-| `serialNumber` | string | no | max 100 (`{bike.create.serial.max}`) | Serial number (must be unique if provided) |
-| `notes` | string | no | max 1000 (`{bike.create.notes.max}`) | Notes |
-| `odometerKm` | integer | no | `>= 0` (`{bike.create.odometer.invalid}`) | Odometer in km |
-| `usageTimeMinutes` | integer | no | `>= 0` (`{bike.create.usage.invalid}`) | Usage time in minutes |
-| `isExternalSync` | boolean | no | — | External sync flag |
+| Field              | Type    | Required | Validation                                 | Description                                |
+|--------------------|---------|----------|--------------------------------------------|--------------------------------------------|
+| `name`             | string  | yes      | `@NotBlank` (`{bike.create.name.blank}`)   | Bike name                                  |
+| `isPublic`         | boolean | no       | —                                          | Public visibility                          |
+| `type`             | string  | yes      | `@NotNull` (`{bike.create.type.required}`) | Bike type (string code)                    |
+| `brand`            | string  | no       | max 100 (`{bike.create.brand.max}`)        | Brand                                      |
+| `model`            | string  | no       | max 100 (`{bike.create.model.max}`)        | Model                                      |
+| `year`             | integer | no       | `>= 1900` (`{bike.create.year.invalid}`)   | Model year                                 |
+| `serialNumber`     | string  | no       | max 100 (`{bike.create.serial.max}`)       | Serial number (must be unique if provided) |
+| `notes`            | string  | no       | max 1000 (`{bike.create.notes.max}`)       | Notes                                      |
+| `odometerKm`       | integer | no       | `>= 0` (`{bike.create.odometer.invalid}`)  | Odometer in km                             |
+| `usageTimeMinutes` | integer | no       | `>= 0` (`{bike.create.usage.invalid}`)     | Usage time in minutes                      |
+| `isExternalSync`   | boolean | no       | —                                          | External sync flag                         |
 
 ---
 
@@ -45,18 +45,19 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 
 ### 201 Created
 
-Returns an `ApiResponse` whose `data` is a `CreateBikeResponse`.
+Returns an `ApiResponse` whose `data` is a `BikeResponse`.
 
 - `Location` header is set to `/api/bikes/{id}` (note: current controller uses `/api/bikes/` not `/v1/api/bikes/`).
 
-#### Body (`CreateBikeResponse`)
+#### Body (`BikeResponse`)
 
 ```json
 {
   "data": {
     "id": "9c84b698-b3fc-4c9d-91f1-9bab8a53a466",
     "name": "My bike",
-    "type": "ROAD",
+    "type": "Road",
+    "status": "ACTIVE",
     "isPublic": false,
     "isExternalSync": false,
     "brand": "Canyon",
@@ -65,14 +66,15 @@ Returns an `ApiResponse` whose `data` is a `CreateBikeResponse`.
     "serialNumber": "SN-123",
     "notes": "Some notes",
     "odometerKm": 1234,
-    "usageTimeMinutes": 5678
+    "usageTimeMinutes": 5678,
+    "components": []
   },
   "message": "Success",
   "errorCode": 0
 }
 ```
 
-> The exact `ApiResponse` wrapper fields depend on your `ApiResponse` implementation; the important part is the `data` shape above.
+> `type` in the response is a localized label produced by `BikeApiMapper` via `MessageSource`. On creation, `components` is typically an empty array.
 
 ---
 

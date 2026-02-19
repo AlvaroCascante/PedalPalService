@@ -15,8 +15,6 @@ public class BikeComponent extends Auditable {
 
     private UUID id;
 
-    private Bike bike;
-
     private SystemCode componentType;
 
     private String name;

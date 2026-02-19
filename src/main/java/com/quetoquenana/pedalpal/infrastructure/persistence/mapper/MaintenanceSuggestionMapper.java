@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MaintenanceSuggestionMapper {
 
-    private final BikeMapper bikeMapper;
+    private final BikeEntityMapper bikeEntityMapper;
     private final SystemCodeMapper systemCodeMapper = new SystemCodeMapper();
     private final MaintenanceSuggestionItemMapper itemMapper = new MaintenanceSuggestionItemMapper();
 
@@ -19,7 +19,7 @@ public class MaintenanceSuggestionMapper {
 
         MaintenanceSuggestion domain = MaintenanceSuggestion.builder()
                 .id(entity.getId())
-                .bike(bikeMapper.toDomain(entity.getBike()))
+                .bike(bikeEntityMapper.toBike(entity.getBike()))
                 .suggestionType(systemCodeMapper.toDomain(entity.getSuggestionType()))
                 .suggestionStatus(systemCodeMapper.toDomain(entity.getSuggestionStatus()))
                 .aiProvider(entity.getAiProvider())

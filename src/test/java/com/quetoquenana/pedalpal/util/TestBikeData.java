@@ -2,11 +2,12 @@ package com.quetoquenana.pedalpal.util;
 
 import com.quetoquenana.pedalpal.application.command.CreateBikeCommand;
 import com.quetoquenana.pedalpal.application.command.UpdateBikeCommand;
-import com.quetoquenana.pedalpal.application.command.BikeResult;
+import com.quetoquenana.pedalpal.application.result.BikeResult;
 import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
 import com.quetoquenana.pedalpal.domain.model.Bike;
 
+import java.util.Collections;
 import java.util.UUID;
 
 /**
@@ -173,6 +174,7 @@ public final class TestBikeData {
                 .notes(null)
                 .odometerKm(0)
                 .usageTimeMinutes(0)
+                .components(Collections.emptySet())
                 .build();
     }
 
@@ -191,6 +193,7 @@ public final class TestBikeData {
                 .notes(null)
                 .odometerKm(0)
                 .usageTimeMinutes(0)
+                .components(Collections.emptySet())
                 .build();
     }
 
@@ -209,6 +212,7 @@ public final class TestBikeData {
                 .notes(null)
                 .odometerKm(0)
                 .usageTimeMinutes(0)
+                .components(Collections.emptySet())
                 .build();
     }
 
@@ -227,6 +231,7 @@ public final class TestBikeData {
                 .notes(null)
                 .odometerKm(0)
                 .usageTimeMinutes(0)
+                .components(Collections.emptySet())
                 .build();
     }
 

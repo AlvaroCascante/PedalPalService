@@ -1,9 +1,12 @@
-package com.quetoquenana.pedalpal.presentation.dto.api.response;
+package com.quetoquenana.pedalpal.application.result;
+
+import lombok.Builder;
 
 import java.util.Set;
 import java.util.UUID;
 
-public record BikeResponse(
+@Builder
+public record BikeResult(
         UUID id,
         String name,
         String type,
@@ -17,5 +20,5 @@ public record BikeResponse(
         String notes,
         int odometerKm,
         int usageTimeMinutes,
-        Set<BikeComponentResponse> components
+        Set<BikeComponentResult> components
 ) { }

@@ -4,6 +4,8 @@ import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -24,4 +26,17 @@ public class Bike extends Auditable {
     private String notes;
     private Integer odometerKm;
     private Integer usageTimeMinutes;
+
+    private Set<BikeComponent> components;
+
+    public void addComponent(BikeComponent component) {
+        if (this.components == null) {
+            this.components = new HashSet<>();
+        }
+        components.add(component);
+    }
+
+    public void removeComponent(UUID componentId) {
+        components.removeIf(c -> c.getId().equals(componentId));
+    }
 }
