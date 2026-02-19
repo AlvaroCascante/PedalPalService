@@ -547,16 +547,16 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{usera_token}}",
+									"value": "{{user_token}}",
 									"type": "string"
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"componentType\": \"BRAKE_PADS\",\n  \"name\": \"Shimano Ceramic Brake Pad\",\n  \"brand\": \"Shimano\",\n  \"model\": \"B08X-CER\",\n  \"notes\": \"Front brake pad set for road bikes — ceramic compound, low noise. Installed 2026-01-17 for testing.\"\n}",
+							"raw": "{\n  \"name\": \"BMX Ceramic Center\",\n  \"type\": \"CASSETTE\",\n  \"brand\": \"SRAM\",\n  \"model\": \"B07X-CER\",\n  \"notes\": \"Ceramic center\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
