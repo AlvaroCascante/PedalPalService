@@ -296,7 +296,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"serialNumber\": \"SN-P123456789M\"\n}",
+							"raw": "{\n    \"serialNumber\": \"SN-PII123456789M\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -367,7 +367,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "420e2ef6-83ef-40da-a1b9-24168b57c84e"
+									"value": "a172fb86-bd3e-4053-9a45-0d91cb0dbc82"
 								}
 							]
 						}
