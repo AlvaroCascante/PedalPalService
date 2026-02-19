@@ -296,7 +296,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"serialNumber\": \"SN-PINARE123456789M\"\n}",
+							"raw": "{\n    \"serialNumber\": \"SN-P123456789M\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -317,7 +317,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "555fe682-4ad2-416b-a310-7eafc7c1a705"
+									"value": "420e2ef6-83ef-40da-a1b9-24168b57c84e"
 								}
 							]
 						}
