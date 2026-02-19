@@ -536,47 +536,7 @@
 					"response": []
 				},
 				{
-					"name": "RemoveComponent",
-					"id": "5067618-615171f1-1317-4ea7-b95b-b61c2627c0b4",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{usera_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/components/:id",
-							"host": [
-								"{{host_pedal_pal}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"components",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "9a590946-53a2-43bb-bcc6-24a94c5e4a13"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ReplaceComponent",
+					"name": "Replace Bike Component",
 					"id": "5067618-5b06f0c7-80d3-4120-a693-9155b3e87fc9",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
