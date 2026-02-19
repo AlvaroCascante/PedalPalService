@@ -480,6 +480,63 @@
 					"response": []
 				},
 				{
+					"name": "Update Bike Component Status",
+					"id": "5067618-5a143b9e-b240-4b6d-bc5d-7e45f0db0cc4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"odometerKm\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:bikeId/components/:componentId",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"bikes",
+								":bikeId",
+								"components",
+								":componentId"
+							],
+							"variable": [
+								{
+									"id": "0d25668f-cc27-42a6-9e2e-b00ff320030a",
+									"key": "bikeId",
+									"value": "a172fb86-bd3e-4053-9a45-0d91cb0dbc82"
+								},
+								{
+									"id": "a9631645-cba5-401a-b969-e0781a69a4ad",
+									"key": "componentId",
+									"value": "6d36396b-7203-4591-8050-c3df35fa747c"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "RemoveComponent",
 					"id": "5067618-615171f1-1317-4ea7-b95b-b61c2627c0b4",
 					"protocolProfileBehavior": {
