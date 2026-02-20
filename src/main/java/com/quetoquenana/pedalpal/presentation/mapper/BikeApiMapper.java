@@ -84,11 +84,13 @@ public class BikeApiMapper {
 
     public AddBikeComponentCommand toCommand(
             UUID bikeId,
+            UUID componentId,
             UUID authenticatedUserId,
             AddBikeComponentRequest request
     )   {
         return AddBikeComponentCommand.builder()
                 .bikeId(bikeId)
+                .componentId(componentId)
                 .authenticatedUserId(authenticatedUserId)
                 .type(request.getType())
                 .name(request.getName())
@@ -135,13 +137,21 @@ public class BikeApiMapper {
     }
 
     public BikeResponse toResponse(BikeResult result) {
+        return toResponse(result, Set.of(BikeComponentStatus.ACTIVE));
+    }
+
+    public BikeResponse toResponse(BikeResult result, Set<BikeComponentStatus> statuses) {
         Locale locale = LocaleContextHolder.getLocale();
         String typeLabel = messageSource.getMessage(BikeType.valueOf(result.type()).getKey(), null, locale);
         String statusLabel = messageSource.getMessage(BikeStatus.valueOf(result.status()).getKey(), null, locale);
 
         Set<BikeComponentResponse> components = result.components() == null
                 ? Collections.emptySet()
-                : result.components().stream().map(this::toComponentResponse).collect(Collectors.toSet());
+                : result.getComponents(statuses == null ? Set.of(BikeComponentStatus.ACTIVE) : statuses)
+                .stream()
+                .map(this::toComponentResponse)
+                .collect(Collectors.toSet()
+                );
 
         return new BikeResponse(
                 result.id(),
@@ -164,7 +174,7 @@ public class BikeApiMapper {
     private BikeComponentResponse toComponentResponse(BikeComponentResult result) {
         Locale locale = LocaleContextHolder.getLocale();
         String typeLabel = messageSource.getMessage(result.type().getCodeKey(), null, locale);
-        String statusLabel = messageSource.getMessage(BikeComponentStatus.valueOf(result.status()).getKey(), null, locale);
+        String statusLabel = messageSource.getMessage(result.status().getKey(), null, locale);
 
         return new BikeComponentResponse(
                 result.id(),

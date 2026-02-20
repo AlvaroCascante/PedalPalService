@@ -22,18 +22,21 @@ public class UpdateBikeComponentStatusUseCase {
     private final BikeRepository bikeRepository;
 
     public BikeResult execute(UpdateBikeComponentStatusCommand command) {
+        Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
+                .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
+
+        BikeComponent component = bike.getComponents().stream()
+                .filter(c -> c.getId().equals(command.componentId()))
+                .findFirst()
+                .orElseThrow(() -> new RecordNotFoundException("bike.component.not.found"));
+
         try {
-            Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
-                    .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
-
-            BikeComponent component = bike.getComponents().stream()
-                    .filter(c -> c.getId().equals(command.componentId()))
-                    .findFirst()
-                    .orElseThrow(() -> new RecordNotFoundException("bike.component.not.found"));
-
             applyPatch(component, command);
 
             return BikeMapper.toBikeResult(bikeRepository.save(bike));
+        } catch (BadRequestException ex) {
+            log.error("BadRequestException on UpdateBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
+            throw ex;
         } catch (RuntimeException ex) {
             log.error("RuntimeException on UpdateBikeComponentStatusUseCase -- Command: {}: Error: {}", command, ex.getMessage());
             throw new BusinessException("bike.component.update.status.failed");

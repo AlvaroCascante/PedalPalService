@@ -29,6 +29,10 @@ public final class TestJsonBodies {
         return "{\"name\":\"" + escapeJson(name) + "\"}";
     }
 
+    public static String patchBikeComponentStatus(String status) {
+        return "{\"status\":\"" + escapeJson(status) + "\"}";
+    }
+
     private static String escapeJson(String value) {
         if (value == null) return "";
         return value

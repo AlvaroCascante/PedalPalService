@@ -69,6 +69,12 @@ Notes:
 
 Fetches a single bike by id for the authenticated user.
 
+### Query parameters
+
+| Name     | Type                | Required | Description                                                                                                                                             |
+|----------|---------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `status` | string (repeatable) | no       | Filter components returned in `BikeResponse.components` by component status. Can be provided multiple times. Example: `?status=ACTIVE&status=INACTIVE`. |
+
 ### Path parameters
 
 | Name | Type | Required | Description     |
@@ -184,6 +190,13 @@ Returned when authentication is missing.
 
 ```http
 GET /v1/api/bikes/9c84b698-b3fc-4c9d-91f1-9bab8a53a466
+Authorization: Bearer <jwt>
+```
+
+### Get by id filtering components by status
+
+```http
+GET /v1/api/bikes/9c84b698-b3fc-4c9d-91f1-9bab8a53a466?status=ACTIVE&status=INACTIVE
 Authorization: Bearer <jwt>
 ```
 

@@ -6,6 +6,7 @@ import java.util.UUID;
 
 @Builder
 public record AddBikeComponentCommand(
+        UUID componentId,
         UUID bikeId,
         UUID authenticatedUserId,
         String type,

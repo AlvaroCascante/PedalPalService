@@ -19,7 +19,7 @@ import static com.quetoquenana.pedalpal.common.util.Constants.BikeComponents.COM
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class AddBikeComponentUseCase {
+public class ReplaceBikeComponentUseCase {
 
     private final BikeRepository bikeRepository;
     private final SystemCodeRepository systemCodeRepository;
@@ -28,18 +28,24 @@ public class AddBikeComponentUseCase {
         Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
                 .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
 
+        bike.getComponents().stream()
+                .filter(c -> c.getId().equals(command.componentId()))
+                .findFirst()
+                .orElseThrow(() -> new RecordNotFoundException("bike.component.not.found"));
+
         SystemCode componentType = systemCodeRepository.findByCategoryAndCode(COMPONENT_TYPE, command.type())
                 .orElseThrow(() -> new RecordNotFoundException("bike.component.type.not.found", command.type()));
         try {
-            BikeComponent component = BikeMapper.toBikeComponent(command);
-            component.setComponentType(componentType);
+            BikeComponent newComponent = BikeMapper.toBikeComponent(command);
+            newComponent.setComponentType(componentType);
 
-            bike.addComponent(component);
+            bike.removeComponent(command.componentId());
+            bike.addComponent(newComponent);
 
             return BikeMapper.toBikeResult(bikeRepository.save(bike));
         } catch (RuntimeException ex) {
-            log.error("RuntimeException on AddBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
-            throw new BusinessException("bike.add.component.failed");
+            log.error("RuntimeException on ReplaceBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
+            throw new BusinessException("bike.replace.component.failed");
         }
     }
 }

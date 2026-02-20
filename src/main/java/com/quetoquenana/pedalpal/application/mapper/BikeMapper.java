@@ -69,7 +69,7 @@ public class BikeMapper {
                 model.getId(),
                 model.getComponentType(),
                 model.getName(),
-                model.getStatus().name(),
+                model.getStatus(),
                 model.getBrand(),
                 model.getModel(),
                 model.getNotes(),

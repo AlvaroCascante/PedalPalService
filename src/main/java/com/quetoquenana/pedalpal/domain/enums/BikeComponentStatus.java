@@ -10,7 +10,6 @@ public enum BikeComponentStatus {
         ACTIVE("bike.component.status.active"),
         INACTIVE("bike.component.status.inactive"),
         REPLACED("bike.component.status.replaced"),
-        REMOVED("bike.component.status.removed"),
         DELETED("bike.component.status.deleted"),
         UNKNOWN("bike.component.status.unknown");
 

@@ -2,10 +2,13 @@ package com.quetoquenana.pedalpal.util;
 
 import com.quetoquenana.pedalpal.application.command.CreateBikeCommand;
 import com.quetoquenana.pedalpal.application.command.UpdateBikeCommand;
+import com.quetoquenana.pedalpal.application.result.BikeComponentResult;
 import com.quetoquenana.pedalpal.application.result.BikeResult;
+import com.quetoquenana.pedalpal.domain.enums.BikeComponentStatus;
 import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
 import com.quetoquenana.pedalpal.domain.enums.BikeType;
 import com.quetoquenana.pedalpal.domain.model.Bike;
+import com.quetoquenana.pedalpal.domain.model.SystemCode;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -233,6 +236,43 @@ public final class TestBikeData {
                 .usageTimeMinutes(0)
                 .components(Collections.emptySet())
                 .build();
+    }
+
+    public static BikeResult bikeResultWithComponentStatus(UUID bikeId, String componentStatus) {
+        BikeComponentResult component = new BikeComponentResult(
+                UUID.randomUUID(),
+                SystemCode.builder()
+                        .id(UUID.randomUUID())
+                        .category("COMPONENT_TYPE")
+                        .code("CHAIN")
+                        .label("Chain")
+                        .isActive(true)
+                        .position(1)
+                        .build(),
+                "Chain",
+                BikeComponentStatus.from(componentStatus),
+                "Brand",
+                "Model",
+                null,
+                0,
+                0
+        );
+        return new BikeResult(
+                bikeId,
+                "Bike",
+                "ROAD",
+                "ACTIVE",
+                false,
+                false,
+                "Brand",
+                "Model",
+                2020,
+                null,
+                null,
+                0,
+                0,
+                java.util.Set.of(component)
+        );
     }
 
     // NOTE: older CreateBikeResult/UpdateBikeResult factories keep existing unit tests working.

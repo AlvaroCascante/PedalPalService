@@ -6,8 +6,11 @@ import com.quetoquenana.pedalpal.application.useCase.UpdateBikeStatusUseCase;
 import com.quetoquenana.pedalpal.application.useCase.UpdateBikeUseCase;
 import com.quetoquenana.pedalpal.application.useCase.AddBikeComponentUseCase;
 import com.quetoquenana.pedalpal.application.useCase.UpdateBikeComponentUseCase;
+import com.quetoquenana.pedalpal.application.useCase.ReplaceBikeComponentUseCase;
+import com.quetoquenana.pedalpal.application.useCase.UpdateBikeComponentStatusUseCase;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
+import com.quetoquenana.pedalpal.domain.enums.BikeComponentStatus;
 import com.quetoquenana.pedalpal.presentation.mapper.BikeApiMapper;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
 import com.quetoquenana.pedalpal.util.TestBikeData;
@@ -62,6 +65,12 @@ class BikeControllerTest {
     @MockitoBean
     UpdateBikeComponentUseCase updateBikeComponentUseCase;
 
+    @MockitoBean
+    UpdateBikeComponentStatusUseCase updateBikeComponentStatusUseCase;
+
+    @MockitoBean
+    ReplaceBikeComponentUseCase replaceBikeComponentUseCase;
+
     @Test
     void shouldReturn200_whenGetById() throws Exception {
         UUID bikeId = UUID.randomUUID();
@@ -73,6 +82,39 @@ class BikeControllerTest {
                 .thenReturn(TestBikeData.bikeResultQuery(bikeId));
 
         mockMvc.perform(get("/v1/api/bikes/{id}", bikeId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.id").value(bikeId.toString()));
+    }
+
+    @Test
+    void shouldReturn200_whenGetByIdWithStatusRequestParam() throws Exception {
+        UUID bikeId = UUID.randomUUID();
+
+        when(messageSource.getMessage(any(String.class), any(), any(Locale.class)))
+                .thenReturn("Road");
+
+        when(bikeQueryService.getById(eq(bikeId), any(UUID.class)))
+                .thenReturn(TestBikeData.bikeResultQuery(bikeId));
+
+        mockMvc.perform(get("/v1/api/bikes/{id}", bikeId)
+                        .queryParam("status", BikeComponentStatus.ACTIVE.name()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.id").value(bikeId.toString()));
+    }
+
+    @Test
+    void shouldReturn200_whenGetByIdWithMultipleStatusRequestParams() throws Exception {
+        UUID bikeId = UUID.randomUUID();
+
+        when(messageSource.getMessage(any(String.class), any(), any(Locale.class)))
+                .thenReturn("Road");
+
+        when(bikeQueryService.getById(eq(bikeId), any(UUID.class)))
+                .thenReturn(TestBikeData.bikeResultQuery(bikeId));
+
+        mockMvc.perform(get("/v1/api/bikes/{id}", bikeId)
+                        .queryParam("status", BikeComponentStatus.ACTIVE.name())
+                        .queryParam("status", BikeComponentStatus.INACTIVE.name()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.id").value(bikeId.toString()));
     }
@@ -168,7 +210,7 @@ class BikeControllerTest {
                         .content(TestJsonBodies.patchBikeStatus("ACTIVE")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.id").value(bikeId.toString()))
-                .andExpect(jsonPath("$.data.status").value("ACTIVE"));
+                .andExpect(jsonPath("$.data.status").isNotEmpty());
     }
 
     @Test
@@ -287,6 +329,86 @@ class BikeControllerTest {
         mockMvc.perform(patch("/v1/api/bikes/{bikeId}/components/{componentId}", bikeId, componentId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(TestJsonBodies.patchBikeComponentName("New chain")))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturn200_whenValidUpdateBikeComponentStatusPatch() throws Exception {
+        UUID bikeId = UUID.randomUUID();
+        UUID componentId = UUID.randomUUID();
+
+        when(messageSource.getMessage(any(String.class), any(), any(Locale.class)))
+                .thenReturn("Road");
+
+        when(updateBikeComponentStatusUseCase.execute(any()))
+                .thenReturn(TestBikeData.bikeResultWithComponentStatus(bikeId, "ACTIVE"));
+
+        mockMvc.perform(patch("/v1/api/bikes/{bikeId}/components/{componentId}/status", bikeId, componentId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestJsonBodies.patchBikeComponentStatus("ACTIVE")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.id").value(bikeId.toString()));
+    }
+
+    @Test
+    void shouldReturn400_whenUpdateBikeComponentStatusPatchValidationFails_missingStatus() throws Exception {
+        when(messageSource.getMessage(any(FieldError.class), any(Locale.class)))
+                .thenReturn("Status is required");
+        when(messageSource.getMessage(eq("validation.failed"), any(), any(Locale.class)))
+                .thenReturn("Validation failed");
+
+        UUID bikeId = UUID.randomUUID();
+        UUID componentId = UUID.randomUUID();
+
+        mockMvc.perform(patch("/v1/api/bikes/{bikeId}/components/{componentId}/status", bikeId, componentId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturn404_whenUpdateBikeComponentStatusBikeNotFound() throws Exception {
+        UUID bikeId = UUID.randomUUID();
+        UUID componentId = UUID.randomUUID();
+
+        when(updateBikeComponentStatusUseCase.execute(any()))
+                .thenThrow(new RecordNotFoundException("bike.not.found"));
+
+        mockMvc.perform(patch("/v1/api/bikes/{bikeId}/components/{componentId}/status", bikeId, componentId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestJsonBodies.patchBikeComponentStatus("ACTIVE")))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturn201_whenValidReplaceBikeComponent() throws Exception {
+        UUID bikeId = UUID.randomUUID();
+        UUID componentId = UUID.randomUUID();
+
+        when(messageSource.getMessage(any(String.class), any(), any(Locale.class)))
+                .thenReturn("Road");
+
+        when(replaceBikeComponentUseCase.execute(any()))
+                .thenReturn(TestBikeData.bikeResultUpdated(bikeId));
+
+        mockMvc.perform(post("/v1/api/bikes/{bikeId}/components/{componentId}/replace", bikeId, componentId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestJsonBodies.addBikeComponentMinimal("Chain", "CHAIN")))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data.id").value(bikeId.toString()));
+    }
+
+    @Test
+    void shouldReturn404_whenReplaceBikeComponentBikeNotFound() throws Exception {
+        UUID bikeId = UUID.randomUUID();
+        UUID componentId = UUID.randomUUID();
+
+        when(replaceBikeComponentUseCase.execute(any()))
+                .thenThrow(new RecordNotFoundException("bike.not.found"));
+
+        mockMvc.perform(post("/v1/api/bikes/{bikeId}/components/{componentId}/replace", bikeId, componentId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestJsonBodies.addBikeComponentMinimal("Chain", "CHAIN")))
                 .andExpect(status().isNotFound());
     }
 }

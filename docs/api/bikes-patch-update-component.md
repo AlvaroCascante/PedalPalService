@@ -24,17 +24,17 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 
 ### Path parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `bikeId` | UUID | yes | Bike identifier that owns the component |
-| `componentId` | UUID | yes | Component identifier to update |
+| Name          | Type | Required | Description                             |
+|---------------|------|----------|-----------------------------------------|
+| `bikeId`      | UUID | yes      | Bike identifier that owns the component |
+| `componentId` | UUID | yes      | Component identifier to update          |
 
 ### Headers
 
-| Header | Required | Example |
-|--------|----------|---------|
-| `Content-Type` | yes | `application/json` |
-| `Authorization` | yes | `Bearer <jwt>` |
+| Header          | Required | Example            |
+|-----------------|----------|--------------------|
+| `Content-Type`  | yes      | `application/json` |
+| `Authorization` | yes      | `Bearer <jwt>`     |
 
 ### Body (`UpdateBikeComponentRequest`)
 
@@ -47,15 +47,15 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 
 #### Fields
 
-| Field | Type | Optional | Validation | Description |
-|------|------|----------|------------|-------------|
-| `name` | string | yes | `@Size(min=1)` (`{bike.add.component.name.blank}`) | Component name |
-| `type` | string | yes | `@Size(min=1)` (`{bike.add.component.type.required}`) | Component type code (e.g. `CHAIN`, must exist in system codes category `COMPONENT_TYPE`) |
-| `brand` | string | yes | `@Size(min=1,max=100)` (`{bike.add.component.brand.max}`) | Brand |
-| `model` | string | yes | `@Size(min=1,max=100)` (`{bike.add.component.model.max}`) | Model |
-| `notes` | string | yes | `@Size(min=1,max=1000)` (`{bike.add.component.notes.max}`) | Notes |
-| `odometerKm` | integer | yes | `@Min(0)` (`{bike.add.component.odometer.invalid}`) | Odometer in km |
-| `usageTimeMinutes` | integer | yes | `@Min(0)` (`{bike.add.component.usage.invalid}`) | Usage time in minutes |
+| Field              | Type    | Optional | Validation                                                 | Description                                                                              |
+|--------------------|---------|----------|------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| `name`             | string  | yes      | `@Size(min=1)` (`{bike.add.component.name.blank}`)         | Component name                                                                           |
+| `type`             | string  | yes      | `@Size(min=1)` (`{bike.add.component.type.required}`)      | Component type code (e.g. `CHAIN`, must exist in system codes category `COMPONENT_TYPE`) |
+| `brand`            | string  | yes      | `@Size(min=1,max=100)` (`{bike.add.component.brand.max}`)  | Brand                                                                                    |
+| `model`            | string  | yes      | `@Size(min=1,max=100)` (`{bike.add.component.model.max}`)  | Model                                                                                    |
+| `notes`            | string  | yes      | `@Size(min=1,max=1000)` (`{bike.add.component.notes.max}`) | Notes                                                                                    |
+| `odometerKm`       | integer | yes      | `@Min(0)` (`{bike.add.component.odometer.invalid}`)        | Odometer in km                                                                           |
+| `usageTimeMinutes` | integer | yes      | `@Min(0)` (`{bike.add.component.usage.invalid}`)           | Usage time in minutes                                                                    |
 
 > Implementation note: the current DTO uses `int odometerKm` and `int usageTimeMinutes` (primitive), which means they default to `0` when the field is omitted. That makes them effectively **always present** from the controller’s point of view. If you want true PATCH semantics for these fields, change them to `Integer`.
 

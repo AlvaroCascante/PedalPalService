@@ -23,13 +23,15 @@ public class UpdateBikeUseCase {
     private final BikeRepository bikeRepository;
 
     public BikeResult execute(UpdateBikeCommand command) {
+        Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
+                .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
         try {
-            Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
-                    .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
-
             applyPatch(bike, command);
 
             return BikeMapper.toBikeResult(bikeRepository.save(bike));
+        } catch (BadRequestException ex) {
+            log.error("BadRequestException on UpdateBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
+            throw ex;
         } catch (RuntimeException ex) {
             log.error("RuntimeException on UpdateBikeUseCase -- Command: {}: Error: {}", command, ex.getMessage());
             throw new BusinessException("bike.update.failed");

@@ -50,9 +50,9 @@ Notes:
 
 ### 200 OK
 
-Returns an `ApiResponse` whose `data` is an `UpdateBikeResponse`.
+Returns an `ApiResponse` whose `data` is a `BikeResponse`.
 
-`UpdateBikeResponse` fields:
+`BikeResponse` fields:
 
 ```json
 {

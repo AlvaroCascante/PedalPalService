@@ -20,7 +20,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import static com.quetoquenana.pedalpal.common.util.Constants.BikeComponents.COMPONENT_TYPE;
@@ -326,4 +325,3 @@ class UpdateBikeComponentUseCaseTest {
         return bike;
     }
 }
-

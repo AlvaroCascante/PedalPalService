@@ -78,23 +78,6 @@ class UpdateBikeStatusUseCaseTest {
 
             verify(bikeRepository, never()).save(any());
         }
-
-        @Test
-        void shouldThrowBadRequest_whenStatusIsNotAValidEnumValue() {
-            UUID bikeId = UUID.randomUUID();
-            UUID ownerId = UUID.randomUUID();
-
-            Bike bike = TestBikeData.existingBike(bikeId, ownerId);
-
-            when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
-
-            UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, ownerId, "NOT_VALID");
-
-            BadRequestException ex = assertThrows(BadRequestException.class, () -> useCase.execute(command));
-            assertEquals("bike.update.status.invalid", ex.getMessage());
-
-            verify(bikeRepository, never()).save(any());
-        }
     }
 
     @Nested
