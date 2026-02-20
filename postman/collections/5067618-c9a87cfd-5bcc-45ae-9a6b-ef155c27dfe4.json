@@ -179,7 +179,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id?status=ACTIVE&status=INACTIVE",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
@@ -188,6 +188,18 @@
 								"api",
 								"bikes",
 								":id"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "ACTIVE",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "INACTIVE",
+									"type": "text"
+								}
 							],
 							"variable": [
 								{
@@ -254,7 +266,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name1\": \"PilsenII\",\n    \"type\": \"ROAD\",\n    \"brand\": \"Pinarello\",\n    \"model\": \"Razha\",\n    \"year\": 2017,\n    \"serialNumber\": \"SN-123456789MII\",\n    \"notes\": \"Purchased at local store.\"\n}",
+							"raw": "{\n    \"name\": \"PilsenIII\",\n    \"type\": \"ROAD\",\n    \"brand\": \"Pinarello\",\n    \"model\": \"Razha\",\n    \"year\": 2017,\n    \"serialNumber\": \"SN-123456789MIII\",\n    \"notes\": \"Purchased at local store.\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -395,7 +407,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Shimano Ceramic Center\",\n  \"type\": \"CASSETTE\",\n  \"brand\": \"Shimano\",\n  \"model\": \"B07X-CER\",\n  \"notes\": \"CEramic center\"\n}",
+							"raw": "{\n  \"name\": \"Shimano Chain\",\n  \"type\": \"CHAIN\",\n  \"brand\": \"Shimano\",\n  \"model\": \"B07X-CER\",\n  \"notes\": \"Chain center\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -417,7 +429,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "a0512331-f1f1-48c3-84fe-13f7292320f0"
+									"value": "57b2cc53-7e36-4958-8356-b6f48f1ee12a"
 								}
 							]
 						}
