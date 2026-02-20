@@ -95,7 +95,7 @@ public String getWelcomeMessage(Locale locale) {
 The project includes a configurable job that can automatically generate maintenance suggestions from bikes and their components. The job is implemented as a Spring scheduled component and also supports manual triggering (for example, via a controller endpoint you can add later).
 
 Key points:
-- The job logic is in `com.quetoquenana.pedalpal.application.job.MaintenanceSuggestionJob` and it delegates to `MaintenanceSuggestionService.generateBikesSuggestions()`.
+- The job logic is in `com.quetoquenana.pedalpal.job.MaintenanceSuggestionJob` and it delegates to `MaintenanceSuggestionService.generateBikesSuggestions()`.
 - Properties are bound to the `MaintenanceSuggestionJobProperties` class (`com.quetoquenana.pedalpal.config.MaintenanceSuggestionJobProperties`) using the prefix `jobs.maintenance-suggestions`.
 - The `PedalPalApplication` class enables the properties binding with `@EnableConfigurationProperties(MaintenanceSuggestionJobProperties.class)`.
 

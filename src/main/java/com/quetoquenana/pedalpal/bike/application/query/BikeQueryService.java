@@ -1,0 +1,32 @@
+package com.quetoquenana.pedalpal.bike.application.query;
+
+import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
+import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
+import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
+import com.quetoquenana.pedalpal.bike.domain.enums.BikeStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.Bike;
+import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+import java.util.UUID;
+
+@RequiredArgsConstructor
+public class BikeQueryService {
+    private final BikeRepository bikeRepository;
+
+    public BikeResult getById(UUID id, UUID ownerId) {
+        Bike bike = bikeRepository.findByIdAndOwnerId(id, ownerId)
+                .orElseThrow(RecordNotFoundException::new);
+
+        return BikeMapper.toBikeResult(bike);
+    }
+
+    public List<BikeResult> fetchActiveByOwnerId(UUID ownerId) {
+        List<Bike> bikes = bikeRepository.findByOwnerIdAndStatus(ownerId, BikeStatus.ACTIVE);
+
+        return bikes.stream()
+                .map(BikeMapper::toBikeResult)
+                .toList();
+    }
+}

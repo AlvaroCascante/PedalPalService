@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.common.exception;
 
-import com.quetoquenana.pedalpal.presentation.dto.response.ApiResponse;
+import com.quetoquenana.pedalpal.bike.presentation.dto.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;

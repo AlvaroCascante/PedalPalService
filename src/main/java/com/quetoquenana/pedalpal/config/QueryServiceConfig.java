@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.config;
 
-import com.quetoquenana.pedalpal.application.query.BikeQueryService;
-import com.quetoquenana.pedalpal.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.bike.application.query.BikeQueryService;
+import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

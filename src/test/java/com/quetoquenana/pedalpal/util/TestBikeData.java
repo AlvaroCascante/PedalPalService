@@ -1,16 +1,17 @@
 package com.quetoquenana.pedalpal.util;
 
-import com.quetoquenana.pedalpal.application.command.CreateBikeCommand;
-import com.quetoquenana.pedalpal.application.command.UpdateBikeCommand;
-import com.quetoquenana.pedalpal.application.result.BikeComponentResult;
-import com.quetoquenana.pedalpal.application.result.BikeResult;
-import com.quetoquenana.pedalpal.domain.enums.BikeComponentStatus;
-import com.quetoquenana.pedalpal.domain.enums.BikeStatus;
-import com.quetoquenana.pedalpal.domain.enums.BikeType;
-import com.quetoquenana.pedalpal.domain.model.Bike;
-import com.quetoquenana.pedalpal.domain.model.SystemCode;
+import com.quetoquenana.pedalpal.bike.application.command.CreateBikeCommand;
+import com.quetoquenana.pedalpal.bike.application.command.UpdateBikeCommand;
+import com.quetoquenana.pedalpal.bike.application.result.BikeComponentResult;
+import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
+import com.quetoquenana.pedalpal.bike.domain.enums.BikeComponentStatus;
+import com.quetoquenana.pedalpal.bike.domain.enums.BikeStatus;
+import com.quetoquenana.pedalpal.bike.domain.enums.BikeType;
+import com.quetoquenana.pedalpal.bike.domain.model.Bike;
+import com.quetoquenana.pedalpal.bike.domain.model.SystemCode;
 
 import java.util.Collections;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -271,7 +272,7 @@ public final class TestBikeData {
                 null,
                 0,
                 0,
-                java.util.Set.of(component)
+                Set.of(component)
         );
     }
 

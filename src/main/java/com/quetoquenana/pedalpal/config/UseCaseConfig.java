@@ -1,8 +1,8 @@
 package com.quetoquenana.pedalpal.config;
 
-import com.quetoquenana.pedalpal.application.useCase.*;
-import com.quetoquenana.pedalpal.domain.repository.BikeRepository;
-import com.quetoquenana.pedalpal.domain.repository.SystemCodeRepository;
+import com.quetoquenana.pedalpal.bike.application.useCase.*;
+import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.bike.domain.repository.SystemCodeRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
