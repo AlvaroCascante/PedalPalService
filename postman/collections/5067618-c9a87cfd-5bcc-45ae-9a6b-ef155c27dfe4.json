@@ -212,7 +212,7 @@
 					"response": []
 				},
 				{
-					"name": "Get By ID Copy",
+					"name": "Get Bike History",
 					"id": "5067618-b3666482-bbbf-4bd7-a197-c515d7a8c2ff",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -231,7 +231,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id?status=ACTIVE&status=INACTIVE",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id/history",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
@@ -239,23 +239,11 @@
 								"{{path}}",
 								"api",
 								"bikes",
-								":id"
-							],
-							"query": [
-								{
-									"key": "status",
-									"value": "ACTIVE",
-									"type": "text"
-								},
-								{
-									"key": "status",
-									"value": "INACTIVE",
-									"type": "text"
-								}
+								":id",
+								"history"
 							],
 							"variable": [
 								{
-									"id": "099a8340-43aa-4ede-9e81-e495eb9ac980",
 									"key": "id",
 									"value": "a0512331-f1f1-48c3-84fe-13f7292320f0"
 								}
