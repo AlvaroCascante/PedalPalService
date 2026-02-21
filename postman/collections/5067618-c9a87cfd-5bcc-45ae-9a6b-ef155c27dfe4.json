@@ -212,6 +212,59 @@
 					"response": []
 				},
 				{
+					"name": "Get By ID Copy",
+					"id": "5067618-b3666482-bbbf-4bd7-a197-c515d7a8c2ff",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id?status=ACTIVE&status=INACTIVE",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"bikes",
+								":id"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "ACTIVE",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "INACTIVE",
+									"type": "text"
+								}
+							],
+							"variable": [
+								{
+									"id": "099a8340-43aa-4ede-9e81-e495eb9ac980",
+									"key": "id",
+									"value": "a0512331-f1f1-48c3-84fe-13f7292320f0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Find Active",
 					"id": "5067618-d59e0aae-a378-470b-97e8-bf8b7125aac2",
 					"protocolProfileBehavior": {
