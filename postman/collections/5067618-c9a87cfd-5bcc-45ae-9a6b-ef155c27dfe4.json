@@ -349,7 +349,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"serialNumber\": \"SN-PII123456789M\"\n}",
+							"raw": "{\n    \"serialNumber\": \"SN-PII1234567\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
