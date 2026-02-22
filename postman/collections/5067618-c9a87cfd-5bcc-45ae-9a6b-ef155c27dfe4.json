@@ -307,7 +307,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"PilsenIII\",\n    \"type\": \"ROAD\",\n    \"brand\": \"Pinarello\",\n    \"model\": \"Razha\",\n    \"year\": 2017,\n    \"serialNumber\": \"SN-123456789MIII\",\n    \"notes\": \"Purchased at local store.\"\n}",
+							"raw": "{\n    \"name\": \"Pilsen\",\n    \"type\": \"ROAD\",\n    \"brand\": \"Pinarello\",\n    \"model\": \"Razha\",\n    \"year\": 2017,\n    \"serialNumber\": \"SN-123456789MA\",\n    \"notes\": \"Purchased at local store.\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -349,7 +349,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"serialNumber\": \"SN-PII1234567\"\n}",
+							"raw": "{\n    \"serialNumber\": \"SN-PII12345611711ABC123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -868,8 +868,29 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/stores",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"stores"
+							]
+						}
 					},
 					"response": []
 				}
