@@ -857,6 +857,24 @@
 				}
 			],
 			"id": "5067618-26a90c92-e6ae-4d52-922d-53bd64c41b69"
+		},
+		{
+			"name": "Stores",
+			"item": [
+				{
+					"name": "Get All Stores",
+					"id": "5067618-10012854-3644-48db-8eda-c010bc065e7c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			],
+			"id": "5067618-bad8e1ed-1d7b-466e-9cd3-44b3b7f65854"
 		}
 	],
 	"event": [
