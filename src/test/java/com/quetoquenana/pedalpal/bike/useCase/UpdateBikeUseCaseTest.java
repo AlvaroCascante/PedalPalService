@@ -1,19 +1,25 @@
 package com.quetoquenana.pedalpal.bike.useCase;
 
 import com.quetoquenana.pedalpal.bike.application.command.UpdateBikeCommand;
+import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeUseCase;
+import com.quetoquenana.pedalpal.bike.domain.model.Bike;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEvent;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEventType;
+import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
-import com.quetoquenana.pedalpal.bike.domain.model.Bike;
-import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.util.TestBikeData;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -27,8 +33,17 @@ class UpdateBikeUseCaseTest {
     @Mock
     BikeRepository bikeRepository;
 
+    @Mock
+    BikeMapper bikeMapper;
+
+    @Mock
+    ApplicationEventPublisher eventPublisher;
+
     @InjectMocks
     UpdateBikeUseCase useCase;
+
+    @Captor
+    ArgumentCaptor<BikeHistoryEvent> historyEventCaptor;
 
     @Nested
     class HappyPath {
@@ -45,6 +60,7 @@ class UpdateBikeUseCaseTest {
                 toSave.setId(bikeId);
                 return toSave;
             });
+            when(bikeMapper.toBikeResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
 
             UpdateBikeCommand command = TestBikeData.updateBikeCommand_nameOnly(bikeId, ownerId, "New name");
 
@@ -57,6 +73,15 @@ class UpdateBikeUseCaseTest {
             verify(bikeRepository, never()).existsBySerialNumber(anyString());
             verify(bikeRepository).findByIdAndOwnerId(eq(bikeId), eq(ownerId));
             verify(bikeRepository).save(any(Bike.class));
+
+            verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
+            BikeHistoryEvent event = historyEventCaptor.getValue();
+            assertEquals(bikeId, event.bikeId());
+            assertEquals(ownerId, event.performedBy());
+            assertEquals(bikeId, event.referenceId());
+            assertEquals(BikeHistoryEventType.UPDATED, event.bikeHistoryEventType());
+            assertNotNull(event.changes());
+            assertEquals(1, event.changes().size());
         }
 
         @Test
@@ -68,6 +93,7 @@ class UpdateBikeUseCaseTest {
             when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(bike));
             when(bikeRepository.existsBySerialNumber("NEW-SN")).thenReturn(false);
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
+            when(bikeMapper.toBikeResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
 
             UpdateBikeCommand command = TestBikeData.updateBikeCommand_allFields(bikeId, ownerId);
 
@@ -83,6 +109,8 @@ class UpdateBikeUseCaseTest {
             verify(bikeRepository).existsBySerialNumber("NEW-SN");
             verify(bikeRepository).findByIdAndOwnerId(eq(bikeId), eq(ownerId));
             verify(bikeRepository).save(any(Bike.class));
+
+            verify(eventPublisher, times(1)).publishEvent(any(BikeHistoryEvent.class));
         }
     }
 
@@ -97,6 +125,7 @@ class UpdateBikeUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
+            when(bikeMapper.toBikeResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
 
             UpdateBikeCommand command = TestBikeData.updateBikeCommand_noFields(bikeId, ownerId);
 
@@ -108,6 +137,7 @@ class UpdateBikeUseCaseTest {
 
             verify(bikeRepository).findByIdAndOwnerId(eq(bikeId), eq(ownerId));
             verify(bikeRepository).save(any(Bike.class));
+            verify(eventPublisher, never()).publishEvent(any());
         }
 
         @Test
@@ -125,6 +155,7 @@ class UpdateBikeUseCaseTest {
 
             verify(bikeRepository).findByIdAndOwnerId(eq(bikeId), eq(ownerId));
             verify(bikeRepository, never()).save(any());
+            verify(eventPublisher, never()).publishEvent(any());
         }
 
         @Test
@@ -137,6 +168,7 @@ class UpdateBikeUseCaseTest {
 
             assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
             verify(bikeRepository, never()).save(any());
+            verify(eventPublisher, never()).publishEvent(any());
         }
 
         @Test
@@ -150,6 +182,7 @@ class UpdateBikeUseCaseTest {
 
             assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
             verify(bikeRepository, never()).save(any());
+            verify(eventPublisher, never()).publishEvent(any());
         }
     }
 }

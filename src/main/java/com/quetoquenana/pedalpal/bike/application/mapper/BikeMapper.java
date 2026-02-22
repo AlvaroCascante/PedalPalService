@@ -1,20 +1,27 @@
 package com.quetoquenana.pedalpal.bike.application.mapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quetoquenana.pedalpal.bike.application.command.AddBikeComponentCommand;
 import com.quetoquenana.pedalpal.bike.application.command.CreateBikeCommand;
 import com.quetoquenana.pedalpal.bike.application.result.BikeComponentResult;
+import com.quetoquenana.pedalpal.bike.application.result.BikeHistoryResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeComponentStatus;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeStatus;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeType;
-import com.quetoquenana.pedalpal.bike.domain.model.Bike;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeComponent;
+import com.quetoquenana.pedalpal.bike.domain.model.*;
+import com.quetoquenana.pedalpal.common.domain.model.SystemCode;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
+@RequiredArgsConstructor
 public class BikeMapper {
 
-    public static Bike toBike(CreateBikeCommand command) {
+    private final ObjectMapper objectMapper;
+
+    public Bike toBike(CreateBikeCommand command) {
         return Bike.builder()
                 .ownerId(command.ownerId())
                 .name(command.name())
@@ -31,11 +38,15 @@ public class BikeMapper {
                 .usageTimeMinutes(command.usageTimeMinutes())
                 .build();
     }
-
-    public static BikeComponent toBikeComponent(AddBikeComponentCommand command) {
-        // Type is determined by the component type (database), so it is not set here
+    public BikeComponent toBikeComponent(AddBikeComponentCommand command) {
+        return this.toBikeComponent(command, null);
+    }
+    public BikeComponent toBikeComponent(
+            AddBikeComponentCommand command,
+            SystemCode componentType) {
         return BikeComponent.builder()
                 .name(command.name())
+                .componentType(componentType)
                 .status(BikeComponentStatus.ACTIVE)
                 .brand(command.brand())
                 .model(command.model())
@@ -45,7 +56,18 @@ public class BikeMapper {
                 .build();
     }
 
-    public static BikeResult toBikeResult(Bike model) {
+    public BikeHistory toBikeHistory(BikeHistoryEvent event) {
+        return BikeHistory.builder()
+                .bikeId(event.bikeId())
+                .performedBy(event.performedBy())
+                .referenceId(event.referenceId())
+                .type(event.bikeHistoryEventType())
+                .payload(serializeChanges(event.changes()))
+                .occurredAt(event.occurredAt())
+                .build();
+    }
+
+    public BikeResult toBikeResult(Bike model) {
         return new BikeResult(
                 model.getId(),
                 model.getName(),
@@ -60,11 +82,11 @@ public class BikeMapper {
                 model.getNotes(),
                 model.getOdometerKm() == null ? 0 : model.getOdometerKm(),
                 model.getUsageTimeMinutes() == null ? 0 : model.getUsageTimeMinutes(),
-                model.getComponents().stream().map(BikeMapper::toComponentResult).collect(Collectors.toSet())
+                model.getComponents().stream().map(this::toComponentResult).collect(Collectors.toSet())
         );
     }
 
-    public static BikeComponentResult toComponentResult(BikeComponent model) {
+    public BikeComponentResult toComponentResult(BikeComponent model) {
         return new BikeComponentResult(
                 model.getId(),
                 model.getComponentType(),
@@ -76,5 +98,24 @@ public class BikeMapper {
                 model.getOdometerKm() == null ? 0 : model.getOdometerKm(),
                 model.getUsageTimeMinutes() == null ? 0 : model.getUsageTimeMinutes()
         );
+    }
+
+    public BikeHistoryResult toBikeHistoryResult(BikeHistory model) {
+        return new BikeHistoryResult(
+                model.getId(),
+                model.getId(),
+                model.getOccurredAt(),
+                model.getPerformedBy(),
+                model.getType(),
+                model.getPayload()
+        );
+    }
+
+    private String serializeChanges(List<BikeChangeItem> changes) {
+        try {
+            return objectMapper.writeValueAsString(changes);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize bike history changes", e);
+        }
     }
 }

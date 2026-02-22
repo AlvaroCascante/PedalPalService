@@ -3,19 +3,20 @@ package com.quetoquenana.pedalpal.bike.application.useCase;
 import com.quetoquenana.pedalpal.bike.application.command.AddBikeComponentCommand;
 import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeComponentStatus;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.*;
+import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.common.domain.model.SystemCode;
+import com.quetoquenana.pedalpal.common.domain.repository.SystemCodeRepository;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
-import com.quetoquenana.pedalpal.bike.domain.model.Bike;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeComponent;
-import com.quetoquenana.pedalpal.bike.domain.model.SystemCode;
-import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
-import com.quetoquenana.pedalpal.bike.domain.repository.SystemCodeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static com.quetoquenana.pedalpal.common.util.Constants.BikeComponents.COMPONENT_TYPE;
 
@@ -24,8 +25,10 @@ import static com.quetoquenana.pedalpal.common.util.Constants.BikeComponents.COM
 @Slf4j
 public class ReplaceBikeComponentUseCase {
 
+    private final BikeMapper bikeMapper;
     private final BikeRepository bikeRepository;
     private final SystemCodeRepository systemCodeRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public BikeResult execute(AddBikeComponentCommand command) {
         Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
@@ -40,11 +43,7 @@ public class ReplaceBikeComponentUseCase {
             throw new BadRequestException("bike.update.no.active");
         }
 
-        if (component.getStatus() == null) {
-            throw new BadRequestException("bike.component.update.status.required");
-        }
-
-        if (!component.getStatus().equals(BikeComponentStatus.ACTIVE)) {
+        if (!BikeComponentStatus.ACTIVE.equals(component.getStatus())) {
             throw new BadRequestException("bike.component.update.no.active");
         }
 
@@ -52,16 +51,41 @@ public class ReplaceBikeComponentUseCase {
                 .orElseThrow(() -> new RecordNotFoundException("bike.component.type.not.found", command.type()));
 
         try {
-            BikeComponent newComponent = BikeMapper.toBikeComponent(command);
-            newComponent.setComponentType(componentType);
-
-            bike.removeComponent(command.componentId());
+            BikeComponent newComponent = bikeMapper.toBikeComponent(command, componentType);
+            component.changeStatus(BikeComponentStatus.REPLACED);
             bike.addComponent(newComponent);
+            bikeRepository.save(bike);
 
-            return BikeMapper.toBikeResult(bikeRepository.save(bike));
+            publishHistoryEvent(bike.getId(), command.authenticatedUserId(), component, newComponent);
+            return bikeMapper.toBikeResult(bike);
         } catch (RuntimeException ex) {
             log.error("RuntimeException on ReplaceBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
             throw new BusinessException("bike.replace.component.failed");
         }
+    }
+
+    private void publishHistoryEvent(UUID bikeId, UUID userId, BikeComponent oldComponent, BikeComponent newComponent) {
+
+        eventPublisher.publishEvent(
+            new BikeHistoryEvent(
+                    bikeId,
+                    userId,
+                    oldComponent.getId(),
+                    BikeHistoryEventType.COMPONENT_REPLACED,
+                null,
+                    LocalDateTime.now()
+            )
+        );
+
+        eventPublisher.publishEvent(
+            new BikeHistoryEvent(
+                    bikeId,
+                    userId,
+                    newComponent.getId(),
+                    BikeHistoryEventType.COMPONENT_ADDED,
+                    null,
+                    LocalDateTime.now()
+            )
+        );
     }
 }

@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.bike.domain.repository;
 
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 
 import java.util.List;

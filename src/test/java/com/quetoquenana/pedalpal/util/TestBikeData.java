@@ -4,11 +4,12 @@ import com.quetoquenana.pedalpal.bike.application.command.CreateBikeCommand;
 import com.quetoquenana.pedalpal.bike.application.command.UpdateBikeCommand;
 import com.quetoquenana.pedalpal.bike.application.result.BikeComponentResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeComponentStatus;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeStatus;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeType;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeComponent;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeType;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
-import com.quetoquenana.pedalpal.bike.domain.model.SystemCode;
+import com.quetoquenana.pedalpal.common.domain.model.SystemCode;
 
 import java.util.Collections;
 import java.util.Set;
@@ -273,6 +274,47 @@ public final class TestBikeData {
                 0,
                 0,
                 Set.of(component)
+        );
+    }
+
+    public static BikeResult bikeResultFromBike(Bike bike) {
+        return BikeResult.builder()
+                .id(bike.getId())
+                .name(bike.getName())
+                .type(bike.getType() == null ? null : bike.getType().name())
+                .status(bike.getStatus() == null ? null : bike.getStatus().name())
+                .isPublic(bike.isPublic())
+                .isExternalSync(bike.isExternalSync())
+                .brand(bike.getBrand())
+                .model(bike.getModel())
+                .year(bike.getYear())
+                .serialNumber(bike.getSerialNumber())
+                .notes(bike.getNotes())
+                .odometerKm(bike.getOdometerKm() == null ? 0 : bike.getOdometerKm())
+                .usageTimeMinutes(bike.getUsageTimeMinutes() == null ? 0 : bike.getUsageTimeMinutes())
+                .components(bike.getComponents() == null
+                        ? Collections.emptySet()
+                        : bike.getComponents().stream()
+                        .map(c -> toComponentResult(c))
+                        .collect(java.util.stream.Collectors.toSet()))
+                .build();
+    }
+
+    public static BikeResult bikeResultWithOneComponent(UUID bikeId) {
+        return bikeResultWithComponentStatus(bikeId, "ACTIVE");
+    }
+
+    private static BikeComponentResult toComponentResult(BikeComponent component) {
+        return new BikeComponentResult(
+                component.getId(),
+                component.getComponentType(),
+                component.getName(),
+                component.getStatus(),
+                component.getBrand(),
+                component.getModel(),
+                component.getNotes(),
+                component.getOdometerKm() == null ? 0 : component.getOdometerKm(),
+                component.getUsageTimeMinutes() == null ? 0 : component.getUsageTimeMinutes()
         );
     }
 

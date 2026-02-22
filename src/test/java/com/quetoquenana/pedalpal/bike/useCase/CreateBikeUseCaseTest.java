@@ -1,14 +1,17 @@
 package com.quetoquenana.pedalpal.bike.useCase;
 
+import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.application.command.CreateBikeCommand;
 import com.quetoquenana.pedalpal.bike.application.useCase.CreateBikeUseCase;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeStatus;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeType;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeType;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.util.TestBikeData;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEvent;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEventType;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +20,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.UUID;
@@ -30,11 +34,20 @@ class CreateBikeUseCaseTest {
     @Mock
     BikeRepository bikeRepository;
 
+    @Mock
+    ApplicationEventPublisher eventPublisher;
+
+    @Mock
+    BikeMapper bikeMapper;
+
     @InjectMocks
     CreateBikeUseCase useCase;
 
     @Captor
     ArgumentCaptor<Bike> bikeCaptor;
+
+    @Captor
+    ArgumentCaptor<BikeHistoryEvent> historyEventCaptor;
 
     @Nested
     class HappyPathScenarios {
@@ -49,6 +62,37 @@ class CreateBikeUseCaseTest {
                 Bike toSave = inv.getArgument(0, Bike.class);
                 toSave.setId(UUID.randomUUID());
                 return toSave;
+            });
+
+            Bike mapped = Bike.builder()
+                    .ownerId(ownerId)
+                    .name(command.name())
+                    .type(BikeType.from(command.type()))
+                    .status(BikeStatus.ACTIVE)
+                    .serialNumber(command.serialNumber())
+                    .isPublic(command.isPublic())
+                    .isExternalSync(command.isExternalSync())
+                    .build();
+
+            when(bikeMapper.toBike(command)).thenReturn(mapped);
+            when(bikeMapper.toBikeResult(any(Bike.class))).thenAnswer(inv -> {
+                Bike b = inv.getArgument(0, Bike.class);
+                return new BikeResult(
+                        b.getId(),
+                        b.getName(),
+                        b.getType().name(),
+                        b.getStatus().name(),
+                        b.isPublic(),
+                        b.isExternalSync(),
+                        b.getBrand(),
+                        b.getModel(),
+                        b.getYear(),
+                        b.getSerialNumber(),
+                        b.getNotes(),
+                        b.getOdometerKm() == null ? 0 : b.getOdometerKm(),
+                        b.getUsageTimeMinutes() == null ? 0 : b.getUsageTimeMinutes(),
+                        java.util.Set.of()
+                );
             });
 
             BikeResult result = useCase.execute(command);
@@ -68,6 +112,13 @@ class CreateBikeUseCaseTest {
             assertEquals(command.name(), result.name());
             assertEquals("ROAD", result.type());
             assertNull(result.serialNumber());
+
+            verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
+            BikeHistoryEvent event = historyEventCaptor.getValue();
+            assertEquals(saved.getId(), event.bikeId());
+            assertEquals(ownerId, event.performedBy());
+            assertEquals(saved.getId(), event.referenceId());
+            assertEquals(BikeHistoryEventType.CREATED, event.bikeHistoryEventType());
         }
 
         @Test
@@ -77,7 +128,32 @@ class CreateBikeUseCaseTest {
             CreateBikeCommand command = TestBikeData.createBikeCommand_withSerial(ownerId, "SN-123");
 
             when(bikeRepository.existsBySerialNumber(command.serialNumber())).thenReturn(false);
-            when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
+            when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> {
+                Bike toSave = inv.getArgument(0, Bike.class);
+                if (toSave.getId() == null) {
+                    toSave.setId(UUID.randomUUID());
+                }
+                return toSave;
+            });
+
+            Bike mapped = Bike.builder()
+                    .ownerId(ownerId)
+                    .name(command.name())
+                    .type(BikeType.from(command.type()))
+                    .status(BikeStatus.ACTIVE)
+                    .serialNumber(command.serialNumber())
+                    .brand(command.brand())
+                    .model(command.model())
+                    .year(command.year())
+                    .notes(command.notes())
+                    .odometerKm(command.odometerKm())
+                    .usageTimeMinutes(command.usageTimeMinutes())
+                    .isPublic(command.isPublic())
+                    .isExternalSync(command.isExternalSync())
+                    .build();
+
+            when(bikeMapper.toBike(command)).thenReturn(mapped);
+            when(bikeMapper.toBikeResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
 
             BikeResult result = useCase.execute(command);
 
@@ -102,6 +178,13 @@ class CreateBikeUseCaseTest {
 
             assertEquals("ROAD", result.type());
             assertEquals(command.serialNumber(), result.serialNumber());
+
+            verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
+            BikeHistoryEvent event = historyEventCaptor.getValue();
+            assertEquals(event.bikeId(), result.id());
+            assertEquals(ownerId, event.performedBy());
+            assertEquals(result.id(), event.referenceId());
+            assertEquals(BikeHistoryEventType.CREATED, event.bikeHistoryEventType());
         }
     }
 
@@ -127,6 +210,18 @@ class CreateBikeUseCaseTest {
 
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
 
+            Bike mapped = Bike.builder()
+                    .ownerId(command.ownerId())
+                    .name(command.name())
+                    .type(BikeType.from(command.type()))
+                    .status(BikeStatus.ACTIVE)
+                    .serialNumber(null)
+                    .isPublic(command.isPublic())
+                    .isExternalSync(command.isExternalSync())
+                    .build();
+            when(bikeMapper.toBike(command)).thenReturn(mapped);
+            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(UUID.randomUUID()));
+
             useCase.execute(command);
 
             verify(bikeRepository, never()).existsBySerialNumber(anyString());
@@ -139,6 +234,17 @@ class CreateBikeUseCaseTest {
 
             when(bikeRepository.existsBySerialNumber(command.serialNumber())).thenReturn(false);
             when(bikeRepository.save(any(Bike.class))).thenThrow(new DataIntegrityViolationException("dup"));
+
+            Bike mapped = Bike.builder()
+                    .ownerId(command.ownerId())
+                    .name(command.name())
+                    .type(BikeType.from(command.type()))
+                    .status(BikeStatus.ACTIVE)
+                    .serialNumber(command.serialNumber())
+                    .isPublic(command.isPublic())
+                    .isExternalSync(command.isExternalSync())
+                    .build();
+            when(bikeMapper.toBike(command)).thenReturn(mapped);
 
             BusinessException ex = assertThrows(BusinessException.class, () -> useCase.execute(command));
             assertEquals("bike.creation.failed", ex.getMessage());
@@ -159,6 +265,18 @@ class CreateBikeUseCaseTest {
             when(bikeRepository.existsBySerialNumber(command.serialNumber())).thenReturn(false);
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
 
+            Bike mapped = Bike.builder()
+                    .ownerId(ownerId)
+                    .name(command.name())
+                    .type(BikeType.from(command.type()))
+                    .status(BikeStatus.ACTIVE)
+                    .serialNumber(command.serialNumber())
+                    .isPublic(command.isPublic())
+                    .isExternalSync(command.isExternalSync())
+                    .build();
+            when(bikeMapper.toBike(command)).thenReturn(mapped);
+            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(UUID.randomUUID()));
+
             useCase.execute(command);
 
             verify(bikeRepository).save(bikeCaptor.capture());
@@ -177,6 +295,18 @@ class CreateBikeUseCaseTest {
             CreateBikeCommand command = TestBikeData.createBikeCommand_basicNoSerial(UUID.randomUUID());
 
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
+
+            Bike mapped = Bike.builder()
+                    .ownerId(command.ownerId())
+                    .name(command.name())
+                    .type(BikeType.from(command.type()))
+                    .status(BikeStatus.ACTIVE)
+                    .serialNumber(command.serialNumber())
+                    .isPublic(command.isPublic())
+                    .isExternalSync(command.isExternalSync())
+                    .build();
+            when(bikeMapper.toBike(command)).thenReturn(mapped);
+            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(UUID.randomUUID()));
 
             useCase.execute(command);
 

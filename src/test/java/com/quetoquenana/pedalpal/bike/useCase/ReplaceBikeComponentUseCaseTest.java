@@ -1,17 +1,20 @@
 package com.quetoquenana.pedalpal.bike.useCase;
 
 import com.quetoquenana.pedalpal.bike.application.command.AddBikeComponentCommand;
+import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.application.useCase.ReplaceBikeComponentUseCase;
-import com.quetoquenana.pedalpal.common.exception.BadRequestException;
-import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeComponentStatus;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEvent;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEventType;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponent;
-import com.quetoquenana.pedalpal.bike.domain.model.SystemCode;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
-import com.quetoquenana.pedalpal.bike.domain.repository.SystemCodeRepository;
+import com.quetoquenana.pedalpal.common.domain.model.SystemCode;
+import com.quetoquenana.pedalpal.common.domain.repository.SystemCodeRepository;
+import com.quetoquenana.pedalpal.common.exception.BadRequestException;
+import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.util.TestBikeData;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -21,6 +24,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -32,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -44,11 +49,20 @@ class ReplaceBikeComponentUseCaseTest {
     @Mock
     SystemCodeRepository systemCodeRepository;
 
+    @Mock
+    BikeMapper bikeMapper;
+
+    @Mock
+    ApplicationEventPublisher eventPublisher;
+
     @InjectMocks
     ReplaceBikeComponentUseCase useCase;
 
     @Captor
     ArgumentCaptor<Bike> bikeCaptor;
+
+    @Captor
+    ArgumentCaptor<BikeHistoryEvent> historyEventCaptor;
 
     @Nested
     class HappyPath {
@@ -93,6 +107,14 @@ class ReplaceBikeComponentUseCaseTest {
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(systemCodeRepository.findByCategoryAndCode(eq(COMPONENT_TYPE), eq("CHAIN")))
                     .thenReturn(Optional.of(componentType));
+            when(bikeMapper.toBikeComponent(eq(command), eq(componentType))).thenReturn(
+                    BikeComponent.builder()
+                            .id(UUID.randomUUID())
+                            .name("New chain")
+                            .status(BikeComponentStatus.ACTIVE)
+                            .build()
+            );
+            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultUpdated(bikeId));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
 
             BikeResult result = useCase.execute(command);
@@ -103,9 +125,16 @@ class ReplaceBikeComponentUseCaseTest {
             assertEquals(bikeId, saved.getId());
             assertEquals(ownerId, saved.getOwnerId());
             assertNotNull(saved.getComponents());
-            assertEquals(1, saved.getComponents().size());
+            assertEquals(2, saved.getComponents().size());
 
+            assertEquals(BikeComponentStatus.REPLACED, existing.getStatus());
             assertEquals(bikeId, result.id());
+
+            verify(eventPublisher, times(2)).publishEvent(historyEventCaptor.capture());
+            var events = historyEventCaptor.getAllValues();
+            assertEquals(2, events.size());
+            assertEquals(BikeHistoryEventType.COMPONENT_REPLACED, events.get(0).bikeHistoryEventType());
+            assertEquals(BikeHistoryEventType.COMPONENT_ADDED, events.get(1).bikeHistoryEventType());
         }
     }
 
@@ -134,6 +163,7 @@ class ReplaceBikeComponentUseCaseTest {
 
             verify(systemCodeRepository, never()).findByCategoryAndCode(any(), any());
             verify(bikeRepository, never()).save(any());
+            verify(eventPublisher, never()).publishEvent(any());
         }
 
         @Test
@@ -161,6 +191,7 @@ class ReplaceBikeComponentUseCaseTest {
 
             verify(systemCodeRepository, never()).findByCategoryAndCode(any(), any());
             verify(bikeRepository, never()).save(any());
+            verify(eventPublisher, never()).publishEvent(any());
         }
 
         @Test
@@ -195,6 +226,7 @@ class ReplaceBikeComponentUseCaseTest {
             assertEquals("bike.component.type.not.found", ex.getMessage());
 
             verify(bikeRepository, never()).save(any());
+            verify(eventPublisher, never()).publishEvent(any());
         }
     }
 
@@ -228,6 +260,7 @@ class ReplaceBikeComponentUseCaseTest {
 
             verify(systemCodeRepository, never()).findByCategoryAndCode(any(), any());
             verify(bikeRepository, never()).save(any());
+            verify(eventPublisher, never()).publishEvent(any());
         }
 
         @Test
@@ -256,6 +289,7 @@ class ReplaceBikeComponentUseCaseTest {
 
             verify(systemCodeRepository, never()).findByCategoryAndCode(any(), any());
             verify(bikeRepository, never()).save(any());
+            verify(eventPublisher, never()).publishEvent(any());
         }
 
         @Test
@@ -280,10 +314,11 @@ class ReplaceBikeComponentUseCaseTest {
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
 
             BadRequestException ex = assertThrows(BadRequestException.class, () -> useCase.execute(command));
-            assertEquals("bike.component.update.status.required", ex.getMessage());
+            assertEquals("bike.component.update.no.active", ex.getMessage());
 
             verify(systemCodeRepository, never()).findByCategoryAndCode(any(), any());
             verify(bikeRepository, never()).save(any());
+            verify(eventPublisher, never()).publishEvent(any());
         }
     }
 }

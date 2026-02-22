@@ -1,17 +1,20 @@
 package com.quetoquenana.pedalpal.bike.presentation.controller;
 
 import com.quetoquenana.pedalpal.bike.application.command.*;
+import com.quetoquenana.pedalpal.bike.application.query.BikeHistoryQueryService;
+import com.quetoquenana.pedalpal.bike.application.result.BikeHistoryResult;
 import com.quetoquenana.pedalpal.bike.application.useCase.*;
 import com.quetoquenana.pedalpal.bike.presentation.dto.request.*;
+import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeHistoryResponse;
 import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
 import com.quetoquenana.pedalpal.bike.application.query.BikeQueryService;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeComponentStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
 import com.quetoquenana.pedalpal.security.application.SecurityUser;
-import com.quetoquenana.pedalpal.bike.presentation.dto.response.ApiResponse;
+import com.quetoquenana.pedalpal.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeResponse;
-import com.quetoquenana.pedalpal.bike.presentation.mapper.BikeApiMapper;
+import com.quetoquenana.pedalpal.bike.presentation.dto.mapper.BikeApiMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +41,7 @@ public class BikeController {
     private final UpdateBikeStatusUseCase updateBikeStatusUseCase;
     private final UpdateBikeUseCase updateBikeUseCase;
 
+    private final BikeHistoryQueryService bikeHistoryQueryService;
     private final BikeQueryService bikeQueryService;
 
     private final BikeApiMapper bikeApiMapper;
@@ -56,11 +60,20 @@ public class BikeController {
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
+    @GetMapping("/{id}/history")
+    @PreAuthorize("(hasRole('USER'))")
+    public ResponseEntity<ApiResponse> getBikeHistory(@PathVariable("id") UUID id) {
+        log.info("GET /v1/api/bikes/{}/history Received request to get bike history", id);
+        List<BikeHistoryResult> result = bikeHistoryQueryService.findByBikeId(id, getAuthenticatedUserId());
+        List<BikeHistoryResponse> response = result.stream().map(bikeApiMapper::toResponse).toList();
+        return ResponseEntity.ok(new ApiResponse(response));
+    }
+
     @GetMapping("/active")
     @PreAuthorize("(hasRole('USER'))")
     public ResponseEntity<ApiResponse> findActive() {
-        log.info("GET /v1/api/bikes/active Received request to fetch active bikes");
-        List<BikeResult> result = bikeQueryService.fetchActiveByOwnerId(getAuthenticatedUserId());
+        log.info("GET /v1/api/bikes/active Received request to find active bikes");
+        List<BikeResult> result = bikeQueryService.findActiveByOwnerId(getAuthenticatedUserId());
         List<BikeResponse> response = result.stream().map(bikeApiMapper::toResponse).toList();
         return ResponseEntity.ok(new ApiResponse(response));
     }

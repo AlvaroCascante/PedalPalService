@@ -1,6 +1,7 @@
 package com.quetoquenana.pedalpal.bike.controller;
 
 import com.quetoquenana.pedalpal.bike.application.query.BikeQueryService;
+import com.quetoquenana.pedalpal.bike.application.query.BikeHistoryQueryService;
 import com.quetoquenana.pedalpal.bike.application.useCase.CreateBikeUseCase;
 import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeStatusUseCase;
 import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeUseCase;
@@ -11,8 +12,8 @@ import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeComponentSta
 import com.quetoquenana.pedalpal.bike.presentation.controller.BikeController;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeComponentStatus;
-import com.quetoquenana.pedalpal.bike.presentation.mapper.BikeApiMapper;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
+import com.quetoquenana.pedalpal.bike.presentation.dto.mapper.BikeApiMapper;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
 import com.quetoquenana.pedalpal.util.TestBikeData;
 import com.quetoquenana.pedalpal.util.TestJsonBodies;
@@ -78,6 +79,9 @@ class BikeControllerTest {
     @MockitoBean
     CurrentUserProvider currentUserProvider;
 
+    @MockitoBean
+    BikeHistoryQueryService bikeHistoryQueryService;
+
     private static final UUID AUTH_USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
     @org.junit.jupiter.api.BeforeEach
@@ -141,7 +145,7 @@ class BikeControllerTest {
         when(messageSource.getMessage(any(String.class), any(), any(Locale.class)))
                 .thenReturn("Road");
 
-        when(bikeQueryService.fetchActiveByOwnerId(any(UUID.class)))
+        when(bikeQueryService.findActiveByOwnerId(any(UUID.class)))
                 .thenReturn(List.of(TestBikeData.bikeResultQuery(bikeId)));
 
         mockMvc.perform(get("/v1/api/bikes/active"))

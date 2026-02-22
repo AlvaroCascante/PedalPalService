@@ -1,21 +1,27 @@
 package com.quetoquenana.pedalpal.bike.useCase;
 
 import com.quetoquenana.pedalpal.bike.application.command.AddBikeComponentCommand;
+import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.application.useCase.AddBikeComponentUseCase;
+import com.quetoquenana.pedalpal.common.domain.model.SystemCode;
+import com.quetoquenana.pedalpal.common.domain.repository.SystemCodeRepository;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeComponent;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEvent;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEventType;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
-import com.quetoquenana.pedalpal.bike.domain.model.SystemCode;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
-import com.quetoquenana.pedalpal.bike.domain.repository.SystemCodeRepository;
 import com.quetoquenana.pedalpal.util.TestBikeData;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -36,11 +42,20 @@ class AddBikeComponentUseCaseTest {
     @Mock
     SystemCodeRepository systemCodeRepository;
 
+    @Mock
+    BikeMapper bikeMapper;
+
+    @Mock
+    ApplicationEventPublisher eventPublisher;
+
     @InjectMocks
     AddBikeComponentUseCase useCase;
 
     @Captor
     ArgumentCaptor<Bike> bikeCaptor;
+
+    @Captor
+    ArgumentCaptor<BikeHistoryEvent> historyEventCaptor;
 
     @Nested
     class HappyPath {
@@ -74,9 +89,24 @@ class AddBikeComponentUseCaseTest {
                     .build();
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
-            // Use case calls findByCategoryAndCode(COMPONENT_TYPE, command.type())
             when(systemCodeRepository.findByCategoryAndCode(eq(COMPONENT_TYPE), eq("CHAIN")))
                     .thenReturn(Optional.of(componentType));
+
+            BikeComponent mappedComponent = BikeComponent.builder()
+                    .id(UUID.randomUUID())
+                    .componentType(componentType)
+                    .name(command.name())
+                    .status(BikeComponentStatus.ACTIVE)
+                    .brand(command.brand())
+                    .model(command.model())
+                    .notes(command.notes())
+                    .odometerKm(command.odometerKm())
+                    .usageTimeMinutes(command.usageTimeMinutes())
+                    .build();
+
+            when(bikeMapper.toBikeComponent(eq(command), eq(componentType))).thenReturn(mappedComponent);
+            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithOneComponent(bikeId));
+
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
 
             BikeResult result = useCase.execute(command);
@@ -92,6 +122,13 @@ class AddBikeComponentUseCaseTest {
             assertEquals(bikeId, result.id());
             assertEquals("ROAD", result.type());
             assertEquals(1, result.components().size());
+
+            verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
+            BikeHistoryEvent event = historyEventCaptor.getValue();
+            assertEquals(bikeId, event.bikeId());
+            assertEquals(ownerId, event.performedBy());
+            assertEquals(mappedComponent.getId(), event.referenceId());
+            assertEquals(BikeHistoryEventType.COMPONENT_ADDED, event.bikeHistoryEventType());
         }
     }
 
@@ -119,6 +156,7 @@ class AddBikeComponentUseCaseTest {
 
             verify(systemCodeRepository, never()).findByCategoryAndCode(anyString(), anyString());
             verify(bikeRepository, never()).save(any());
+            verify(eventPublisher, never()).publishEvent(any());
         }
 
         @Test
@@ -145,6 +183,7 @@ class AddBikeComponentUseCaseTest {
             assertEquals("bike.component.type.not.found", ex.getMessage());
 
             verify(bikeRepository, never()).save(any());
+            verify(eventPublisher, never()).publishEvent(any());
         }
     }
 
@@ -175,6 +214,7 @@ class AddBikeComponentUseCaseTest {
 
             verify(systemCodeRepository, never()).findByCategoryAndCode(anyString(), anyString());
             verify(bikeRepository, never()).save(any());
+            verify(eventPublisher, never()).publishEvent(any());
         }
 
         @Test
@@ -201,6 +241,7 @@ class AddBikeComponentUseCaseTest {
 
             verify(systemCodeRepository, never()).findByCategoryAndCode(anyString(), anyString());
             verify(bikeRepository, never()).save(any());
+            verify(eventPublisher, never()).publishEvent(any());
         }
     }
 }

@@ -3,32 +3,39 @@ package com.quetoquenana.pedalpal.bike.application.useCase;
 import com.quetoquenana.pedalpal.bike.application.command.UpdateBikeStatusCommand;
 import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
+import com.quetoquenana.pedalpal.bike.domain.model.*;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
-import com.quetoquenana.pedalpal.bike.domain.enums.BikeStatus;
-import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class UpdateBikeStatusUseCase {
 
+    private final BikeMapper bikeMapper;
     private final BikeRepository bikeRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public BikeResult execute(UpdateBikeStatusCommand command) {
         Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
                 .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
         try {
-            applyPatch(bike, command);
+            List<BikeChangeItem> bikeChangeItems = applyPatch(bike, command);
+            bikeRepository.save(bike);
 
-            Bike saved = bikeRepository.save(bike);
-
-            return BikeMapper.toBikeResult(saved);
+            publishHistoryEvent(bike.getId(), command.authenticatedUserId(), bikeChangeItems);
+            return bikeMapper.toBikeResult(bike);
         } catch (BadRequestException ex) {
             log.error("BadRequestException on UpdateBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
             throw ex;
@@ -38,11 +45,29 @@ public class UpdateBikeStatusUseCase {
         }
     }
 
-    private void applyPatch(Bike bike, UpdateBikeStatusCommand command) {
+    private void publishHistoryEvent(UUID bikeId, UUID userId, List<BikeChangeItem> bikeChangeItems) {
+        if (!bikeChangeItems.isEmpty()) {
+            eventPublisher.publishEvent(
+                    new BikeHistoryEvent(
+                            bikeId,
+                            userId,
+                            bikeId,
+                            BikeHistoryEventType.STATUS_CHANGED,
+                            bikeChangeItems,
+                            LocalDateTime.now()
+                    )
+            );
+        }
+    }
+
+    private List<BikeChangeItem>  applyPatch(Bike bike, UpdateBikeStatusCommand command) {
+        List<BikeChangeItem> bikeChangeItems = new ArrayList<>();
+
         if (command.status() != null) {
             rejectBlank(command.status());
-            bike.setStatus(BikeStatus.from(command.status()));
+            bike.changeStatus(BikeStatus.from(command.status())).ifPresent(bikeChangeItems::add);
         }
+        return bikeChangeItems;
     }
 
     private void rejectBlank(String value) {
