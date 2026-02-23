@@ -179,7 +179,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id?status=ACTIVE&status=INACTIVE",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id?componentStatus=ACTIVE&componentStatus=INACTIVE",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
@@ -191,14 +191,12 @@
 							],
 							"query": [
 								{
-									"key": "status",
-									"value": "ACTIVE",
-									"type": "text"
+									"key": "componentStatus",
+									"value": "ACTIVE"
 								},
 								{
-									"key": "status",
-									"value": "INACTIVE",
-									"type": "text"
+									"key": "componentStatus",
+									"value": "INACTIVE"
 								}
 							],
 							"variable": [
