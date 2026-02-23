@@ -12,7 +12,7 @@ import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
 import com.quetoquenana.pedalpal.security.application.SecurityUser;
-import com.quetoquenana.pedalpal.dto.response.ApiResponse;
+import com.quetoquenana.pedalpal.common.dto.ApiResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.mapper.BikeApiMapper;
 import jakarta.validation.Valid;
@@ -52,11 +52,11 @@ public class BikeController {
     @PreAuthorize("(hasRole('USER'))")
     public ResponseEntity<ApiResponse> getById(
             @PathVariable("id") UUID id,
-            @RequestParam(name = "status", required = false) Set<BikeComponentStatus> statuses
+            @RequestParam(name = "componentStatus", required = false) Set<BikeComponentStatus> componentStatuses
     ) {
         log.info("GET /v1/api/bikes/{} Received request to get bike by id", id);
         BikeResult result = bikeQueryService.getById(id, getAuthenticatedUserId());
-        BikeResponse response = bikeApiMapper.toResponse(result, statuses);
+        BikeResponse response = bikeApiMapper.toResponse(result, componentStatuses);
         return ResponseEntity.ok(new ApiResponse(response));
     }
 

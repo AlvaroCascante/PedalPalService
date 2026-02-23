@@ -3,10 +3,10 @@ CREATE TABLE stores (
     name varchar NOT NULL,
 
     version bigint NOT NULL DEFAULT 0,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-    created_by varchar NOT NULL,
-    updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
-    updated_by varchar
+    created_at TIMESTAMP NOT NULL  DEFAULT CURRENT_TIMESTAMP,
+    created_by uuid NOT NULL,
+    updated_at TIMESTAMP NULL,
+    updated_by uuid NULL
 );
 
 CREATE TABLE store_locations (
@@ -23,10 +23,10 @@ CREATE TABLE store_locations (
     status varchar NOT NULL,
 
     version bigint NOT NULL DEFAULT 0,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-    created_by varchar NOT NULL,
-    updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
-    updated_by varchar,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by uuid NOT NULL,
+    updated_at TIMESTAMP NULL,
+    updated_by uuid NULL,
 
     CONSTRAINT fk_sl_store FOREIGN KEY (store_id) REFERENCES stores(id)
 );
