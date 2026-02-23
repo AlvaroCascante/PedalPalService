@@ -862,8 +862,41 @@
 			"name": "Stores",
 			"item": [
 				{
-					"name": "Get All Stores",
+					"name": "Get Store By ID",
 					"id": "5067618-10012854-3644-48db-8eda-c010bc065e7c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/stores",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"stores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Stores",
+					"id": "5067618-e3b8dffd-2a21-4db3-abae-3647ea4d6ca6",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
