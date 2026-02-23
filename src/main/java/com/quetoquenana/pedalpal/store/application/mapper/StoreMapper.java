@@ -1,6 +1,5 @@
 package com.quetoquenana.pedalpal.store.application.mapper;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quetoquenana.pedalpal.store.application.result.StoreLocationResult;
 import com.quetoquenana.pedalpal.store.application.result.StoreResult;
 import com.quetoquenana.pedalpal.store.domain.model.Store;
@@ -14,17 +13,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StoreMapper {
 
-    private final ObjectMapper objectMapper;
-
-    public StoreResult toBikeResult(Store model) {
+    public StoreResult toStoreResult(Store model) {
         return new StoreResult(
                 model.getId(),
                 model.getName(),
-                model.getLocations().stream().map(this::toCLocationResult).collect(Collectors.toSet())
+                model.getLocations().stream().map(this::toLocationResult).collect(Collectors.toSet())
         );
     }
 
-    public StoreLocationResult toCLocationResult(StoreLocation model) {
+    public StoreLocationResult toLocationResult(StoreLocation model) {
         return new StoreLocationResult(
                 model.getId(),
                 model.getName(),

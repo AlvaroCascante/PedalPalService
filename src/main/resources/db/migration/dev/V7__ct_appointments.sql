@@ -28,7 +28,7 @@ CREATE TABLE appointments_products (
 
     PRIMARY KEY (appointment_id, product_id),
     CONSTRAINT fk_ap_appointment FOREIGN KEY (appointment_id) REFERENCES appointments(id),
-    CONSTRAINT fk_ap_product FOREIGN KEY (product_id) REFERENCES productEntities(id)
+    CONSTRAINT fk_ap_product FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
 CREATE TABLE appointment_tasks (

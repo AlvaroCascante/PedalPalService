@@ -17,17 +17,17 @@ public class StoreQueryService {
     private final StoreRepository repository;
 
     public StoreResult getById(UUID id) {
-        Store bike = repository.getById(id)
+        Store model = repository.getById(id)
                 .orElseThrow(RecordNotFoundException::new);
 
-        return mapper.toBikeResult(bike);
+        return mapper.toStoreResult(model);
     }
 
     public List<StoreResult> getAll() {
-        List<Store> bikes = repository.getAll();
+        List<Store> models = repository.getAll();
 
-        return bikes.stream()
-                .map(mapper::toBikeResult)
+        return models.stream()
+                .map(mapper::toStoreResult)
                 .toList();
     }
 }

@@ -1,10 +1,12 @@
-package com.quetoquenana.pedalpal.infrastructure.persistence.entity;
+package com.quetoquenana.pedalpal.infrastructure.persistence.product.entity;
 
+import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.infrastructure.persistence.auditing.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,10 +33,9 @@ public class ProductPackageEntity extends AuditableEntity {
     @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
 
-    // status_id references system_codes.id -> stored as a SystemCode relation
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_id")
-    private SystemCodeEntity status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 50)
+    private GeneralStatus status;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -43,4 +44,12 @@ public class ProductPackageEntity extends AuditableEntity {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private Set<ProductEntity> products;
+
+    public void addProduct(ProductEntity product) {
+        if (this.products == null) {
+            this.products = new HashSet<>();
+        }
+        this.products.add(product);
+    }
 }
+

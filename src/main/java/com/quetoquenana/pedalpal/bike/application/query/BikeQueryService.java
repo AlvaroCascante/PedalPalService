@@ -18,16 +18,16 @@ public class BikeQueryService {
     private final BikeRepository bikeRepository;
 
     public BikeResult getById(UUID id, UUID ownerId) {
-        Bike bike = bikeRepository.findByIdAndOwnerId(id, ownerId)
+        Bike model = bikeRepository.findByIdAndOwnerId(id, ownerId)
                 .orElseThrow(RecordNotFoundException::new);
 
-        return bikeMapper.toBikeResult(bike);
+        return bikeMapper.toBikeResult(model);
     }
 
     public List<BikeResult> findActiveByOwnerId(UUID ownerId) {
-        List<Bike> bikes = bikeRepository.findByOwnerIdAndStatus(ownerId, BikeStatus.ACTIVE);
+        List<Bike> models = bikeRepository.findByOwnerIdAndStatus(ownerId, BikeStatus.ACTIVE);
 
-        return bikes.stream()
+        return models.stream()
                 .map(bikeMapper::toBikeResult)
                 .toList();
     }

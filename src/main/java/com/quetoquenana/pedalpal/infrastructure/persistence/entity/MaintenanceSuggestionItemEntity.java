@@ -1,5 +1,7 @@
 package com.quetoquenana.pedalpal.infrastructure.persistence.entity;
 
+import com.quetoquenana.pedalpal.infrastructure.persistence.product.entity.ProductEntity;
+import com.quetoquenana.pedalpal.infrastructure.persistence.product.entity.ProductPackageEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -5,6 +5,10 @@ import com.quetoquenana.pedalpal.bike.application.query.BikeHistoryQueryService;
 import com.quetoquenana.pedalpal.bike.application.query.BikeQueryService;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeHistoryRepository;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.product.application.mapper.ProductMapper;
+import com.quetoquenana.pedalpal.product.application.query.ProductQueryService;
+import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
+import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
 import com.quetoquenana.pedalpal.store.application.mapper.StoreMapper;
 import com.quetoquenana.pedalpal.store.application.query.StoreQueryService;
 import com.quetoquenana.pedalpal.store.domain.repository.StoreRepository;
@@ -37,6 +41,18 @@ public class QueryServiceConfig {
                 bikeHistoryRepository);
     }
 
+    @Bean
+    ProductQueryService createProductQueryService(
+            ProductMapper productMapper,
+            ProductRepository productRepository,
+            ProductPackageRepository productPackageRepository
+    ) {
+        return new ProductQueryService(
+                productMapper,
+                productRepository,
+                productPackageRepository
+        );
+    }
     @Bean
     public StoreQueryService createStoreQueryService(
             StoreMapper storeMapper,

@@ -40,5 +40,5 @@ CREATE TABLE maintenance_suggestion_items (
           ON DELETE CASCADE,
 
     CONSTRAINT fk_bs_package FOREIGN KEY (package_id) REFERENCES packages(id),
-    CONSTRAINT fk_bs_product FOREIGN KEY (product_id) REFERENCES productEntities(id)
+    CONSTRAINT fk_bs_product FOREIGN KEY (product_id) REFERENCES products(id)
 );

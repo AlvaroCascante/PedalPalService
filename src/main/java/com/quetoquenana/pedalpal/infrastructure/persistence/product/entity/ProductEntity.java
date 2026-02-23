@@ -1,12 +1,12 @@
-package com.quetoquenana.pedalpal.infrastructure.persistence.entity;
+package com.quetoquenana.pedalpal.infrastructure.persistence.product.entity;
 
+import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.infrastructure.persistence.auditing.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
-
 @Entity
 @Table(name = "products")
 @NoArgsConstructor
@@ -30,7 +30,7 @@ public class ProductEntity extends AuditableEntity {
     @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_id")
-    private SystemCodeEntity status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 50)
+    private GeneralStatus status;
 }
