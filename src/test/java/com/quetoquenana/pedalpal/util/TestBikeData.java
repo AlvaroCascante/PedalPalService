@@ -295,7 +295,7 @@ public final class TestBikeData {
                 .components(bike.getComponents() == null
                         ? Collections.emptySet()
                         : bike.getComponents().stream()
-                        .map(c -> toComponentResult(c))
+                        .map(TestBikeData::toComponentResult)
                         .collect(java.util.stream.Collectors.toSet()))
                 .build();
     }

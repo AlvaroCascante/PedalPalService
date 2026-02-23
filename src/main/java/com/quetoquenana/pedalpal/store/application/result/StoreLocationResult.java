@@ -1,7 +1,6 @@
 package com.quetoquenana.pedalpal.store.application.result;
 
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
-import com.quetoquenana.pedalpal.common.domain.model.SystemCode;
 import lombok.Builder;
 
 import java.math.BigDecimal;

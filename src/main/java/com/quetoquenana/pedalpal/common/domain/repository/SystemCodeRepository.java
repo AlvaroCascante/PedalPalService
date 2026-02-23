@@ -13,8 +13,6 @@ public interface SystemCodeRepository {
 
     SystemCode update(UUID systemCodeId, SystemCode systemCode);
 
-    void deleteById(UUID systemCodeId);
-
     Optional<SystemCode> findByCategoryAndCode(String category, String code);
 }
 

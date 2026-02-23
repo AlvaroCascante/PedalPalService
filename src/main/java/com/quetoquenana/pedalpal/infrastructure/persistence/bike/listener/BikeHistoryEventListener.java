@@ -4,8 +4,6 @@ import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeHistory;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEvent;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeHistoryRepository;
-import com.quetoquenana.pedalpal.infrastructure.persistence.bike.entity.BikeHistoryEntity;
-import com.quetoquenana.pedalpal.infrastructure.persistence.bike.mapper.BikeEntityMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;

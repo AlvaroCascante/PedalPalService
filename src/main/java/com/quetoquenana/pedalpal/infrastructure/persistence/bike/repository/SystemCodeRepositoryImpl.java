@@ -31,11 +31,6 @@ public class SystemCodeRepositoryImpl implements SystemCodeRepository {
     }
 
     @Override
-    public void deleteById(UUID systemCodeId) {
-
-    }
-
-    @Override
     public Optional<SystemCode> findByCategoryAndCode(String category, String code) {
         return repository.findByCategoryAndCode(category, code).map(SystemCodeMapper::toSystemCode);
     }
