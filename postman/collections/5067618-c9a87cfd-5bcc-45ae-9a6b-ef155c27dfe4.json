@@ -736,7 +736,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{user_admin_token}}",
+									"value": "{{user_token}}",
 									"type": "string"
 								}
 							]
@@ -744,24 +744,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/products?page=0&size=20",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/products/active",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
 								"api",
-								"products"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								}
+								"products",
+								"active"
 							]
 						}
 					},
