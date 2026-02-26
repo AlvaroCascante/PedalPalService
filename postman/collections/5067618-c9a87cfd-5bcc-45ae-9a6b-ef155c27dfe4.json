@@ -809,7 +809,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{user_admin_token}}",
+									"value": "{{user_token}}",
 									"type": "string"
 								}
 							]
