@@ -858,14 +858,21 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/system-codes",
+							"raw": "{{host_pedal_pal}}/{{path}}/api/system-codes/:id",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
 							"path": [
 								"{{path}}",
 								"api",
-								"system-codes"
+								"system-codes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "627100b0-baac-4ee0-ac25-53e7f0b4c06e"
+								}
 							]
 						}
 					},
@@ -892,7 +899,7 @@
 						"header": [
 							{
 								"key": "Accept-Language",
-								"value": "es",
+								"value": "en",
 								"type": "text"
 							}
 						],
