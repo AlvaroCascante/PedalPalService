@@ -18,9 +18,12 @@ public class Store extends Auditable {
 
     private String name;
 
-    private final Set<StoreLocation> locations = new HashSet<>();
+    private Set<StoreLocation> locations;
 
     public void addLocation(StoreLocation location) {
+        if (this.locations == null) {
+            this.locations = new HashSet<>();
+        }
         locations.add(location);
     }
 }

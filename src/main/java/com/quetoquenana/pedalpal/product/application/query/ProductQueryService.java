@@ -2,7 +2,7 @@ package com.quetoquenana.pedalpal.product.application.query;
 
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
-import com.quetoquenana.pedalpal.product.application.mapper.ProductMapper;
+import com.quetoquenana.pedalpal.product.mapper.ProductMapper;
 import com.quetoquenana.pedalpal.product.application.result.ProductPackageResult;
 import com.quetoquenana.pedalpal.product.application.result.ProductResult;
 import com.quetoquenana.pedalpal.product.domain.model.Product;

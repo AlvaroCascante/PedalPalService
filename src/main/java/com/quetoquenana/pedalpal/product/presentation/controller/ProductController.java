@@ -4,10 +4,9 @@ import com.quetoquenana.pedalpal.common.dto.ApiResponse;
 import com.quetoquenana.pedalpal.product.application.query.ProductQueryService;
 import com.quetoquenana.pedalpal.product.application.result.ProductPackageResult;
 import com.quetoquenana.pedalpal.product.application.result.ProductResult;
-import com.quetoquenana.pedalpal.product.presentation.dto.mapper.ProductApiMapper;
+import com.quetoquenana.pedalpal.product.mapper.ProductApiMapper;
 import com.quetoquenana.pedalpal.product.presentation.dto.response.ProductPackageResponse;
 import com.quetoquenana.pedalpal.product.presentation.dto.response.ProductResponse;
-import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +28,6 @@ public class ProductController {
     private final ProductQueryService queryService;
 
     private final ProductApiMapper apiMapper;
-
-    private final CurrentUserProvider currentUserProvider;
 
     @GetMapping("/products/{id}")
     @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN'))")
@@ -71,5 +68,4 @@ public class ProductController {
         List<ProductPackageResponse> response = result.stream().map(apiMapper::toProductPackageResponse).toList();
         return ResponseEntity.ok(new ApiResponse(response));
     }
-
 }

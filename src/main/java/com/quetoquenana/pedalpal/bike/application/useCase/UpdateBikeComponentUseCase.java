@@ -1,15 +1,15 @@
 package com.quetoquenana.pedalpal.bike.application.useCase;
 
 import com.quetoquenana.pedalpal.bike.application.command.UpdateBikeComponentCommand;
-import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
+import com.quetoquenana.pedalpal.bike.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.domain.model.*;
-import com.quetoquenana.pedalpal.common.domain.model.SystemCode;
-import com.quetoquenana.pedalpal.common.domain.repository.SystemCodeRepository;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
+import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;

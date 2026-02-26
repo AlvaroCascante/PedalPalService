@@ -13,7 +13,7 @@ import com.quetoquenana.pedalpal.bike.presentation.controller.BikeController;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
-import com.quetoquenana.pedalpal.bike.presentation.mapper.BikeApiMapper;
+import com.quetoquenana.pedalpal.bike.mapper.BikeApiMapper;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
 import com.quetoquenana.pedalpal.util.TestBikeData;
 import com.quetoquenana.pedalpal.util.TestJsonBodies;

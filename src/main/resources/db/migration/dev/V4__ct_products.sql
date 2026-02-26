@@ -4,7 +4,7 @@ CREATE TABLE products (
     description varchar,
     price decimal(10,2),
 
-    status varchar NOT NULL,
+    status VARCHAR(50) NOT NULL,
 
     version bigint NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -19,7 +19,7 @@ CREATE TABLE packages (
     description varchar,
     price decimal(10,2),
 
-    status varchar NOT NULL,
+    status VARCHAR(50) NOT NULL,
 
     version bigint NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,

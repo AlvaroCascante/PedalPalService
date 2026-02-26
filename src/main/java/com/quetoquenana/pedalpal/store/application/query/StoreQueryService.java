@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.store.application.query;
 
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
-import com.quetoquenana.pedalpal.store.application.mapper.StoreMapper;
+import com.quetoquenana.pedalpal.store.mapper.StoreMapper;
 import com.quetoquenana.pedalpal.store.application.result.StoreResult;
 import com.quetoquenana.pedalpal.store.domain.model.Store;
 import com.quetoquenana.pedalpal.store.domain.repository.StoreRepository;

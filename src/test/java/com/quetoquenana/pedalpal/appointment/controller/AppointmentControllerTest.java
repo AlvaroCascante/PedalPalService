@@ -8,7 +8,7 @@ import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointme
 import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
 import com.quetoquenana.pedalpal.appointment.presentation.controller.AppointmentController;
-import com.quetoquenana.pedalpal.appointment.presentation.dto.mapper.AppointmentApiMapper;
+import com.quetoquenana.pedalpal.appointment.mapper.AppointmentApiMapper;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;

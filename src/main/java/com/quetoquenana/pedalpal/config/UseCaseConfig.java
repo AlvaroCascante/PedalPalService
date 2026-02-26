@@ -1,15 +1,15 @@
 package com.quetoquenana.pedalpal.config;
 
-import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
+import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.appointment.application.usecase.CreateAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentStatusUseCase;
 import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
-import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
+import com.quetoquenana.pedalpal.bike.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.useCase.*;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
-import com.quetoquenana.pedalpal.common.domain.repository.SystemCodeRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
+import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

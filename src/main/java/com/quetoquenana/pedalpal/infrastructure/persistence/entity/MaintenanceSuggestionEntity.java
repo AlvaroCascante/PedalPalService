@@ -2,6 +2,7 @@ package com.quetoquenana.pedalpal.infrastructure.persistence.entity;
 
 import com.quetoquenana.pedalpal.infrastructure.persistence.auditing.AuditableEntity;
 import com.quetoquenana.pedalpal.infrastructure.persistence.bike.entity.BikeEntity;
+import com.quetoquenana.pedalpal.infrastructure.persistence.systemCode.entity.SystemCodeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

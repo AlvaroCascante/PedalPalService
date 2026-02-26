@@ -8,7 +8,7 @@ import com.quetoquenana.pedalpal.security.application.SecurityUser;
 import com.quetoquenana.pedalpal.store.application.query.StoreQueryService;
 import com.quetoquenana.pedalpal.store.application.result.StoreResult;
 import com.quetoquenana.pedalpal.store.presentation.controller.StoreController;
-import com.quetoquenana.pedalpal.store.presentation.dto.mapper.StoreApiMapper;
+import com.quetoquenana.pedalpal.store.mapper.StoreApiMapper;
 import com.quetoquenana.pedalpal.store.presentation.dto.response.StoreResponse;
 import com.quetoquenana.pedalpal.util.TestStoreData;
 import org.junit.jupiter.api.BeforeEach;

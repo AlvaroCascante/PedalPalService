@@ -19,7 +19,7 @@ CREATE TABLE store_locations (
     latitude decimal(9,6),
     longitude decimal(9,6),
     phone VARCHAR(50),
-    timezone VARCHAR(100) NOT NULL
+    timezone VARCHAR(100) NOT NULL,
     status VARCHAR(50) NOT NULL,
 
     version bigint NOT NULL DEFAULT 0,

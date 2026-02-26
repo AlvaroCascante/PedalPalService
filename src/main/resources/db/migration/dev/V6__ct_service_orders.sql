@@ -5,7 +5,7 @@ CREATE TABLE service_orders (
 
     bike_id UUID NOT NULL,
 
-    status VARCHAR(30) NOT NULL,
+    status VARCHAR(50) NOT NULL,
 
     started_at TIMESTAMP WITH TIME ZONE,
     completed_at TIMESTAMP WITH TIME ZONE,

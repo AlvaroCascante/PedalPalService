@@ -2,7 +2,7 @@ package com.quetoquenana.pedalpal.infrastructure.persistence.product.repository;
 
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.infrastructure.persistence.product.entity.ProductEntity;
-import com.quetoquenana.pedalpal.infrastructure.persistence.product.mapper.ProductEntityMapper;
+import com.quetoquenana.pedalpal.infrastructure.persistence.mapper.ProductEntityMapper;
 import com.quetoquenana.pedalpal.product.domain.model.Product;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;

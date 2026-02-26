@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.appointment.application.query;
 
-import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
+import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentListItemResult;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;

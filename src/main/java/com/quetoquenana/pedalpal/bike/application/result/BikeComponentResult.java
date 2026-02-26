@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.bike.application.result;
 
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
-import com.quetoquenana.pedalpal.common.domain.model.SystemCode;
+import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 import lombok.Builder;
 
 import java.util.UUID;

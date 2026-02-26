@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.bike.useCase;
 
 import com.quetoquenana.pedalpal.bike.application.command.AddBikeComponentCommand;
-import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
+import com.quetoquenana.pedalpal.bike.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.application.useCase.ReplaceBikeComponentUseCase;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
@@ -11,10 +11,11 @@ import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponent;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
-import com.quetoquenana.pedalpal.common.domain.model.SystemCode;
-import com.quetoquenana.pedalpal.common.domain.repository.SystemCodeRepository;
+import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
+import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
+import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import com.quetoquenana.pedalpal.util.TestBikeData;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -100,7 +101,7 @@ class ReplaceBikeComponentUseCaseTest {
                     .category(COMPONENT_TYPE)
                     .code("CHAIN")
                     .label("Chain")
-                    .isActive(true)
+                    .status(GeneralStatus.ACTIVE)
                     .position(1)
                     .build();
 

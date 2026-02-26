@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.bike.domain.model;
 
 import com.quetoquenana.pedalpal.common.domain.model.Auditable;
-import com.quetoquenana.pedalpal.common.domain.model.SystemCode;
+import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 import lombok.*;
 
 import java.util.Objects;

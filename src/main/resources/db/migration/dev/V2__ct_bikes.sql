@@ -3,7 +3,7 @@ CREATE TABLE bikes (
     owner_id uuid NOT NULL,
     name varchar NOT NULL,
     type varchar NOT NULL,
-    status varchar NOT NULL,
+    status VARCHAR(50) NOT NULL,
     is_public boolean,
     is_external_sync boolean,
 

@@ -2,6 +2,7 @@ package com.quetoquenana.pedalpal.infrastructure.persistence.entity;
 
 import com.quetoquenana.pedalpal.infrastructure.persistence.product.entity.ProductEntity;
 import com.quetoquenana.pedalpal.infrastructure.persistence.product.entity.ProductPackageEntity;
+import com.quetoquenana.pedalpal.infrastructure.persistence.systemCode.entity.SystemCodeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

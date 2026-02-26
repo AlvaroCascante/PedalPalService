@@ -9,7 +9,8 @@ import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeType;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
-import com.quetoquenana.pedalpal.common.domain.model.SystemCode;
+import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
+import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 
 import java.util.Collections;
 import java.util.Set;
@@ -248,7 +249,7 @@ public final class TestBikeData {
                         .category("COMPONENT_TYPE")
                         .code("CHAIN")
                         .label("Chain")
-                        .isActive(true)
+                        .status(GeneralStatus.ACTIVE)
                         .position(1)
                         .build(),
                 "Chain",

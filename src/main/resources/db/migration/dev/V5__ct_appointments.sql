@@ -3,7 +3,7 @@ CREATE TABLE appointments (
     bike_id uuid NOT NULL,
     store_location_id uuid NOT NULL,
     scheduled_at TIMESTAMP WITH TIME ZONE NOT NULL,
-    status varchar NOT NULL,
+    status VARCHAR(50) NOT NULL,
     notes text,
 
     version bigint NOT NULL DEFAULT 0,

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
 import com.quetoquenana.pedalpal.infrastructure.persistence.auditing.AuditableEntity;
-import com.quetoquenana.pedalpal.infrastructure.persistence.entity.SystemCodeEntity;
+import com.quetoquenana.pedalpal.infrastructure.persistence.systemCode.entity.SystemCodeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

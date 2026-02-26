@@ -3,7 +3,7 @@ package com.quetoquenana.pedalpal.infrastructure.persistence.bike.repository;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeHistory;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeHistoryRepository;
 import com.quetoquenana.pedalpal.infrastructure.persistence.bike.entity.BikeHistoryEntity;
-import com.quetoquenana.pedalpal.infrastructure.persistence.bike.mapper.BikeEntityMapper;
+import com.quetoquenana.pedalpal.infrastructure.persistence.mapper.BikeEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
