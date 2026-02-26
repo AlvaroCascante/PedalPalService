@@ -757,6 +757,40 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Active Packages",
+					"id": "5067618-56f87270-8ac8-4d8c-a0ea-06f8f141ba37",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/products/active",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"products",
+								"active"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"id": "5067618-981f044e-0411-4bd0-84de-878e07eb920a"
