@@ -685,7 +685,7 @@
 			"name": "Products",
 			"item": [
 				{
-					"name": "Product Get By ID",
+					"name": "Get Product By ID",
 					"id": "5067618-b70debe3-686c-4681-af26-f7e7d5724d90",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -725,7 +725,7 @@
 					"response": []
 				},
 				{
-					"name": "Product Get By ID Copy",
+					"name": "Get Package By ID",
 					"id": "5067618-99969ee5-5b2f-4028-821e-b3c1fe50c53b",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
