@@ -38,9 +38,7 @@ public class BikeMapper {
                 .usageTimeMinutes(command.usageTimeMinutes())
                 .build();
     }
-    public BikeComponent toBikeComponent(AddBikeComponentCommand command) {
-        return this.toBikeComponent(command, null);
-    }
+
     public BikeComponent toBikeComponent(
             AddBikeComponentCommand command,
             SystemCode componentType) {
@@ -71,8 +69,8 @@ public class BikeMapper {
         return new BikeResult(
                 model.getId(),
                 model.getName(),
-                model.getType().name(),
-                model.getStatus().name(),
+                model.getType(),
+                model.getStatus(),
                 model.isPublic(),
                 model.isExternalSync(),
                 model.getBrand(),

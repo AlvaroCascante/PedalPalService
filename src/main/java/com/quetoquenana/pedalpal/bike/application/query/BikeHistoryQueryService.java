@@ -15,25 +15,25 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BikeHistoryQueryService {
 
-    private final BikeMapper bikeMapper;
-    private final BikeRepository bikeRepository;
+    private final BikeMapper mapper;
+    private final BikeRepository repository;
     private final BikeHistoryRepository bikeHistoryRepository;
 
     public BikeHistoryResult getById(UUID id) {
         BikeHistory bikeHistory = bikeHistoryRepository.getById(id)
                 .orElseThrow(RecordNotFoundException::new);
 
-        return bikeMapper.toBikeHistoryResult(bikeHistory);
+        return mapper.toBikeHistoryResult(bikeHistory);
     }
 
     public List<BikeHistoryResult> findByBikeId(UUID id, UUID ownerId) {
-        Bike bike = bikeRepository.findByIdAndOwnerId(id, ownerId)
+        Bike bike = repository.findByIdAndOwnerId(id, ownerId)
                 .orElseThrow(RecordNotFoundException::new);
 
         List<BikeHistory> bikes = bikeHistoryRepository.findByBikeId(bike.getId());
 
         return bikes.stream()
-                .map(bikeMapper::toBikeHistoryResult)
+                .map(mapper::toBikeHistoryResult)
                 .toList();
     }
 }

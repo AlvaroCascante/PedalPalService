@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.bike.presentation.dto.mapper;
+package com.quetoquenana.pedalpal.bike.presentation.mapper;
 
 import com.quetoquenana.pedalpal.bike.application.command.*;
 import com.quetoquenana.pedalpal.bike.application.result.BikeComponentResult;
@@ -11,6 +11,7 @@ import com.quetoquenana.pedalpal.bike.presentation.dto.request.*;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeComponentResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeHistoryResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
@@ -22,13 +23,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class BikeApiMapper {
 
     private final MessageSource messageSource;
-
-    public BikeApiMapper(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
 
     public CreateBikeCommand toCommand(
             UUID ownerId,
@@ -36,17 +34,17 @@ public class BikeApiMapper {
     )   {
         return CreateBikeCommand.builder()
                 .ownerId(ownerId)
-                .name(request.getName())
-                .type(request.getType())
+                .name(request.name())
+                .type(request.type())
                 .isPublic(request.isPublic())
                 .isExternalSync(request.isExternalSync())
-                .brand(request.getBrand())
-                .model(request.getModel())
-                .year(request.getYear())
-                .serialNumber(request.getSerialNumber())
-                .notes(request.getNotes())
-                .odometerKm(request.getOdometerKm())
-                .usageTimeMinutes(request.getUsageTimeMinutes())
+                .brand(request.brand())
+                .model(request.model())
+                .year(request.year())
+                .serialNumber(request.serialNumber())
+                .notes(request.notes())
+                .odometerKm(request.odometerKm())
+                .usageTimeMinutes(request.usageTimeMinutes())
                 .build();
     }
 
@@ -58,17 +56,17 @@ public class BikeApiMapper {
         return UpdateBikeCommand.builder()
                 .bikeId(bikeId)
                 .authenticatedUserId(authenticatedUserId)
-                .name(request.getName())
-                .type(request.getType())
-                .isPublic(request.getIsPublic())
-                .isExternalSync(request.getIsExternalSync())
-                .brand(request.getBrand())
-                .model(request.getModel())
-                .year(request.getYear())
-                .serialNumber(request.getSerialNumber())
-                .notes(request.getNotes())
-                .odometerKm(request.getOdometerKm())
-                .usageTimeMinutes(request.getUsageTimeMinutes())
+                .name(request.name())
+                .type(request.type())
+                .isPublic(request.isPublic())
+                .isExternalSync(request.isExternalSync())
+                .brand(request.brand())
+                .model(request.model())
+                .year(request.year())
+                .serialNumber(request.serialNumber())
+                .notes(request.notes())
+                .odometerKm(request.odometerKm())
+                .usageTimeMinutes(request.usageTimeMinutes())
                 .build();
     }
 
@@ -80,7 +78,7 @@ public class BikeApiMapper {
         return UpdateBikeStatusCommand.builder()
                 .bikeId(bikeId)
                 .authenticatedUserId(authenticatedUserId)
-                .status(request.getStatus())
+                .status(request.status())
                 .build();
     }
 
@@ -94,13 +92,13 @@ public class BikeApiMapper {
                 .bikeId(bikeId)
                 .componentId(componentId)
                 .authenticatedUserId(authenticatedUserId)
-                .type(request.getType())
-                .name(request.getName())
-                .brand(request.getBrand())
-                .model(request.getModel())
-                .notes(request.getNotes())
-                .odometerKm(request.getOdometerKm())
-                .usageTimeMinutes(request.getUsageTimeMinutes())
+                .type(request.type())
+                .name(request.name())
+                .brand(request.brand())
+                .model(request.model())
+                .notes(request.notes())
+                .odometerKm(request.odometerKm())
+                .usageTimeMinutes(request.usageTimeMinutes())
                 .build();
     }
 
@@ -114,13 +112,13 @@ public class BikeApiMapper {
                 .bikeId(bikeId)
                 .componentId(componentId)
                 .authenticatedUserId(authenticatedUserId)
-                .type(request.getType())
-                .name(request.getName())
-                .brand(request.getBrand())
-                .model(request.getModel())
-                .notes(request.getNotes())
-                .odometerKm(request.getOdometerKm())
-                .usageTimeMinutes(request.getUsageTimeMinutes())
+                .type(request.type())
+                .name(request.name())
+                .brand(request.brand())
+                .model(request.model())
+                .notes(request.notes())
+                .odometerKm(request.odometerKm())
+                .usageTimeMinutes(request.usageTimeMinutes())
                 .build();
     }
 
@@ -134,7 +132,7 @@ public class BikeApiMapper {
                 .bikeId(bikeId)
                 .componentId(componentId)
                 .authenticatedUserId(authenticatedUserId)
-                .status(request.getStatus())
+                .status(request.status())
                 .build();
     }
 
@@ -144,8 +142,8 @@ public class BikeApiMapper {
 
     public BikeResponse toResponse(BikeResult result, Set<BikeComponentStatus> componentStatuses) {
         Locale locale = LocaleContextHolder.getLocale();
-        String typeLabel = messageSource.getMessage(BikeType.valueOf(result.type()).getKey(), null, locale);
-        String statusLabel = messageSource.getMessage(BikeStatus.valueOf(result.status()).getKey(), null, locale);
+        String typeLabel = messageSource.getMessage(result.type().getKey(), null, locale);
+        String statusLabel = messageSource.getMessage(result.status().getKey(), null, locale);
 
         Set<BikeComponentResponse> components = result.components() == null
                 ? Collections.emptySet() : result.getComponents(componentStatuses == null ? Set.of(BikeComponentStatus.ACTIVE) : componentStatuses)

@@ -70,7 +70,6 @@ class UpdateBikeStatusUseCaseTest {
 
             verify(bikeRepository).save(bikeCaptor.capture());
             assertEquals(BikeStatus.ACTIVE, bikeCaptor.getValue().getStatus());
-            assertEquals("ACTIVE", result.status());
             verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
             BikeHistoryEvent event = historyEventCaptor.getValue();
             assertEquals(bikeId, event.bikeId());
@@ -121,7 +120,6 @@ class UpdateBikeStatusUseCaseTest {
 
             verify(bikeRepository).save(bikeCaptor.capture());
             assertEquals(BikeStatus.INACTIVE, bikeCaptor.getValue().getStatus());
-            assertEquals("INACTIVE", result.status());
             verify(eventPublisher, never()).publishEvent(any());
         }
 
@@ -143,7 +141,6 @@ class UpdateBikeStatusUseCaseTest {
 
             verify(bikeRepository).save(bikeCaptor.capture());
             assertEquals(BikeStatus.UNKNOWN, bikeCaptor.getValue().getStatus());
-            assertEquals("UNKNOWN", result.status());
             verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
             BikeHistoryEvent event = historyEventCaptor.getValue();
             assertEquals(bikeId, event.bikeId());

@@ -168,8 +168,8 @@ public final class TestBikeData {
         return BikeResult.builder()
                 .id(bikeId)
                 .name("My bike")
-                .type("ROAD")
-                .status("ACTIVE")
+                .type(BikeType.ROAD)
+                .status(BikeStatus.ACTIVE)
                 .isPublic(false)
                 .isExternalSync(false)
                 .brand("Brand")
@@ -187,8 +187,8 @@ public final class TestBikeData {
         return BikeResult.builder()
                 .id(bikeId)
                 .name("New name")
-                .type("ROAD")
-                .status("ACTIVE")
+                .type(BikeType.ROAD)
+                .status(BikeStatus.ACTIVE)
                 .isPublic(true)
                 .isExternalSync(false)
                 .brand("Brand")
@@ -206,8 +206,8 @@ public final class TestBikeData {
         return BikeResult.builder()
                 .id(bikeId)
                 .name("New name")
-                .type("ROAD")
-                .status(status)
+                .type(BikeType.ROAD)
+                .status(BikeStatus.from(status))
                 .isPublic(true)
                 .isExternalSync(false)
                 .brand("Brand")
@@ -225,8 +225,8 @@ public final class TestBikeData {
         return BikeResult.builder()
                 .id(bikeId)
                 .name("My bike")
-                .type("ROAD")
-                .status("ACTIVE")
+                .type(BikeType.ROAD)
+                .status(BikeStatus.ACTIVE)
                 .isPublic(false)
                 .isExternalSync(false)
                 .brand("Brand")
@@ -262,8 +262,8 @@ public final class TestBikeData {
         return new BikeResult(
                 bikeId,
                 "Bike",
-                "ROAD",
-                "ACTIVE",
+                BikeType.ROAD,
+                BikeStatus.ACTIVE,
                 false,
                 false,
                 "Brand",
@@ -281,8 +281,8 @@ public final class TestBikeData {
         return BikeResult.builder()
                 .id(bike.getId())
                 .name(bike.getName())
-                .type(bike.getType() == null ? null : bike.getType().name())
-                .status(bike.getStatus() == null ? null : bike.getStatus().name())
+                .type(bike.getType() == null ? null : bike.getType())
+                .status(bike.getStatus() == null ? null : bike.getStatus())
                 .isPublic(bike.isPublic())
                 .isExternalSync(bike.isExternalSync())
                 .brand(bike.getBrand())

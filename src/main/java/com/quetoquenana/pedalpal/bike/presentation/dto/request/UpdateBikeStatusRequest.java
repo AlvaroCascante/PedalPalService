@@ -1,18 +1,12 @@
 package com.quetoquenana.pedalpal.bike.presentation.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * PATCH request DTO for bike status updates.
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class UpdateBikeStatusRequest {
-
-    @NotNull(message = "{bike.update.status.blank}")
-    private String status;
+public record UpdateBikeStatusRequest(
+        @NotNull(message = "{bike.update.status.blank}")
+        String status
+) {
 }

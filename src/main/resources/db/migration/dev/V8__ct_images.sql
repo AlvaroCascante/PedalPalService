@@ -16,9 +16,9 @@ CREATE TABLE images (
     metadata jsonb,
 
     version bigint NOT NULL DEFAULT 0,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-    created_by varchar NOT NULL,
-    updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by uuid NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by varchar,
 
 CONSTRAINT fk_images_context FOREIGN KEY (context_code) REFERENCES system_codes(id)

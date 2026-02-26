@@ -11,6 +11,6 @@ public record ProductPackageResponse(
         String name,
         String description,
         BigDecimal price,
-        GeneralStatus status,
+        String status,
         Set<ProductResponse> products
 ) { }

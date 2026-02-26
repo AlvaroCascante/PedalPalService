@@ -38,7 +38,7 @@ public class UpdateBikeUseCase {
             publishHistoryEvent(bike.getId(), command.authenticatedUserId(), bikeChangeItems);
             return bikeMapper.toBikeResult(bike);
         } catch (BadRequestException ex) {
-            log.error("BadRequestException on UpdateBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
+            log.error("BadRequestException on UpdateBikeUseCase -- Command: {}: Error: {}", command, ex.getMessage());
             throw ex;
         } catch (RuntimeException ex) {
             log.error("RuntimeException on UpdateBikeUseCase -- Command: {}: Error: {}", command, ex.getMessage());

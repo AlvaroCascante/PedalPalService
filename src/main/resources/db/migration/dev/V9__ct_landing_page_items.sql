@@ -9,8 +9,8 @@ CREATE TABLE landing_page_items (
     status varchar NOT NULL,
 
     version bigint NOT NULL DEFAULT 0,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-    created_by varchar NOT NULL,
-    updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by uuid NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by varchar
 );

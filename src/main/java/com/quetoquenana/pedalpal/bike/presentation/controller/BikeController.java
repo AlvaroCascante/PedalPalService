@@ -14,7 +14,7 @@ import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
 import com.quetoquenana.pedalpal.security.application.SecurityUser;
 import com.quetoquenana.pedalpal.common.dto.ApiResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeResponse;
-import com.quetoquenana.pedalpal.bike.presentation.dto.mapper.BikeApiMapper;
+import com.quetoquenana.pedalpal.bike.presentation.mapper.BikeApiMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

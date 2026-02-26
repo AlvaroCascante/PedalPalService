@@ -1,6 +1,8 @@
 package com.quetoquenana.pedalpal.bike.application.result;
 
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeType;
 import lombok.Builder;
 
 import java.util.Set;
@@ -11,8 +13,8 @@ import java.util.stream.Collectors;
 public record BikeResult(
         UUID id,
         String name,
-        String type,
-        String status,
+        BikeType type,
+        BikeStatus status,
         boolean isPublic,
         boolean isExternalSync,
         String brand,
@@ -26,12 +28,6 @@ public record BikeResult(
 ) {
     public BikeResult {
         components = (components == null) ? java.util.Set.of() : java.util.Set.copyOf(components);
-    }
-
-    public Set<BikeComponentResult> getActiveComponents() {
-        return components.stream()
-                .filter(c -> c.status() == BikeComponentStatus.ACTIVE)
-                .collect(Collectors.toSet());
     }
 
     public Set<BikeComponentResult> getComponents(Set<BikeComponentStatus> statuses) {

@@ -14,9 +14,9 @@ CREATE TABLE maintenance_suggestions (
     last_error TEXT,
 
     version bigint NOT NULL DEFAULT 0,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-    created_by varchar NOT NULL,
-    updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by uuid NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by varchar NOT NULL,
 
     CONSTRAINT fk_bs_bike FOREIGN KEY (bike_id) REFERENCES bikes(id),

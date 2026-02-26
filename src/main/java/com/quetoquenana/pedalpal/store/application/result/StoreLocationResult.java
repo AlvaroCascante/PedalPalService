@@ -15,5 +15,6 @@ public record StoreLocationResult(
         BigDecimal latitude,
         BigDecimal longitude,
         String phone,
+        String timezone,
         GeneralStatus status
 ) { }

@@ -7,6 +7,7 @@ import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeUseCase;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEvent;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEventType;
+import com.quetoquenana.pedalpal.bike.domain.model.BikeType;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
@@ -68,7 +69,7 @@ class UpdateBikeUseCaseTest {
 
             assertEquals("New name", result.name());
             assertEquals("Old brand", result.brand());
-            assertEquals("ROAD", result.type());
+            assertEquals(BikeType.ROAD, result.type());
 
             verify(bikeRepository, never()).existsBySerialNumber(anyString());
             verify(bikeRepository).findByIdAndOwnerId(eq(bikeId), eq(ownerId));
@@ -100,7 +101,7 @@ class UpdateBikeUseCaseTest {
             BikeResult result = useCase.execute(command);
 
             assertEquals("New name", result.name());
-            assertEquals("MTB", result.type());
+            assertEquals(BikeType.MTB, result.type());
             assertEquals("New brand", result.brand());
             assertEquals(999, result.odometerKm());
             assertTrue(result.isPublic());

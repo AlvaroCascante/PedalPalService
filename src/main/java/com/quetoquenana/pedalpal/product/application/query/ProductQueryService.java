@@ -18,11 +18,11 @@ import java.util.UUID;
 public class ProductQueryService {
 
     private final ProductMapper mapper;
-    private final ProductRepository productRepository;
+    private final ProductRepository repository;
     private final ProductPackageRepository productPackageRepository;
 
     public ProductResult getProductById(UUID id) {
-        Product model = productRepository.getById(id)
+        Product model = repository.getById(id)
                 .orElseThrow(RecordNotFoundException::new);
 
         return mapper.toProductResult(model);
@@ -36,7 +36,7 @@ public class ProductQueryService {
     }
 
     public List<ProductResult> getActiveProducts() {
-        List<Product> models = productRepository.findByStatus(GeneralStatus.ACTIVE);
+        List<Product> models = repository.findByStatus(GeneralStatus.ACTIVE);
 
         return models.stream()
                 .map(mapper::toProductResult)

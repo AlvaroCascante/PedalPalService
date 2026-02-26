@@ -80,8 +80,8 @@ class CreateBikeUseCaseTest {
                 return new BikeResult(
                         b.getId(),
                         b.getName(),
-                        b.getType().name(),
-                        b.getStatus().name(),
+                        b.getType(),
+                        b.getStatus(),
                         b.isPublic(),
                         b.isExternalSync(),
                         b.getBrand(),
@@ -110,7 +110,7 @@ class CreateBikeUseCaseTest {
 
             assertEquals(saved.getId(), result.id());
             assertEquals(command.name(), result.name());
-            assertEquals("ROAD", result.type());
+            assertEquals(BikeType.ROAD, result.type());
             assertNull(result.serialNumber());
 
             verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
@@ -176,7 +176,7 @@ class CreateBikeUseCaseTest {
             assertEquals(command.odometerKm(), saved.getOdometerKm());
             assertEquals(command.usageTimeMinutes(), saved.getUsageTimeMinutes());
 
-            assertEquals("ROAD", result.type());
+            assertEquals(BikeType.ROAD, result.type());
             assertEquals(command.serialNumber(), result.serialNumber());
 
             verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());

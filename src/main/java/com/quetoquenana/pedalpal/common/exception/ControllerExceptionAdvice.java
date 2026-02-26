@@ -3,6 +3,7 @@ package com.quetoquenana.pedalpal.common.exception;
 import com.quetoquenana.pedalpal.common.dto.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -67,5 +68,14 @@ public class ControllerExceptionAdvice {
         String full = summary + ": " + details;
         log.warn("Validation failed: {}", full);
         return ResponseEntity.badRequest().body(new ApiResponse(full, HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @ExceptionHandler(OptimisticLockingFailureException.class)
+    public ResponseEntity<ApiResponse> handleOptimisticLockingFailureException(
+            OptimisticLockingFailureException ex, Locale locale) {
+        log.warn("OptimisticLockingFailureException: {}", ex.getMessage());
+        String message = messageSource.getMessage("optimistic.lock.conflict", null, locale);
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiResponse(message, HttpStatus.CONFLICT.value()));
     }
 }

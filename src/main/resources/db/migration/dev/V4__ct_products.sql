@@ -7,9 +7,9 @@ CREATE TABLE products (
     status varchar NOT NULL,
 
     version bigint NOT NULL DEFAULT 0,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by uuid NOT NULL,
-    updated_at TIMESTAMP NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by uuid NULL
 );
 
@@ -22,9 +22,9 @@ CREATE TABLE packages (
     status varchar NOT NULL,
 
     version bigint NOT NULL DEFAULT 0,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by uuid NOT NULL,
-    updated_at TIMESTAMP NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by uuid NULL
 );
 

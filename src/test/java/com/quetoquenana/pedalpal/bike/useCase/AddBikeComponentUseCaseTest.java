@@ -4,16 +4,11 @@ import com.quetoquenana.pedalpal.bike.application.command.AddBikeComponentComman
 import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.application.useCase.AddBikeComponentUseCase;
+import com.quetoquenana.pedalpal.bike.domain.model.*;
 import com.quetoquenana.pedalpal.common.domain.model.SystemCode;
 import com.quetoquenana.pedalpal.common.domain.repository.SystemCodeRepository;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeComponent;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEvent;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEventType;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
-import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.util.TestBikeData;
 import org.junit.jupiter.api.Nested;
@@ -120,7 +115,7 @@ class AddBikeComponentUseCaseTest {
             assertEquals(1, saved.getComponents().size());
 
             assertEquals(bikeId, result.id());
-            assertEquals("ROAD", result.type());
+            assertEquals(BikeType.ROAD, result.type());
             assertEquals(1, result.components().size());
 
             verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());

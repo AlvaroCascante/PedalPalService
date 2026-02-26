@@ -52,7 +52,8 @@ public final class TestStoreData {
                                 new BigDecimal("9.928069"),
                                 new BigDecimal("-84.090725"),
                                 "+506 2222-2222",
-                                GeneralStatus.ACTIVE
+                                "CR",
+                                GeneralStatus.ACTIVE.name()
                         )
                 )
         );

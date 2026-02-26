@@ -3,6 +3,7 @@ package com.quetoquenana.pedalpal.common.domain.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -12,11 +13,11 @@ public abstract class Auditable {
 
     private Long version;
 
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     private UUID createdBy;
 
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
     private UUID updatedBy;
 }

@@ -14,21 +14,21 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BikeQueryService {
 
-    private final BikeMapper bikeMapper;
-    private final BikeRepository bikeRepository;
+    private final BikeMapper mapper;
+    private final BikeRepository repository;
 
     public BikeResult getById(UUID id, UUID ownerId) {
-        Bike model = bikeRepository.findByIdAndOwnerId(id, ownerId)
+        Bike model = repository.findByIdAndOwnerId(id, ownerId)
                 .orElseThrow(RecordNotFoundException::new);
 
-        return bikeMapper.toBikeResult(model);
+        return mapper.toBikeResult(model);
     }
 
     public List<BikeResult> findActiveByOwnerId(UUID ownerId) {
-        List<Bike> models = bikeRepository.findByOwnerIdAndStatus(ownerId, BikeStatus.ACTIVE);
+        List<Bike> models = repository.findByOwnerIdAndStatus(ownerId, BikeStatus.ACTIVE);
 
         return models.stream()
-                .map(bikeMapper::toBikeResult)
+                .map(mapper::toBikeResult)
                 .toList();
     }
 }

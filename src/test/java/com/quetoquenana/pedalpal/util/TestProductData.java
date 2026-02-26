@@ -31,7 +31,7 @@ public final class TestProductData {
                 "Chain",
                 "Bike chain",
                 new BigDecimal("19.99"),
-                GeneralStatus.ACTIVE
+                GeneralStatus.ACTIVE.name()
         );
     }
 
@@ -52,7 +52,7 @@ public final class TestProductData {
                 "Basic Maintenance",
                 "Basic package",
                 new BigDecimal("99.99"),
-                GeneralStatus.ACTIVE,
+                GeneralStatus.ACTIVE.name(),
                 Set.of(productResponse(productId))
         );
     }

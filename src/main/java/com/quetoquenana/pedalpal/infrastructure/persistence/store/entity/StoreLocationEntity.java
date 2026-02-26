@@ -45,8 +45,11 @@ public class StoreLocationEntity extends AuditableEntity {
     @Column(name = "longitude")
     private BigDecimal longitude;
 
-    @Column(name = "phone", length = 100)
+    @Column(name = "phone", length = 50)
     private String phone;
+
+    @Column(name = "timezone", length = 100, nullable = false)
+    private String timezone;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)

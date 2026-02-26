@@ -21,5 +21,6 @@ public class StoreLocation extends Auditable {
     private BigDecimal latitude;
     private BigDecimal longitude;
     private String phone;
+    private String timezone;
     private GeneralStatus status;
 }
