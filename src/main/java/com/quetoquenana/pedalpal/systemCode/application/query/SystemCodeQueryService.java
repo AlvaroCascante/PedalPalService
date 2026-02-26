@@ -29,7 +29,7 @@ public class SystemCodeQueryService {
     public List<SystemCodeResult> getActiveComponents() {
         List<SystemCode> models = repository.findByCategoryAndStatus(
                 COMPONENT_TYPE,
-                GeneralStatus.ACTIVE.name()
+                GeneralStatus.ACTIVE
         );
 
         return models.stream()

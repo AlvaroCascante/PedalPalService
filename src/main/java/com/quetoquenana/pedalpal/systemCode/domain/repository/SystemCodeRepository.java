@@ -1,5 +1,6 @@
 package com.quetoquenana.pedalpal.systemCode.domain.repository;
 
+import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public interface SystemCodeRepository {
 
     Optional<SystemCode> findByCategoryAndCode(String category, String code);
 
-    List<SystemCode> findByCategoryAndStatus(String category, String status);
+    List<SystemCode> findByCategoryAndStatus(String category, GeneralStatus status);
 }

@@ -17,7 +17,7 @@ public class SystemCodeApiMapper {
 
     public SystemCodeResponse toResponse(SystemCodeResult result) {
         Locale locale = LocaleContextHolder.getLocale();
-        String name = messageSource.getMessage(result.status().getKey(), null, locale);
+        String name = messageSource.getMessage(result.codeKey(), null, locale);
         String statusLabel = messageSource.getMessage(result.status().getKey(), null, locale);
 
         return new SystemCodeResponse(
