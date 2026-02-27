@@ -995,9 +995,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/stores",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/stores",
 							"host": [
-								"{{host_pedal_pal}}"
+								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
