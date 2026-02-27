@@ -10,7 +10,7 @@ This endpoint is intentionally narrow: it does **not** modify other bike fields.
 
 - Requires authentication.
 - Requires role: `USER`.
-- The authenticated user is resolved from a JWT using `SecurityUtils.getCurrentUser()`.
+- The authenticated user is resolved from a JWT using `CurrentUserProvider`.
 
 If authentication is missing/invalid, the API returns **400** with an `ApiResponse` whose `errorCode` is **401** (mapped from `ForbiddenAccessException`).
 
@@ -35,14 +35,14 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 
 The request body contains only one field:
 
-| Field    | Type   | Required | Validation                                   | Description     |
-|----------|--------|----------|----------------------------------------------|-----------------|
-| `status` | string | yes      | `@NotNull` (`{bike.update.status.required}`) | New status code |
+| Field    | Type   | Required | Validation                                | Description     |
+|----------|--------|----------|-------------------------------------------|-----------------|
+| `status` | string | yes      | `@NotNull` (`{bike.update.status.blank}`) | New status code |
 
 Notes:
 
 - If `status` is missing or `null`, bean validation returns **400**.
-- Status value validity (e.g., allowed set) is enforced in the application layer (`UpdateBikeStatusUseCase`).
+- Status value validity (allowed set / unknown handling) is enforced in the application layer (`UpdateBikeStatusUseCase`).
 
 ---
 
@@ -88,15 +88,6 @@ Returned when:
 - Authentication is missing (`ForbiddenAccessException`) — `errorCode = 401`.
 - Bean validation fails (`MethodArgumentNotValidException`) (e.g., missing `status`).
 - The use case rejects the status (domain/business validation) and throws a `BadRequestException` or `BusinessException`.
-
-Example validation error:
-
-```json
-{
-  "message": "Validation failed: status: Status is required",
-  "errorCode": 400
-}
-```
 
 Example auth-required error:
 

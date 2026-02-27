@@ -139,8 +139,8 @@ class CreateAppointmentUseCaseTest {
             assertEquals(storeLocationId, saved.getStoreLocationId());
             assertEquals(AppointmentStatus.REQUESTED, saved.getStatus());
             assertEquals(1, saved.getRequestedServices().size());
-            assertEquals("Chain", saved.getRequestedServices().get(0).getName());
-            assertEquals(new BigDecimal("19.99"), saved.getRequestedServices().get(0).getPrice());
+            assertEquals("Chain", saved.getRequestedServices().getFirst().getName());
+            assertEquals(new BigDecimal("19.99"), saved.getRequestedServices().getFirst().getPrice());
             assertNotNull(result.id());
         }
     }

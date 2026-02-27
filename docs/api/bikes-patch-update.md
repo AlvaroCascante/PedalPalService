@@ -8,7 +8,7 @@ Partially updates a bike owned by the authenticated user. Only the fields presen
 
 - Requires authentication.
 - Requires role: `USER`.
-- The authenticated user is resolved from a JWT using `SecurityUtils.getCurrentUser()`.
+- The authenticated user is resolved from a JWT using `CurrentUserProvider`.
 
 If authentication is missing/invalid, the API returns **400** with an `ApiResponse` whose `errorCode` is **401** (see error responses below).
 
@@ -36,25 +36,25 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 - **Field missing** → the field is **not** modified.
 - **Field present with value** → the value is validated and applied.
 - **Field present but blank string** (`""` or whitespace-only) → **400** validation error.
-- **Field present with explicit `null`** → **400** (rejected by Jackson via `@JsonSetter(nulls = Nulls.FAIL)`).
+- **Field present with explicit `null`** → **400** (rejected by Jackson via `@JsonSetter(... Nulls.FAIL)`).
 
-> Note: `ownerId` cannot be updated via this endpoint.
+> `ownerId` cannot be updated via this endpoint.
 
 #### Fields
 
-| Field              | Type    | Optional | Validation                                  | Description                                                                    |
-|--------------------|---------|----------|---------------------------------------------|--------------------------------------------------------------------------------|
-| `name`             | string  | yes      | min length 1 (`{bike.update.name.blank}`)   | Bike name                                                                      |
-| `brand`            | string  | yes      | min length 1 (`{bike.update.brand.blank}`)  | Brand                                                                          |
-| `model`            | string  | yes      | min length 1 (`{bike.update.model.blank}`)  | Model                                                                          |
-| `year`             | integer | yes      | `>= 1900` (`{bike.update.year.invalid}`)    | Model year                                                                     |
-| `type`             | string  | yes      | min length 1 (`{bike.update.type.blank}`)   | Bike type code (validated in use case; invalid → `{bike.update.type.invalid}`) |
-| `serialNumber`     | string  | yes      | min length 1 (`{bike.update.serial.blank}`) | Serial number (if changed, uniqueness is checked)                              |
-| `notes`            | string  | yes      | min length 1 (`{bike.update.notes.blank}`)  | Notes                                                                          |
-| `odometerKm`       | integer | yes      | `>= 0` (`{bike.update.odometer.invalid}`)   | Odometer in km                                                                 |
-| `usageTimeMinutes` | integer | yes      | `>= 0` (`{bike.update.usage.invalid}`)      | Usage time in minutes                                                          |
-| `isPublic`         | boolean | yes      | (no bean validation)                        | Public visibility                                                              |
-| `isExternalSync`   | boolean | yes      | (no bean validation)                        | External sync flag                                                             |
+| Field              | Type     | Optional | Validation                                  | Description                                                                    |
+|--------------------|----------|----------|---------------------------------------------|--------------------------------------------------------------------------------|
+| `name`             | string   | yes      | min length 1 (`{bike.update.name.blank}`)   | Bike name                                                                      |
+| `brand`            | string   | yes      | min length 1 (`{bike.update.brand.blank}`)  | Brand                                                                          |
+| `model`            | string   | yes      | min length 1 (`{bike.update.model.blank}`)  | Model                                                                          |
+| `year`             | integer  | yes      | `>= 1900` (`{bike.update.year.invalid}`)    | Model year                                                                     |
+| `type`             | string   | yes      | min length 1 (`{bike.update.type.blank}`)   | Bike type code (validated in use case)                                         |
+| `serialNumber`     | string   | yes      | min length 1 (`{bike.update.serial.blank}`) | Serial number (if changed, uniqueness may be checked)                          |
+| `notes`            | string   | yes      | min length 1 (`{bike.update.notes.blank}`)  | Notes                                                                          |
+| `odometerKm`       | integer  | yes      | `>= 0` (`{bike.update.odometer.invalid}`)   | Odometer in km                                                                 |
+| `usageTimeMinutes` | integer  | yes      | `>= 0` (`{bike.update.usage.invalid}`)      | Usage time in minutes                                                          |
+| `isPublic`         | boolean  | yes      | (no bean validation)                        | Public visibility (`Boolean` so it can be omitted in PATCH)                    |
+| `isExternalSync`   | boolean  | yes      | (no bean validation)                        | External sync flag (`Boolean` so it can be omitted in PATCH)                   |
 
 ---
 
@@ -63,33 +63,6 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 ### 200 OK
 
 Returns an `ApiResponse` whose `data` is a `BikeResponse`.
-
-#### Body (`BikeResponse`)
-
-```json
-{
-  "data": {
-    "id": "9c84b698-b3fc-4c9d-91f1-9bab8a53a466",
-    "name": "New name",
-    "type": "Road",
-    "status": "ACTIVE",
-    "isPublic": true,
-    "isExternalSync": false,
-    "brand": "Brand",
-    "model": "Model",
-    "year": 2020,
-    "serialNumber": null,
-    "notes": null,
-    "odometerKm": 0,
-    "usageTimeMinutes": 0,
-    "components": []
-  },
-  "message": "Success",
-  "errorCode": 0
-}
-```
-
-> The exact `ApiResponse` wrapper fields depend on your `ApiResponse` implementation; the important part is the `data` shape above.
 
 ---
 
@@ -102,46 +75,17 @@ Returned when:
 - Any field is explicitly provided as `null`.
 - Blank string is provided for `name`, `brand`, `model`, `type`, `serialNumber`, or `notes`.
 
-Example validation error (shape depends on `ApiResponse`):
-
-```json
-{
-  "message": "Validation failed: name: Name cannot be blank",
-  "errorCode": 400
-}
-```
-
-Example auth-required error:
-
-```json
-{
-  "message": "Authentication is required.",
-  "errorCode": 401
-}
-```
-
 ---
 
 ### 404 Not Found
 
 Returned when the bike doesn’t exist (for this user) or the user isn’t the owner.
 
-Example:
-
-```json
-{
-  "message": "Bike not found.",
-  "errorCode": 404
-}
-```
-
 ---
 
 ## Examples
 
 ### Update only the name
-
-**Request**
 
 ```http
 PATCH /v1/api/bikes/9c84b698-b3fc-4c9d-91f1-9bab8a53a466

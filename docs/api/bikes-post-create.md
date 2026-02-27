@@ -8,7 +8,7 @@ Creates a new bike for the authenticated user.
 
 - Requires authentication.
 - Requires role: `USER`.
-- The authenticated user is resolved from a JWT using `SecurityUtils.getCurrentUser()`.
+- The authenticated user is resolved from a JWT using `CurrentUserProvider`.
 
 If authentication is missing/invalid, the API returns **400** with an `ApiResponse` whose `errorCode` is **401** (mapped from `ForbiddenAccessException`).
 
@@ -28,8 +28,8 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 | Field              | Type    | Required | Validation                                 | Description                                |
 |--------------------|---------|----------|--------------------------------------------|--------------------------------------------|
 | `name`             | string  | yes      | `@NotBlank` (`{bike.create.name.blank}`)   | Bike name                                  |
-| `isPublic`         | boolean | no       | —                                          | Public visibility                          |
-| `type`             | string  | yes      | `@NotNull` (`{bike.create.type.required}`) | Bike type (string code)                    |
+| `isPublic`         | boolean | yes      | —                                          | Public visibility                          |
+| `type`             | string  | yes      | `@NotNull` (`{bike.create.type.required}`) | Bike type code (string)                    |
 | `brand`            | string  | no       | max 100 (`{bike.create.brand.max}`)        | Brand                                      |
 | `model`            | string  | no       | max 100 (`{bike.create.model.max}`)        | Model                                      |
 | `year`             | integer | no       | `>= 1900` (`{bike.create.year.invalid}`)   | Model year                                 |
@@ -37,7 +37,7 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 | `notes`            | string  | no       | max 1000 (`{bike.create.notes.max}`)       | Notes                                      |
 | `odometerKm`       | integer | no       | `>= 0` (`{bike.create.odometer.invalid}`)  | Odometer in km                             |
 | `usageTimeMinutes` | integer | no       | `>= 0` (`{bike.create.usage.invalid}`)     | Usage time in minutes                      |
-| `isExternalSync`   | boolean | no       | —                                          | External sync flag                         |
+| `isExternalSync`   | boolean | yes      | —                                          | External sync flag                         |
 
 ---
 
@@ -47,7 +47,7 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 
 Returns an `ApiResponse` whose `data` is a `BikeResponse`.
 
-- `Location` header is set to `/api/bikes/{id}` (note: current controller uses `/api/bikes/` not `/v1/api/bikes/`).
+- `Location` header is set to `/api/bikes/{id}`.
 
 #### Body (`BikeResponse`)
 
@@ -86,33 +86,6 @@ Returned when:
 - Bean validation fails (`MethodArgumentNotValidException`).
 - A domain/business rule fails (e.g., serial number already exists). This is thrown by the use case as `BusinessException`.
 
-Example validation error:
-
-```json
-{
-  "message": "Validation failed: name: Bike name is required",
-  "errorCode": 400
-}
-```
-
-Example auth-required error:
-
-```json
-{
-  "message": "Authentication is required.",
-  "errorCode": 401
-}
-```
-
-Example business rule error (serial already exists):
-
-```json
-{
-  "message": "A bike with the same serial number already exists: SN-123",
-  "errorCode": 400
-}
-```
-
 ---
 
 ## Examples
@@ -126,7 +99,9 @@ Authorization: Bearer <jwt>
 
 {
   "name": "My bike",
-  "type": "ROAD"
+  "isPublic": false,
+  "type": "ROAD",
+  "isExternalSync": false
 }
 ```
 
@@ -161,9 +136,10 @@ Authorization: Bearer <jwt>
 
 {
   "name": " ",
-  "type": "ROAD"
+  "isPublic": false,
+  "type": "ROAD",
+  "isExternalSync": false
 }
 ```
 
 Result: **400 Bad Request**.
-

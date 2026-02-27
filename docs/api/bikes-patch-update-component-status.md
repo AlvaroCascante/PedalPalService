@@ -10,7 +10,7 @@ This endpoint is intentionally narrow: it does **not** modify other component fi
 
 - Requires authentication.
 - Requires role: `USER`.
-- The authenticated user is resolved from a JWT using `SecurityUtils.getCurrentUser()`.
+- The authenticated user is resolved from a JWT using `CurrentUserProvider`.
 
 If authentication is missing/invalid, the API returns **400** with an `ApiResponse` whose `errorCode` is **401** (mapped from `ForbiddenAccessException`).
 
@@ -34,14 +34,14 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 
 ### Body (`UpdateBikeComponentStatusRequest`)
 
-| Field    | Type   | Required | Validation                                          | Description                                           |
-|----------|--------|----------|-----------------------------------------------------|-------------------------------------------------------|
-| `status` | string | yes      | `@NotNull` (`{bike.component.update.status.blank}`) | New component status code (e.g. `ACTIVE`, `INACTIVE`) |
+| Field    | Type   | Required | Validation                                             | Description                                           |
+|----------|--------|----------|--------------------------------------------------------|-------------------------------------------------------|
+| `status` | string | yes      | `@NotNull` (`{bike.component.update.status.blank}`)    | New component status code (e.g. `ACTIVE`, `INACTIVE`) |
 
 Notes:
 
 - If `status` is missing or `null`, bean validation returns **400**.
-- If `status` is present but blank/whitespace, the use case throws `BadRequestException("bike.component.update.status.blank")`.
+- Status value validity (allowed set / unknown handling) is enforced in the application layer (`UpdateBikeComponentStatusUseCase`).
 
 ---
 
@@ -61,7 +61,7 @@ Returned when:
 
 - Authentication is missing (`ForbiddenAccessException`) — `errorCode = 401`.
 - Bean validation fails (`MethodArgumentNotValidException`) (e.g. missing `status`).
-- Use case validation fails (blank status) — `BadRequestException("bike.component.update.status.blank")`.
+- The use case rejects the status and throws a `BadRequestException` or `BusinessException`.
 
 ---
 
@@ -99,4 +99,3 @@ Authorization: Bearer <jwt>
 ```
 
 Result: **400 Bad Request**.
-

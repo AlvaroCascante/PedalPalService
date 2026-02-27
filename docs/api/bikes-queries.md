@@ -5,6 +5,7 @@ This document describes the bike query endpoints exposed by `BikeController`.
 Endpoints covered:
 
 - `GET /v1/api/bikes/{id}` — Get bike by id
+- `GET /v1/api/bikes/{id}/history` — Get bike history by bike id
 - `GET /v1/api/bikes/active` — Fetch active bikes for the authenticated user
 
 ---
@@ -13,7 +14,7 @@ Endpoints covered:
 
 - Requires authentication.
 - Requires role: `USER`.
-- The authenticated user is resolved from a JWT using `SecurityUtils.getCurrentUser()`.
+- The authenticated user is resolved from a JWT using `CurrentUserProvider`.
 
 If authentication is missing/invalid, the API returns **400** with an `ApiResponse` whose `errorCode` is **401** (mapped from `ForbiddenAccessException`).
 
@@ -21,9 +22,10 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 
 ## Common response type
 
-Both endpoints respond with an `ApiResponse` wrapper whose `data` is:
+All endpoints respond with an `ApiResponse` wrapper whose `data` is:
 
 - a single `BikeResponse` for `GET /{id}`
+- a list of `BikeHistoryResponse` for `GET /{id}/history`
 - a list of `BikeResponse` for `GET /active`
 
 ### `BikeResponse`
@@ -48,6 +50,7 @@ Both endpoints respond with an `ApiResponse` wrapper whose `data` is:
       "id": "4e100290-fc14-4d1f-b1f8-9f9338702612",
       "type": "CHAIN",
       "name": "Chain",
+      "status": "ACTIVE",
       "brand": "Shimano",
       "model": "HG",
       "notes": "New chain",
@@ -63,6 +66,19 @@ Notes:
 - `type` is a **localized label**, resolved by `BikeApiMapper` via `MessageSource` using the domain enum key.
 - `components` is an array of `BikeComponentResponse`. When no components exist, the API returns `components: []`.
 
+### `BikeHistoryResponse`
+
+```json
+{
+  "id": "1b5bda8d-5c67-4c1f-9643-5f05f3d3e2af",
+  "bikeId": "9c84b698-b3fc-4c9d-91f1-9bab8a53a466",
+  "occurredAt": "2026-02-27T10:15:30",
+  "performedBy": "801043b2-f525-402e-87a5-a09641bc628e",
+  "type": "BIKE_UPDATED",
+  "payload": "{...}"
+}
+```
+
 ---
 
 ## GET `/v1/api/bikes/{id}` — Get by id
@@ -71,9 +87,9 @@ Fetches a single bike by id for the authenticated user.
 
 ### Query parameters
 
-| Name     | Type                | Required | Description                                                                                                                                             |
-|----------|---------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `status` | string (repeatable) | no       | Filter components returned in `BikeResponse.components` by component status. Can be provided multiple times. Example: `?status=ACTIVE&status=INACTIVE`. |
+| Name              | Type                               | Required | Description |
+|-------------------|------------------------------------|----------|-------------|
+| `componentStatus` | string (repeatable / set of enums) | no       | Filters `BikeResponse.components` by component status. Example: `?componentStatus=ACTIVE&componentStatus=INACTIVE`. |
 
 ### Path parameters
 
@@ -127,6 +143,39 @@ Returned when the bike doesn’t exist for this user (or the user isn’t the ow
 {
   "message": "Bike not found.",
   "errorCode": 404
+}
+```
+
+---
+
+## GET `/v1/api/bikes/{id}/history` — Get bike history
+
+Fetches the audit/history events for a bike.
+
+### Path parameters
+
+| Name | Type | Required | Description     |
+|------|------|----------|-----------------|
+| `id` | UUID | yes      | Bike identifier |
+
+### Responses
+
+#### 200 OK
+
+```json
+{
+  "data": [
+    {
+      "id": "1b5bda8d-5c67-4c1f-9643-5f05f3d3e2af",
+      "bikeId": "9c84b698-b3fc-4c9d-91f1-9bab8a53a466",
+      "occurredAt": "2026-02-27T10:15:30",
+      "performedBy": "801043b2-f525-402e-87a5-a09641bc628e",
+      "type": "BIKE_UPDATED",
+      "payload": "{...}"
+    }
+  ],
+  "message": "Success",
+  "errorCode": 0
 }
 ```
 
@@ -196,7 +245,14 @@ Authorization: Bearer <jwt>
 ### Get by id filtering components by status
 
 ```http
-GET /v1/api/bikes/9c84b698-b3fc-4c9d-91f1-9bab8a53a466?status=ACTIVE&status=INACTIVE
+GET /v1/api/bikes/9c84b698-b3fc-4c9d-91f1-9bab8a53a466?componentStatus=ACTIVE&componentStatus=INACTIVE
+Authorization: Bearer <jwt>
+```
+
+### Get history
+
+```http
+GET /v1/api/bikes/9c84b698-b3fc-4c9d-91f1-9bab8a53a466/history
 Authorization: Bearer <jwt>
 ```
 

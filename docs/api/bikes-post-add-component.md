@@ -8,7 +8,7 @@ Adds a new component to an existing bike owned by the authenticated user.
 
 - Requires authentication.
 - Requires role: `USER`.
-- The authenticated user is resolved from a JWT using `SecurityUtils.getCurrentUser()`.
+- The authenticated user is resolved from a JWT using `CurrentUserProvider`.
 
 If authentication is missing/invalid, the API returns **400** with an `ApiResponse` whose `errorCode` is **401** (mapped from `ForbiddenAccessException`).
 
@@ -41,7 +41,10 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 | `odometerKm`       | integer | no       | `>= 0` (`{bike.add.component.odometer.invalid}`)  | Odometer in km at time of install                                  |
 | `usageTimeMinutes` | integer | no       | `>= 0` (`{bike.add.component.usage.invalid}`)     | Usage time in minutes at time of install                           |
 
-> Note: although `name` is documented as “blank” in the message key, the annotation is `@NotNull` (not `@NotBlank`). If you want to reject whitespace-only values, change it to `@NotBlank`.
+Notes:
+
+- Although the message key contains `blank`, the annotation is `@NotNull` (not `@NotBlank`). If you want to reject whitespace-only values, change it to `@NotBlank`.
+- `odometerKm` and `usageTimeMinutes` are primitive `int` in the request DTO, so if the client omits them they will be read as `0`.
 
 ---
 
@@ -51,7 +54,7 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 
 Returns an `ApiResponse` whose `data` is a `BikeResponse` representing the updated bike (including a `components` array).
 
-- `Location` header is set to `/api/bikes/{id}` (note: current controller uses `/api/bikes/` not `/v1/api/bikes/`).
+- `Location` header is set to `/api/bikes/{id}`.
 
 #### Body (`BikeResponse`)
 
@@ -76,6 +79,7 @@ Returns an `ApiResponse` whose `data` is a `BikeResponse` representing the updat
         "id": "4e100290-fc14-4d1f-b1f8-9f9338702612",
         "type": "CHAIN",
         "name": "Chain",
+        "status": "ACTIVE",
         "brand": "Shimano",
         "model": "HG",
         "notes": "New chain",
@@ -164,4 +168,3 @@ Authorization: Bearer <jwt>
   "usageTimeMinutes": 20
 }
 ```
-

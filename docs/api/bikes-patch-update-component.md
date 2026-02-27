@@ -14,7 +14,7 @@ This endpoint is the component-level equivalent of the bike PATCH endpoint:
 
 - Requires authentication.
 - Requires role: `USER`.
-- The authenticated user is resolved from a JWT using `SecurityUtils.getCurrentUser()`.
+- The authenticated user is resolved from a JWT using `CurrentUserProvider`.
 
 If authentication is missing/invalid, the API returns **400** with an `ApiResponse` whose `errorCode` is **401** (mapped from `ForbiddenAccessException`).
 
@@ -57,8 +57,6 @@ If authentication is missing/invalid, the API returns **400** with an `ApiRespon
 | `odometerKm`       | integer | yes      | `@Min(0)` (`{bike.add.component.odometer.invalid}`)        | Odometer in km                                                                           |
 | `usageTimeMinutes` | integer | yes      | `@Min(0)` (`{bike.add.component.usage.invalid}`)           | Usage time in minutes                                                                    |
 
-> Implementation note: the current DTO uses `int odometerKm` and `int usageTimeMinutes` (primitive), which means they default to `0` when the field is omitted. That makes them effectively **always present** from the controller’s point of view. If you want true PATCH semantics for these fields, change them to `Integer`.
-
 ---
 
 ## Responses
@@ -90,6 +88,7 @@ Returns an `ApiResponse` whose `data` is a `BikeResponse` representing the bike 
         "id": "4e100290-fc14-4d1f-b1f8-9f9338702612",
         "type": "CHAIN",
         "name": "New chain",
+        "status": "ACTIVE",
         "brand": "Shimano",
         "model": "HG",
         "notes": "New chain",
@@ -189,4 +188,3 @@ Authorization: Bearer <jwt>
 ```
 
 Result: **400 Bad Request**.
-
