@@ -82,7 +82,7 @@ class UpdateBikeComponentStatusUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultUpdated(bikeId));
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultUpdated(bikeId));
 
             BikeResult result = useCase.execute(command);
 
@@ -157,7 +157,7 @@ class UpdateBikeComponentStatusUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultUpdated(bikeId));
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultUpdated(bikeId));
 
             BikeResult result = useCase.execute(command);
 
@@ -198,7 +198,7 @@ class UpdateBikeComponentStatusUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultUpdated(bikeId));
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultUpdated(bikeId));
 
             BikeResult result = useCase.execute(command);
 

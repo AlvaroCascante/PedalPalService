@@ -62,7 +62,7 @@ class UpdateBikeStatusUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithStatus(bikeId, "ACTIVE"));
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithStatus(bikeId, "ACTIVE"));
 
             UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, ownerId, "ACTIVE");
 
@@ -112,7 +112,7 @@ class UpdateBikeStatusUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithStatus(bikeId, "INACTIVE"));
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithStatus(bikeId, "INACTIVE"));
 
             UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, ownerId, null);
 
@@ -133,7 +133,7 @@ class UpdateBikeStatusUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithStatus(bikeId, "UNKNOWN"));
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithStatus(bikeId, "UNKNOWN"));
 
             UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, ownerId, "NOT_A_STATUS");
 

@@ -100,8 +100,8 @@ class AddBikeComponentUseCaseTest {
                     .usageTimeMinutes(command.usageTimeMinutes())
                     .build();
 
-            when(bikeMapper.toBikeComponent(eq(command), eq(componentType))).thenReturn(mappedComponent);
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithOneComponent(bikeId));
+            when(bikeMapper.toModel(eq(command), eq(componentType))).thenReturn(mappedComponent);
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithOneComponent(bikeId));
 
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
 

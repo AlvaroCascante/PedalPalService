@@ -17,8 +17,8 @@ This endpoint updates appointment **details** (scheduled time, store location, n
 
 ### Path parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
+| Name | Type | Required | Description            |
+|------|------|----------|------------------------|
 | `id` | UUID | yes      | Appointment identifier |
 
 ### Headers
@@ -32,11 +32,11 @@ This endpoint updates appointment **details** (scheduled time, store location, n
 
 All fields are optional.
 
-| Field               | Type    | Required | Validation | Description |
-|---------------------|---------|----------|------------|-------------|
-| `storeLocationId`   | UUID    | no       | —          | New store location id |
-| `scheduledAt`       | Instant | no       | —          | New scheduled date/time |
-| `notes`             | string  | no       | —          | Notes |
+| Field               | Type    | Required | Validation | Description                                    |
+|---------------------|---------|----------|------------|------------------------------------------------|
+| `storeLocationId`   | UUID    | no       | —          | New store location id                          |
+| `scheduledAt`       | Instant | no       | —          | New scheduled date/time                        |
+| `notes`             | string  | no       | —          | Notes                                          |
 | `requestedServices` | array   | no       | —          | Replaces requested services (full replacement) |
 
 Requested services use the same item shape as create:

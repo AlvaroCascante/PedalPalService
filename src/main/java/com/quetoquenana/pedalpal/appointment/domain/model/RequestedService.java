@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class RequestedService {
     private UUID id;
-    private UUID productId;
+    private UUID serviceId;
     private String name;
     private BigDecimal price;
 }

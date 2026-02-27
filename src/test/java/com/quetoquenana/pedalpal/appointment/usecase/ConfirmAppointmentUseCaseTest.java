@@ -6,6 +6,7 @@ import com.quetoquenana.pedalpal.appointment.application.result.ConfirmAppointme
 import com.quetoquenana.pedalpal.appointment.application.usecase.ConfirmAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
+import com.quetoquenana.pedalpal.appointment.domain.model.RequestedService;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
 import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
@@ -78,31 +79,37 @@ class ConfirmAppointmentUseCaseTest {
             when(appointmentRepository.getById(appointmentId)).thenReturn(Optional.of(appointment));
             when(appointmentRepository.save(any(Appointment.class))).thenAnswer(inv -> inv.getArgument(0, Appointment.class));
 
-            AppointmentResult appointmentResult = AppointmentResult.builder()
-                    .id(appointmentId)
-                    .bikeId(appointment.getBikeId())
-                    .storeLocationId(appointment.getStoreLocationId())
-                    .scheduledAt(appointment.getScheduledAt())
-                    .status(AppointmentStatus.CONFIRMED)
-                    .notes(appointment.getNotes())
-                    .requestedServices(List.of())
-                    .build();
+            AppointmentResult appointmentResult = new AppointmentResult(
+                    appointmentId,
+                    appointment.getBikeId(),
+                    appointment.getStoreLocationId(),
+                    appointment.getScheduledAt(),
+                    AppointmentStatus.CONFIRMED,
+                    appointment.getNotes(),
+                    List.of()
+            );
 
             when(mapper.toResult(any(Appointment.class))).thenReturn(appointmentResult);
 
             ServiceOrder savedOrder = ServiceOrder.builder().id(UUID.randomUUID()).build();
             when(serviceOrderRepository.save(any(ServiceOrder.class))).thenReturn(savedOrder);
 
-            ServiceOrderResult serviceOrderResult = ServiceOrderResult.builder()
-                    .id(savedOrder.getId())
-                    .requestedServices(List.of())
-                    .build();
+            ServiceOrderResult serviceOrderResult = new ServiceOrderResult(
+                    savedOrder.getId(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    List.of()
+            );
             when(serviceOrderMapper.toResult(savedOrder)).thenReturn(serviceOrderResult);
 
-            UpdateAppointmentStatusCommand command = UpdateAppointmentStatusCommand.builder()
-                    .id(appointmentId)
-                    .status(AppointmentStatus.CONFIRMED.name())
-                    .build();
+            UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
+                    appointmentId,
+                    AppointmentStatus.CONFIRMED.name()
+            );
 
             ConfirmAppointmentResult result = useCase.execute(command);
 
@@ -129,13 +136,13 @@ class ConfirmAppointmentUseCaseTest {
                     .build();
 
             // Requested services to sum: 10.50 + 2.25 = 12.75
-            appointment.getRequestedServices().add(com.quetoquenana.pedalpal.appointment.domain.model.RequestedService.builder()
-                    .productId(UUID.randomUUID())
+            appointment.getRequestedServices().add(RequestedService.builder()
+                    .serviceId(UUID.randomUUID())
                     .name("Service A")
                     .price(new BigDecimal("10.50"))
                     .build());
-            appointment.getRequestedServices().add(com.quetoquenana.pedalpal.appointment.domain.model.RequestedService.builder()
-                    .productId(UUID.randomUUID())
+            appointment.getRequestedServices().add(RequestedService.builder()
+                    .serviceId(UUID.randomUUID())
                     .name("Service B")
                     .price(new BigDecimal("2.25"))
                     .build());
@@ -143,15 +150,15 @@ class ConfirmAppointmentUseCaseTest {
             when(appointmentRepository.getById(appointmentId)).thenReturn(Optional.of(appointment));
             when(appointmentRepository.save(any(Appointment.class))).thenAnswer(inv -> inv.getArgument(0, Appointment.class));
 
-            when(mapper.toResult(any(Appointment.class))).thenReturn(AppointmentResult.builder()
-                    .id(appointmentId)
-                    .bikeId(appointment.getBikeId())
-                    .storeLocationId(appointment.getStoreLocationId())
-                    .scheduledAt(appointment.getScheduledAt())
-                    .status(AppointmentStatus.CONFIRMED)
-                    .notes(appointment.getNotes())
-                    .requestedServices(List.of())
-                    .build());
+            when(mapper.toResult(any(Appointment.class))).thenReturn(new AppointmentResult(
+                    appointmentId,
+                    appointment.getBikeId(),
+                    appointment.getStoreLocationId(),
+                    appointment.getScheduledAt(),
+                    AppointmentStatus.CONFIRMED,
+                    appointment.getNotes(),
+                    List.of()
+            ));
 
             when(serviceOrderRepository.save(serviceOrderCaptor.capture())).thenAnswer(inv -> {
                 ServiceOrder toSave = inv.getArgument(0, ServiceOrder.class);
@@ -159,16 +166,22 @@ class ConfirmAppointmentUseCaseTest {
                 return toSave;
             });
 
-            ServiceOrderResult serviceOrderResult = ServiceOrderResult.builder()
-                    .id(UUID.randomUUID())
-                    .requestedServices(List.of())
-                    .build();
+            ServiceOrderResult serviceOrderResult = new ServiceOrderResult(
+                    UUID.randomUUID(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    List.of()
+            );
             when(serviceOrderMapper.toResult(any(ServiceOrder.class))).thenReturn(serviceOrderResult);
 
-            UpdateAppointmentStatusCommand command = UpdateAppointmentStatusCommand.builder()
-                    .id(appointmentId)
-                    .status(AppointmentStatus.CONFIRMED.name())
-                    .build();
+            UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
+                    appointmentId,
+                    AppointmentStatus.CONFIRMED.name()
+            );
 
             useCase.execute(command);
 
@@ -186,10 +199,10 @@ class ConfirmAppointmentUseCaseTest {
 
             when(appointmentRepository.getById(appointmentId)).thenReturn(Optional.empty());
 
-            UpdateAppointmentStatusCommand command = UpdateAppointmentStatusCommand.builder()
-                    .id(appointmentId)
-                    .status(AppointmentStatus.CONFIRMED.name())
-                    .build();
+            UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
+                    appointmentId,
+                    AppointmentStatus.CONFIRMED.name()
+            );
 
             assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
 
@@ -217,10 +230,10 @@ class ConfirmAppointmentUseCaseTest {
             when(appointmentRepository.getById(appointmentId)).thenReturn(Optional.of(appointment));
             when(appointmentRepository.save(any(Appointment.class))).thenThrow(new RuntimeException("db down"));
 
-            UpdateAppointmentStatusCommand command = UpdateAppointmentStatusCommand.builder()
-                    .id(appointmentId)
-                    .status(AppointmentStatus.CONFIRMED.name())
-                    .build();
+            UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
+                    appointmentId,
+                    AppointmentStatus.CONFIRMED.name()
+            );
 
             assertThrows(BadRequestException.class, () -> useCase.execute(command));
         }

@@ -80,15 +80,15 @@ class AppointmentControllerTest {
     void shouldReturn201_whenValidCreate() throws Exception {
         UUID appointmentId = UUID.randomUUID();
 
-        AppointmentResult result = AppointmentResult.builder()
-                .id(appointmentId)
-                .bikeId(UUID.randomUUID())
-                .storeLocationId(UUID.randomUUID())
-                .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
-                .status(AppointmentStatus.REQUESTED)
-                .notes("notes")
-                .requestedServices(List.of())
-                .build();
+        AppointmentResult result = new AppointmentResult(
+                appointmentId,
+                UUID.randomUUID(),
+                UUID.randomUUID(),
+                Instant.parse("2026-02-25T10:00:00Z"),
+                AppointmentStatus.REQUESTED,
+                "notes",
+                List.of()
+        );
 
         when(createAppointmentUseCase.execute(any())).thenReturn(result);
 
@@ -115,13 +115,13 @@ class AppointmentControllerTest {
 
         when(appointmentQueryService.getUpcomingAppointments(eq(bikeId)))
                 .thenReturn(List.of(
-                        AppointmentListItemResult.builder()
-                                .id(UUID.randomUUID())
-                                .bikeId(bikeId)
-                                .storeLocationId(UUID.randomUUID())
-                                .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
-                                .status(AppointmentStatus.CONFIRMED)
-                                .build()
+                        new AppointmentListItemResult(
+                                UUID.randomUUID(),
+                                bikeId,
+                                UUID.randomUUID(),
+                                Instant.parse("2026-02-25T10:00:00Z"),
+                                AppointmentStatus.CONFIRMED
+                        )
                 ));
 
         mockMvc.perform(get("/v1/api/appointments/bike/{bikeId}/upcoming", bikeId))

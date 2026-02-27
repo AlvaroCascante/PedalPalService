@@ -15,8 +15,8 @@ Returns a single system code.
 
 ### Path parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
+| Name | Type | Required | Description            |
+|------|------|----------|------------------------|
 | `id` | UUID | yes      | System code identifier |
 
 ### Headers

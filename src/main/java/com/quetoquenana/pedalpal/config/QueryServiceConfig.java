@@ -1,5 +1,8 @@
 package com.quetoquenana.pedalpal.config;
 
+import com.quetoquenana.pedalpal.announcement.application.query.AnnouncementQueryService;
+import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
+import com.quetoquenana.pedalpal.announcement.mapper.AnnouncementMapper;
 import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.appointment.application.query.AppointmentQueryService;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
@@ -12,6 +15,9 @@ import com.quetoquenana.pedalpal.product.mapper.ProductMapper;
 import com.quetoquenana.pedalpal.product.application.query.ProductQueryService;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
+import com.quetoquenana.pedalpal.serviceOrder.application.query.ServiceOrderQueryService;
+import com.quetoquenana.pedalpal.serviceOrder.mapper.ServiceOrderMapper;
+import com.quetoquenana.pedalpal.serviceOrder.repository.ServiceOrderRepository;
 import com.quetoquenana.pedalpal.store.mapper.StoreMapper;
 import com.quetoquenana.pedalpal.store.application.query.StoreQueryService;
 import com.quetoquenana.pedalpal.store.domain.repository.StoreRepository;
@@ -25,6 +31,17 @@ import org.springframework.context.annotation.Configuration;
 public class QueryServiceConfig {
 
     @Bean
+    public AnnouncementQueryService createAnnouncementQueryService(
+            AnnouncementMapper mapper,
+            AnnouncementRepository repository
+    ) {
+        return new AnnouncementQueryService(
+                mapper,
+                repository
+        );
+    }
+
+    @Bean
     public AppointmentQueryService createAppointmentQueryService(
             AppointmentMapper mapper,
             AppointmentRepository repository
@@ -34,6 +51,7 @@ public class QueryServiceConfig {
                 repository
         );
     }
+
     @Bean
     public BikeQueryService createBikeQueryService(
             BikeMapper mapper,
@@ -69,6 +87,18 @@ public class QueryServiceConfig {
                 productPackageRepository
         );
     }
+
+    @Bean
+    public ServiceOrderQueryService createServiceOrderQueryService(
+            ServiceOrderMapper mapper,
+            ServiceOrderRepository repository
+    ) {
+        return new ServiceOrderQueryService(
+                mapper,
+                repository
+        );
+    }
+
     @Bean
     public StoreQueryService createStoreQueryService(
             StoreMapper mapper,

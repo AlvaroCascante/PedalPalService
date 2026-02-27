@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.infrastructure.persistence.mapper;
+package com.quetoquenana.pedalpal.infrastructure.persistence.systemCode.mapper;
 
 import com.quetoquenana.pedalpal.infrastructure.persistence.systemCode.entity.SystemCodeEntity;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;

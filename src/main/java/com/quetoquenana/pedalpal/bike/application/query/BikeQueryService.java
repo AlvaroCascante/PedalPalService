@@ -21,14 +21,14 @@ public class BikeQueryService {
         Bike model = repository.findByIdAndOwnerId(id, ownerId)
                 .orElseThrow(RecordNotFoundException::new);
 
-        return mapper.toBikeResult(model);
+        return mapper.toResult(model);
     }
 
     public List<BikeResult> findActiveByOwnerId(UUID ownerId) {
         List<Bike> models = repository.findByOwnerIdAndStatus(ownerId, BikeStatus.ACTIVE);
 
         return models.stream()
-                .map(mapper::toBikeResult)
+                .map(mapper::toResult)
                 .toList();
     }
 }

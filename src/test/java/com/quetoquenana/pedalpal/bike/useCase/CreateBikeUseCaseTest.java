@@ -74,8 +74,8 @@ class CreateBikeUseCaseTest {
                     .isExternalSync(command.isExternalSync())
                     .build();
 
-            when(bikeMapper.toBike(command)).thenReturn(mapped);
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenAnswer(inv -> {
+            when(bikeMapper.toModel(command)).thenReturn(mapped);
+            when(bikeMapper.toResult(any(Bike.class))).thenAnswer(inv -> {
                 Bike b = inv.getArgument(0, Bike.class);
                 return new BikeResult(
                         b.getId(),
@@ -152,8 +152,8 @@ class CreateBikeUseCaseTest {
                     .isExternalSync(command.isExternalSync())
                     .build();
 
-            when(bikeMapper.toBike(command)).thenReturn(mapped);
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
+            when(bikeMapper.toModel(command)).thenReturn(mapped);
+            when(bikeMapper.toResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
 
             BikeResult result = useCase.execute(command);
 
@@ -219,8 +219,8 @@ class CreateBikeUseCaseTest {
                     .isPublic(command.isPublic())
                     .isExternalSync(command.isExternalSync())
                     .build();
-            when(bikeMapper.toBike(command)).thenReturn(mapped);
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(UUID.randomUUID()));
+            when(bikeMapper.toModel(command)).thenReturn(mapped);
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(UUID.randomUUID()));
 
             useCase.execute(command);
 
@@ -244,7 +244,7 @@ class CreateBikeUseCaseTest {
                     .isPublic(command.isPublic())
                     .isExternalSync(command.isExternalSync())
                     .build();
-            when(bikeMapper.toBike(command)).thenReturn(mapped);
+            when(bikeMapper.toModel(command)).thenReturn(mapped);
 
             BusinessException ex = assertThrows(BusinessException.class, () -> useCase.execute(command));
             assertEquals("bike.creation.failed", ex.getMessage());
@@ -274,8 +274,8 @@ class CreateBikeUseCaseTest {
                     .isPublic(command.isPublic())
                     .isExternalSync(command.isExternalSync())
                     .build();
-            when(bikeMapper.toBike(command)).thenReturn(mapped);
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(UUID.randomUUID()));
+            when(bikeMapper.toModel(command)).thenReturn(mapped);
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(UUID.randomUUID()));
 
             useCase.execute(command);
 
@@ -305,8 +305,8 @@ class CreateBikeUseCaseTest {
                     .isPublic(command.isPublic())
                     .isExternalSync(command.isExternalSync())
                     .build();
-            when(bikeMapper.toBike(command)).thenReturn(mapped);
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(UUID.randomUUID()));
+            when(bikeMapper.toModel(command)).thenReturn(mapped);
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(UUID.randomUUID()));
 
             useCase.execute(command);
 

@@ -43,7 +43,7 @@ public class AppointmentController {
     private final CreateAppointmentUseCase createAppointmentUseCase;
     private final UpdateAppointmentUseCase updateAppointmentUseCase;
     private final UpdateAppointmentStatusUseCase updateAppointmentStatusUseCase;
-    private final AppointmentQueryService appointmentQueryService;
+    private final AppointmentQueryService queryService;
     private final AppointmentApiMapper apiMapper;
     private final CurrentUserProvider currentUserProvider;
 
@@ -52,7 +52,7 @@ public class AppointmentController {
     public ResponseEntity<ApiResponse> create(
             @Valid @RequestBody CreateAppointmentRequest request
     ) {
-        CreateAppointmentCommand command = apiMapper.toCreateCommand(request, getAuthenticatedUserId());
+        CreateAppointmentCommand command = apiMapper.toCommand(request, getAuthenticatedUserId());
         AppointmentResult result = createAppointmentUseCase.execute(command);
         AppointmentResponse response = apiMapper.toResponse(result);
         return ResponseEntity.created(URI.create("/api/appointments/" + response.id()))
@@ -66,7 +66,7 @@ public class AppointmentController {
             @Valid @RequestBody UpdateAppointmentRequest request
     ) {
 
-        UpdateAppointmentCommand command = apiMapper.toUpdateCommand(id, request, getAuthenticatedUserId());
+        UpdateAppointmentCommand command = apiMapper.toCommand(id, request);
         AppointmentResult result = updateAppointmentUseCase.execute(command);
         AppointmentResponse response = apiMapper.toResponse(result);
         return ResponseEntity.ok(new ApiResponse(response));
@@ -78,8 +78,7 @@ public class AppointmentController {
             @PathVariable UUID id,
             @Valid @RequestBody UpdateAppointmentStatusRequest request
     ) {
-        UUID userId = getAuthenticatedUserId();
-        UpdateAppointmentStatusCommand command = apiMapper.toStatusCommand(id, request, userId);
+        UpdateAppointmentStatusCommand command = apiMapper.toCommand(id, request);
         AppointmentResult result = updateAppointmentStatusUseCase.execute(command);
         AppointmentResponse response = apiMapper.toResponse(result);
         return ResponseEntity.ok(new ApiResponse(response));
@@ -90,7 +89,7 @@ public class AppointmentController {
     public ResponseEntity<ApiResponse> confirmAppointment(
             @PathVariable UUID id
     ) {
-        UpdateAppointmentStatusCommand command = apiMapper.toStatusConfirmCommand(id, getAuthenticatedUserId());
+        UpdateAppointmentStatusCommand command = apiMapper.toCommand(id);
         ConfirmAppointmentResult result = confirmAppointmentUseCase.execute(command);
         ConfirmAppointmentResponse response = apiMapper.toResponse(result);
         return ResponseEntity.ok(new ApiResponse(response));
@@ -101,7 +100,7 @@ public class AppointmentController {
     public ResponseEntity<ApiResponse> getById(
             @PathVariable UUID id
     ) {
-        AppointmentResult result = appointmentQueryService.getById(id);
+        AppointmentResult result = queryService.getById(id);
         AppointmentResponse response = apiMapper.toResponse(result);
         return ResponseEntity.ok(new ApiResponse(response));
     }
@@ -112,7 +111,7 @@ public class AppointmentController {
             @PathVariable UUID bikeId
     ) {
         log.info("GET /v1/api/appointments/bike/{}/upcoming Received request to get upcoming appointments", bikeId);
-        List<AppointmentListItemResult> results = appointmentQueryService.getUpcomingAppointments(bikeId);
+        List<AppointmentListItemResult> results = queryService.getUpcomingAppointments(bikeId);
         List<AppointmentListItemResponse> response = results.stream().map(apiMapper::toListItemResponse).toList();
         return ResponseEntity.ok(new ApiResponse(response));
     }
@@ -122,7 +121,7 @@ public class AppointmentController {
     public ResponseEntity<ApiResponse> getPast(
             @PathVariable UUID bikeId
     ) {
-        List<AppointmentListItemResult> results = appointmentQueryService.getPastAppointments(bikeId);
+        List<AppointmentListItemResult> results = queryService.getPastAppointments(bikeId);
         return ResponseEntity.ok(new ApiResponse(results.stream().map(apiMapper::toListItemResponse).toList()));
     }
 

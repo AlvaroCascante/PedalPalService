@@ -15,8 +15,8 @@ Returns a single appointment.
 
 ### Path parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
+| Name | Type | Required | Description            |
+|------|------|----------|------------------------|
 | `id` | UUID | yes      | Appointment identifier |
 
 ### Headers

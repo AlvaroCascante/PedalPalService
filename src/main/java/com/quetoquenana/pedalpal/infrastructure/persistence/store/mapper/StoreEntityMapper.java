@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.infrastructure.persistence.mapper;
+package com.quetoquenana.pedalpal.infrastructure.persistence.store.mapper;
 
 import com.quetoquenana.pedalpal.infrastructure.persistence.store.entity.StoreEntity;
 import com.quetoquenana.pedalpal.infrastructure.persistence.store.entity.StoreLocationEntity;

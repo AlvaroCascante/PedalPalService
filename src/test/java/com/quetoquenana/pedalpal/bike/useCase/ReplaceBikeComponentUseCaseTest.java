@@ -108,14 +108,14 @@ class ReplaceBikeComponentUseCaseTest {
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(systemCodeRepository.findByCategoryAndCode(eq(COMPONENT_TYPE), eq("CHAIN")))
                     .thenReturn(Optional.of(componentType));
-            when(bikeMapper.toBikeComponent(eq(command), eq(componentType))).thenReturn(
+            when(bikeMapper.toModel(eq(command), eq(componentType))).thenReturn(
                     BikeComponent.builder()
                             .id(UUID.randomUUID())
                             .name("New chain")
                             .status(BikeComponentStatus.ACTIVE)
                             .build()
             );
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultUpdated(bikeId));
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultUpdated(bikeId));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
 
             BikeResult result = useCase.execute(command);

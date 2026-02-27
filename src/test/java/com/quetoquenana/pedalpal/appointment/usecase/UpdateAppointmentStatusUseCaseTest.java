@@ -61,21 +61,21 @@ class UpdateAppointmentStatusUseCaseTest {
             when(appointmentRepository.save(any(Appointment.class))).thenAnswer(inv -> inv.getArgument(0, Appointment.class));
             when(mapper.toResult(any(Appointment.class))).thenAnswer(inv -> {
                 Appointment a = inv.getArgument(0, Appointment.class);
-                return AppointmentResult.builder()
-                        .id(a.getId())
-                        .bikeId(a.getBikeId())
-                        .storeLocationId(a.getStoreLocationId())
-                        .scheduledAt(a.getScheduledAt())
-                        .status(a.getStatus())
-                        .notes(a.getNotes())
-                        .requestedServices(List.of())
-                        .build();
+                return new AppointmentResult(
+                        a.getId(),
+                        a.getBikeId(),
+                        a.getStoreLocationId(),
+                        a.getScheduledAt(),
+                        a.getStatus(),
+                        a.getNotes(),
+                        List.of()
+                );
             });
 
-            UpdateAppointmentStatusCommand command = UpdateAppointmentStatusCommand.builder()
-                    .id(id)
-                    .status(AppointmentStatus.CONFIRMED.name())
-                    .build();
+            UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
+                    id,
+                    AppointmentStatus.CONFIRMED.name()
+            );
 
             AppointmentResult result = useCase.execute(command);
 
@@ -102,10 +102,10 @@ class UpdateAppointmentStatusUseCaseTest {
 
             when(appointmentRepository.getById(id)).thenReturn(Optional.of(appointment));
 
-            UpdateAppointmentStatusCommand command = UpdateAppointmentStatusCommand.builder()
-                    .id(id)
-                    .status("   ")
-                    .build();
+            UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
+                    id,
+                    "   "
+            );
 
             assertThrows(BadRequestException.class, () -> useCase.execute(command));
             verify(appointmentRepository, never()).save(any(Appointment.class));
@@ -121,10 +121,10 @@ class UpdateAppointmentStatusUseCaseTest {
 
             when(appointmentRepository.getById(id)).thenReturn(Optional.empty());
 
-            UpdateAppointmentStatusCommand command = UpdateAppointmentStatusCommand.builder()
-                    .id(id)
-                    .status(AppointmentStatus.CONFIRMED.name())
-                    .build();
+            UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
+                    id,
+                    AppointmentStatus.CONFIRMED.name()
+            );
 
             assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
         }

@@ -1,16 +1,9 @@
 package com.quetoquenana.pedalpal.common.util;
 
-import java.time.format.DateTimeFormatter;
-
 public class Constants {
 
     public static class BikeComponents {
         public static final String COMPONENT_TYPE = "COMPONENT_TYPE";
-    }
-
-    public static class Dates {
-        public static final String YEAR_MONTH_FORMAT = "yyyy-MM";
-        public static final DateTimeFormatter YEAR_MONTH = DateTimeFormatter.ofPattern(YEAR_MONTH_FORMAT);
     }
 
     public static class JWTClaims {
@@ -38,5 +31,10 @@ public class Constants {
 
     public static class SystemCodes {
         public static final String SUGGESTION_TYPE_IA = "SUGGESTION_TYPE_IA";
+    }
+    public static class Services {
+        public static final String TYPE_PRODUCT = "product";
+        public static final String TYPE_PACKAGE = "package";
+
     }
 }

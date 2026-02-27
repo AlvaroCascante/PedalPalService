@@ -23,7 +23,7 @@ public class BikeHistoryQueryService {
         BikeHistory bikeHistory = bikeHistoryRepository.getById(id)
                 .orElseThrow(RecordNotFoundException::new);
 
-        return mapper.toBikeHistoryResult(bikeHistory);
+        return mapper.toResult(bikeHistory);
     }
 
     public List<BikeHistoryResult> findByBikeId(UUID id, UUID ownerId) {
@@ -33,7 +33,7 @@ public class BikeHistoryQueryService {
         List<BikeHistory> bikes = bikeHistoryRepository.findByBikeId(bike.getId());
 
         return bikes.stream()
-                .map(mapper::toBikeHistoryResult)
+                .map(mapper::toResult)
                 .toList();
     }
 }

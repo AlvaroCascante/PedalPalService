@@ -26,7 +26,7 @@ public class MaintenanceSuggestionItemEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "package_id")
-    private ProductPackageEntity productsPackage;
+    private ProductPackageEntity productPackage;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")

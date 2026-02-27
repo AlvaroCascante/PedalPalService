@@ -13,6 +13,8 @@ public interface ProductPackageRepository {
 
     List<ProductPackage> getAll();
 
+    Optional<ProductPackage> getByIdAndStatus(UUID id, GeneralStatus status);
+
     List<ProductPackage> findByStatus(GeneralStatus status);
 
     ProductPackage save(ProductPackage entity);

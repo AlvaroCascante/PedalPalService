@@ -15,8 +15,8 @@ Returns a single product package.
 
 ### Path parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
+| Name | Type | Required | Description        |
+|------|------|----------|--------------------|
 | `id` | UUID | yes      | Package identifier |
 
 ### Headers

@@ -17,14 +17,14 @@ Supports an optional query parameter to filter returned locations by status.
 
 ### Path parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
+| Name | Type | Required | Description      |
+|------|------|----------|------------------|
 | `id` | UUID | yes      | Store identifier |
 
 ### Query parameters
 
-| Name             | Type                               | Required | Description |
-|------------------|------------------------------------|----------|-------------|
+| Name             | Type                               | Required | Description                                                                                             |
+|------------------|------------------------------------|----------|---------------------------------------------------------------------------------------------------------|
 | `locationStatus` | string (repeatable / set of enums) | no       | Filters `StoreResponse.locations` by status. Example: `?locationStatus=ACTIVE&locationStatus=INACTIVE`. |
 
 ### Headers

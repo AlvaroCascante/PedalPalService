@@ -20,14 +20,14 @@ public class StoreQueryService {
         Store model = repository.getById(id)
                 .orElseThrow(RecordNotFoundException::new);
 
-        return mapper.toStoreResult(model);
+        return mapper.toResult(model);
     }
 
     public List<StoreResult> getAll() {
         List<Store> models = repository.getAll();
 
         return models.stream()
-                .map(mapper::toStoreResult)
+                .map(mapper::toResult)
                 .toList();
     }
 }

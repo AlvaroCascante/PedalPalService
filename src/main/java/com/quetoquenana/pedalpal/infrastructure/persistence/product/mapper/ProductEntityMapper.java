@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.infrastructure.persistence.mapper;
+package com.quetoquenana.pedalpal.infrastructure.persistence.product.mapper;
 
 import com.quetoquenana.pedalpal.infrastructure.persistence.product.entity.ProductEntity;
 import com.quetoquenana.pedalpal.infrastructure.persistence.product.entity.ProductPackageEntity;

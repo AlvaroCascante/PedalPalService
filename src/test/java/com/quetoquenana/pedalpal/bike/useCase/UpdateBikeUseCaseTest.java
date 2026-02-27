@@ -61,7 +61,7 @@ class UpdateBikeUseCaseTest {
                 toSave.setId(bikeId);
                 return toSave;
             });
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
+            when(bikeMapper.toResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
 
             UpdateBikeCommand command = TestBikeData.updateBikeCommand_nameOnly(bikeId, ownerId, "New name");
 
@@ -94,7 +94,7 @@ class UpdateBikeUseCaseTest {
             when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(bike));
             when(bikeRepository.existsBySerialNumber("NEW-SN")).thenReturn(false);
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
+            when(bikeMapper.toResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
 
             UpdateBikeCommand command = TestBikeData.updateBikeCommand_allFields(bikeId, ownerId);
 
@@ -126,7 +126,7 @@ class UpdateBikeUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
+            when(bikeMapper.toResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
 
             UpdateBikeCommand command = TestBikeData.updateBikeCommand_noFields(bikeId, ownerId);
 

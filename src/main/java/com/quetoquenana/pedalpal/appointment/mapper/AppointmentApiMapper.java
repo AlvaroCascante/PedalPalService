@@ -1,6 +1,7 @@
 package com.quetoquenana.pedalpal.appointment.mapper;
 
 import com.quetoquenana.pedalpal.appointment.application.command.CreateAppointmentCommand;
+import com.quetoquenana.pedalpal.appointment.application.command.RequestedServiceCommand;
 import com.quetoquenana.pedalpal.appointment.application.command.UpdateAppointmentCommand;
 import com.quetoquenana.pedalpal.appointment.application.command.UpdateAppointmentStatusCommand;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentListItemResult;
@@ -8,7 +9,10 @@ import com.quetoquenana.pedalpal.appointment.application.result.AppointmentServi
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
 import com.quetoquenana.pedalpal.appointment.application.result.ConfirmAppointmentResult;
 import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
-import com.quetoquenana.pedalpal.appointment.presentation.dto.request.*;
+import com.quetoquenana.pedalpal.appointment.domain.model.ServiceType;
+import com.quetoquenana.pedalpal.appointment.presentation.dto.request.CreateAppointmentRequest;
+import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppointmentRequest;
+import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppointmentStatusRequest;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentListItemResponse;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentServiceResponse;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentResponse;
@@ -28,51 +32,49 @@ public class AppointmentApiMapper {
 
     private final MessageSource messageSource;
 
-    public CreateAppointmentCommand toCreateCommand(CreateAppointmentRequest request, UUID authenticatedUserId) {
-        List<CreateAppointmentCommand.RequestedServiceCommand> items = request.requestedServices() == null
+    public CreateAppointmentCommand toCommand(CreateAppointmentRequest request, UUID authenticatedUserId) {
+        List<RequestedServiceCommand> items = request.requestedServices() == null
                 ? null
                 : request.requestedServices().stream()
-                .map(i -> CreateAppointmentCommand.RequestedServiceCommand.builder().productId(i.productId()).build())
+                .map(i -> new RequestedServiceCommand(
+                        i.serviceId(),
+                        ServiceType.from(i.serviceType())))
                 .toList();
 
-        return CreateAppointmentCommand.builder()
-                .bikeId(request.bikeId())
-                .storeLocationId(request.storeLocationId())
-                .scheduledAt(request.scheduledAt())
-                .notes(request.notes())
-                .requestedServices(items)
-                .build();
+        return new CreateAppointmentCommand(
+                request.bikeId(),
+                authenticatedUserId,
+                request.storeLocationId(),
+                request.scheduledAt(),
+                request.notes(),
+                items
+        );
     }
 
-    public UpdateAppointmentCommand toUpdateCommand(UUID id, UpdateAppointmentRequest request, UUID authenticatedUserId) {
-        List<CreateAppointmentCommand.RequestedServiceCommand> items = request.requestedServices() == null
+    public UpdateAppointmentCommand toCommand(UUID id, UpdateAppointmentRequest request) {
+        List<RequestedServiceCommand> items = request.requestedServices() == null
                 ? null
                 : request.requestedServices().stream()
-                .map(i -> CreateAppointmentCommand.RequestedServiceCommand.builder().productId(i.productId()).build())
+                .map(i -> new RequestedServiceCommand(
+                        i.serviceId(),
+                        ServiceType.from(i.serviceType())))
                 .toList();
 
-        return UpdateAppointmentCommand.builder()
-                .id(id)
-                .storeLocationId(request.storeLocationId())
-                .scheduledAt(request.scheduledAt())
-                .notes(request.notes())
-                .requestedServices(items)
-                .build();
+        return new UpdateAppointmentCommand(
+                id,
+                request.storeLocationId(),
+                request.scheduledAt(),
+                request.notes(),
+                items
+        );
     }
 
-    public UpdateAppointmentStatusCommand toStatusCommand(UUID id, UpdateAppointmentStatusRequest request, UUID authenticatedUserId) {
-        return UpdateAppointmentStatusCommand.builder()
-                .id(id)
-                .status(request.status())
-                .build();
+    public UpdateAppointmentStatusCommand toCommand(UUID id, UpdateAppointmentStatusRequest request) {
+        return new UpdateAppointmentStatusCommand(id, request.status());
     }
 
-
-    public UpdateAppointmentStatusCommand toStatusConfirmCommand(UUID id, UUID authenticatedUserId) {
-        return UpdateAppointmentStatusCommand.builder()
-                .id(id)
-                .status(AppointmentStatus.CONFIRMED.name())
-                .build();
+    public UpdateAppointmentStatusCommand toCommand(UUID id) {
+        return new UpdateAppointmentStatusCommand(id, AppointmentStatus.CONFIRMED.name());
     }
 
     public AppointmentResponse toResponse(AppointmentResult result) {
@@ -81,7 +83,7 @@ public class AppointmentApiMapper {
 
         List<AppointmentServiceResponse> requestedServices = result.requestedServices() == null
                 ? List.of()
-                : result.requestedServices().stream().map(this::toRequestedServiceResponse).toList();
+                : result.requestedServices().stream().map(this::toResponse).toList();
 
         return new AppointmentResponse(
                 result.id(),
@@ -94,15 +96,13 @@ public class AppointmentApiMapper {
         );
     }
 
-
-
     public ConfirmAppointmentResponse toResponse(ConfirmAppointmentResult result) {
         Locale locale = LocaleContextHolder.getLocale();
         String statusLabel = messageSource.getMessage(result.appointmentResult().status().getKey(), null, locale);
 
         List<AppointmentServiceResponse> requestedServices = result.appointmentResult().requestedServices() == null
                 ? List.of()
-                : result.appointmentResult().requestedServices().stream().map(this::toRequestedServiceResponse).toList();
+                : result.appointmentResult().requestedServices().stream().map(this::toResponse).toList();
 
         return new ConfirmAppointmentResponse(
                 result.appointmentResult().id(),
@@ -113,6 +113,15 @@ public class AppointmentApiMapper {
                 result.appointmentResult().notes(),
                 result.serviceOrderResult().id().toString(),
                 requestedServices
+        );
+    }
+
+    private AppointmentServiceResponse toResponse(AppointmentServiceResult rs) {
+        return new AppointmentServiceResponse(
+                rs.id(),
+                rs.productId(),
+                rs.productNameSnapshot(),
+                rs.priceSnapshot()
         );
     }
 
@@ -128,14 +137,4 @@ public class AppointmentApiMapper {
                 statusLabel
         );
     }
-
-    private AppointmentServiceResponse toRequestedServiceResponse(AppointmentServiceResult rs) {
-        return new AppointmentServiceResponse(
-                rs.id(),
-                rs.productId(),
-                rs.productNameSnapshot(),
-                rs.priceSnapshot()
-        );
-    }
 }
-

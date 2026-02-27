@@ -42,9 +42,9 @@ public class BikeController {
     private final UpdateBikeUseCase updateBikeUseCase;
 
     private final BikeHistoryQueryService bikeHistoryQueryService;
-    private final BikeQueryService bikeQueryService;
+    private final BikeQueryService queryService;
 
-    private final BikeApiMapper bikeApiMapper;
+    private final BikeApiMapper apiMapper;
 
     private final CurrentUserProvider currentUserProvider;
 
@@ -55,8 +55,8 @@ public class BikeController {
             @RequestParam(name = "componentStatus", required = false) Set<BikeComponentStatus> componentStatuses
     ) {
         log.info("GET /v1/api/bikes/{} Received request to get bike by id", id);
-        BikeResult result = bikeQueryService.getById(id, getAuthenticatedUserId());
-        BikeResponse response = bikeApiMapper.toResponse(result, componentStatuses);
+        BikeResult result = queryService.getById(id, getAuthenticatedUserId());
+        BikeResponse response = apiMapper.toResponse(result, componentStatuses);
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
@@ -65,7 +65,7 @@ public class BikeController {
     public ResponseEntity<ApiResponse> getBikeHistory(@PathVariable("id") UUID id) {
         log.info("GET /v1/api/bikes/{}/history Received request to get bike history", id);
         List<BikeHistoryResult> result = bikeHistoryQueryService.findByBikeId(id, getAuthenticatedUserId());
-        List<BikeHistoryResponse> response = result.stream().map(bikeApiMapper::toResponse).toList();
+        List<BikeHistoryResponse> response = result.stream().map(apiMapper::toResponse).toList();
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
@@ -73,8 +73,8 @@ public class BikeController {
     @PreAuthorize("(hasRole('USER'))")
     public ResponseEntity<ApiResponse> findActive() {
         log.info("GET /v1/api/bikes/active Received request to find active bikes");
-        List<BikeResult> result = bikeQueryService.findActiveByOwnerId(getAuthenticatedUserId());
-        List<BikeResponse> response = result.stream().map(bikeApiMapper::toResponse).toList();
+        List<BikeResult> result = queryService.findActiveByOwnerId(getAuthenticatedUserId());
+        List<BikeResponse> response = result.stream().map(apiMapper::toResponse).toList();
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
@@ -85,13 +85,13 @@ public class BikeController {
     ) {
         log.info("POST /v1/api/bikes Received request to create bike: {}", request);
         // Map the incoming request to a command object
-        CreateBikeCommand command = bikeApiMapper.toCommand(getAuthenticatedUserId(), request);
+        CreateBikeCommand command = apiMapper.toCommand(getAuthenticatedUserId(), request);
 
         // Execute the use case to create the bike
         BikeResult result = createBikeUseCase.execute(command);
 
         // Map the result to a response DTO
-        BikeResponse response = bikeApiMapper.toResponse(result);
+        BikeResponse response = apiMapper.toResponse(result);
 
         return ResponseEntity.created(URI.create("/api/bikes/" + response.id()))
                 .body(new ApiResponse(response));
@@ -104,9 +104,9 @@ public class BikeController {
             @Valid @RequestBody UpdateBikeRequest request
     ) {
         log.info("PATCH /v1/api/bikes/{} Received request to update bike: {}", id, request);
-        UpdateBikeCommand command = bikeApiMapper.toCommand(id, getAuthenticatedUserId(), request);
+        UpdateBikeCommand command = apiMapper.toCommand(id, getAuthenticatedUserId(), request);
         BikeResult result = updateBikeUseCase.execute(command);
-        BikeResponse response = bikeApiMapper.toResponse(result);
+        BikeResponse response = apiMapper.toResponse(result);
 
         return ResponseEntity.ok(new ApiResponse(response));
     }
@@ -118,9 +118,9 @@ public class BikeController {
             @Valid @RequestBody UpdateBikeStatusRequest request
     ) {
         log.info("PATCH /v1/api/bikes/{}/status Received request to update bike status: {}", id, request);
-        UpdateBikeStatusCommand command = bikeApiMapper.toCommand(id, getAuthenticatedUserId(), request);
+        UpdateBikeStatusCommand command = apiMapper.toCommand(id, getAuthenticatedUserId(), request);
         BikeResult result = updateBikeStatusUseCase.execute(command);
-        BikeResponse response = bikeApiMapper.toResponse(result);
+        BikeResponse response = apiMapper.toResponse(result);
 
         return ResponseEntity.ok(new ApiResponse(response));
     }
@@ -133,13 +133,13 @@ public class BikeController {
     ) {
         log.info("POST /v1/api/bikes/{}/components Received request to add a bike component: {}", id, request);
         // Map the incoming request to a command object
-        AddBikeComponentCommand command = bikeApiMapper.toCommand(id, null, getAuthenticatedUserId(), request);
+        AddBikeComponentCommand command = apiMapper.toCommand(id, null, getAuthenticatedUserId(), request);
 
         // Execute the use case to create the bike
         BikeResult result = addBikeComponentUseCase.execute(command);
 
         // Map the result to a response DTO
-        BikeResponse response = bikeApiMapper.toResponse(result);
+        BikeResponse response = apiMapper.toResponse(result);
 
         return ResponseEntity.created(URI.create("/api/bikes/" + response.id()))
                 .body(new ApiResponse(response));
@@ -154,9 +154,9 @@ public class BikeController {
             @Valid @RequestBody UpdateBikeComponentRequest request
     ) {
         log.info("PATCH /v1/api/bikes/{}/components/{} Received request to update bike component: {}", bikeId, componentId, request);
-        UpdateBikeComponentCommand command = bikeApiMapper.toCommand(bikeId, componentId, getAuthenticatedUserId(), request);
+        UpdateBikeComponentCommand command = apiMapper.toCommand(bikeId, componentId, getAuthenticatedUserId(), request);
         BikeResult result = updateBikeComponentUseCase.execute(command);
-        BikeResponse response = bikeApiMapper.toResponse(result);
+        BikeResponse response = apiMapper.toResponse(result);
 
         return ResponseEntity.ok(new ApiResponse(response));
     }
@@ -169,9 +169,9 @@ public class BikeController {
             @Valid @RequestBody UpdateBikeComponentStatusRequest request
     ) {
         log.info("PATCH /v1/api/bikes/{}/components/{}/status Received request to update bike component status: {}", bikeId, componentId, request);
-        UpdateBikeComponentStatusCommand command = bikeApiMapper.toCommand(bikeId, componentId, getAuthenticatedUserId(), request);
+        UpdateBikeComponentStatusCommand command = apiMapper.toCommand(bikeId, componentId, getAuthenticatedUserId(), request);
         BikeResult result = updateBikeComponentStatusUseCase.execute(command);
-        BikeResponse response = bikeApiMapper.toResponse(result);
+        BikeResponse response = apiMapper.toResponse(result);
 
         return ResponseEntity.ok(new ApiResponse(response));
     }
@@ -185,13 +185,13 @@ public class BikeController {
     ) {
         log.info("POST /v1/api/bikes/{}/components/{}/replace Received request to replace a bike component: {}", bikeId, componentId, request);
         // Map the incoming request to a command object
-        AddBikeComponentCommand command = bikeApiMapper.toCommand(bikeId, componentId, getAuthenticatedUserId(), request);
+        AddBikeComponentCommand command = apiMapper.toCommand(bikeId, componentId, getAuthenticatedUserId(), request);
 
         // Execute the use case to create the bike
         BikeResult result = replaceBikeComponentUseCase.execute(command);
 
         // Map the result to a response DTO
-        BikeResponse response = bikeApiMapper.toResponse(result);
+        BikeResponse response = apiMapper.toResponse(result);
 
         return ResponseEntity.created(URI.create("/api/bikes/" + response.id()))
                 .body(new ApiResponse(response));

@@ -17,8 +17,8 @@ This endpoint is backed by the `AppointmentQueryService` and returns a lightweig
 
 ### Path parameters
 
-| Name     | Type | Required | Description |
-|----------|------|----------|-------------|
+| Name     | Type | Required | Description     |
+|----------|------|----------|-----------------|
 | `bikeId` | UUID | yes      | Bike identifier |
 
 ### Headers

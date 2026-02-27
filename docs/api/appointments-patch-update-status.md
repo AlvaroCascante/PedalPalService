@@ -15,8 +15,8 @@ Updates only the appointment **status**.
 
 ### Path parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
+| Name | Type | Required | Description            |
+|------|------|----------|------------------------|
 | `id` | UUID | yes      | Appointment identifier |
 
 ### Headers
@@ -28,8 +28,8 @@ Updates only the appointment **status**.
 
 ### Body (`UpdateAppointmentStatusRequest`)
 
-| Field    | Type   | Required | Validation                                      | Description |
-|----------|--------|----------|-------------------------------------------------|-------------|
+| Field    | Type   | Required | Validation                                          | Description     |
+|----------|--------|----------|-----------------------------------------------------|-----------------|
 | `status` | string | yes      | `@NotNull` (`{appointment.update.status.required}`) | New status code |
 
 ---

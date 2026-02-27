@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.infrastructure.persistence.mapper;
+package com.quetoquenana.pedalpal.infrastructure.persistence.serviceOrder.mapper;
 
 import com.quetoquenana.pedalpal.infrastructure.persistence.serviceOrder.entity.ServiceOrderDetailEntity;
 import com.quetoquenana.pedalpal.infrastructure.persistence.serviceOrder.entity.ServiceOrderEntity;

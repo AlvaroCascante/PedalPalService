@@ -51,13 +51,13 @@ public class ReplaceBikeComponentUseCase {
                 .orElseThrow(() -> new RecordNotFoundException("bike.component.type.not.found", command.type()));
 
         try {
-            BikeComponent newComponent = bikeMapper.toBikeComponent(command, componentType);
+            BikeComponent newComponent = bikeMapper.toModel(command, componentType);
             component.changeStatus(BikeComponentStatus.REPLACED);
             bike.addComponent(newComponent);
             bikeRepository.save(bike);
 
             publishHistoryEvent(bike.getId(), command.authenticatedUserId(), component, newComponent);
-            return bikeMapper.toBikeResult(bike);
+            return bikeMapper.toResult(bike);
         } catch (RuntimeException ex) {
             log.error("RuntimeException on ReplaceBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
             throw new BusinessException("bike.replace.component.failed");

@@ -1,6 +1,7 @@
 package com.quetoquenana.pedalpal.appointment.application.usecase;
 
 import com.quetoquenana.pedalpal.appointment.application.command.CreateAppointmentCommand;
+import com.quetoquenana.pedalpal.appointment.application.command.RequestedServiceCommand;
 import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
@@ -12,6 +13,8 @@ import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.product.domain.model.Product;
+import com.quetoquenana.pedalpal.product.domain.model.ProductPackage;
+import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 /*
@@ -39,6 +43,7 @@ public class CreateAppointmentUseCase {
     private final AppointmentRepository appointmentRepository;
     private final BikeRepository bikeRepository;
     private final ProductRepository productRepository;
+    private final ProductPackageRepository productPackageRepository;
 
     @Transactional
     public AppointmentResult execute(CreateAppointmentCommand command) {
@@ -46,7 +51,8 @@ public class CreateAppointmentUseCase {
 
         try {
             Appointment appointment = mapper.toModel(command);
-            appointment.setRequestedServices(validateRequestedServices(command.requestedServices()));
+            List<RequestedService> services = snapshotRequestedServices(command.requestedServices());
+            appointment.setRequestedServices(services);
             appointment = appointmentRepository.save(appointment);
             return mapper.toResult(appointment);
         } catch (BadRequestException | RecordNotFoundException ex) {
@@ -58,35 +64,79 @@ public class CreateAppointmentUseCase {
         }
     }
 
-    private List<RequestedService> validateRequestedServices(List<CreateAppointmentCommand.RequestedServiceCommand> requestedServices) {
+    private List<RequestedService> snapshotRequestedServices(List<RequestedServiceCommand> requestedServices) {
+        if (requestedServices == null || requestedServices.isEmpty()) {
+            throw new BadRequestException("appointment.requestedServices.required");
+        }
+
         List<RequestedService> services = new ArrayList<>();
 
-        requestedServices.forEach(serviceCommand -> {
-            RequestedService service = snapshotRequestedService(serviceCommand.productId());
-            if (service != null) {
-                services.add(service);
-            } else {
-                log.warn("Requested service with product id {} could not be added due to missing product", serviceCommand.productId());
+        for (RequestedServiceCommand serviceCommand : requestedServices) {
+            if (serviceCommand == null) {
+                continue;
             }
-        });
+            if (serviceCommand.serviceId() == null || serviceCommand.serviceType() == null) {
+                log.warn("Requested service is missing serviceId/serviceType: {}", serviceCommand);
+                continue;
+            }
+
+            switch (serviceCommand.serviceType()) {
+                case PACKAGE -> services.addAll(snapshotPackageProducts(serviceCommand.serviceId()));
+                case PRODUCT -> snapshotProduct(serviceCommand.serviceId()).ifPresent(services::add);
+                case UNKNOWN -> log.warn(
+                        "Requested service with id {} has unknown service type {}",
+                        serviceCommand.serviceId(),
+                        serviceCommand.serviceType()
+                );
+            }
+        }
 
         if (services.isEmpty()) {
-            throw new BadRequestException("ppointment.requestedServices.required");
+            // If the user requested services but none were valid/active, treat it like missing.
+            throw new BadRequestException("appointment.requestedServices.required");
         }
+
         return services;
     }
 
-    private RequestedService snapshotRequestedService(UUID productId) {
-        Optional<Product> otpProduct = productRepository.getByIdAndStatus(productId, GeneralStatus.ACTIVE);
-        if (otpProduct.isPresent()) {
-            Product product = otpProduct.get();
-            return RequestedService.builder()
-                    .id(product.getId())
-                    .name(product.getName())
-                    .price(product.getPrice())
-                    .build();
+    private List<RequestedService> snapshotPackageProducts(UUID packageId) {
+        Optional<ProductPackage> optPackage = productPackageRepository.getByIdAndStatus(packageId, GeneralStatus.ACTIVE);
+        if (optPackage.isEmpty()) {
+            log.warn("Requested package id {} could not be added due to missing/INACTIVE package", packageId);
+            return List.of();
         }
-        return null;
+
+        Set<Product> products = optPackage.get().getProducts();
+        if (products == null || products.isEmpty()) {
+            log.warn("Requested package id {} has no products", packageId);
+            return List.of();
+        }
+
+        // Snapshot each product inside the package via repository lookup so we store the current name/price.
+        // If a product is no longer ACTIVE, it won't be included.
+        return products.stream()
+                .map(Product::getId)
+                .distinct()
+                .map(this::snapshotProduct)
+                .flatMap(Optional::stream)
+                .toList();
+    }
+
+    private Optional<RequestedService> snapshotProduct(UUID productId) {
+        Optional<Product> optProduct = productRepository.getByIdAndStatus(productId, GeneralStatus.ACTIVE);
+        if (optProduct.isEmpty()) {
+            log.warn("Requested product id {} could not be added due to missing/INACTIVE product", productId);
+            return Optional.empty();
+        }
+
+        Product product = optProduct.get();
+        return Optional.of(
+                RequestedService.builder()
+                        .serviceId(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .build()
+        );
     }
 
     private void validate(CreateAppointmentCommand command) {

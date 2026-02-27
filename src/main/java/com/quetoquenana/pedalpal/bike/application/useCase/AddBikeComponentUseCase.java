@@ -37,13 +37,13 @@ public class AddBikeComponentUseCase {
                 .orElseThrow(() -> new RecordNotFoundException("bike.component.type.not.found", command.type()));
 
         try {
-            BikeComponent component = bikeMapper.toBikeComponent(command, componentType);
+            BikeComponent component = bikeMapper.toModel(command, componentType);
             bike.addComponent(component);
             bikeRepository.save(bike);
 
             publishHistoryEvent(bike.getId(), command.authenticatedUserId(), component);
 
-            return bikeMapper.toBikeResult(bike);
+            return bikeMapper.toResult(bike);
         } catch (RuntimeException ex) {
             log.error("RuntimeException on AddBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
             throw new BusinessException("bike.add.component.failed");

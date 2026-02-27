@@ -40,7 +40,7 @@ public class UpdateBikeComponentStatusUseCase {
             List<BikeChangeItem> bikeChangeItems = applyPatch(component, command);
             bikeRepository.save(bike);
             publishHistoryEvent(bike.getId(), command.authenticatedUserId(), component.getId(), bikeChangeItems);
-            return bikeMapper.toBikeResult(bike);
+            return bikeMapper.toResult(bike);
         } catch (BadRequestException ex) {
             log.error("BadRequestException on UpdateBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
             throw ex;

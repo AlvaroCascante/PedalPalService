@@ -18,27 +18,29 @@ public class AppointmentMapper {
                 .map(this::toResult)
                 .toList();
 
-        return AppointmentResult.builder()
-                .id(model.getId())
-                .bikeId(model.getBikeId())
-                .storeLocationId(model.getStoreLocationId())
-                .scheduledAt(model.getScheduledAt())
-                .status(model.getStatus())
-                .notes(model.getNotes())
-                .requestedServices(requestedServices)
-                .build();
+        return new AppointmentResult(
+                model.getId(),
+                model.getBikeId(),
+                model.getStoreLocationId(),
+                model.getScheduledAt(),
+                model.getStatus(),
+                model.getNotes(),
+                requestedServices
+        );
     }
 
     private AppointmentServiceResult toResult(RequestedService model) {
-        return AppointmentServiceResult.builder()
-                .id(model.getId())
-                .productId(model.getProductId())
-                .productNameSnapshot(model.getName())
-                .priceSnapshot(model.getPrice())
-                .build();
+        return new AppointmentServiceResult(
+                model.getId(),
+                model.getServiceId(),
+                model.getName(),
+                model.getPrice()
+        );
     }
 
     public Appointment toModel(CreateAppointmentCommand command) {
+        // The requested services are handled separately in the use case,
+        // so we only map the basic appointment fields here
         return Appointment.builder()
                 .bikeId(command.bikeId())
                 .storeLocationId(command.storeLocationId())
@@ -48,13 +50,12 @@ public class AppointmentMapper {
     }
 
     public AppointmentListItemResult toListItemResult(Appointment model) {
-        return AppointmentListItemResult.builder()
-                .id(model.getId())
-                .bikeId(model.getBikeId())
-                .storeLocationId(model.getStoreLocationId())
-                .scheduledAt(model.getScheduledAt())
-                .status(model.getStatus())
-                .build();
+        return new AppointmentListItemResult(
+                model.getId(),
+                model.getBikeId(),
+                model.getStoreLocationId(),
+                model.getScheduledAt(),
+                model.getStatus()
+        );
     }
 }
-

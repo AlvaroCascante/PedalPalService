@@ -146,7 +146,7 @@ public class BikeApiMapper {
         Set<BikeComponentResponse> components = result.components() == null
                 ? Collections.emptySet() : result.getComponents(componentStatuses == null ? Set.of(BikeComponentStatus.ACTIVE) : componentStatuses)
                 .stream()
-                .map(this::toComponentResponse)
+                .map(this::toResponse)
                 .collect(Collectors.toSet()
                 );
 
@@ -168,7 +168,7 @@ public class BikeApiMapper {
         );
     }
 
-    private BikeComponentResponse toComponentResponse(BikeComponentResult result) {
+    private BikeComponentResponse toResponse(BikeComponentResult result) {
         Locale locale = LocaleContextHolder.getLocale();
         String typeLabel = messageSource.getMessage(result.type().getCodeKey(), null, locale);
         String statusLabel = messageSource.getMessage(result.status().getKey(), null, locale);

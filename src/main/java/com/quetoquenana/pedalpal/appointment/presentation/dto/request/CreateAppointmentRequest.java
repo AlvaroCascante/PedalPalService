@@ -23,8 +23,10 @@ public record CreateAppointmentRequest(
         List<RequestedServiceRequestItem> requestedServices
 ) {
     public record RequestedServiceRequestItem(
-            @NotNull(message = "{appointment.create.service.productId.required}")
-            UUID productId
+            @NotNull(message = "{appointment.create.service.serviceId.required}")
+            UUID serviceId,
+            @NotNull(message = "{appointment.create.service.serviceType.required}")
+            String serviceType
     ) {
     }
 }

@@ -3,13 +3,11 @@ package com.quetoquenana.pedalpal.bike.application.result;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeType;
-import lombok.Builder;
 
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Builder
 public record BikeResult(
         UUID id,
         String name,

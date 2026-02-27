@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.infrastructure.persistence.serviceOrder.repository;
 
-import com.quetoquenana.pedalpal.infrastructure.persistence.mapper.ServiceOrderEntityMapper;
+import com.quetoquenana.pedalpal.infrastructure.persistence.serviceOrder.mapper.ServiceOrderEntityMapper;
 import com.quetoquenana.pedalpal.infrastructure.persistence.serviceOrder.entity.ServiceOrderEntity;
 import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrder;
 import com.quetoquenana.pedalpal.serviceOrder.repository.ServiceOrderRepository;

@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.infrastructure.persistence.store.repository;
 
 import com.quetoquenana.pedalpal.infrastructure.persistence.store.entity.StoreEntity;
-import com.quetoquenana.pedalpal.infrastructure.persistence.mapper.StoreEntityMapper;
+import com.quetoquenana.pedalpal.infrastructure.persistence.store.mapper.StoreEntityMapper;
 import com.quetoquenana.pedalpal.store.domain.model.Store;
 import com.quetoquenana.pedalpal.store.domain.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;

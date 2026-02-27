@@ -87,8 +87,8 @@ Fetches a single bike by id for the authenticated user.
 
 ### Query parameters
 
-| Name              | Type                               | Required | Description |
-|-------------------|------------------------------------|----------|-------------|
+| Name              | Type                               | Required | Description                                                                                                         |
+|-------------------|------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------|
 | `componentStatus` | string (repeatable / set of enums) | no       | Filters `BikeResponse.components` by component status. Example: `?componentStatus=ACTIVE&componentStatus=INACTIVE`. |
 
 ### Path parameters

@@ -24,21 +24,11 @@ public final class TestBikeData {
     private TestBikeData() {}
 
     public static UpdateBikeCommand updateBikeCommand_nameOnly(UUID bikeId, UUID ownerId, String name) {
-        return new UpdateBikeCommand(
-                bikeId,
-                ownerId,
-                name,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
+        return UpdateBikeCommand.builder()
+                .bikeId(bikeId)
+                .authenticatedUserId(ownerId)
+                .name(name)
+                .build();
     }
 
     public static Bike existingBike(UUID id, UUID ownerId) {
@@ -122,39 +112,28 @@ public final class TestBikeData {
     }
 
     public static UpdateBikeCommand updateBikeCommand_allFields(UUID bikeId, UUID ownerId) {
-        return new UpdateBikeCommand(
-                bikeId,
-                ownerId,
-                "New name",
-                "MTB",
-                "New brand",
-                "New model",
-                2022,
-                "NEW-SN",
-                "New notes",
-                999,
-                888,
-                true,
-                true
-        );
+        return UpdateBikeCommand.builder()
+                .bikeId(bikeId)
+                .authenticatedUserId(ownerId)
+                .name("New name")
+                .type("MTB")
+                .brand("New brand")
+                .model("New model")
+                .year(2022)
+                .serialNumber("NEW-SN")
+                .notes("New notes")
+                .odometerKm(999)
+                .usageTimeMinutes(888)
+                .isPublic(true)
+                .isExternalSync(true)
+                .build();
     }
 
     public static UpdateBikeCommand updateBikeCommand_noFields(UUID bikeId, UUID ownerId) {
-        return new UpdateBikeCommand(
-                bikeId,
-                ownerId,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
+        return UpdateBikeCommand.builder()
+                .bikeId(bikeId)
+                .authenticatedUserId(ownerId)
+                .build();
     }
 
     public static UpdateBikeCommand updateBikeCommand_blankName(UUID bikeId, UUID ownerId) {
@@ -166,79 +145,79 @@ public final class TestBikeData {
     }
 
     public static BikeResult bikeResult(UUID bikeId) {
-        return BikeResult.builder()
-                .id(bikeId)
-                .name("My bike")
-                .type(BikeType.ROAD)
-                .status(BikeStatus.ACTIVE)
-                .isPublic(false)
-                .isExternalSync(false)
-                .brand("Brand")
-                .model("Model")
-                .year(2020)
-                .serialNumber(null)
-                .notes(null)
-                .odometerKm(0)
-                .usageTimeMinutes(0)
-                .components(Collections.emptySet())
-                .build();
+        return bikeResult(
+                bikeId,
+                "My bike",
+                BikeType.ROAD,
+                BikeStatus.ACTIVE,
+                false,
+                false,
+                "Brand",
+                "Model",
+                2020,
+                null,
+                null,
+                0,
+                0,
+                Collections.emptySet()
+        );
     }
 
     public static BikeResult bikeResultUpdated(UUID bikeId) {
-        return BikeResult.builder()
-                .id(bikeId)
-                .name("New name")
-                .type(BikeType.ROAD)
-                .status(BikeStatus.ACTIVE)
-                .isPublic(true)
-                .isExternalSync(false)
-                .brand("Brand")
-                .model("Model")
-                .year(2020)
-                .serialNumber(null)
-                .notes(null)
-                .odometerKm(0)
-                .usageTimeMinutes(0)
-                .components(Collections.emptySet())
-                .build();
+        return bikeResult(
+                bikeId,
+                "New name",
+                BikeType.ROAD,
+                BikeStatus.ACTIVE,
+                true,
+                false,
+                "Brand",
+                "Model",
+                2020,
+                null,
+                null,
+                0,
+                0,
+                Collections.emptySet()
+        );
     }
 
     public static BikeResult bikeResultWithStatus(UUID bikeId, String status) {
-        return BikeResult.builder()
-                .id(bikeId)
-                .name("New name")
-                .type(BikeType.ROAD)
-                .status(BikeStatus.from(status))
-                .isPublic(true)
-                .isExternalSync(false)
-                .brand("Brand")
-                .model("Model")
-                .year(2020)
-                .serialNumber(null)
-                .notes(null)
-                .odometerKm(0)
-                .usageTimeMinutes(0)
-                .components(Collections.emptySet())
-                .build();
+        return bikeResult(
+                bikeId,
+                "New name",
+                BikeType.ROAD,
+                BikeStatus.from(status),
+                true,
+                false,
+                "Brand",
+                "Model",
+                2020,
+                null,
+                null,
+                0,
+                0,
+                Collections.emptySet()
+        );
     }
 
     public static BikeResult bikeResultQuery(UUID bikeId) {
-        return BikeResult.builder()
-                .id(bikeId)
-                .name("My bike")
-                .type(BikeType.ROAD)
-                .status(BikeStatus.ACTIVE)
-                .isPublic(false)
-                .isExternalSync(false)
-                .brand("Brand")
-                .model("Model")
-                .year(2020)
-                .serialNumber(null)
-                .notes(null)
-                .odometerKm(0)
-                .usageTimeMinutes(0)
-                .components(Collections.emptySet())
-                .build();
+        return bikeResult(
+                bikeId,
+                "My bike",
+                BikeType.ROAD,
+                BikeStatus.ACTIVE,
+                false,
+                false,
+                "Brand",
+                "Model",
+                2020,
+                null,
+                null,
+                0,
+                0,
+                Collections.emptySet()
+        );
     }
 
     public static BikeResult bikeResultWithComponentStatus(UUID bikeId, String componentStatus) {
@@ -279,26 +258,26 @@ public final class TestBikeData {
     }
 
     public static BikeResult bikeResultFromBike(Bike bike) {
-        return BikeResult.builder()
-                .id(bike.getId())
-                .name(bike.getName())
-                .type(bike.getType() == null ? null : bike.getType())
-                .status(bike.getStatus() == null ? null : bike.getStatus())
-                .isPublic(bike.isPublic())
-                .isExternalSync(bike.isExternalSync())
-                .brand(bike.getBrand())
-                .model(bike.getModel())
-                .year(bike.getYear())
-                .serialNumber(bike.getSerialNumber())
-                .notes(bike.getNotes())
-                .odometerKm(bike.getOdometerKm() == null ? 0 : bike.getOdometerKm())
-                .usageTimeMinutes(bike.getUsageTimeMinutes() == null ? 0 : bike.getUsageTimeMinutes())
-                .components(bike.getComponents() == null
+        return bikeResult(
+                bike.getId(),
+                bike.getName(),
+                bike.getType() == null ? null : bike.getType(),
+                bike.getStatus() == null ? null : bike.getStatus(),
+                bike.isPublic(),
+                bike.isExternalSync(),
+                bike.getBrand(),
+                bike.getModel(),
+                bike.getYear(),
+                bike.getSerialNumber(),
+                bike.getNotes(),
+                bike.getOdometerKm() == null ? 0 : bike.getOdometerKm(),
+                bike.getUsageTimeMinutes() == null ? 0 : bike.getUsageTimeMinutes(),
+                bike.getComponents() == null
                         ? Collections.emptySet()
                         : bike.getComponents().stream()
                         .map(TestBikeData::toComponentResult)
-                        .collect(java.util.stream.Collectors.toSet()))
-                .build();
+                        .collect(java.util.stream.Collectors.toSet())
+        );
     }
 
     public static BikeResult bikeResultWithOneComponent(UUID bikeId) {
@@ -316,6 +295,40 @@ public final class TestBikeData {
                 component.getNotes(),
                 component.getOdometerKm() == null ? 0 : component.getOdometerKm(),
                 component.getUsageTimeMinutes() == null ? 0 : component.getUsageTimeMinutes()
+        );
+    }
+
+    private static BikeResult bikeResult(
+            UUID id,
+            String name,
+            BikeType type,
+            BikeStatus status,
+            boolean isPublic,
+            boolean isExternalSync,
+            String brand,
+            String model,
+            Integer year,
+            String serialNumber,
+            String notes,
+            int odometerKm,
+            int usageTimeMinutes,
+            Set<BikeComponentResult> components
+    ) {
+        return new BikeResult(
+                id,
+                name,
+                type,
+                status,
+                isPublic,
+                isExternalSync,
+                brand,
+                model,
+                year,
+                serialNumber,
+                notes,
+                odometerKm,
+                usageTimeMinutes,
+                components
         );
     }
 

@@ -1,14 +1,14 @@
 package com.quetoquenana.pedalpal.infrastructure.persistence.announcement.entity;
 
+import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.infrastructure.persistence.auditing.AuditableEntity;
-import com.quetoquenana.pedalpal.infrastructure.persistence.systemCode.entity.SystemCodeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
 
 @Entity
-@Table(name = "landing_page_items")
+@Table(name = "announcements")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -36,9 +36,7 @@ public class AnnouncementEntity extends AuditableEntity {
     @Column(name = "url", length = 500)
     private String url;
 
-    // status_id references system_codes.id -> stored as a SystemCode relation
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_id")
-    private SystemCodeEntity status;
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private GeneralStatus status;
 }

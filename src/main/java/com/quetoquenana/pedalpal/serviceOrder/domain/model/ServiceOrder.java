@@ -30,7 +30,7 @@ public class ServiceOrder extends Auditable {
     public static ServiceOrder createFromAppointment(Appointment appointment) {
         List<ServiceOrderDetail> details = appointment.getRequestedServices().stream()
                 .map(service -> ServiceOrderDetail.builder()
-                        .productId(service.getProductId())
+                        .productId(service.getServiceId())
                         .productNameSnapshot(service.getName())
                         .priceSnapshot(service.getPrice())
                         .build())

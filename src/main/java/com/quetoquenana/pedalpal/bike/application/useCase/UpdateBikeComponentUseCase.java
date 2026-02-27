@@ -63,7 +63,7 @@ public class UpdateBikeComponentUseCase {
             List<BikeChangeItem> bikeChangeItems = applyPatch(component, command, componentType);
             bikeRepository.save(bike);
             publishHistoryEvent(bike.getId(), command.authenticatedUserId(), component.getId(), bikeChangeItems);
-            return bikeMapper.toBikeResult(bike);
+            return bikeMapper.toResult(bike);
         } catch (RecordNotFoundException ex) {
             log.error("RecordNotFoundException on UpdateBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
             throw ex;

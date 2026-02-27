@@ -24,20 +24,20 @@ The request supports an optional list of requested services. Each requested serv
 
 ### Body (`CreateAppointmentRequest`)
 
-| Field               | Type      | Required | Validation                                                         | Description |
-|---------------------|-----------|----------|--------------------------------------------------------------------|-------------|
-| `bikeId`            | UUID      | yes      | `@NotNull` (`{appointment.create.bikeId.required}`)                | Bike identifier |
-| `storeLocationId`   | UUID      | yes      | `@NotNull` (`{appointment.create.storeLocationId.required}`)       | Store location identifier |
-| `scheduledAt`       | Instant   | yes      | `@NotNull` (`{appointment.create.scheduledAt.required}`)           | Scheduled date/time (UTC / ISO-8601) |
-| `notes`             | string    | no       | —                                                                  | Notes |
-| `requestedServices` | array     | no       | `@Valid` (validates items)                                         | List of requested services |
+| Field               | Type    | Required | Validation                                                   | Description                          |
+|---------------------|---------|----------|--------------------------------------------------------------|--------------------------------------|
+| `bikeId`            | UUID    | yes      | `@NotNull` (`{appointment.create.bikeId.required}`)          | Bike identifier                      |
+| `storeLocationId`   | UUID    | yes      | `@NotNull` (`{appointment.create.storeLocationId.required}`) | Store location identifier            |
+| `scheduledAt`       | Instant | yes      | `@NotNull` (`{appointment.create.scheduledAt.required}`)     | Scheduled date/time (UTC / ISO-8601) |
+| `notes`             | string  | no       | —                                                            | Notes                                |
+| `requestedServices` | array   | no       | `@Valid` (validates items)                                   | List of requested services           |
 
 #### Requested services (`requestedServices[]`)
 
 Each item is a `CreateAppointmentRequest.RequestedServiceRequestItem`:
 
-| Field       | Type | Required | Validation                                                      | Description |
-|------------|------|----------|-----------------------------------------------------------------|-------------|
+| Field       | Type | Required | Validation                                                     | Description        |
+|-------------|------|----------|----------------------------------------------------------------|--------------------|
 | `productId` | UUID | yes      | `@NotNull` (`{appointment.create.service.productId.required}`) | Product identifier |
 
 ---

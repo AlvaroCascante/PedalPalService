@@ -18,7 +18,7 @@ public class ProductApiMapper {
 
     private final MessageSource messageSource;
 
-    public ProductResponse toProductResponse(ProductResult result) {
+    public ProductResponse toResponse(ProductResult result) {
         Locale locale = LocaleContextHolder.getLocale();
         String statusLabel = messageSource.getMessage(result.status().getKey(), null, locale);
 
@@ -31,7 +31,7 @@ public class ProductApiMapper {
         );
     }
 
-    public ProductPackageResponse toProductPackageResponse(ProductPackageResult result) {
+    public ProductPackageResponse toResponse(ProductPackageResult result) {
         Locale locale = LocaleContextHolder.getLocale();
         String statusLabel = messageSource.getMessage(result.status().getKey(), null, locale);
 
@@ -41,7 +41,7 @@ public class ProductApiMapper {
                 result.description(),
                 result.price(),
                 statusLabel,
-                result.products().stream().map(this::toProductResponse).collect(Collectors.toSet())
+                result.products().stream().map(this::toResponse).collect(Collectors.toSet())
         );
     }
 }

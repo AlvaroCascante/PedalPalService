@@ -1,11 +1,13 @@
 package com.quetoquenana.pedalpal.appointment.usecase;
 
 import com.quetoquenana.pedalpal.appointment.application.command.CreateAppointmentCommand;
+import com.quetoquenana.pedalpal.appointment.application.command.RequestedServiceCommand;
 import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
 import com.quetoquenana.pedalpal.appointment.application.usecase.CreateAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
+import com.quetoquenana.pedalpal.appointment.domain.model.ServiceType;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
@@ -82,15 +84,15 @@ class CreateAppointmentUseCaseTest {
             when(mapper.toModel(any(CreateAppointmentCommand.class))).thenReturn(mapped);
             when(mapper.toResult(any(Appointment.class))).thenAnswer(inv -> {
                 Appointment a = inv.getArgument(0, Appointment.class);
-                return AppointmentResult.builder()
-                        .id(a.getId())
-                        .bikeId(a.getBikeId())
-                        .storeLocationId(a.getStoreLocationId())
-                        .scheduledAt(a.getScheduledAt())
-                        .status(a.getStatus())
-                        .notes(a.getNotes())
-                        .requestedServices(List.of())
-                        .build();
+                return new AppointmentResult(
+                        a.getId(),
+                        a.getBikeId(),
+                        a.getStoreLocationId(),
+                        a.getScheduledAt(),
+                        a.getStatus(),
+                        a.getNotes(),
+                        List.of()
+                );
             });
 
             when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class)))
@@ -121,14 +123,15 @@ class CreateAppointmentUseCaseTest {
                 return toSave;
             });
 
-            CreateAppointmentCommand command = CreateAppointmentCommand.builder()
-                    .bikeId(bikeId)
-                    .authenticatedUserId(UUID.randomUUID())
-                    .storeLocationId(storeLocationId)
-                    .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
-                    .notes("notes")
-                    .requestedServices(List.of(CreateAppointmentCommand.RequestedServiceCommand.builder().productId(productId).build()))
-                    .build();
+            // serviceId refers to Product id in snapshotting logic
+            CreateAppointmentCommand command = new CreateAppointmentCommand(
+                    bikeId,
+                    UUID.randomUUID(),
+                    storeLocationId,
+                    Instant.parse("2026-02-25T10:00:00Z"),
+                    "notes",
+                    List.of(new RequestedServiceCommand(productId, ServiceType.PRODUCT))
+            );
 
             AppointmentResult result = useCase.execute(command);
 
@@ -154,13 +157,14 @@ class CreateAppointmentUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class))).thenReturn(Optional.empty());
 
-            CreateAppointmentCommand command = CreateAppointmentCommand.builder()
-                    .bikeId(bikeId)
-                    .authenticatedUserId(UUID.randomUUID())
-                    .storeLocationId(UUID.randomUUID())
-                    .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
-                    .requestedServices(List.of(CreateAppointmentCommand.RequestedServiceCommand.builder().productId(UUID.randomUUID()).build()))
-                    .build();
+            CreateAppointmentCommand command = new CreateAppointmentCommand(
+                    bikeId,
+                    UUID.randomUUID(),
+                    UUID.randomUUID(),
+                    Instant.parse("2026-02-25T10:00:00Z"),
+                    null,
+                    List.of(new RequestedServiceCommand(UUID.randomUUID(), ServiceType.PRODUCT))
+            );
 
             assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
 

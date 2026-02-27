@@ -3,7 +3,7 @@ package com.quetoquenana.pedalpal.infrastructure.persistence.appointment.reposit
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
 import com.quetoquenana.pedalpal.infrastructure.persistence.appointment.entity.AppointmentEntity;
-import com.quetoquenana.pedalpal.infrastructure.persistence.mapper.AppointmentEntityMapper;
+import com.quetoquenana.pedalpal.infrastructure.persistence.appointment.mapper.AppointmentEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

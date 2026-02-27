@@ -30,12 +30,12 @@ public class CreateBikeUseCase {
             throw new BusinessException("bike.serial.number.already.exists", command.serialNumber());
         }
         try {
-            Bike bike = bikeMapper.toBike(command);
+            Bike bike = bikeMapper.toModel(command);
             bike = bikeRepository.save(bike);
 
             publishHistoryEvent(bike.getId(), command.ownerId());
 
-            return bikeMapper.toBikeResult(bike);
+            return bikeMapper.toResult(bike);
         } catch (RuntimeException ex) {
             log.error("RuntimeException on CreateBikeUseCase -- Command: {}: Error: {}", command, ex.getMessage());
             throw new BusinessException("bike.creation.failed");

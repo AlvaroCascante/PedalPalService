@@ -23,7 +23,7 @@ public class BikeHistoryEventListener {
     public void handle(BikeHistoryEvent event) {
         log.debug("Received BikeHistoryEvent: {}", event);
         try {
-            BikeHistory model = mapper.toBikeHistory(event);
+            BikeHistory model = mapper.toModel(event);
             historyRepository.save(model);
         } catch (Exception ex) {
             log.error("Failed to save bike history", ex);

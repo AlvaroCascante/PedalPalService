@@ -72,7 +72,7 @@ class ProductControllerTest {
         ProductResponse response = TestProductData.productResponse(productId);
 
         when(queryService.getProductById(productId)).thenReturn(result);
-        when(apiMapper.toProductResponse(result)).thenReturn(response);
+        when(apiMapper.toResponse(result)).thenReturn(response);
 
         mockMvc.perform(get("/v1/api/products/{id}", productId))
                 .andExpect(status().isOk())
@@ -80,7 +80,7 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.data.name").value("Chain"));
 
         verify(queryService, times(1)).getProductById(productId);
-        verify(apiMapper, times(1)).toProductResponse(result);
+        verify(apiMapper, times(1)).toResponse(result);
     }
 
     @Test
@@ -92,7 +92,7 @@ class ProductControllerTest {
         mockMvc.perform(get("/v1/api/products/{id}", productId))
                 .andExpect(status().isNotFound());
 
-        verify(apiMapper, never()).toProductResponse(any(ProductResult.class));
+        verify(apiMapper, never()).toResponse(any(ProductResult.class));
     }
 
     @Test
@@ -104,7 +104,7 @@ class ProductControllerTest {
         ProductPackageResponse response = TestProductData.packageResponse(packageId, productId);
 
         when(queryService.getProductPackageById(packageId)).thenReturn(result);
-        when(apiMapper.toProductPackageResponse(result)).thenReturn(response);
+        when(apiMapper.toResponse(result)).thenReturn(response);
 
         mockMvc.perform(get("/v1/api/packages/{id}", packageId))
                 .andExpect(status().isOk())
@@ -112,7 +112,7 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.data.products[0].id").value(productId.toString()));
 
         verify(queryService, times(1)).getProductPackageById(packageId);
-        verify(apiMapper, times(1)).toProductPackageResponse(result);
+        verify(apiMapper, times(1)).toResponse(result);
     }
 
     @Test
@@ -123,14 +123,14 @@ class ProductControllerTest {
         ProductResponse response = TestProductData.productResponse(productId);
 
         when(queryService.getActiveProducts()).thenReturn(List.of(result));
-        when(apiMapper.toProductResponse(result)).thenReturn(response);
+        when(apiMapper.toResponse(result)).thenReturn(response);
 
         mockMvc.perform(get("/v1/api/products/active"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].id").value(productId.toString()));
 
         verify(queryService, times(1)).getActiveProducts();
-        verify(apiMapper, times(1)).toProductResponse(result);
+        verify(apiMapper, times(1)).toResponse(result);
     }
 
     @Test
@@ -142,14 +142,14 @@ class ProductControllerTest {
         ProductPackageResponse response = TestProductData.packageResponse(packageId, productId);
 
         when(queryService.getActiveProductPackages()).thenReturn(List.of(result));
-        when(apiMapper.toProductPackageResponse(result)).thenReturn(response);
+        when(apiMapper.toResponse(result)).thenReturn(response);
 
         mockMvc.perform(get("/v1/api/packages/active"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].id").value(packageId.toString()));
 
         verify(queryService, times(1)).getActiveProductPackages();
-        verify(apiMapper, times(1)).toProductPackageResponse(result);
+        verify(apiMapper, times(1)).toResponse(result);
     }
 
     @Test

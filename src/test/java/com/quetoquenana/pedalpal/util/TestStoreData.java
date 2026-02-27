@@ -16,27 +16,34 @@ public final class TestStoreData {
     }
 
     public static StoreResult storeResult(UUID storeId) {
-        return StoreResult.builder()
-                .id(storeId)
-                .name("PedalPal Store")
-                .locations(Set.of(
-                        StoreLocationResult.builder()
-                                .id(UUID.randomUUID())
-                                .name("Main Location")
-                                .website("https://example.com")
-                                .address("123 Main St")
-                                .latitude(new BigDecimal("9.928069"))
-                                .longitude(new BigDecimal("-84.090725"))
-                                .phone("+506 2222-2222")
-                                .status(GeneralStatus.ACTIVE)
-                                .build(),
-                        StoreLocationResult.builder()
-                                .id(UUID.randomUUID())
-                                .name("Inactive Location")
-                                .status(GeneralStatus.INACTIVE)
-                                .build()
-                ))
-                .build();
+        return new StoreResult(
+                storeId,
+                "PedalPal Store",
+                Set.of(
+                        new StoreLocationResult(
+                                UUID.randomUUID(),
+                                "Main Location",
+                                "https://example.com",
+                                "123 Main St",
+                                new BigDecimal("9.928069"),
+                                new BigDecimal("-84.090725"),
+                                "+506 2222-2222",
+                                "CR",
+                                GeneralStatus.ACTIVE
+                        ),
+                        new StoreLocationResult(
+                                UUID.randomUUID(),
+                                "Inactive Location",
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                GeneralStatus.INACTIVE
+                        )
+                )
+        );
     }
 
     public static StoreResponse storeResponse(UUID storeId) {
@@ -59,4 +66,3 @@ public final class TestStoreData {
         );
     }
 }
-

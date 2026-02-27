@@ -13,15 +13,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StoreMapper {
 
-    public StoreResult toStoreResult(Store model) {
+    public StoreResult toResult(Store model) {
         return new StoreResult(
                 model.getId(),
                 model.getName(),
-                model.getLocations().stream().map(this::toLocationResult).collect(Collectors.toSet())
+                model.getLocations()
+                        .stream()
+                        .map(this::toResult)
+                        .collect(Collectors.toSet())
         );
     }
 
-    public StoreLocationResult toLocationResult(StoreLocation model) {
+    private StoreLocationResult toResult(StoreLocation model) {
         return new StoreLocationResult(
                 model.getId(),
                 model.getName(),

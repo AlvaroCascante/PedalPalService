@@ -36,7 +36,7 @@ public class ProductController {
     ) {
         log.info("GET /v1/api/products/{} Received request to get product by id", id);
         ProductResult result = queryService.getProductById(id);
-        ProductResponse response = apiMapper.toProductResponse(result);
+        ProductResponse response = apiMapper.toResponse(result);
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
@@ -47,7 +47,7 @@ public class ProductController {
     ) {
         log.info("GET /v1/api/products/{} Received request to get product package by id", id);
         ProductPackageResult result = queryService.getProductPackageById(id);
-        ProductPackageResponse response = apiMapper.toProductPackageResponse(result);
+        ProductPackageResponse response = apiMapper.toResponse(result);
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
@@ -56,7 +56,7 @@ public class ProductController {
     public ResponseEntity<ApiResponse> findActiveProducts() {
         log.info("GET /v1/api/packages/active Received request to find active products");
         List<ProductResult> result = queryService.getActiveProducts();
-        List<ProductResponse> response = result.stream().map(apiMapper::toProductResponse).toList();
+        List<ProductResponse> response = result.stream().map(apiMapper::toResponse).toList();
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
@@ -65,7 +65,7 @@ public class ProductController {
     public ResponseEntity<ApiResponse> findActivePackages() {
         log.info("GET /v1/api/packages/active Received request to find active packages");
         List<ProductPackageResult> result = queryService.getActiveProductPackages();
-        List<ProductPackageResponse> response = result.stream().map(apiMapper::toProductPackageResponse).toList();
+        List<ProductPackageResponse> response = result.stream().map(apiMapper::toResponse).toList();
         return ResponseEntity.ok(new ApiResponse(response));
     }
 }

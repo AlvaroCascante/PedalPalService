@@ -1,6 +1,8 @@
 package com.quetoquenana.pedalpal.infrastructure.persistence.maintenanceSuggestion.entity;
 
 import com.quetoquenana.pedalpal.infrastructure.persistence.auditing.AuditableEntity;
+import com.quetoquenana.pedalpal.maintenanceSuggestion.domain.model.SuggestionStatus;
+import com.quetoquenana.pedalpal.maintenanceSuggestion.domain.model.SuggestionType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,10 +27,12 @@ public class MaintenanceSuggestionEntity extends AuditableEntity {
     private UUID bikeId;
 
     @Column(name = "suggestion_type", length = 50, nullable = false)
-    private String suggestionType;
+    @Enumerated(EnumType.STRING)
+    private SuggestionType suggestionType;
 
     @Column(name = "status", length = 50, nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private SuggestionStatus status;
 
     @Column(name = "ai_provider", length = 50)
     private String aiProvider;

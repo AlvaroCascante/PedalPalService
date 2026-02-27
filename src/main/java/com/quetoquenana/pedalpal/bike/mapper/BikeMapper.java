@@ -21,7 +21,7 @@ public class BikeMapper {
 
     private final ObjectMapper objectMapper;
 
-    public Bike toBike(CreateBikeCommand command) {
+    public Bike toModel(CreateBikeCommand command) {
         return Bike.builder()
                 .ownerId(command.ownerId())
                 .name(command.name())
@@ -39,7 +39,7 @@ public class BikeMapper {
                 .build();
     }
 
-    public BikeComponent toBikeComponent(
+    public BikeComponent toModel(
             AddBikeComponentCommand command,
             SystemCode componentType) {
         return BikeComponent.builder()
@@ -54,7 +54,7 @@ public class BikeMapper {
                 .build();
     }
 
-    public BikeHistory toBikeHistory(BikeHistoryEvent event) {
+    public BikeHistory toModel(BikeHistoryEvent event) {
         return BikeHistory.builder()
                 .bikeId(event.bikeId())
                 .performedBy(event.performedBy())
@@ -65,7 +65,7 @@ public class BikeMapper {
                 .build();
     }
 
-    public BikeResult toBikeResult(Bike model) {
+    public BikeResult toResult(Bike model) {
         return new BikeResult(
                 model.getId(),
                 model.getName(),
@@ -80,11 +80,11 @@ public class BikeMapper {
                 model.getNotes(),
                 model.getOdometerKm() == null ? 0 : model.getOdometerKm(),
                 model.getUsageTimeMinutes() == null ? 0 : model.getUsageTimeMinutes(),
-                model.getComponents().stream().map(this::toComponentResult).collect(Collectors.toSet())
+                model.getComponents().stream().map(this::toResult).collect(Collectors.toSet())
         );
     }
 
-    public BikeComponentResult toComponentResult(BikeComponent model) {
+    public BikeComponentResult toResult(BikeComponent model) {
         return new BikeComponentResult(
                 model.getId(),
                 model.getComponentType(),
@@ -98,7 +98,7 @@ public class BikeMapper {
         );
     }
 
-    public BikeHistoryResult toBikeHistoryResult(BikeHistory model) {
+    public BikeHistoryResult toResult(BikeHistory model) {
         return new BikeHistoryResult(
                 model.getId(),
                 model.getId(),

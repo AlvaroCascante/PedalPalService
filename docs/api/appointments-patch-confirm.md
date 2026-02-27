@@ -17,8 +17,8 @@ This endpoint uses the `ConfirmAppointmentUseCase` internally and returns a conf
 
 ### Path parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
+| Name | Type | Required | Description            |
+|------|------|----------|------------------------|
 | `id` | UUID | yes      | Appointment identifier |
 
 ### Headers

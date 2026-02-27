@@ -9,11 +9,9 @@ import java.util.UUID;
 @Builder
 public record UpdateAppointmentRequest(
         UUID storeLocationId,
-
+        UUID authenticatedUserId,
         Instant scheduledAt,
-
         String notes,
-
         List<CreateAppointmentRequest.RequestedServiceRequestItem> requestedServices
 ) {
 }

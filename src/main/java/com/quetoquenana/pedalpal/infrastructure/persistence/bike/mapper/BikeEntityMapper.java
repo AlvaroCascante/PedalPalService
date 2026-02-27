@@ -1,9 +1,10 @@
-package com.quetoquenana.pedalpal.infrastructure.persistence.mapper;
+package com.quetoquenana.pedalpal.infrastructure.persistence.bike.mapper;
 
 import com.quetoquenana.pedalpal.bike.domain.model.*;
 import com.quetoquenana.pedalpal.infrastructure.persistence.bike.entity.BikeComponentEntity;
 import com.quetoquenana.pedalpal.infrastructure.persistence.bike.entity.BikeEntity;
 import com.quetoquenana.pedalpal.infrastructure.persistence.bike.entity.BikeHistoryEntity;
+import com.quetoquenana.pedalpal.infrastructure.persistence.systemCode.mapper.SystemCodeEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -70,7 +70,7 @@ class UpdateBikeComponentUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithOneComponent(bikeId));
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithOneComponent(bikeId));
 
             UpdateBikeComponentCommand command = UpdateBikeComponentCommand.builder()
                     .bikeId(bikeId)
@@ -119,7 +119,7 @@ class UpdateBikeComponentUseCaseTest {
             when(systemCodeRepository.findByCategoryAndCode(COMPONENT_TYPE, "CASSETTE"))
                     .thenReturn(Optional.of(cassetteType));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(bikeId));
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(bikeId));
 
             UpdateBikeComponentCommand command = UpdateBikeComponentCommand.builder()
                     .bikeId(bikeId)
@@ -146,7 +146,7 @@ class UpdateBikeComponentUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(bikeId));
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(bikeId));
 
             UpdateBikeComponentCommand command = UpdateBikeComponentCommand.builder()
                     .bikeId(bikeId)
@@ -189,7 +189,7 @@ class UpdateBikeComponentUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
-            when(bikeMapper.toBikeResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(bikeId));
+            when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(bikeId));
 
             UpdateBikeComponentCommand command = UpdateBikeComponentCommand.builder()
                     .bikeId(bikeId)

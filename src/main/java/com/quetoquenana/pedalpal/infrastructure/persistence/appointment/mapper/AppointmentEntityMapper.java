@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.infrastructure.persistence.mapper;
+package com.quetoquenana.pedalpal.infrastructure.persistence.appointment.mapper;
 
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.model.RequestedService;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -16,7 +15,7 @@ public class AppointmentEntityMapper {
 
     public AppointmentEntity toEntity(Appointment model) {
         AppointmentEntity entity = AppointmentEntity.builder()
-                .id(model.getId() == null ? UUID.randomUUID() : model.getId())
+                .id(model.getId())
                 .bikeId(model.getBikeId())
                 .storeLocationId(model.getStoreLocationId())
                 .scheduledAt(model.getScheduledAt())
@@ -34,7 +33,7 @@ public class AppointmentEntityMapper {
     private AppointmentServiceEntity toEntity(RequestedService model) {
         return AppointmentServiceEntity.builder()
                 .id(model.getId())
-                .productId(model.getProductId())
+                .productId(model.getServiceId())
                 .productNameSnapshot(model.getName())
                 .priceSnapshot(model.getPrice())
                 .build();

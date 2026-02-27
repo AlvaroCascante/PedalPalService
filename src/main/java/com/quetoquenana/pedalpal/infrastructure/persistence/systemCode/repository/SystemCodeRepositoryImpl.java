@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.infrastructure.persistence.systemCode.repository;
 
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
-import com.quetoquenana.pedalpal.infrastructure.persistence.mapper.SystemCodeEntityMapper;
+import com.quetoquenana.pedalpal.infrastructure.persistence.systemCode.mapper.SystemCodeEntityMapper;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import lombok.RequiredArgsConstructor;

@@ -16,30 +16,29 @@ public class ServiceOrderMapper {
                 .map(this::toResult)
                 .toList();
 
-        return ServiceOrderResult.builder()
-                .id(model.getId())
-                .appointmentId(model.getAppointmentId())
-                .bikeId(model.getBikeId())
-                .status(model.getStatus())
-                .startedAt(model.getStartedAt())
-                .completedAt(model.getCompletedAt())
-                .totalPrice(model.getTotalPrice())
-                .requestedServices(requestedServices)
-                .build();
+        return new ServiceOrderResult(
+                model.getId(),
+                model.getAppointmentId(),
+                model.getBikeId(),
+                model.getStartedAt(),
+                model.getCompletedAt(),
+                model.getStatus(),
+                model.getTotalPrice(),
+                requestedServices
+        );
     }
 
     private ServiceOrderDetailResult toResult(ServiceOrderDetail model) {
-        return ServiceOrderDetailResult.builder()
-                .id(model.getId())
-                .productId(model.getProductId())
-                .technicianId(model.getTechnicianId())
-                .productName(model.getProductNameSnapshot())
-                .price(model.getPriceSnapshot())
-                .status(model.getStatus())
-                .startedAt(model.getStartedAt())
-                .completedAt(model.getCompletedAt())
-                .notes(model.getNotes())
-                .build();
+        return new ServiceOrderDetailResult(
+                model.getId(),
+                model.getProductId(),
+                model.getTechnicianId(),
+                model.getProductNameSnapshot(),
+                model.getPriceSnapshot(),
+                model.getStatus(),
+                model.getStartedAt(),
+                model.getCompletedAt(),
+                model.getNotes()
+        );
     }
 }
-
