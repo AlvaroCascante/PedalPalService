@@ -13,8 +13,7 @@ public record UpdateAppointmentCommand(
         Instant scheduledAt,
         String notes,
 
-        List<CreateAppointmentCommand.ServiceCommandItem> requestedServices,
-        UUID authenticatedUserId
+        List<CreateAppointmentCommand.RequestedServiceCommand> requestedServices
 ) {
 }
 

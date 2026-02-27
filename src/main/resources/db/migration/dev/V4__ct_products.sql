@@ -1,7 +1,7 @@
 CREATE TABLE products (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    name varchar NOT NULL,
-    description varchar,
+    name VARCHAR(50) NOT NULL,
+    description text,
     price decimal(10,2),
 
     status VARCHAR(50) NOT NULL,
@@ -15,8 +15,8 @@ CREATE TABLE products (
 
 CREATE TABLE packages (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    name varchar NOT NULL,
-    description varchar,
+    name VARCHAR(50) NOT NULL,
+    description text,
     price decimal(10,2),
 
     status VARCHAR(50) NOT NULL,

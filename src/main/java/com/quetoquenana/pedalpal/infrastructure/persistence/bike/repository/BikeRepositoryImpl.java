@@ -22,13 +22,13 @@ public class BikeRepositoryImpl implements BikeRepository {
     @Override
     public Bike save(Bike bike) {
         // Map the Bike domain model to a BikeEntity
-        BikeEntity entity = mapper.toBikeEntity(bike);
-        return mapper.toBike(repository.save(entity));
+        BikeEntity entity = mapper.toEntity(bike);
+        return mapper.toModel(repository.save(entity));
     }
 
     @Override
     public Optional<Bike> getById(UUID id) {
-        return repository.findById(id).map(mapper::toBike);
+        return repository.findById(id).map(mapper::toModel);
     }
 
     @Override
@@ -43,14 +43,14 @@ public class BikeRepositoryImpl implements BikeRepository {
 
     @Override
     public Optional<Bike> findByIdAndOwnerId(UUID id, UUID ownerId) {
-        return repository.findByIdAndOwnerId(id, ownerId).map(mapper::toBike);
+        return repository.findByIdAndOwnerId(id, ownerId).map(mapper::toModel);
     }
 
     @Override
     public List<Bike> findByOwnerIdAndStatus(UUID ownerId, BikeStatus bikeStatus) {
         return repository.findByOwnerIdAndStatus(ownerId, bikeStatus)
                 .stream()
-                .map(mapper::toBike)
+                .map(mapper::toModel)
                 .toList();
     }
 }

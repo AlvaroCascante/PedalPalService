@@ -3,6 +3,7 @@ package com.quetoquenana.pedalpal.appointment.controller;
 import com.quetoquenana.pedalpal.appointment.application.query.AppointmentQueryService;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentListItemResult;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
+import com.quetoquenana.pedalpal.appointment.application.usecase.ConfirmAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.application.usecase.CreateAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentStatusUseCase;
 import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentUseCase;
@@ -47,6 +48,9 @@ class AppointmentControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @MockitoBean
+    ConfirmAppointmentUseCase confirmAppointmentUseCase;
 
     @MockitoBean
     CreateAppointmentUseCase createAppointmentUseCase;

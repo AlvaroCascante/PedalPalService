@@ -20,20 +20,20 @@ public class BikeHistoryRepositoryImpl implements BikeHistoryRepository {
 
     @Override
     public Optional<BikeHistory> getById(UUID id) {
-        return repository.findById(id).map(mapper::toBikeHistory);
+        return repository.findById(id).map(mapper::toModel);
     }
 
     @Override
     public BikeHistory save(BikeHistory bikeHistory) {
-        BikeHistoryEntity entity = mapper.toBikeHistoryEntity(bikeHistory);
-        return mapper.toBikeHistory(repository.save(entity));
+        BikeHistoryEntity entity = mapper.toEntity(bikeHistory);
+        return mapper.toModel(repository.save(entity));
     }
 
     @Override
     public List<BikeHistory> findByBikeId(UUID bikeId) {
         return repository.findByBikeId(bikeId)
                 .stream()
-                .map(mapper::toBikeHistory)
+                .map(mapper::toModel)
                 .toList();
     }
 }

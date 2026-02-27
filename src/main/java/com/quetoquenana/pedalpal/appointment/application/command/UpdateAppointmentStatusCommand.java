@@ -7,8 +7,7 @@ import java.util.UUID;
 @Builder
 public record UpdateAppointmentStatusCommand(
         UUID id,
-        String status,
-        UUID authenticatedUserId
+        String status
 ) {
 }
 

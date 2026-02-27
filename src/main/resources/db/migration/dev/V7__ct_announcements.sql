@@ -1,6 +1,6 @@
-CREATE TABLE landing_page_items (
+CREATE TABLE announcements (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    title varchar NOT NULL,
+    title VARCHAR(50) NOT NULL,
     sub_title varchar,
     description varchar,
     position int,

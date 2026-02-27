@@ -141,6 +141,17 @@ Spring's cron expression uses 6 fields: `second minute hour day-of-month month d
 Timezone
 - `@Scheduled` uses the JVM default timezone unless you configure a zone on the annotation or provide a different timezone in properties.
 
+## Flyway Migrations
+- This project uses Flyway for database schema migrations. Migration scripts are located in `src/main/resources/db/migration/` and follow the naming convention `V1__Initial_schema.sql`, `V2__Add_profiles_table.sql`, etc.
+- Flyway will automatically run pending migrations on application startup, ensuring the database schema is up to date. You can also run migrations manually with:
+- For Dev, in case that you need to recreate the database, run these commands:
+```
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO public;
+```
+
 ## License
 
 This project is provided as-is for bootstrapping new Spring Boot projects.

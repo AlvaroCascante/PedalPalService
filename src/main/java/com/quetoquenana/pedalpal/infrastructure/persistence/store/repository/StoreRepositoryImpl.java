@@ -20,19 +20,19 @@ public class StoreRepositoryImpl implements StoreRepository {
 
     @Override
     public Optional<Store> getById(UUID id) {
-        return repository.findById(id).map(mapper::toStore);
+        return repository.findById(id).map(mapper::toModel);
     }
 
     @Override
     public List<Store> getAll() {
-        return repository.findAll().stream().map(mapper::toStore).toList();
+        return repository.findAll().stream().map(mapper::toModel).toList();
     }
 
     @Override
     public Store save(Store store) {
         // Map the Bike domain model to a BikeEntity
-        StoreEntity entity = mapper.toStoreEntity(store);
-        return mapper.toStore(repository.save(entity));
+        StoreEntity entity = mapper.toEntity(store);
+        return mapper.toModel(repository.save(entity));
     }
 }
 

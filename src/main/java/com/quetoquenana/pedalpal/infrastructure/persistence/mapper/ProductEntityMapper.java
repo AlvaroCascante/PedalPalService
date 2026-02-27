@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ProductEntityMapper {
 
-    public ProductPackage toProductPackage(ProductPackageEntity entity) {
+    public ProductPackage toModel(ProductPackageEntity entity) {
         ProductPackage model = ProductPackage.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -23,13 +23,13 @@ public class ProductEntityMapper {
         if (entity.getProducts() != null) {
             entity.getProducts()
                     .stream()
-                    .map(this::toProduct)
+                    .map(this::toModel)
                     .forEach(model::addProduct);
         }
         return model;
     }
 
-    public Product toProduct(ProductEntity entity) {
+    public Product toModel(ProductEntity entity) {
         Product model = Product.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -41,7 +41,7 @@ public class ProductEntityMapper {
         return model;
     }
 
-    public ProductPackageEntity toProductPackageEntity(ProductPackage model) {
+    public ProductPackageEntity toEntity(ProductPackage model) {
         ProductPackageEntity entity = ProductPackageEntity.builder()
                 .id(model.getId())
                 .name(model.getName())
@@ -52,12 +52,12 @@ public class ProductEntityMapper {
         entity.setVersion(model.getVersion());
         model.getProducts()
                 .stream()
-                .map(this::toProductEntity)
+                .map(this::toEntity)
                 .forEach(entity::addProduct);
         return entity;
     }
 
-    public ProductEntity toProductEntity(Product model) {
+    public ProductEntity toEntity(Product model) {
         ProductEntity entity = ProductEntity.builder()
                 .id(model.getId())
                 .name(model.getName())

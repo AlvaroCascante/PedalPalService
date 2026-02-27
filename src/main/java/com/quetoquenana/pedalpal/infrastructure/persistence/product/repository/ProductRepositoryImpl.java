@@ -21,23 +21,28 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Optional<Product> getById(UUID id) {
-        return repository.findById(id).map(mapper::toProduct);
+        return repository.findById(id).map(mapper::toModel);
+    }
+
+    @Override
+    public Optional<Product> getByIdAndStatus(UUID id, GeneralStatus status) {
+        return repository.getByIdAndStatus(id, status).map(mapper::toModel);
     }
 
     @Override
     public List<Product> getAll() {
-        return repository.findAll().stream().map(mapper::toProduct).toList();
+        return repository.findAll().stream().map(mapper::toModel).toList();
     }
 
     @Override
     public List<Product> findByStatus(GeneralStatus status) {
-        return repository.findByStatus(status).stream().map(mapper::toProduct).toList();
+        return repository.findByStatus(status).stream().map(mapper::toModel).toList();
     }
 
     @Override
     public Product save(Product model) {
-        ProductEntity entity = mapper.toProductEntity(model);
-        return mapper.toProduct(repository.save(entity));
+        ProductEntity entity = mapper.toEntity(model);
+        return mapper.toModel(repository.save(entity));
     }
 }
 

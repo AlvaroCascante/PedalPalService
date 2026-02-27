@@ -24,6 +24,6 @@ CREATE TABLE appointment_requested_service (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     appointment_id UUID NOT NULL REFERENCES appointments(id) ON DELETE CASCADE,
     product_id UUID NOT NULL REFERENCES  products(id),
-    product_name_snapshot VARCHAR(255) NOT NULL,
-    price_snapshot NUMERIC(10,2)
+    product_name_snapshot VARCHAR(50) NOT NULL,
+    price_snapshot NUMERIC(10,2) NOT NULL
 );

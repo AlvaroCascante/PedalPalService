@@ -9,8 +9,11 @@ import java.util.Locale;
 public enum AppointmentStatus {
     REQUESTED("appointment.status.requested"),
     CONFIRMED("appointment.status.confirmed"),
+    IN_PROGRESS("appointment.status.in_progress"),
+    COMPLETED("appointment.status.completed"),
     CANCELLED("appointment.status.cancelled"),
     REJECTED("appointment.status.rejected"),
+    NO_SHOW("appointment.status.no_show"),
     UNKNOWN("appointment.status.unknown");
 
     private final String key;

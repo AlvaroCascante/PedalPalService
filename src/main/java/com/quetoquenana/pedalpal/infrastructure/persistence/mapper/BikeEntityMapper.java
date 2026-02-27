@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class BikeEntityMapper {
 
-    public Bike toBike(BikeEntity entity) {
+    public Bike toModel(BikeEntity entity) {
         Bike model = Bike.builder()
                 .id(entity.getId())
                 .ownerId(entity.getOwnerId())
@@ -32,16 +32,16 @@ public class BikeEntityMapper {
         if (entity.getComponents() != null) {
             entity.getComponents()
                     .stream()
-                    .map(this::toBikeComponent)
+                    .map(this::toModel)
                     .forEach(model::addComponent);
         }
         return model;
     }
 
-    public BikeComponent toBikeComponent(BikeComponentEntity entity) {
+    private BikeComponent toModel(BikeComponentEntity entity) {
         BikeComponent model = BikeComponent.builder()
                 .id(entity.getId())
-                .componentType(SystemCodeEntityMapper.toSystemCode(entity.getComponentType()))
+                .componentType(SystemCodeEntityMapper.toModel(entity.getComponentType()))
                 .name(entity.getName())
                 .status(entity.getStatus())
                 .brand(entity.getBrand())
@@ -54,7 +54,7 @@ public class BikeEntityMapper {
         return model;
     }
 
-    public BikeHistory toBikeHistory(BikeHistoryEntity entity) {
+    public BikeHistory toModel(BikeHistoryEntity entity) {
         return BikeHistory.builder()
                 .id(entity.getId())
                 .bikeId(entity.getBikeId())
@@ -65,7 +65,7 @@ public class BikeEntityMapper {
                 .build();
     }
 
-    public BikeEntity toBikeEntity(Bike model) {
+    public BikeEntity toEntity(Bike model) {
         BikeEntity entity = BikeEntity.builder()
                 .id(model.getId())
                 .ownerId(model.getOwnerId())
@@ -85,15 +85,15 @@ public class BikeEntityMapper {
         entity.setVersion(model.getVersion());
         model.getComponents()
                 .stream()
-                .map(this::toBikeComponentEntity)
+                .map(this::toEntity)
                 .forEach(entity::addComponent);
         return entity;
     }
 
-    public BikeComponentEntity toBikeComponentEntity(BikeComponent model) {
+    private BikeComponentEntity toEntity(BikeComponent model) {
         BikeComponentEntity entity = BikeComponentEntity.builder()
                 .id(model.getId())
-                .componentType(SystemCodeEntityMapper.toSystemCodeEntity(model.getComponentType()))
+                .componentType(SystemCodeEntityMapper.toEntity(model.getComponentType()))
                 .name(model.getName())
                 .status(model.getStatus())
                 .brand(model.getBrand())
@@ -106,7 +106,7 @@ public class BikeEntityMapper {
         return entity;
     }
 
-    public BikeHistoryEntity toBikeHistoryEntity(BikeHistory bikeHistory) {
+    public BikeHistoryEntity toEntity(BikeHistory bikeHistory) {
         return BikeHistoryEntity.builder()
                 .id(bikeHistory.getId())
                 .bikeId(bikeHistory.getBikeId())

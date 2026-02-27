@@ -6,6 +6,8 @@ import com.quetoquenana.pedalpal.appointment.application.command.UpdateAppointme
 import com.quetoquenana.pedalpal.appointment.application.query.AppointmentQueryService;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentListItemResult;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
+import com.quetoquenana.pedalpal.appointment.application.result.ConfirmAppointmentResult;
+import com.quetoquenana.pedalpal.appointment.application.usecase.ConfirmAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.application.usecase.CreateAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentStatusUseCase;
 import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentUseCase;
@@ -15,6 +17,7 @@ import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppo
 import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppointmentStatusRequest;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentListItemResponse;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentResponse;
+import com.quetoquenana.pedalpal.appointment.presentation.dto.response.ConfirmAppointmentResponse;
 import com.quetoquenana.pedalpal.common.dto.ApiResponse;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
@@ -36,6 +39,7 @@ import java.util.UUID;
 @Slf4j
 public class AppointmentController {
 
+    private final ConfirmAppointmentUseCase confirmAppointmentUseCase;
     private final CreateAppointmentUseCase createAppointmentUseCase;
     private final UpdateAppointmentUseCase updateAppointmentUseCase;
     private final UpdateAppointmentStatusUseCase updateAppointmentStatusUseCase;
@@ -78,6 +82,17 @@ public class AppointmentController {
         UpdateAppointmentStatusCommand command = apiMapper.toStatusCommand(id, request, userId);
         AppointmentResult result = updateAppointmentStatusUseCase.execute(command);
         AppointmentResponse response = apiMapper.toResponse(result);
+        return ResponseEntity.ok(new ApiResponse(response));
+    }
+
+    @PatchMapping("/{id}/confirm")
+    @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN'))")
+    public ResponseEntity<ApiResponse> confirmAppointment(
+            @PathVariable UUID id
+    ) {
+        UpdateAppointmentStatusCommand command = apiMapper.toStatusConfirmCommand(id, getAuthenticatedUserId());
+        ConfirmAppointmentResult result = confirmAppointmentUseCase.execute(command);
+        ConfirmAppointmentResponse response = apiMapper.toResponse(result);
         return ResponseEntity.ok(new ApiResponse(response));
     }
 

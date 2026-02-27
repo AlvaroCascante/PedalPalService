@@ -33,7 +33,7 @@ public class AppointmentQueryService {
     }
 
     public List<AppointmentListItemResult> getPastAppointments(UUID bikeId) {
-        List<Appointment> models = repository.findUpcomingByBikeId(bikeId, Instant.now());
+        List<Appointment> models = repository.findPastByBikeId(bikeId, Instant.now());
         return models.stream().map(mapper::toListItemResult)
                 .toList();
     }

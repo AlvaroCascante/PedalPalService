@@ -36,7 +36,7 @@ public class BikeHistoryEntity {
     private UUID performedBy;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false, length = 50)
     private BikeHistoryEventType type;
 
     @Column(name = "payload", columnDefinition = "TEXT")

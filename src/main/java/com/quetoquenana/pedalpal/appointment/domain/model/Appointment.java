@@ -21,13 +21,17 @@ public class Appointment extends Auditable {
     private AppointmentStatus status;
     private String notes;
 
-    private List<AppointmentService> requestedServices;
+    private List<RequestedService> requestedServices;
 
-    public void addRequestedService(AppointmentService service) {
+    public void addRequestedService(RequestedService service) {
         if (this.requestedServices == null) {
             this.requestedServices = new java.util.ArrayList<>();
         }
         requestedServices.add(service);
+    }
+
+    public void confirm() {
+        this.status = AppointmentStatus.CONFIRMED;
     }
 }
 

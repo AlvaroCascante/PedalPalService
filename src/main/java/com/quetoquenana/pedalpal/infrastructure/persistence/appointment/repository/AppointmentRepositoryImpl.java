@@ -22,25 +22,26 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     @Override
     public Appointment save(Appointment appointment) {
         AppointmentEntity entity = mapper.toEntity(appointment);
-        return mapper.toDomain(repository.save(entity));
+        entity = repository.save(entity);
+        return mapper.toModel(entity);
     }
 
     @Override
     public Optional<Appointment> getById(UUID id) {
-        return repository.findById(id).map(mapper::toDomain);
+        return repository.findById(id).map(mapper::toModel);
     }
 
     @Override
     public List<Appointment> findUpcomingByBikeId(UUID bikeId, Instant now) {
         return repository.findUpcomingByBikeId(bikeId, now).stream()
-                .map(mapper::toDomain)
+                .map(mapper::toModel)
                 .toList();
     }
 
     @Override
     public List<Appointment> findPastByBikeId(UUID bikeId, Instant now) {
         return repository.findPastByBikeId(bikeId, now).stream()
-                .map(mapper::toDomain)
+                .map(mapper::toModel)
                 .toList();
     }
 }

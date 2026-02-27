@@ -27,7 +27,7 @@ public class SystemCodeController {
 
     private final SystemCodeApiMapper apiMapper;
 
-    @GetMapping("/components/{id}")
+    @GetMapping("/system-codes/{id}")
     @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN'))")
     public ResponseEntity<ApiResponse> getById(
             @PathVariable("id") UUID id

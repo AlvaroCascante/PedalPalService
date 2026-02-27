@@ -34,17 +34,17 @@ public class BikeComponentEntity extends AuditableEntity {
     @JoinColumn(name = "component_type")
     private SystemCodeEntity componentType;
 
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)
     private BikeComponentStatus status;
 
-    @Column(name = "brand", length = 100)
+    @Column(name = "brand", length = 50)
     private String brand;
 
-    @Column(name = "model", length = 100)
+    @Column(name = "model", length = 50)
     private String model;
 
     @Column(name = "notes", columnDefinition = "text")

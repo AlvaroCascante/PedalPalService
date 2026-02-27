@@ -34,6 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -77,7 +79,7 @@ class CreateAppointmentUseCaseTest {
                     .requestedServices(new ArrayList<>())
                     .build();
 
-            when(mapper.toAppointment(any(CreateAppointmentCommand.class))).thenReturn(mapped);
+            when(mapper.toModel(any(CreateAppointmentCommand.class))).thenReturn(mapped);
             when(mapper.toResult(any(Appointment.class))).thenAnswer(inv -> {
                 Appointment a = inv.getArgument(0, Appointment.class);
                 return AppointmentResult.builder()
@@ -91,15 +93,16 @@ class CreateAppointmentUseCaseTest {
                         .build();
             });
 
-            when(bikeRepository.getById(bikeId)).thenReturn(Optional.of(Bike.builder()
-                    .id(bikeId)
-                    .ownerId(UUID.randomUUID())
-                    .name("Bike")
-                    .type(BikeType.ROAD)
-                    .status(BikeStatus.ACTIVE)
-                    .isPublic(false)
-                    .isExternalSync(false)
-                    .build()));
+            when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class)))
+                    .thenReturn(Optional.of(Bike.builder()
+                            .id(bikeId)
+                            .ownerId(UUID.randomUUID())
+                            .name("Bike")
+                            .type(BikeType.ROAD)
+                            .status(BikeStatus.ACTIVE)
+                            .isPublic(false)
+                            .isExternalSync(false)
+                            .build()));
 
             Product product = Product.builder()
                     .id(productId)
@@ -109,7 +112,8 @@ class CreateAppointmentUseCaseTest {
                     .status(com.quetoquenana.pedalpal.common.domain.model.GeneralStatus.ACTIVE)
                     .build();
 
-            when(productRepository.getById(productId)).thenReturn(Optional.of(product));
+            when(productRepository.getByIdAndStatus(eq(productId), eq(com.quetoquenana.pedalpal.common.domain.model.GeneralStatus.ACTIVE)))
+                    .thenReturn(Optional.of(product));
 
             when(appointmentRepository.save(any(Appointment.class))).thenAnswer(inv -> {
                 Appointment toSave = inv.getArgument(0, Appointment.class);
@@ -119,11 +123,11 @@ class CreateAppointmentUseCaseTest {
 
             CreateAppointmentCommand command = CreateAppointmentCommand.builder()
                     .bikeId(bikeId)
+                    .authenticatedUserId(UUID.randomUUID())
                     .storeLocationId(storeLocationId)
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
                     .notes("notes")
-                    .requestedServices(List.of(CreateAppointmentCommand.ServiceCommandItem.builder().productId(productId).build()))
-                    .authenticatedUserId(UUID.randomUUID())
+                    .requestedServices(List.of(CreateAppointmentCommand.RequestedServiceCommand.builder().productId(productId).build()))
                     .build();
 
             AppointmentResult result = useCase.execute(command);
@@ -135,8 +139,8 @@ class CreateAppointmentUseCaseTest {
             assertEquals(storeLocationId, saved.getStoreLocationId());
             assertEquals(AppointmentStatus.REQUESTED, saved.getStatus());
             assertEquals(1, saved.getRequestedServices().size());
-            assertEquals("Chain", saved.getRequestedServices().getFirst().getProductNameSnapshot());
-            assertEquals(new BigDecimal("19.99"), saved.getRequestedServices().getFirst().getPriceSnapshot());
+            assertEquals("Chain", saved.getRequestedServices().get(0).getName());
+            assertEquals(new BigDecimal("19.99"), saved.getRequestedServices().get(0).getPrice());
             assertNotNull(result.id());
         }
     }
@@ -148,18 +152,20 @@ class CreateAppointmentUseCaseTest {
         void shouldThrowRecordNotFound_whenBikeDoesNotExist() {
             UUID bikeId = UUID.randomUUID();
 
-
-            when(bikeRepository.getById(bikeId)).thenReturn(Optional.empty());
+            when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class))).thenReturn(Optional.empty());
 
             CreateAppointmentCommand command = CreateAppointmentCommand.builder()
                     .bikeId(bikeId)
+                    .authenticatedUserId(UUID.randomUUID())
                     .storeLocationId(UUID.randomUUID())
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
-                    .requestedServices(List.of())
-                    .authenticatedUserId(UUID.randomUUID())
+                    .requestedServices(List.of(CreateAppointmentCommand.RequestedServiceCommand.builder().productId(UUID.randomUUID()).build()))
                     .build();
 
             assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
+
+            verify(appointmentRepository, never()).save(any(Appointment.class));
+            verify(mapper, never()).toModel(any(CreateAppointmentCommand.class));
         }
     }
 }

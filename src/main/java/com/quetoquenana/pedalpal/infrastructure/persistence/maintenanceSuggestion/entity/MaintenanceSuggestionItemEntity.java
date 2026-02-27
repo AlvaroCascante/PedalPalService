@@ -1,8 +1,7 @@
-package com.quetoquenana.pedalpal.infrastructure.persistence.entity;
+package com.quetoquenana.pedalpal.infrastructure.persistence.maintenanceSuggestion.entity;
 
 import com.quetoquenana.pedalpal.infrastructure.persistence.product.entity.ProductEntity;
 import com.quetoquenana.pedalpal.infrastructure.persistence.product.entity.ProductPackageEntity;
-import com.quetoquenana.pedalpal.infrastructure.persistence.systemCode.entity.SystemCodeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,13 +32,11 @@ public class MaintenanceSuggestionItemEntity {
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "priority")
-    private SystemCodeEntity priority;
+    @Column(name = "priority")
+    private String priority;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "urgency")
-    private SystemCodeEntity urgency;
+    @Column(name = "urgency")
+    private String urgency;
 
     @Column(name = "reason", columnDefinition = "text", nullable = false)
     private String reason;

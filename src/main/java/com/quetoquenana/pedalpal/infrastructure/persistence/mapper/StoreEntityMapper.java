@@ -13,7 +13,7 @@ import java.util.HashSet;
 @RequiredArgsConstructor
 public class StoreEntityMapper {
 
-    public Store toStore(StoreEntity entity) {
+    public Store toModel(StoreEntity entity) {
         Store model = Store.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -24,13 +24,13 @@ public class StoreEntityMapper {
         if (entity.getLocations() != null) {
             entity.getLocations()
                     .stream()
-                    .map(this::toStoreLocation)
+                    .map(this::toModel)
                     .forEach(model::addLocation);
         }
         return model;
     }
 
-    public StoreLocation toStoreLocation(StoreLocationEntity entity) {
+    private StoreLocation toModel(StoreLocationEntity entity) {
         StoreLocation model = StoreLocation.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -46,7 +46,7 @@ public class StoreEntityMapper {
         return model;
     }
 
-    public StoreEntity toStoreEntity(Store model) {
+    public StoreEntity toEntity(Store model) {
         StoreEntity entity = StoreEntity.builder()
                 .id(model.getId())
                 .name(model.getName())
@@ -54,12 +54,12 @@ public class StoreEntityMapper {
         entity.setVersion(model.getVersion());
         model.getLocations()
                 .stream()
-                .map(this::toStoreLocationEntity)
+                .map(this::toEntity)
                 .forEach(entity::addLocation);
         return entity;
     }
 
-    public StoreLocationEntity toStoreLocationEntity(StoreLocation model) {
+    private StoreLocationEntity toEntity(StoreLocation model) {
         StoreLocationEntity entity = StoreLocationEntity.builder()
                 .id(model.getId())
                 .name(model.getName())

@@ -2,7 +2,6 @@ package com.quetoquenana.pedalpal.infrastructure.persistence.appointment.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.quetoquenana.pedalpal.infrastructure.persistence.product.entity.ProductEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,15 +28,13 @@ public class AppointmentServiceEntity {
     @JsonBackReference
     private AppointmentEntity appointment;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "product_id", nullable = false)
-    @JsonBackReference
-    private ProductEntity product;
+    @Column(name = "product_id", nullable = false)
+    private UUID productId;
 
-    @Column(name = "product_name_snapshot", nullable = false)
+    @Column(name = "product_name_snapshot", length = 50, nullable = false)
     private String productNameSnapshot;
 
-    @Column(name = "price_snapshot", precision = 10, scale = 2)
+    @Column(name = "price_snapshot", precision = 10, scale = 2, nullable = false)
     private BigDecimal priceSnapshot;
 }
 

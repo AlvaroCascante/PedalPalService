@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.infrastructure.persistence.entity;
+package com.quetoquenana.pedalpal.infrastructure.persistence.announcement.entity;
 
 import com.quetoquenana.pedalpal.infrastructure.persistence.auditing.AuditableEntity;
 import com.quetoquenana.pedalpal.infrastructure.persistence.systemCode.entity.SystemCodeEntity;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-public class LandingPageItemEntity extends AuditableEntity {
+public class AnnouncementEntity extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -32,12 +32,12 @@ public class SystemCodeEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "code_key")
-    private String codeKey;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)
     private GeneralStatus status;
+
+    @Column(name = "code_key")
+    private String codeKey;
 
     @Column(name = "position")
     private Integer position;

@@ -5,7 +5,7 @@ CREATE TABLE system_codes (
     label varchar,
     description varchar,
     status VARCHAR(50) NOT NULL,
-    code_key varchar,
+    code_key varchar, -- Used for i18n lookups
     position int,
 
     CONSTRAINT ux_system_codes_category_code UNIQUE (category, code)

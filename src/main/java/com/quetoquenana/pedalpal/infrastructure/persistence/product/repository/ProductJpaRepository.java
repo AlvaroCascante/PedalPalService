@@ -5,9 +5,12 @@ import com.quetoquenana.pedalpal.infrastructure.persistence.product.entity.Produ
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ProductJpaRepository extends JpaRepository<ProductEntity, UUID> {
     List<ProductEntity> findByStatus(GeneralStatus status);
+
+    Optional<ProductEntity> getByIdAndStatus(UUID id, GeneralStatus status);
 }
 

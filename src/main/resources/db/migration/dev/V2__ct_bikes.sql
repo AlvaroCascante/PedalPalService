@@ -1,16 +1,16 @@
 CREATE TABLE bikes (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     owner_id uuid NOT NULL,
-    name varchar NOT NULL,
-    type varchar NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    type VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL,
     is_public boolean,
     is_external_sync boolean,
 
-    brand varchar,
-    model varchar,
+    brand VARCHAR(50),
+    model VARCHAR(50),
     year int,
-    serial_number varchar,
+    serial_number VARCHAR(50),
     notes text,
     odometer_km int,
     usage_time_minutes int,
@@ -22,7 +22,7 @@ CREATE TABLE bikes (
     updated_by uuid NULL
 );
 
-CREATE UNIQUE INDEX uk_bikes_serial_number_not_null
+CREATE UNIQUE INDEX uk_bikes_serial_number_not_null -- Enforce uniqueness of serial_number when it's not null
     ON bikes (serial_number)
     WHERE serial_number IS NOT NULL;
 
@@ -30,12 +30,12 @@ CREATE TABLE bike_components (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     bike_id uuid NOT NULL,
 
-    component_type uuid NOT NULL,
-    name varchar NOT NULL,
-    status varchar NOT NULL,
+    component_type uuid NOT NULL, -- references system_codes(id) where category='COMPONENT_TYPE'
+    name VARCHAR(50) NOT NULL,
+    status VARCHAR(50) NOT NULL,
 
-    brand varchar,
-    model varchar,
+    brand VARCHAR(50),
+    model VARCHAR(50),
     notes text,
 
     odometer_km int,

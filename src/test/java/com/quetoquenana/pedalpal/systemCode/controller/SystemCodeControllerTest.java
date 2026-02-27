@@ -72,7 +72,7 @@ class SystemCodeControllerTest {
         when(queryService.getById(id)).thenReturn(result);
         when(apiMapper.toResponse(result)).thenReturn(response);
 
-        mockMvc.perform(get("/v1/api/components/{id}", id))
+        mockMvc.perform(get("/v1/api/system-codes/{id}", id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.id").value(id.toString()))
                 .andExpect(jsonPath("$.data.code").value("CHAIN"));
@@ -116,7 +116,7 @@ class SystemCodeControllerTest {
     void shouldReturn403_whenMissingRoleForProtectedEndpoint() throws Exception {
         UUID id = UUID.randomUUID();
 
-        mockMvc.perform(get("/v1/api/components/{id}", id))
+        mockMvc.perform(get("/v1/api/system-codes/{id}", id))
                 .andExpect(status().isForbidden());
 
         verify(queryService, never()).getById(eq(id));

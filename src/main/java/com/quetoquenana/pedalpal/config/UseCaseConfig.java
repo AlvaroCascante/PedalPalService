@@ -1,5 +1,6 @@
 package com.quetoquenana.pedalpal.config;
 
+import com.quetoquenana.pedalpal.appointment.application.usecase.ConfirmAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.appointment.application.usecase.CreateAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentStatusUseCase;
@@ -9,6 +10,8 @@ import com.quetoquenana.pedalpal.bike.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.useCase.*;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
+import com.quetoquenana.pedalpal.serviceOrder.mapper.ServiceOrderMapper;
+import com.quetoquenana.pedalpal.serviceOrder.repository.ServiceOrderRepository;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +32,21 @@ public class UseCaseConfig {
                 bikeRepository,
                 systemCodeRepository,
                 eventPublisher
+        );
+    }
+
+    @Bean
+    public ConfirmAppointmentUseCase createConfirmAppointmentUseCase(
+            AppointmentMapper mapper,
+            AppointmentRepository appointmentRepository,
+            ServiceOrderMapper serviceOrderMapper,
+            ServiceOrderRepository serviceOrderRepository
+    ) {
+        return new ConfirmAppointmentUseCase(
+                mapper,
+                appointmentRepository,
+                serviceOrderMapper,
+                serviceOrderRepository
         );
     }
 
@@ -88,13 +106,11 @@ public class UseCaseConfig {
     @Bean
     public UpdateAppointmentUseCase createUpdateAppointmentUseCase(
             AppointmentMapper mapper,
-            AppointmentRepository appointmentRepository,
-            ProductRepository productRepository
+            AppointmentRepository appointmentRepository
     ) {
         return new UpdateAppointmentUseCase(
                 mapper,
-                appointmentRepository,
-                productRepository
+                appointmentRepository
         );
     }
     @Bean

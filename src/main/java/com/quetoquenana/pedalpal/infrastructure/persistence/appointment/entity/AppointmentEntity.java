@@ -34,11 +34,11 @@ public class AppointmentEntity extends AuditableEntity {
     @Column(name = "scheduled_at", nullable = false)
     private Instant scheduledAt;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, length = 50)
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 
-    @Column(name = "notes")
+    @Column(name = "notes", columnDefinition = "text")
     private String notes;
 
     @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -50,7 +50,6 @@ public class AppointmentEntity extends AuditableEntity {
             this.services = new HashSet<>();
         }
         services.add(service);
-        service.setAppointment(this);
     }
 }
 

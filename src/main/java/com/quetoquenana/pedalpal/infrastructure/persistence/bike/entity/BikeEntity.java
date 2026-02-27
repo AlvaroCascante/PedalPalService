@@ -28,7 +28,7 @@ public class BikeEntity extends AuditableEntity {
     @Column(name = "owner_id", nullable = false)
     private UUID ownerId;
 
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -45,16 +45,16 @@ public class BikeEntity extends AuditableEntity {
     @Column(name = "is_external_sync")
     private boolean isExternalSync;
 
-    @Column(name = "brand", length = 100)
+    @Column(name = "brand", length = 50)
     private String brand;
 
-    @Column(name = "model", length = 100)
+    @Column(name = "model", length = 50)
     private String model;
 
     @Column(name = "year")
     private Integer year;
 
-    @Column(name = "serial_number", unique = true, length = 100)
+    @Column(name = "serial_number", unique = true, length = 50)
     private String serialNumber;
 
     @Column(name = "notes", columnDefinition = "text")

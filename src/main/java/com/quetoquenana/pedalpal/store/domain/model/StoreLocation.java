@@ -14,7 +14,6 @@ import java.util.UUID;
 @Setter
 public class StoreLocation extends Auditable {
     private UUID id;
-    private Store store;
     private String name;
     private String website;
     private String address;

@@ -11,6 +11,8 @@ public interface ProductRepository {
 
     Optional<Product> getById(UUID id);
 
+    Optional<Product> getByIdAndStatus(UUID id, GeneralStatus status);
+
     List<Product> getAll();
 
     List<Product> findByStatus(GeneralStatus status);

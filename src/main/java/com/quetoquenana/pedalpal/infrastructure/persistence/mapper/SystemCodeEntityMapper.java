@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SystemCodeEntityMapper {
 
-    public static SystemCode toSystemCode(SystemCodeEntity entity) {
+    public static SystemCode toModel(SystemCodeEntity entity) {
         return SystemCode.builder()
                 .id(entity.getId())
                 .category(entity.getCategory())
@@ -20,7 +20,7 @@ public class SystemCodeEntityMapper {
                 .build();
     }
 
-    public static SystemCodeEntity toSystemCodeEntity(SystemCode model) {
+    public static SystemCodeEntity toEntity(SystemCode model) {
         return SystemCodeEntity.builder()
                 .id(model.getId())
                 .category(model.getCategory())

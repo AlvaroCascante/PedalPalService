@@ -5,7 +5,7 @@ import com.quetoquenana.pedalpal.appointment.application.result.AppointmentListI
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentServiceResult;
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
-import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentService;
+import com.quetoquenana.pedalpal.appointment.domain.model.RequestedService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,47 +13,47 @@ import java.util.List;
 @Component
 public class AppointmentMapper {
 
-    public AppointmentResult toResult(Appointment appointment) {
-        List<AppointmentServiceResult> requestedServices = appointment.getRequestedServices().stream()
-                .map(this::toRequestedServiceResult)
+    public AppointmentResult toResult(Appointment model) {
+        List<AppointmentServiceResult> requestedServices = model.getRequestedServices().stream()
+                .map(this::toResult)
                 .toList();
 
         return AppointmentResult.builder()
-                .id(appointment.getId())
-                .bikeId(appointment.getBikeId())
-                .storeLocationId(appointment.getStoreLocationId())
-                .scheduledAt(appointment.getScheduledAt())
-                .status(appointment.getStatus())
-                .notes(appointment.getNotes())
+                .id(model.getId())
+                .bikeId(model.getBikeId())
+                .storeLocationId(model.getStoreLocationId())
+                .scheduledAt(model.getScheduledAt())
+                .status(model.getStatus())
+                .notes(model.getNotes())
                 .requestedServices(requestedServices)
                 .build();
     }
 
-    public AppointmentListItemResult toListItemResult(Appointment appointment) {
-        return AppointmentListItemResult.builder()
-                .id(appointment.getId())
-                .bikeId(appointment.getBikeId())
-                .storeLocationId(appointment.getStoreLocationId())
-                .scheduledAt(appointment.getScheduledAt())
-                .status(appointment.getStatus())
-                .build();
-    }
-
-    private AppointmentServiceResult toRequestedServiceResult(AppointmentService rs) {
+    private AppointmentServiceResult toResult(RequestedService model) {
         return AppointmentServiceResult.builder()
-                .id(rs.getId())
-                .productId(rs.getProduct().getId())
-                .productNameSnapshot(rs.getProductNameSnapshot())
-                .priceSnapshot(rs.getPriceSnapshot())
+                .id(model.getId())
+                .productId(model.getProductId())
+                .productNameSnapshot(model.getName())
+                .priceSnapshot(model.getPrice())
                 .build();
     }
 
-    public Appointment toAppointment(CreateAppointmentCommand command) {
+    public Appointment toModel(CreateAppointmentCommand command) {
         return Appointment.builder()
                 .bikeId(command.bikeId())
                 .storeLocationId(command.storeLocationId())
                 .scheduledAt(command.scheduledAt())
                 .notes(command.notes())
+                .build();
+    }
+
+    public AppointmentListItemResult toListItemResult(Appointment model) {
+        return AppointmentListItemResult.builder()
+                .id(model.getId())
+                .bikeId(model.getBikeId())
+                .storeLocationId(model.getStoreLocationId())
+                .scheduledAt(model.getScheduledAt())
+                .status(model.getStatus())
                 .build();
     }
 }

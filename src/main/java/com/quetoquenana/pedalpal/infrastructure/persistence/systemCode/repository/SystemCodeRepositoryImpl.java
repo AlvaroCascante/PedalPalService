@@ -1,6 +1,5 @@
 package com.quetoquenana.pedalpal.infrastructure.persistence.systemCode.repository;
 
-import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.infrastructure.persistence.mapper.SystemCodeEntityMapper;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
@@ -20,7 +19,7 @@ public class SystemCodeRepositoryImpl implements SystemCodeRepository {
 
     @Override
     public Optional<SystemCode> getById(UUID systemCodeId) {
-        return repository.findById(systemCodeId).map(SystemCodeEntityMapper::toSystemCode);
+        return repository.findById(systemCodeId).map(SystemCodeEntityMapper::toModel);
     }
 
     @Override
@@ -35,14 +34,14 @@ public class SystemCodeRepositoryImpl implements SystemCodeRepository {
 
     @Override
     public Optional<SystemCode> findByCategoryAndCode(String category, String code) {
-        return repository.findByCategoryAndCode(category, code).map(SystemCodeEntityMapper::toSystemCode);
+        return repository.findByCategoryAndCode(category, code).map(SystemCodeEntityMapper::toModel);
     }
 
     @Override
     public List<SystemCode> findByCategoryAndStatus(String category, GeneralStatus status) {
         return repository.findByCategoryAndStatus(category, status)
                 .stream()
-                .map(SystemCodeEntityMapper::toSystemCode)
+                .map(SystemCodeEntityMapper::toModel)
                 .toList();
     }
 }

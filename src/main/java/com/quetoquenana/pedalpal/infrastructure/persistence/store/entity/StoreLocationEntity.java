@@ -30,7 +30,7 @@ public class StoreLocationEntity extends AuditableEntity {
     @JsonBackReference
     private StoreEntity store;
 
-    @Column(name = "name", length = 100)
+    @Column(name = "name", length = 50)
     private String name;
 
     @Column(name = "website", length = 100)
@@ -48,7 +48,7 @@ public class StoreLocationEntity extends AuditableEntity {
     @Column(name = "phone", length = 50)
     private String phone;
 
-    @Column(name = "timezone", length = 100, nullable = false)
+    @Column(name = "timezone", length = 50, nullable = false)
     private String timezone;
 
     @Enumerated(EnumType.STRING)

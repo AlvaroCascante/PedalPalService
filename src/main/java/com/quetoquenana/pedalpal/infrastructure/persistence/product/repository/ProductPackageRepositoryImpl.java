@@ -21,23 +21,23 @@ public class ProductPackageRepositoryImpl implements ProductPackageRepository {
 
     @Override
     public Optional<ProductPackage> getById(UUID id) {
-        return repository.findById(id).map(mapper::toProductPackage);
+        return repository.findById(id).map(mapper::toModel);
     }
 
     @Override
     public List<ProductPackage> getAll() {
-        return repository.findAll().stream().map(mapper::toProductPackage).toList();
+        return repository.findAll().stream().map(mapper::toModel).toList();
     }
 
     @Override
     public List<ProductPackage> findByStatus(GeneralStatus status) {
-        return repository.findByStatus(status).stream().map(mapper::toProductPackage).toList();
+        return repository.findByStatus(status).stream().map(mapper::toModel).toList();
     }
 
     @Override
     public ProductPackage save(ProductPackage model) {
-        ProductPackageEntity entity = mapper.toProductPackageEntity(model);
-        return mapper.toProductPackage(repository.save(entity));
+        ProductPackageEntity entity = mapper.toEntity(model);
+        return mapper.toModel(repository.save(entity));
     }
 }
 
