@@ -72,12 +72,18 @@ class UpdateBikeComponentUseCaseTest {
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
             when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithOneComponent(bikeId));
 
-            UpdateBikeComponentCommand command = UpdateBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .name("New chain")
-                    .build();
+            UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    null,
+                    "New chain",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
 
             BikeResult result = useCase.execute(command);
 
@@ -121,12 +127,18 @@ class UpdateBikeComponentUseCaseTest {
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
             when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(bikeId));
 
-            UpdateBikeComponentCommand command = UpdateBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .type("CASSETTE")
-                    .build();
+            UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    "CASSETTE",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
 
             useCase.execute(command);
 
@@ -148,17 +160,18 @@ class UpdateBikeComponentUseCaseTest {
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
             when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(bikeId));
 
-            UpdateBikeComponentCommand command = UpdateBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .name("New name")
-                    .brand("New brand")
-                    .model("New model")
-                    .notes("New notes")
-                    .odometerKm(111)
-                    .usageTimeMinutes(222)
-                    .build();
+            UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    null,
+                    "New name",
+                    "New brand",
+                    "New model",
+                    "New notes",
+                    111,
+                    222
+            );
 
             useCase.execute(command);
 
@@ -191,11 +204,18 @@ class UpdateBikeComponentUseCaseTest {
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
             when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(bikeId));
 
-            UpdateBikeComponentCommand command = UpdateBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .build();
+            UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
 
             useCase.execute(command);
 
@@ -217,12 +237,18 @@ class UpdateBikeComponentUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
 
-            UpdateBikeComponentCommand command = UpdateBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .name("   ")
-                    .build();
+            UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    null,
+                    "   ",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
 
             BadRequestException ex = assertThrows(BadRequestException.class, () -> useCase.execute(command));
             assertEquals("bike.component.update.name.blank", ex.getMessage());
@@ -243,12 +269,18 @@ class UpdateBikeComponentUseCaseTest {
             when(systemCodeRepository.findByCategoryAndCode(eq(COMPONENT_TYPE), anyString()))
                     .thenReturn(Optional.empty());
 
-            UpdateBikeComponentCommand command = UpdateBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .type("   ")
-                    .build();
+            UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    "   ",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
 
             RecordNotFoundException ex = assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
             assertEquals("bike.component.type.not.found", ex.getMessage());
@@ -269,12 +301,18 @@ class UpdateBikeComponentUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.empty());
 
-            UpdateBikeComponentCommand command = UpdateBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .name("New name")
-                    .build();
+            UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    null,
+                    "New name",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
 
             RecordNotFoundException ex = assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
             assertEquals("bike.not.found", ex.getMessage());
@@ -293,12 +331,18 @@ class UpdateBikeComponentUseCaseTest {
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bikeWithoutComponent));
 
-            UpdateBikeComponentCommand command = UpdateBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .name("New name")
-                    .build();
+            UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    null,
+                    "New name",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
 
             RecordNotFoundException ex = assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
             assertEquals("bike.component.not.found", ex.getMessage());
@@ -319,12 +363,18 @@ class UpdateBikeComponentUseCaseTest {
             when(systemCodeRepository.findByCategoryAndCode(COMPONENT_TYPE, "NOT_A_TYPE"))
                     .thenReturn(Optional.empty());
 
-            UpdateBikeComponentCommand command = UpdateBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .type("NOT_A_TYPE")
-                    .build();
+            UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    "NOT_A_TYPE",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
 
             RecordNotFoundException ex = assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
             assertEquals("bike.component.type.not.found", ex.getMessage());

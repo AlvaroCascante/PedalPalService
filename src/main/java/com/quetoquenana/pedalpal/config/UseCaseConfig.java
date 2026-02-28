@@ -17,8 +17,15 @@ import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
 import com.quetoquenana.pedalpal.serviceOrder.mapper.ServiceOrderMapper;
-import com.quetoquenana.pedalpal.serviceOrder.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.serviceOrder.domain.repository.ServiceOrderRepository;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
+import com.quetoquenana.pedalpal.media.application.port.CdnUrlProvider;
+import com.quetoquenana.pedalpal.media.application.port.StorageProvider;
+import com.quetoquenana.pedalpal.media.application.useCase.ConfirmUploadUseCase;
+import com.quetoquenana.pedalpal.media.application.useCase.GenerateUploadUrlUseCase;
+import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
+import com.quetoquenana.pedalpal.media.mapper.MediaMapper;
+import com.quetoquenana.pedalpal.security.application.OwnershipValidator;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -215,6 +222,37 @@ public class UseCaseConfig {
                 bikeMapper,
                 bikeRepository,
                 eventPublisher
+        );
+    }
+
+    /*
+     * Media Use Cases
+     */
+    @Bean
+    public ConfirmUploadUseCase createConfirmUploadUseCase(
+            MediaRepository repository,
+            MediaMapper mapper,
+            CdnUrlProvider cdnUrlProvider
+    ) {
+        return new ConfirmUploadUseCase(
+                repository,
+                mapper,
+                cdnUrlProvider
+        );
+    }
+
+    @Bean
+    public GenerateUploadUrlUseCase createGenerateUploadUrlUseCase(
+            MediaRepository repository,
+            MediaMapper mapper,
+            StorageProvider storageProvider,
+            OwnershipValidator ownershipValidator
+    ) {
+        return new GenerateUploadUrlUseCase(
+                repository,
+                mapper,
+                storageProvider,
+                ownershipValidator
         );
     }
 }

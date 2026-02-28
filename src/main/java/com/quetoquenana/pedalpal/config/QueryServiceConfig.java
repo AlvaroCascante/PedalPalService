@@ -17,7 +17,7 @@ import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageReposit
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
 import com.quetoquenana.pedalpal.serviceOrder.application.query.ServiceOrderQueryService;
 import com.quetoquenana.pedalpal.serviceOrder.mapper.ServiceOrderMapper;
-import com.quetoquenana.pedalpal.serviceOrder.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.serviceOrder.domain.repository.ServiceOrderRepository;
 import com.quetoquenana.pedalpal.store.mapper.StoreMapper;
 import com.quetoquenana.pedalpal.store.application.query.StoreQueryService;
 import com.quetoquenana.pedalpal.store.domain.repository.StoreRepository;

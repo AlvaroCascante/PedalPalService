@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.systemCode.presentation.controller;
 
-import com.quetoquenana.pedalpal.common.dto.ApiResponse;
+import com.quetoquenana.pedalpal.common.presentation.dto.ApiResponse;
 import com.quetoquenana.pedalpal.systemCode.application.query.SystemCodeQueryService;
 import com.quetoquenana.pedalpal.systemCode.application.result.SystemCodeResult;
 import com.quetoquenana.pedalpal.systemCode.mapper.SystemCodeApiMapper;

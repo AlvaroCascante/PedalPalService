@@ -30,20 +30,20 @@ public class BikeApiMapper {
             UUID ownerId,
             CreateBikeRequest request
     )   {
-        return CreateBikeCommand.builder()
-                .ownerId(ownerId)
-                .name(request.name())
-                .type(request.type())
-                .isPublic(request.isPublic())
-                .isExternalSync(request.isExternalSync())
-                .brand(request.brand())
-                .model(request.model())
-                .year(request.year())
-                .serialNumber(request.serialNumber())
-                .notes(request.notes())
-                .odometerKm(request.odometerKm())
-                .usageTimeMinutes(request.usageTimeMinutes())
-                .build();
+        return new CreateBikeCommand(
+                ownerId,
+                request.name(),
+                request.type(),
+                request.brand(),
+                request.model(),
+                request.year(),
+                request.serialNumber(),
+                request.notes(),
+                request.odometerKm(),
+                request.usageTimeMinutes(),
+                request.isPublic(),
+                request.isExternalSync()
+        );
     }
 
     public UpdateBikeCommand toCommand(
@@ -51,21 +51,21 @@ public class BikeApiMapper {
             UUID authenticatedUserId,
             UpdateBikeRequest request
     ) {
-        return UpdateBikeCommand.builder()
-                .bikeId(bikeId)
-                .authenticatedUserId(authenticatedUserId)
-                .name(request.name())
-                .type(request.type())
-                .isPublic(request.isPublic())
-                .isExternalSync(request.isExternalSync())
-                .brand(request.brand())
-                .model(request.model())
-                .year(request.year())
-                .serialNumber(request.serialNumber())
-                .notes(request.notes())
-                .odometerKm(request.odometerKm())
-                .usageTimeMinutes(request.usageTimeMinutes())
-                .build();
+        return new UpdateBikeCommand(
+                bikeId,
+                authenticatedUserId,
+                request.name(),
+                request.type(),
+                request.brand(),
+                request.model(),
+                request.year(),
+                request.serialNumber(),
+                request.notes(),
+                request.odometerKm(),
+                request.usageTimeMinutes(),
+                request.isPublic(),
+                request.isExternalSync()
+        );
     }
 
     public UpdateBikeStatusCommand toCommand(
@@ -73,11 +73,11 @@ public class BikeApiMapper {
             UUID authenticatedUserId,
             UpdateBikeStatusRequest request
     ) {
-        return UpdateBikeStatusCommand.builder()
-                .bikeId(bikeId)
-                .authenticatedUserId(authenticatedUserId)
-                .status(request.status())
-                .build();
+        return new UpdateBikeStatusCommand(
+                bikeId,
+                authenticatedUserId,
+                request.status()
+        );
     }
 
     public AddBikeComponentCommand toCommand(
@@ -86,18 +86,18 @@ public class BikeApiMapper {
             UUID authenticatedUserId,
             AddBikeComponentRequest request
     )   {
-        return AddBikeComponentCommand.builder()
-                .bikeId(bikeId)
-                .componentId(componentId)
-                .authenticatedUserId(authenticatedUserId)
-                .type(request.type())
-                .name(request.name())
-                .brand(request.brand())
-                .model(request.model())
-                .notes(request.notes())
-                .odometerKm(request.odometerKm())
-                .usageTimeMinutes(request.usageTimeMinutes())
-                .build();
+        return new AddBikeComponentCommand(
+                componentId,
+                bikeId,
+                authenticatedUserId,
+                request.type(),
+                request.name(),
+                request.brand(),
+                request.model(),
+                request.notes(),
+                request.odometerKm(),
+                request.usageTimeMinutes()
+        );
     }
 
     public UpdateBikeComponentCommand toCommand(
@@ -106,18 +106,18 @@ public class BikeApiMapper {
             UUID authenticatedUserId,
             UpdateBikeComponentRequest request
     ) {
-        return UpdateBikeComponentCommand.builder()
-                .bikeId(bikeId)
-                .componentId(componentId)
-                .authenticatedUserId(authenticatedUserId)
-                .type(request.type())
-                .name(request.name())
-                .brand(request.brand())
-                .model(request.model())
-                .notes(request.notes())
-                .odometerKm(request.odometerKm())
-                .usageTimeMinutes(request.usageTimeMinutes())
-                .build();
+        return new UpdateBikeComponentCommand(
+                bikeId,
+                componentId,
+                authenticatedUserId,
+                request.type(),
+                request.name(),
+                request.brand(),
+                request.model(),
+                request.notes(),
+                request.odometerKm(),
+                request.usageTimeMinutes()
+        );
     }
 
     public UpdateBikeComponentStatusCommand toCommand(
@@ -126,12 +126,12 @@ public class BikeApiMapper {
             UUID authenticatedUserId,
             UpdateBikeComponentStatusRequest request
     ) {
-        return UpdateBikeComponentStatusCommand.builder()
-                .bikeId(bikeId)
-                .componentId(componentId)
-                .authenticatedUserId(authenticatedUserId)
-                .status(request.status())
-                .build();
+        return new UpdateBikeComponentStatusCommand(
+                bikeId,
+                componentId,
+                authenticatedUserId,
+                request.status()
+        );
     }
 
     public BikeResponse toResponse(BikeResult result) {

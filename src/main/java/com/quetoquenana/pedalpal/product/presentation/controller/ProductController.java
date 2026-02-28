@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.product.presentation.controller;
 
-import com.quetoquenana.pedalpal.common.dto.ApiResponse;
+import com.quetoquenana.pedalpal.common.presentation.dto.ApiResponse;
 import com.quetoquenana.pedalpal.product.application.query.ProductQueryService;
 import com.quetoquenana.pedalpal.product.application.result.ProductPackageResult;
 import com.quetoquenana.pedalpal.product.application.result.ProductResult;

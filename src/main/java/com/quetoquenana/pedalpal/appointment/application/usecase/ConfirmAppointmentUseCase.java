@@ -9,7 +9,7 @@ import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrder;
 import com.quetoquenana.pedalpal.serviceOrder.mapper.ServiceOrderMapper;
-import com.quetoquenana.pedalpal.serviceOrder.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.serviceOrder.domain.repository.ServiceOrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

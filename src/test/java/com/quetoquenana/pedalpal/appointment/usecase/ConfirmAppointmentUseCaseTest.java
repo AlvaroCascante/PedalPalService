@@ -14,7 +14,7 @@ import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.serviceOrder.application.result.ServiceOrderResult;
 import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrder;
 import com.quetoquenana.pedalpal.serviceOrder.mapper.ServiceOrderMapper;
-import com.quetoquenana.pedalpal.serviceOrder.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.serviceOrder.domain.repository.ServiceOrderRepository;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.store.presentation.controller;
 
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
-import com.quetoquenana.pedalpal.common.dto.ApiResponse;
+import com.quetoquenana.pedalpal.common.presentation.dto.ApiResponse;
 import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
 import com.quetoquenana.pedalpal.store.application.query.StoreQueryService;
 import com.quetoquenana.pedalpal.store.application.result.StoreResult;

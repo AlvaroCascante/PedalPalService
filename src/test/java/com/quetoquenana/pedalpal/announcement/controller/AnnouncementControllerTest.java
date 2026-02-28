@@ -11,7 +11,7 @@ import com.quetoquenana.pedalpal.announcement.presentation.dto.response.Announce
 import com.quetoquenana.pedalpal.config.SecurityConfig;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
 import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
-import com.quetoquenana.pedalpal.security.application.SecurityUser;
+import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.util.TestAnnouncementData;
 import org.junit.jupiter.api.BeforeEach;

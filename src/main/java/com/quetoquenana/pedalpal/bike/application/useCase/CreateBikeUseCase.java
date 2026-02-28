@@ -21,21 +21,21 @@ import java.util.UUID;
 @Slf4j
 public class CreateBikeUseCase {
 
-    private final BikeMapper bikeMapper;
-    private final BikeRepository bikeRepository;
+    private final BikeMapper mapper;
+    private final BikeRepository repository;
     private final ApplicationEventPublisher eventPublisher;
 
     public BikeResult execute(CreateBikeCommand command) {
-        if (command.serialNumber() != null && bikeRepository.existsBySerialNumber(command.serialNumber())) {
+        if (command.serialNumber() != null && repository.existsBySerialNumber(command.serialNumber())) {
             throw new BusinessException("bike.serial.number.already.exists", command.serialNumber());
         }
         try {
-            Bike bike = bikeMapper.toModel(command);
-            bike = bikeRepository.save(bike);
+            Bike bike = mapper.toModel(command);
+            bike = repository.save(bike);
 
             publishHistoryEvent(bike.getId(), command.ownerId());
 
-            return bikeMapper.toResult(bike);
+            return mapper.toResult(bike);
         } catch (RuntimeException ex) {
             log.error("RuntimeException on CreateBikeUseCase -- Command: {}: Error: {}", command, ex.getMessage());
             throw new BusinessException("bike.creation.failed");

@@ -4,7 +4,7 @@ import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
 import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
-import com.quetoquenana.pedalpal.security.application.SecurityUser;
+import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
 import com.quetoquenana.pedalpal.systemCode.application.query.SystemCodeQueryService;
 import com.quetoquenana.pedalpal.systemCode.application.result.SystemCodeResult;
 import com.quetoquenana.pedalpal.systemCode.mapper.SystemCodeApiMapper;

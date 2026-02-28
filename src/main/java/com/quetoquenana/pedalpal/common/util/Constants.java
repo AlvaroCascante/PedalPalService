@@ -32,9 +32,4 @@ public class Constants {
     public static class SystemCodes {
         public static final String SUGGESTION_TYPE_IA = "SUGGESTION_TYPE_IA";
     }
-    public static class Services {
-        public static final String TYPE_PRODUCT = "product";
-        public static final String TYPE_PACKAGE = "package";
-
-    }
 }

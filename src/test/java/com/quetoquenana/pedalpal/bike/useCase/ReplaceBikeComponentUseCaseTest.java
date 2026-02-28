@@ -83,18 +83,18 @@ class ReplaceBikeComponentUseCaseTest {
                     .build();
             bike.addComponent(existing);
 
-            AddBikeComponentCommand command = AddBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .type("CHAIN")
-                    .name("New chain")
-                    .brand("Shimano")
-                    .model("HG")
-                    .notes("New chain")
-                    .odometerKm(10)
-                    .usageTimeMinutes(20)
-                    .build();
+            AddBikeComponentCommand command = new AddBikeComponentCommand(
+                    componentId,
+                    bikeId,
+                    ownerId,
+                    "CHAIN",
+                    "New chain",
+                    "Shimano",
+                    "HG",
+                    "New chain",
+                    10,
+                    20
+            );
 
             SystemCode componentType = SystemCode.builder()
                     .id(UUID.randomUUID())
@@ -147,15 +147,18 @@ class ReplaceBikeComponentUseCaseTest {
             UUID bikeId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
 
-            AddBikeComponentCommand command = AddBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(UUID.randomUUID())
-                    .authenticatedUserId(ownerId)
-                    .type("CHAIN")
-                    .name("Chain")
-                    .odometerKm(0)
-                    .usageTimeMinutes(0)
-                    .build();
+            AddBikeComponentCommand command = new AddBikeComponentCommand(
+                    UUID.randomUUID(),
+                    bikeId,
+                    ownerId,
+                    "CHAIN",
+                    "Chain",
+                    null,
+                    null,
+                    null,
+                    0,
+                    0
+            );
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.empty());
 
@@ -175,15 +178,18 @@ class ReplaceBikeComponentUseCaseTest {
 
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
 
-            AddBikeComponentCommand command = AddBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .type("CHAIN")
-                    .name("Chain")
-                    .odometerKm(0)
-                    .usageTimeMinutes(0)
-                    .build();
+            AddBikeComponentCommand command = new AddBikeComponentCommand(
+                    componentId,
+                    bikeId,
+                    ownerId,
+                    "CHAIN",
+                    "Chain",
+                    null,
+                    null,
+                    null,
+                    0,
+                    0
+            );
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
 
@@ -209,15 +215,18 @@ class ReplaceBikeComponentUseCaseTest {
                     .status(BikeComponentStatus.ACTIVE)
                     .build());
 
-            AddBikeComponentCommand command = AddBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .type("NOT_A_TYPE")
-                    .name("Some component")
-                    .odometerKm(0)
-                    .usageTimeMinutes(0)
-                    .build();
+            AddBikeComponentCommand command = new AddBikeComponentCommand(
+                    componentId,
+                    bikeId,
+                    ownerId,
+                    "NOT_A_TYPE",
+                    "Some component",
+                    null,
+                    null,
+                    null,
+                    0,
+                    0
+            );
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(systemCodeRepository.findByCategoryAndCode(eq(COMPONENT_TYPE), eq("NOT_A_TYPE")))
@@ -244,15 +253,18 @@ class ReplaceBikeComponentUseCaseTest {
             bike.setStatus(BikeStatus.INACTIVE);
             bike.addComponent(BikeComponent.builder().id(componentId).name("Old chain").status(BikeComponentStatus.ACTIVE).build());
 
-            AddBikeComponentCommand command = AddBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .type("CHAIN")
-                    .name("New chain")
-                    .odometerKm(0)
-                    .usageTimeMinutes(0)
-                    .build();
+            AddBikeComponentCommand command = new AddBikeComponentCommand(
+                    componentId,
+                    bikeId,
+                    ownerId,
+                    "CHAIN",
+                    "New chain",
+                    null,
+                    null,
+                    null,
+                    0,
+                    0
+            );
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
 
@@ -273,15 +285,18 @@ class ReplaceBikeComponentUseCaseTest {
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
             bike.addComponent(BikeComponent.builder().id(componentId).name("Old chain").status(BikeComponentStatus.INACTIVE).build());
 
-            AddBikeComponentCommand command = AddBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .type("CHAIN")
-                    .name("New chain")
-                    .odometerKm(0)
-                    .usageTimeMinutes(0)
-                    .build();
+            AddBikeComponentCommand command = new AddBikeComponentCommand(
+                    componentId,
+                    bikeId,
+                    ownerId,
+                    "CHAIN",
+                    "New chain",
+                    null,
+                    null,
+                    null,
+                    0,
+                    0
+            );
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
 
@@ -302,15 +317,18 @@ class ReplaceBikeComponentUseCaseTest {
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
             bike.addComponent(BikeComponent.builder().id(componentId).name("Old chain").status(null).build());
 
-            AddBikeComponentCommand command = AddBikeComponentCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .type("CHAIN")
-                    .name("New chain")
-                    .odometerKm(0)
-                    .usageTimeMinutes(0)
-                    .build();
+            AddBikeComponentCommand command = new AddBikeComponentCommand(
+                    componentId,
+                    bikeId,
+                    ownerId,
+                    "CHAIN",
+                    "New chain",
+                    null,
+                    null,
+                    null,
+                    0,
+                    0
+            );
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
 

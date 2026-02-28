@@ -73,12 +73,12 @@ class UpdateBikeComponentStatusUseCaseTest {
                     .build();
             bike.addComponent(component);
 
-            UpdateBikeComponentStatusCommand command = UpdateBikeComponentStatusCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .status("INACTIVE")
-                    .build();
+            UpdateBikeComponentStatusCommand command = new UpdateBikeComponentStatusCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    "INACTIVE"
+            );
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
@@ -118,12 +118,12 @@ class UpdateBikeComponentStatusUseCaseTest {
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
             bike.addComponent(BikeComponent.builder().id(componentId).name("Chain").build());
 
-            UpdateBikeComponentStatusCommand command = UpdateBikeComponentStatusCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .status("   ")
-                    .build();
+            UpdateBikeComponentStatusCommand command = new UpdateBikeComponentStatusCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    "   "
+            );
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
 
@@ -148,12 +148,12 @@ class UpdateBikeComponentStatusUseCaseTest {
                     .build();
             bike.addComponent(component);
 
-            UpdateBikeComponentStatusCommand command = UpdateBikeComponentStatusCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .status(null)
-                    .build();
+            UpdateBikeComponentStatusCommand command = new UpdateBikeComponentStatusCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    null
+            );
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
@@ -189,12 +189,12 @@ class UpdateBikeComponentStatusUseCaseTest {
                     .build();
             bike.addComponent(component);
 
-            UpdateBikeComponentStatusCommand command = UpdateBikeComponentStatusCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .status("NOT_A_STATUS")
-                    .build();
+            UpdateBikeComponentStatusCommand command = new UpdateBikeComponentStatusCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    "NOT_A_STATUS"
+            );
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
@@ -230,12 +230,12 @@ class UpdateBikeComponentStatusUseCaseTest {
             UUID bikeId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
 
-            UpdateBikeComponentStatusCommand command = UpdateBikeComponentStatusCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(UUID.randomUUID())
-                    .authenticatedUserId(ownerId)
-                    .status("ACTIVE")
-                    .build();
+            UpdateBikeComponentStatusCommand command = new UpdateBikeComponentStatusCommand(
+                    bikeId,
+                    UUID.randomUUID(),
+                    ownerId,
+                    "ACTIVE"
+            );
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.empty());
 
@@ -254,12 +254,12 @@ class UpdateBikeComponentStatusUseCaseTest {
 
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
 
-            UpdateBikeComponentStatusCommand command = UpdateBikeComponentStatusCommand.builder()
-                    .bikeId(bikeId)
-                    .componentId(componentId)
-                    .authenticatedUserId(ownerId)
-                    .status("ACTIVE")
-                    .build();
+            UpdateBikeComponentStatusCommand command = new UpdateBikeComponentStatusCommand(
+                    bikeId,
+                    componentId,
+                    ownerId,
+                    "ACTIVE"
+            );
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
 

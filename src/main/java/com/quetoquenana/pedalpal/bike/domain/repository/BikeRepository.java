@@ -17,6 +17,8 @@ public interface BikeRepository {
 
     boolean existsBySerialNumber(String serialNumber);
 
+    boolean existsBydAndOwnerId(UUID id, UUID ownerId);
+
     Optional<Bike> findByIdAndOwnerId(UUID id, UUID ownerId);
 
     List<Bike> findByOwnerIdAndStatus(UUID ownerId, BikeStatus bikeStatus);

@@ -13,10 +13,10 @@ import com.quetoquenana.pedalpal.announcement.presentation.dto.request.CreateAnn
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementStatusRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.response.AnnouncementResponse;
-import com.quetoquenana.pedalpal.common.dto.ApiResponse;
+import com.quetoquenana.pedalpal.common.presentation.dto.ApiResponse;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
-import com.quetoquenana.pedalpal.security.application.SecurityUser;
+import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

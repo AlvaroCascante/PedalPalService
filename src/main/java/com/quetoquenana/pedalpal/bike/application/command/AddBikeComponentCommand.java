@@ -1,10 +1,7 @@
 package com.quetoquenana.pedalpal.bike.application.command;
 
-import lombok.Builder;
-
 import java.util.UUID;
 
-@Builder
 public record AddBikeComponentCommand(
         UUID componentId,
         UUID bikeId,

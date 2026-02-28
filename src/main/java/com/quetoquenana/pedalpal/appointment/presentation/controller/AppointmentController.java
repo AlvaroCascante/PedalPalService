@@ -18,10 +18,10 @@ import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppo
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentListItemResponse;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentResponse;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.ConfirmAppointmentResponse;
-import com.quetoquenana.pedalpal.common.dto.ApiResponse;
+import com.quetoquenana.pedalpal.common.presentation.dto.ApiResponse;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
-import com.quetoquenana.pedalpal.security.application.SecurityUser;
+import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
