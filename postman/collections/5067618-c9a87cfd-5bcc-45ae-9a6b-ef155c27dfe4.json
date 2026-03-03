@@ -136,13 +136,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/announcements",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/announcements",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
-								"api",
 								"announcements"
 							]
 						}
