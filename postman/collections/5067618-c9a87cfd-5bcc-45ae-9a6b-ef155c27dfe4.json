@@ -302,13 +302,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/active",
+							"raw": "{{HOST_USER_SERVICE}}/{{path}}/bikes/active",
 							"host": [
-								"{{host_pedal_pal}}"
+								"{{HOST_USER_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
-								"api",
 								"bikes",
 								"active"
 							]
@@ -1027,13 +1026,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/stores",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/stores",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
-								"api",
 								"stores"
 							]
 						}
