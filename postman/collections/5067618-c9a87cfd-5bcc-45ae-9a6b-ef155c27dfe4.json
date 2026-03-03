@@ -126,6 +126,15 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"First One\",\n    \"subTitle\": \"Of a lot\",\n    \"description\": \"Pinarello\",\n    \"position\": 1,\n    \"url\": \"quetoquenana.com\",\n    \"mediaFiles\": [\n        {\n            \"contentType\": \"image/png\",\n            \"mediaType\": \"ANNOUNCEMENT\",\n            \"isPrimary\": true,\n            \"name\": \"FirstImage\",\n            \"altText\": \"Alt text\"\n        },\n        {\n            \"contentType\": \"image/png\",\n            \"mediaType\": \"ANNOUNCEMENT\",\n            \"isPrimary\": false,\n            \"name\": \"SecondImage\",\n            \"altText\": \"Alt text\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/announcements",
 							"host": [
