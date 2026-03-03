@@ -89,7 +89,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{usera_token}}",
+									"value": "{{admin_token}}",
 									"type": "string"
 								}
 							]
