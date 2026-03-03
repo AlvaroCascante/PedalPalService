@@ -24,7 +24,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -81,9 +83,9 @@ public class AppointmentApiMapper {
         Locale locale = LocaleContextHolder.getLocale();
         String statusLabel = messageSource.getMessage(result.status().getKey(), null, locale);
 
-        List<AppointmentServiceResponse> requestedServices = result.requestedServices() == null
-                ? List.of()
-                : result.requestedServices().stream().map(this::toResponse).toList();
+        Set<AppointmentServiceResponse> requestedServices = result.requestedServices() == null
+                ? Set.of()
+                : result.requestedServices().stream().map(this::toResponse).collect(Collectors.toSet());
 
         return new AppointmentResponse(
                 result.id(),
@@ -100,9 +102,9 @@ public class AppointmentApiMapper {
         Locale locale = LocaleContextHolder.getLocale();
         String statusLabel = messageSource.getMessage(result.appointmentResult().status().getKey(), null, locale);
 
-        List<AppointmentServiceResponse> requestedServices = result.appointmentResult().requestedServices() == null
-                ? List.of()
-                : result.appointmentResult().requestedServices().stream().map(this::toResponse).toList();
+        Set<AppointmentServiceResponse> requestedServices = result.appointmentResult().requestedServices() == null
+                ? Set.of()
+                : result.appointmentResult().requestedServices().stream().map(this::toResponse).collect(Collectors.toSet());
 
         return new ConfirmAppointmentResponse(
                 result.appointmentResult().id(),

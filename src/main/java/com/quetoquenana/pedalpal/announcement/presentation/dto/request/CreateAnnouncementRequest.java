@@ -1,14 +1,18 @@
 package com.quetoquenana.pedalpal.announcement.presentation.dto.request;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 public record CreateAnnouncementRequest(
-        @Size(min = 1, message = "{announcement.create.title.blank}")
+        @NotBlank(message = "{announcement.create.title.blank}")
         @Size(max = 50, message = "{announcement.create.title.max}")
         String title,
 
-        @Size(max = 250, message = "{announcement.create.subtitle.max}")
+        @Size(max = 50, message = "{announcement.create.subtitle.max}")
         String subTitle,
 
         @Size(max = 250, message = "{announcement.create.description.max}")
@@ -18,6 +22,9 @@ public record CreateAnnouncementRequest(
         Integer position,
 
         @Size(max = 250, message = "{announcement.create.url.max}")
-        String url
+        String url,
+
+        @Valid
+        List<AnnouncementMediaRequest> mediaFiles
 ) {
 }

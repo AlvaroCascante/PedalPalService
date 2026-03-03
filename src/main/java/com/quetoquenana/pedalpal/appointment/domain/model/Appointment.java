@@ -4,7 +4,8 @@ import com.quetoquenana.pedalpal.common.domain.model.Auditable;
 import lombok.*;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -21,11 +22,11 @@ public class Appointment extends Auditable {
     private AppointmentStatus status;
     private String notes;
 
-    private List<RequestedService> requestedServices;
+    private Set<RequestedService> requestedServices;
 
     public void addRequestedService(RequestedService service) {
         if (this.requestedServices == null) {
-            this.requestedServices = new java.util.ArrayList<>();
+            this.requestedServices = new HashSet<>();
         }
         requestedServices.add(service);
     }

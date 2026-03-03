@@ -17,10 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -54,7 +51,7 @@ class UpdateAppointmentStatusUseCaseTest {
                     .storeLocationId(UUID.randomUUID())
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
                     .status(AppointmentStatus.REQUESTED)
-                    .requestedServices(new ArrayList<>())
+                    .requestedServices(new HashSet<>())
                     .build();
 
             when(appointmentRepository.getById(id)).thenReturn(Optional.of(appointment));
@@ -97,7 +94,7 @@ class UpdateAppointmentStatusUseCaseTest {
                     .storeLocationId(UUID.randomUUID())
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
                     .status(AppointmentStatus.REQUESTED)
-                    .requestedServices(new ArrayList<>())
+                    .requestedServices(new HashSet<>())
                     .build();
 
             when(appointmentRepository.getById(id)).thenReturn(Optional.of(appointment));

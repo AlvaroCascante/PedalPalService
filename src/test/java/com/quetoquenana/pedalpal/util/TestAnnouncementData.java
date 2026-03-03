@@ -24,7 +24,8 @@ public final class TestAnnouncementData {
                 "Subtitle",
                 "Description",
                 1,
-                "https://example.com"
+                "https://example.com",
+                null
         );
     }
 
@@ -45,11 +46,13 @@ public final class TestAnnouncementData {
     public static CreateAnnouncementCommand createCommand(UUID authUserId) {
         return new CreateAnnouncementCommand(
                 authUserId,
+                    true,
                 "Title",
                 "Subtitle",
                 "Description",
                 1,
-                "https://example.com"
+                "https://example.com",
+                null
         );
     }
 
@@ -65,8 +68,8 @@ public final class TestAnnouncementData {
         );
     }
 
-    public static UpdateAnnouncementStatusCommand statusCommand(UUID id, String status) {
-        return new UpdateAnnouncementStatusCommand(id, status);
+    public static UpdateAnnouncementStatusCommand statusCommand(UUID id, UUID userId, String status) {
+        return new UpdateAnnouncementStatusCommand(id, userId, status);
     }
 
     public static Announcement existingAnnouncement(UUID id) {
@@ -101,7 +104,8 @@ public final class TestAnnouncementData {
                 "Description",
                 1,
                 "https://example.com",
-                "Active"
+                "Active",
+                null
         );
     }
 }

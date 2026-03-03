@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.systemCode.presentation.controller;
 
-import com.quetoquenana.pedalpal.common.presentation.dto.ApiResponse;
+import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.systemCode.application.query.SystemCodeQueryService;
 import com.quetoquenana.pedalpal.systemCode.application.result.SystemCodeResult;
 import com.quetoquenana.pedalpal.systemCode.mapper.SystemCodeApiMapper;
@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/api")
@@ -43,7 +45,7 @@ public class SystemCodeController {
     public ResponseEntity<ApiResponse> getActiveComponents() {
         log.info("GET /v1/api/components Received request to get active components");
         List<SystemCodeResult> result = queryService.getActiveComponents();
-        List<SystemCodeResponse> response = result.stream().map(apiMapper::toResponse).toList();
+        Set<SystemCodeResponse> response = result.stream().map(apiMapper::toResponse).collect(Collectors.toSet());
         return ResponseEntity.ok(new ApiResponse(response));
     }
 }

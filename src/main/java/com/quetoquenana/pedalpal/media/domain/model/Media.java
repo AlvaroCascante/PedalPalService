@@ -4,6 +4,7 @@ import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import lombok.*;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Builder
@@ -28,6 +29,7 @@ public class Media {
     private Map<String, Object> metadata;
     private String title;
     private String altText;
+    private SignedUrl signedUrl;
 
     public void confirmUploaded(
             String providerAssetId,
@@ -43,5 +45,16 @@ public class Media {
             this.metadata.putAll(metadata);
         }
         this.status = MediaStatus.ACTIVE;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Media media)) return false;
+        return Objects.equals(id, media.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

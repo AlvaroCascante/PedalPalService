@@ -26,10 +26,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -73,7 +70,7 @@ class ConfirmAppointmentUseCaseTest {
                     .storeLocationId(UUID.randomUUID())
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
                     .status(AppointmentStatus.REQUESTED)
-                    .requestedServices(new ArrayList<>())
+                    .requestedServices(new HashSet<>())
                     .build();
 
             when(appointmentRepository.getById(appointmentId)).thenReturn(Optional.of(appointment));
@@ -132,7 +129,7 @@ class ConfirmAppointmentUseCaseTest {
                     .storeLocationId(UUID.randomUUID())
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
                     .status(AppointmentStatus.REQUESTED)
-                    .requestedServices(new ArrayList<>())
+                    .requestedServices(new HashSet<>())
                     .build();
 
             // Requested services to sum: 10.50 + 2.25 = 12.75
@@ -224,7 +221,7 @@ class ConfirmAppointmentUseCaseTest {
                     .storeLocationId(UUID.randomUUID())
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
                     .status(AppointmentStatus.REQUESTED)
-                    .requestedServices(new ArrayList<>())
+                    .requestedServices(new HashSet<>())
                     .build();
 
             when(appointmentRepository.getById(appointmentId)).thenReturn(Optional.of(appointment));

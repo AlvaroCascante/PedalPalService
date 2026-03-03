@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.product.presentation.controller;
 
-import com.quetoquenana.pedalpal.common.presentation.dto.ApiResponse;
+import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.product.application.query.ProductQueryService;
 import com.quetoquenana.pedalpal.product.application.result.ProductPackageResult;
 import com.quetoquenana.pedalpal.product.application.result.ProductResult;
@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/api")
@@ -55,8 +57,8 @@ public class ProductController {
     @PreAuthorize("(hasRole('USER'))")
     public ResponseEntity<ApiResponse> findActiveProducts() {
         log.info("GET /v1/api/packages/active Received request to find active products");
-        List<ProductResult> result = queryService.getActiveProducts();
-        List<ProductResponse> response = result.stream().map(apiMapper::toResponse).toList();
+        Set<ProductResult> result = queryService.getActiveProducts();
+        Set<ProductResponse> response = result.stream().map(apiMapper::toResponse).collect(Collectors.toSet());
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
@@ -65,7 +67,7 @@ public class ProductController {
     public ResponseEntity<ApiResponse> findActivePackages() {
         log.info("GET /v1/api/packages/active Received request to find active packages");
         List<ProductPackageResult> result = queryService.getActiveProductPackages();
-        List<ProductPackageResponse> response = result.stream().map(apiMapper::toResponse).toList();
+        Set<ProductPackageResponse> response = result.stream().map(apiMapper::toResponse).collect(Collectors.toSet());
         return ResponseEntity.ok(new ApiResponse(response));
     }
 }

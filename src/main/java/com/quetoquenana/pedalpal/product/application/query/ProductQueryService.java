@@ -12,7 +12,9 @@ import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class ProductQueryService {
@@ -35,12 +37,12 @@ public class ProductQueryService {
         return mapper.toProductPackageResult(model);
     }
 
-    public List<ProductResult> getActiveProducts() {
+    public Set<ProductResult> getActiveProducts() {
         List<Product> models = repository.findByStatus(GeneralStatus.ACTIVE);
 
         return models.stream()
                 .map(mapper::toProductResult)
-                .toList();
+                .collect(Collectors.toSet());
     }
     public List<ProductPackageResult> getActiveProductPackages() {
         List<ProductPackage> models = productPackageRepository.findByStatus(GeneralStatus.ACTIVE);

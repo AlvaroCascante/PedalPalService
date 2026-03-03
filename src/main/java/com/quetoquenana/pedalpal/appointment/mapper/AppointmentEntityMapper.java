@@ -7,7 +7,8 @@ import com.quetoquenana.pedalpal.appointment.infrastructure.persistence.entity.A
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -40,9 +41,9 @@ public class AppointmentEntityMapper {
     }
 
     public Appointment toModel(AppointmentEntity entity) {
-        List<RequestedService> requestedServices = entity.getServices() == null
-                ? List.of()
-                : entity.getServices().stream().map(this::toModel).toList();
+        Set<RequestedService> requestedServices = entity.getServices() == null
+                ? Set.of()
+                : entity.getServices().stream().map(this::toModel).collect(Collectors.toSet());
 
         Appointment domain = Appointment.builder()
                 .id(entity.getId())

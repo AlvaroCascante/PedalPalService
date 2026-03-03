@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.appointment.presentation.dto.response;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public record ConfirmAppointmentResponse(
@@ -12,7 +12,7 @@ public record ConfirmAppointmentResponse(
         String status,
         String notes,
         String serviceOrderNumber,
-        List<AppointmentServiceResponse> requestedServices
+        Set<AppointmentServiceResponse> requestedServices
 ) {
 }
 

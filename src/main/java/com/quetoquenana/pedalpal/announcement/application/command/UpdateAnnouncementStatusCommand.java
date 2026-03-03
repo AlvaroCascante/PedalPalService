@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public record UpdateAnnouncementStatusCommand(
         UUID id,
+        UUID authenticatedUserId,
         String status
 ) {
 }

@@ -7,6 +7,7 @@ import java.util.Locale;
 
 @Getter
 public enum GeneralStatus {
+        DRAFT("general.status.draft"),
         ACTIVE("general.status.active"),
         INACTIVE("general.status.inactive"),
         DELETED("general.status.deleted"),

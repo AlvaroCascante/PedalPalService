@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.store.presentation.controller;
 
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
-import com.quetoquenana.pedalpal.common.presentation.dto.ApiResponse;
+import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
 import com.quetoquenana.pedalpal.store.application.query.StoreQueryService;
 import com.quetoquenana.pedalpal.store.application.result.StoreResult;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/api/stores")
@@ -46,7 +47,7 @@ public class StoreController {
     public ResponseEntity<ApiResponse> findAll() {
         log.info("GET /v1/api/store Received request to find all stores");
         List<StoreResult> result = queryService.getAll();
-        List<StoreResponse> response = result.stream().map(apiMapper::toResponse).toList();
+        Set<StoreResponse> response = result.stream().map(apiMapper::toResponse).collect(Collectors.toSet());
         return ResponseEntity.ok(new ApiResponse(response));
     }
 }

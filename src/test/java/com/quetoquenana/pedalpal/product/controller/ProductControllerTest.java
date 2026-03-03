@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -122,7 +123,7 @@ class ProductControllerTest {
         ProductResult result = TestProductData.productResult(productId);
         ProductResponse response = TestProductData.productResponse(productId);
 
-        when(queryService.getActiveProducts()).thenReturn(List.of(result));
+        when(queryService.getActiveProducts()).thenReturn(Set.of(result));
         when(apiMapper.toResponse(result)).thenReturn(response);
 
         mockMvc.perform(get("/v1/api/products/active"))

@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.common.presentation.dto;
+package com.quetoquenana.pedalpal.common.presentation.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

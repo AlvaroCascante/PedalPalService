@@ -21,10 +21,10 @@ public class AnnouncementEntity extends AuditableEntity {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "title", nullable = false, length = 200)
+    @Column(name = "title", nullable = false, length = 50)
     private String title;
 
-    @Column(name = "sub_title", length = 200)
+    @Column(name = "sub_title", length = 50)
     private String subtitle;
 
     @Column(name = "description")
@@ -33,7 +33,7 @@ public class AnnouncementEntity extends AuditableEntity {
     @Column(name = "position")
     private Integer position;
 
-    @Column(name = "url", length = 500)
+    @Column(name = "url")
     private String url;
 
     @Enumerated(EnumType.STRING)

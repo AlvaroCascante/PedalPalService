@@ -27,10 +27,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -78,7 +75,7 @@ class CreateAppointmentUseCaseTest {
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
                     .status(AppointmentStatus.REQUESTED)
                     .notes("notes")
-                    .requestedServices(new ArrayList<>())
+                    .requestedServices(new HashSet<>())
                     .build();
 
             when(mapper.toModel(any(CreateAppointmentCommand.class))).thenReturn(mapped);
@@ -142,8 +139,8 @@ class CreateAppointmentUseCaseTest {
             assertEquals(storeLocationId, saved.getStoreLocationId());
             assertEquals(AppointmentStatus.REQUESTED, saved.getStatus());
             assertEquals(1, saved.getRequestedServices().size());
-            assertEquals("Chain", saved.getRequestedServices().getFirst().getName());
-            assertEquals(new BigDecimal("19.99"), saved.getRequestedServices().getFirst().getPrice());
+            assertEquals("Chain", saved.getRequestedServices().iterator().next().getName());
+            assertEquals(new BigDecimal("19.99"), saved.getRequestedServices().iterator().next().getPrice());
             assertNotNull(result.id());
         }
     }

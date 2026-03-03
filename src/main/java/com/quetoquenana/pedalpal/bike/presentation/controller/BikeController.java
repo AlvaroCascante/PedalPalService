@@ -12,7 +12,7 @@ import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
 import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
-import com.quetoquenana.pedalpal.common.presentation.dto.ApiResponse;
+import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeResponse;
 import com.quetoquenana.pedalpal.bike.mapper.BikeApiMapper;
 import jakarta.validation.Valid;
@@ -26,6 +26,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/api/bikes")
@@ -65,7 +66,7 @@ public class BikeController {
     public ResponseEntity<ApiResponse> getBikeHistory(@PathVariable("id") UUID id) {
         log.info("GET /v1/api/bikes/{}/history Received request to get bike history", id);
         List<BikeHistoryResult> result = bikeHistoryQueryService.findByBikeId(id, getAuthenticatedUserId());
-        List<BikeHistoryResponse> response = result.stream().map(apiMapper::toResponse).toList();
+        Set<BikeHistoryResponse> response = result.stream().map(apiMapper::toResponse).collect(Collectors.toSet());
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
@@ -74,7 +75,7 @@ public class BikeController {
     public ResponseEntity<ApiResponse> findActive() {
         log.info("GET /v1/api/bikes/active Received request to find active bikes");
         List<BikeResult> result = queryService.findActiveByOwnerId(getAuthenticatedUserId());
-        List<BikeResponse> response = result.stream().map(apiMapper::toResponse).toList();
+        Set<BikeResponse> response = result.stream().map(apiMapper::toResponse).collect(Collectors.toSet());
         return ResponseEntity.ok(new ApiResponse(response));
     }
 

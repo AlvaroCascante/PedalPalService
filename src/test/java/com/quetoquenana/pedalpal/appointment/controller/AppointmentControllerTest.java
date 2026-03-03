@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -114,7 +115,7 @@ class AppointmentControllerTest {
         UUID bikeId = UUID.randomUUID();
 
         when(appointmentQueryService.getUpcomingAppointments(eq(bikeId)))
-                .thenReturn(List.of(
+                .thenReturn(Set.of(
                         new AppointmentListItemResult(
                                 UUID.randomUUID(),
                                 bikeId,

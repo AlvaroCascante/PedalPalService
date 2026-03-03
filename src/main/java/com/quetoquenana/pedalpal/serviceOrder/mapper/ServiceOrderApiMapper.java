@@ -22,7 +22,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -79,9 +81,9 @@ public class ServiceOrderApiMapper {
         Locale locale = LocaleContextHolder.getLocale();
         String statusLabel = messageSource.getMessage(result.status().getKey(), null, locale);
 
-        List<AppointmentServiceResponse> requestedServices = result.requestedServices() == null
-                ? List.of()
-                : result.requestedServices().stream().map(this::toRequestedServiceResponse).toList();
+        Set<AppointmentServiceResponse> requestedServices = result.requestedServices() == null
+                ? Set.of()
+                : result.requestedServices().stream().map(this::toRequestedServiceResponse).collect(Collectors.toSet());
 
         return new AppointmentResponse(
                 result.id(),

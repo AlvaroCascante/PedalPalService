@@ -14,6 +14,7 @@ import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentReposi
 import com.quetoquenana.pedalpal.bike.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.useCase.*;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.common.application.port.UploadMediaPort;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
 import com.quetoquenana.pedalpal.serviceOrder.mapper.ServiceOrderMapper;
@@ -22,7 +23,7 @@ import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeReposito
 import com.quetoquenana.pedalpal.media.application.port.CdnUrlProvider;
 import com.quetoquenana.pedalpal.media.application.port.StorageProvider;
 import com.quetoquenana.pedalpal.media.application.useCase.ConfirmUploadUseCase;
-import com.quetoquenana.pedalpal.media.application.useCase.GenerateUploadUrlUseCase;
+import com.quetoquenana.pedalpal.media.application.useCase.UploadMediaUseCase;
 import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
 import com.quetoquenana.pedalpal.media.mapper.MediaMapper;
 import com.quetoquenana.pedalpal.security.application.OwnershipValidator;
@@ -39,11 +40,13 @@ public class UseCaseConfig {
     @Bean
     public CreateAnnouncementUseCase createCreateAnnouncementUseCase(
             AnnouncementMapper mapper,
-            AnnouncementRepository repository
+            AnnouncementRepository repository,
+            UploadMediaPort uploadMediaPort
     ) {
         return new CreateAnnouncementUseCase(
                 mapper,
-                repository
+                repository,
+                uploadMediaPort
         );
     }
 
@@ -242,13 +245,13 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public GenerateUploadUrlUseCase createGenerateUploadUrlUseCase(
+    public UploadMediaUseCase createGenerateUploadUrlUseCase(
             MediaRepository repository,
             MediaMapper mapper,
             StorageProvider storageProvider,
             OwnershipValidator ownershipValidator
     ) {
-        return new GenerateUploadUrlUseCase(
+        return new UploadMediaUseCase(
                 repository,
                 mapper,
                 storageProvider,

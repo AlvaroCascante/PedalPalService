@@ -6,6 +6,9 @@ import com.quetoquenana.pedalpal.announcement.application.usecase.CreateAnnounce
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
 import com.quetoquenana.pedalpal.announcement.mapper.AnnouncementMapper;
+import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
+import com.quetoquenana.pedalpal.common.application.port.UploadMediaPort;
+import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.util.TestAnnouncementData;
@@ -18,6 +21,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Instant;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,6 +42,9 @@ class CreateAnnouncementUseCaseTest {
     @Mock
     AnnouncementMapper mapper;
 
+    @Mock
+    UploadMediaPort uploadMediaPort;
+
     @InjectMocks
     CreateAnnouncementUseCase useCase;
 
@@ -52,6 +60,7 @@ class CreateAnnouncementUseCaseTest {
             UUID savedId = UUID.randomUUID();
 
             CreateAnnouncementCommand command = TestAnnouncementData.createCommand(authUserId);
+
             Announcement model = Announcement.builder()
                     .title(command.title())
                     .subTitle(command.subTitle())
@@ -62,11 +71,25 @@ class CreateAnnouncementUseCaseTest {
                     .build();
 
             Announcement saved = TestAnnouncementData.existingAnnouncement(savedId);
+
+            UploadMediaCommand mediaCommand = new UploadMediaCommand(
+                    authUserId,
+                    command.isAdmin(),
+                    savedId,
+                    com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType.ANNOUNCEMENT,
+                    java.util.Set.of()
+            );
+            Set<UploadMediaResult> mediaResult = Set.of(
+                    new UploadMediaResult(UUID.randomUUID(), "announcements/key", "https://upload.url", Instant.now().plusSeconds(60))
+            );
+
             AnnouncementResult result = TestAnnouncementData.result(savedId);
 
             when(mapper.toModel(command)).thenReturn(model);
             when(repository.save(any(Announcement.class))).thenReturn(saved);
-            when(mapper.toResult(saved)).thenReturn(result);
+            when(mapper.toMediaUploadRequest(saved, command)).thenReturn(mediaCommand);
+            when(uploadMediaPort.generateUploadUrls(mediaCommand)).thenReturn(mediaResult);
+            when(mapper.toResult(saved, mediaResult)).thenReturn(result);
 
             AnnouncementResult actual = useCase.execute(command);
 
@@ -86,7 +109,9 @@ class CreateAnnouncementUseCaseTest {
         void shouldThrowBadRequest_whenTitleIsBlank() {
             CreateAnnouncementCommand command = new CreateAnnouncementCommand(
                     UUID.randomUUID(),
+                        true,
                     "   ",
+                    null,
                     null,
                     null,
                     null,

@@ -21,11 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /*
  * Use case for creating a new appointment.
@@ -51,7 +47,7 @@ public class CreateAppointmentUseCase {
 
         try {
             Appointment appointment = mapper.toModel(command);
-            List<RequestedService> services = snapshotRequestedServices(command.requestedServices());
+            Set<RequestedService> services = snapshotRequestedServices(command.requestedServices());
             appointment.setRequestedServices(services);
             appointment = appointmentRepository.save(appointment);
             return mapper.toResult(appointment);
@@ -64,12 +60,12 @@ public class CreateAppointmentUseCase {
         }
     }
 
-    private List<RequestedService> snapshotRequestedServices(List<RequestedServiceCommand> requestedServices) {
+    private Set<RequestedService> snapshotRequestedServices(List<RequestedServiceCommand> requestedServices) {
         if (requestedServices == null || requestedServices.isEmpty()) {
             throw new BadRequestException("appointment.requestedServices.required");
         }
 
-        List<RequestedService> services = new ArrayList<>();
+        Set<RequestedService> services = new HashSet<>();
 
         for (RequestedServiceCommand serviceCommand : requestedServices) {
             if (serviceCommand == null) {

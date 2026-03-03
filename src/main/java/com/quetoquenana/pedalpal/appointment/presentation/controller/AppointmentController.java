@@ -18,8 +18,8 @@ import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppo
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentListItemResponse;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentResponse;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.ConfirmAppointmentResponse;
-import com.quetoquenana.pedalpal.common.presentation.dto.ApiResponse;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
+import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
 import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
 import jakarta.validation.Valid;
@@ -30,8 +30,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/api/appointments")
@@ -111,8 +112,8 @@ public class AppointmentController {
             @PathVariable UUID bikeId
     ) {
         log.info("GET /v1/api/appointments/bike/{}/upcoming Received request to get upcoming appointments", bikeId);
-        List<AppointmentListItemResult> results = queryService.getUpcomingAppointments(bikeId);
-        List<AppointmentListItemResponse> response = results.stream().map(apiMapper::toListItemResponse).toList();
+        Set<AppointmentListItemResult> results = queryService.getUpcomingAppointments(bikeId);
+        Set<AppointmentListItemResponse> response = results.stream().map(apiMapper::toListItemResponse).collect(Collectors.toSet());
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
@@ -121,8 +122,8 @@ public class AppointmentController {
     public ResponseEntity<ApiResponse> getPast(
             @PathVariable UUID bikeId
     ) {
-        List<AppointmentListItemResult> results = queryService.getPastAppointments(bikeId);
-        return ResponseEntity.ok(new ApiResponse(results.stream().map(apiMapper::toListItemResponse).toList()));
+        Set<AppointmentListItemResult> results = queryService.getPastAppointments(bikeId);
+        return ResponseEntity.ok(new ApiResponse(results.stream().map(apiMapper::toListItemResponse).collect(Collectors.toSet())));
     }
 
     private UUID getAuthenticatedUserId() {

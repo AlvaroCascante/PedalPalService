@@ -20,13 +20,13 @@ public class SpringSecurityOwnershipValidatorImpl implements OwnershipValidator 
     @Override
     public void validate(
             MediaReferenceType ownerType,
-            UUID ownerId,
+            UUID referenceId,
             UUID authenticatedUserId,
             Boolean isAdmin
     ) {
 
         boolean allowed = switch (ownerType) {
-            case BIKE -> bikeRepository.existsBydAndOwnerId(ownerId, authenticatedUserId);
+            case BIKE -> bikeRepository.existsBydAndOwnerId(referenceId, authenticatedUserId);
             case ANNOUNCEMENT -> isAdmin;
             default -> false;
         };

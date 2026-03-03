@@ -1,43 +1,50 @@
 package com.quetoquenana.pedalpal.media.mapper;
 
+import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
 import com.quetoquenana.pedalpal.media.application.command.ConfirmUploadCommand;
-import com.quetoquenana.pedalpal.media.application.command.GenerateUploadUrlCommand;
-import com.quetoquenana.pedalpal.media.application.result.GenerateUploadUrlResult;
+import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
+import com.quetoquenana.pedalpal.common.application.command.UploadMediaSpecCommand;
+import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.media.presentation.dto.request.ConfirmUploadRequest;
 import com.quetoquenana.pedalpal.media.presentation.dto.request.UploadMediaRequest;
-import com.quetoquenana.pedalpal.media.presentation.dto.response.GenerateUploadUrlResponse;
+import com.quetoquenana.pedalpal.media.presentation.dto.request.UploadMediaSpecRequest;
+import com.quetoquenana.pedalpal.media.presentation.dto.response.UploadMediaResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class MediaApiMapper {
 
-    public GenerateUploadUrlCommand toCommand(
+    public UploadMediaCommand toCommand(
             UploadMediaRequest request,
             UUID authenticatedUserId,
-            String provider,
             boolean isAdmin
     ) {
-        return new GenerateUploadUrlCommand(
-                request.ownerId(),
+        return new UploadMediaCommand(
                 authenticatedUserId,
                 isAdmin,
                 request.referenceId(),
-                request.referenceType(),
-                request.isPrimary(),
-                request.mediaType(),
-                request.contentType(),
-                request.title(),
-                request.altText(),
-                provider
+                MediaReferenceType.from(request.referenceType()),
+                request.mediaSpecs().stream().map(this::toCommand).collect(Collectors.toSet())
         );
     }
 
-    public GenerateUploadUrlResponse toResponse(GenerateUploadUrlResult result) {
-        return new GenerateUploadUrlResponse(
+    private UploadMediaSpecCommand toCommand(UploadMediaSpecRequest request) {
+        return new UploadMediaSpecCommand(
+                request.mediaType(),
+                request.contentType(),
+                request.isPrimary(),
+                request.name(),
+                request.altText()
+        );
+    }
+
+    public UploadMediaResponse toResponse(UploadMediaResult result) {
+        return new UploadMediaResponse(
                 result.mediaId(),
                 result.uploadUrl(),
                 result.storageKey(),

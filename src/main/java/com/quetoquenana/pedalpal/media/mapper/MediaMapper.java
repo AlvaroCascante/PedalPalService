@@ -1,70 +1,81 @@
 package com.quetoquenana.pedalpal.media.mapper;
 
-import com.quetoquenana.pedalpal.media.application.command.GenerateUploadUrlCommand;
+import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
+import com.quetoquenana.pedalpal.common.application.command.UploadMediaSpecCommand;
+import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
 import com.quetoquenana.pedalpal.media.application.result.ConfirmedUploadResult;
-import com.quetoquenana.pedalpal.media.application.result.GenerateUploadUrlResult;
 import com.quetoquenana.pedalpal.media.domain.model.*;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class MediaMapper {
 
-    public Media toModel(GenerateUploadUrlCommand command) {
+    public Media toModel(UploadMediaCommand command,
+                         UploadMediaSpecCommand spec
+    ) {
         UUID mediaId = UUID.randomUUID();
-        MediaReferenceType referenceType = MediaReferenceType.from(command.referenceType());
         return Media.builder()
                 .id(mediaId)
-                .ownerId(command.ownerId())
+                .ownerId(command.authenticatedUserId())
                 .referenceId(command.referenceId())
-                .referenceType(referenceType)
-                .mediaType(MediaType.from(command.mediaType()))
-                .contentType(command.contentType())
-                .isPrimary(command.isPrimary())
+                .referenceType(command.referenceType())
+                .mediaType(MediaType.from(spec.mediaType()))
+                .contentType(spec.contentType())
+                .isPrimary(spec.isPrimary())
                 .status(MediaStatus.PENDING)
                 .storageKey(buildStorageKey(
                         mediaId,
                         command,
-                        referenceType,
+                        spec,
+                        command.referenceType(),
                         Clock.systemDefaultZone())
                 )
-                .provider(command.provider())
-                .title(command.title())
-                .altText(command.altText())
+                // provider may be decided by backend/storageProvider; keep unset unless command/spec provides it
+                .title(spec.name())
+                .altText(spec.altText())
                 .build();
     }
 
     private String buildStorageKey(
             UUID mediaId,
-            GenerateUploadUrlCommand command,
+            UploadMediaCommand command,
+            UploadMediaSpecCommand spec,
             MediaReferenceType referenceType,
             Clock clock
     ) {
         LocalDate today = LocalDate.now(clock);
-        String ext = ContentTypeExtensions.extensionFor(command.contentType());
+        String ext = ContentTypeExtensions.extensionFor(spec.contentType());
         String type = referenceType.name().toLowerCase(Locale.ROOT);
 
         return type + "/" +  //announcement, profile, etc.
-                command.ownerId() + "/" +
+                command.authenticatedUserId() + "/" +
                 today.getYear() + "/" +
                 String.format("%02d", today.getMonthValue()) + "/" +
                 String.format("%02d", today.getDayOfMonth()) + "/" +
                 mediaId + "." + ext;
     }
 
-    public GenerateUploadUrlResult toResult(
-            Media model,
-            SignedUrl signedUrl
+    public Set<UploadMediaResult> toResult(
+            Set<Media> models
+    ) {
+        return models.stream().map(this::toResult).collect(Collectors.toSet());
+    }
+
+    private UploadMediaResult toResult(
+            Media model
     ){
-        return new GenerateUploadUrlResult(
+            return new UploadMediaResult(
                 model.getId(),
-                signedUrl.url(),
+                model.getSignedUrl().url(),
                 model.getStorageKey(),
-                signedUrl.expiresAt()
+                model.getSignedUrl().expiresAt()
         );
     }
 

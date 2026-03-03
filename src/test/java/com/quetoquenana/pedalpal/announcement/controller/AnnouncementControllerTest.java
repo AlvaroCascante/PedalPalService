@@ -7,6 +7,7 @@ import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnounce
 import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.mapper.AnnouncementApiMapper;
 import com.quetoquenana.pedalpal.announcement.presentation.controller.AnnouncementController;
+import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementStatusRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.response.AnnouncementResponse;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
@@ -130,13 +131,14 @@ class AnnouncementControllerTest {
         AnnouncementResult result = TestAnnouncementData.result(id);
         AnnouncementResponse response = TestAnnouncementData.response(id);
 
-        when(apiMapper.toCommand(any(), eq(AUTH_USER_ID))).thenReturn(TestAnnouncementData.createCommand(AUTH_USER_ID));
+        when(apiMapper.toCommand(eq(AUTH_USER_ID), eq(true), any()))
+                .thenReturn(TestAnnouncementData.createCommand(AUTH_USER_ID));
         when(createUseCase.execute(any())).thenReturn(result);
         when(apiMapper.toResponse(result)).thenReturn(response);
 
         mockMvc.perform(post("/v1/api/announcements")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\":\"Title\",\"subTitle\":\"Subtitle\",\"description\":\"Description\",\"position\":1,\"url\":\"https://example.com\",\"status\":\"ACTIVE\"}"))
+                        .content("{\"title\":\"Title\",\"subTitle\":\"Subtitle\",\"description\":\"Description\",\"position\":1,\"url\":\"https://example.com\",\"mediaFiles\":[]}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data.id").value(id.toString()));
 
@@ -150,7 +152,8 @@ class AnnouncementControllerTest {
         AnnouncementResult result = TestAnnouncementData.result(id);
         AnnouncementResponse response = TestAnnouncementData.response(id);
 
-        when(apiMapper.toCommand(eq(id), any())).thenReturn(TestAnnouncementData.statusCommand(id, "INACTIVE"));
+        when(apiMapper.toCommand(eq(id), eq(AUTH_USER_ID), any(UpdateAnnouncementStatusRequest.class)))
+                .thenReturn(TestAnnouncementData.statusCommand(id, AUTH_USER_ID, "INACTIVE"));
         when(updateStatusUseCase.execute(any())).thenReturn(result);
         when(apiMapper.toResponse(result)).thenReturn(response);
 
@@ -164,7 +167,7 @@ class AnnouncementControllerTest {
     }
 
     @Test
-    @WithMockJwt(userId = "00000000-0000-0000-0000-000000000001", roles = {"USER"})
+    @WithMockJwt(userId = "00000000-0000-0000-0000-000000000001")
     void shouldReturn403_whenUserTriesToCreate() throws Exception {
         mockMvc.perform(post("/v1/api/announcements")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -174,4 +177,3 @@ class AnnouncementControllerTest {
         verify(createUseCase, never()).execute(any());
     }
 }
-
