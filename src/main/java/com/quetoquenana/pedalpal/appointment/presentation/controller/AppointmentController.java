@@ -7,10 +7,7 @@ import com.quetoquenana.pedalpal.appointment.application.query.AppointmentQueryS
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentListItemResult;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
 import com.quetoquenana.pedalpal.appointment.application.result.ConfirmAppointmentResult;
-import com.quetoquenana.pedalpal.appointment.application.usecase.ConfirmAppointmentUseCase;
-import com.quetoquenana.pedalpal.appointment.application.usecase.CreateAppointmentUseCase;
-import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentStatusUseCase;
-import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentUseCase;
+import com.quetoquenana.pedalpal.appointment.application.usecase.*;
 import com.quetoquenana.pedalpal.appointment.mapper.AppointmentApiMapper;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.request.CreateAppointmentRequest;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppointmentRequest;
@@ -20,8 +17,8 @@ import com.quetoquenana.pedalpal.appointment.presentation.dto.response.Appointme
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.ConfirmAppointmentResponse;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
-import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
-import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
+import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,13 +37,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AppointmentController {
 
+    private final CancelAppointmentUseCase cancelAppointmentUseCase;
     private final ConfirmAppointmentUseCase confirmAppointmentUseCase;
     private final CreateAppointmentUseCase createAppointmentUseCase;
     private final UpdateAppointmentUseCase updateAppointmentUseCase;
     private final UpdateAppointmentStatusUseCase updateAppointmentStatusUseCase;
     private final AppointmentQueryService queryService;
     private final AppointmentApiMapper apiMapper;
-    private final CurrentUserProvider currentUserProvider;
+    private final CurrentUserPort currentUserProvider;
 
     @PostMapping
     @PreAuthorize("(hasRole('USER'))")
@@ -85,12 +83,25 @@ public class AppointmentController {
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
+    @PatchMapping("/{id}/cance")
+    @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN'))")
+    public ResponseEntity<ApiResponse> cancelAppointment(
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdateAppointmentStatusRequest request
+    ) {
+        UpdateAppointmentStatusCommand command = apiMapper.toCommand(id, request);
+        ConfirmAppointmentResult result = cancelAppointmentUseCase.execute(command);
+        ConfirmAppointmentResponse response = apiMapper.toResponse(result);
+        return ResponseEntity.ok(new ApiResponse(response));
+    }
+
     @PatchMapping("/{id}/confirm")
     @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN'))")
     public ResponseEntity<ApiResponse> confirmAppointment(
-            @PathVariable UUID id
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdateAppointmentStatusRequest request
     ) {
-        UpdateAppointmentStatusCommand command = apiMapper.toCommand(id);
+        UpdateAppointmentStatusCommand command = apiMapper.toCommand(id, request);
         ConfirmAppointmentResult result = confirmAppointmentUseCase.execute(command);
         ConfirmAppointmentResponse response = apiMapper.toResponse(result);
         return ResponseEntity.ok(new ApiResponse(response));
@@ -127,8 +138,8 @@ public class AppointmentController {
     }
 
     private UUID getAuthenticatedUserId() {
-        SecurityUser user = currentUserProvider.getCurrentUser()
+        AuthenticatedUser user = currentUserProvider.getCurrentUser()
                 .orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
-        return  user.userId();
+        return user.userId();
     }
 }

@@ -11,10 +11,11 @@ import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentReposi
 import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
+import com.quetoquenana.pedalpal.serviceOrder.application.port.ServiceOrderPort;
 import com.quetoquenana.pedalpal.serviceOrder.application.result.ServiceOrderResult;
 import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrder;
-import com.quetoquenana.pedalpal.serviceOrder.mapper.ServiceOrderMapper;
-import com.quetoquenana.pedalpal.serviceOrder.domain.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.store.domain.model.StoreLocation;
+import com.quetoquenana.pedalpal.store.domain.repository.StoreLocationRepository;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -46,10 +48,10 @@ class ConfirmAppointmentUseCaseTest {
     AppointmentRepository appointmentRepository;
 
     @Mock
-    ServiceOrderMapper serviceOrderMapper;
+    StoreLocationRepository storeLocationRepository;
 
     @Mock
-    ServiceOrderRepository serviceOrderRepository;
+    ServiceOrderPort serviceOrderPort;
 
     @InjectMocks
     ConfirmAppointmentUseCase useCase;
@@ -76,6 +78,12 @@ class ConfirmAppointmentUseCaseTest {
             when(appointmentRepository.getById(appointmentId)).thenReturn(Optional.of(appointment));
             when(appointmentRepository.save(any(Appointment.class))).thenAnswer(inv -> inv.getArgument(0, Appointment.class));
 
+            StoreLocation location = StoreLocation.builder()
+                    .id(appointment.getStoreLocationId())
+                    .storePrefix("PP")
+                    .build();
+            when(storeLocationRepository.getById(appointment.getStoreLocationId())).thenReturn(Optional.of(location));
+
             AppointmentResult appointmentResult = new AppointmentResult(
                     appointmentId,
                     appointment.getBikeId(),
@@ -85,14 +93,12 @@ class ConfirmAppointmentUseCaseTest {
                     appointment.getNotes(),
                     List.of()
             );
-
             when(mapper.toResult(any(Appointment.class))).thenReturn(appointmentResult);
 
-            ServiceOrder savedOrder = ServiceOrder.builder().id(UUID.randomUUID()).build();
-            when(serviceOrderRepository.save(any(ServiceOrder.class))).thenReturn(savedOrder);
-
             ServiceOrderResult serviceOrderResult = new ServiceOrderResult(
-                    savedOrder.getId(),
+                    UUID.randomUUID(),
+                    null,
+                    null,
                     null,
                     null,
                     null,
@@ -101,11 +107,12 @@ class ConfirmAppointmentUseCaseTest {
                     null,
                     List.of()
             );
-            when(serviceOrderMapper.toResult(savedOrder)).thenReturn(serviceOrderResult);
+            when(serviceOrderPort.creteServiceOrder(any(Appointment.class), eq("PP"))).thenReturn(serviceOrderResult);
 
             UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
                     appointmentId,
-                    AppointmentStatus.CONFIRMED.name()
+                    AppointmentStatus.CONFIRMED.name(),
+                    "reason"
             );
 
             ConfirmAppointmentResult result = useCase.execute(command);
@@ -116,7 +123,7 @@ class ConfirmAppointmentUseCaseTest {
             assertEquals(appointmentId, result.appointmentResult().id());
 
             verify(appointmentRepository).save(any(Appointment.class));
-            verify(serviceOrderRepository).save(any(ServiceOrder.class));
+            verify(serviceOrderPort).creteServiceOrder(any(Appointment.class), eq("PP"));
         }
 
         @Test
@@ -132,7 +139,6 @@ class ConfirmAppointmentUseCaseTest {
                     .requestedServices(new ArrayList<>())
                     .build();
 
-            // Requested services to sum: 10.50 + 2.25 = 12.75
             appointment.getRequestedServices().add(RequestedService.builder()
                     .serviceId(UUID.randomUUID())
                     .name("Service A")
@@ -147,6 +153,12 @@ class ConfirmAppointmentUseCaseTest {
             when(appointmentRepository.getById(appointmentId)).thenReturn(Optional.of(appointment));
             when(appointmentRepository.save(any(Appointment.class))).thenAnswer(inv -> inv.getArgument(0, Appointment.class));
 
+            StoreLocation location = StoreLocation.builder()
+                    .id(appointment.getStoreLocationId())
+                    .storePrefix("PP")
+                    .build();
+            when(storeLocationRepository.getById(appointment.getStoreLocationId())).thenReturn(Optional.of(location));
+
             when(mapper.toResult(any(Appointment.class))).thenReturn(new AppointmentResult(
                     appointmentId,
                     appointment.getBikeId(),
@@ -157,12 +169,6 @@ class ConfirmAppointmentUseCaseTest {
                     List.of()
             ));
 
-            when(serviceOrderRepository.save(serviceOrderCaptor.capture())).thenAnswer(inv -> {
-                ServiceOrder toSave = inv.getArgument(0, ServiceOrder.class);
-                toSave.setId(UUID.randomUUID());
-                return toSave;
-            });
-
             ServiceOrderResult serviceOrderResult = new ServiceOrderResult(
                     UUID.randomUUID(),
                     null,
@@ -171,19 +177,23 @@ class ConfirmAppointmentUseCaseTest {
                     null,
                     null,
                     null,
+                    null,
+                    null,
                     List.of()
             );
-            when(serviceOrderMapper.toResult(any(ServiceOrder.class))).thenReturn(serviceOrderResult);
+            when(serviceOrderPort.creteServiceOrder(any(Appointment.class), eq("PP"))).thenReturn(serviceOrderResult);
 
             UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
                     appointmentId,
-                    AppointmentStatus.CONFIRMED.name()
+                    AppointmentStatus.CONFIRMED.name(),
+                    "reason"
             );
 
             useCase.execute(command);
 
-            ServiceOrder savedOrder = serviceOrderCaptor.getValue();
-            assertEquals(new BigDecimal("12.75"), savedOrder.getTotalPrice());
+            // In the current use case implementation, total price is delegated to ServiceOrderPort.
+            // This assertion now validates that the port is invoked with the expected prefix.
+            verify(serviceOrderPort).creteServiceOrder(any(Appointment.class), eq("PP"));
         }
     }
 
@@ -198,13 +208,14 @@ class ConfirmAppointmentUseCaseTest {
 
             UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
                     appointmentId,
-                    AppointmentStatus.CONFIRMED.name()
+                    AppointmentStatus.CONFIRMED.name(),
+                    "reason"
             );
 
             assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
 
             verify(appointmentRepository, never()).save(any(Appointment.class));
-            verify(serviceOrderRepository, never()).save(any(ServiceOrder.class));
+            verify(serviceOrderPort, never()).creteServiceOrder(any(), any());
         }
     }
 
@@ -225,11 +236,20 @@ class ConfirmAppointmentUseCaseTest {
                     .build();
 
             when(appointmentRepository.getById(appointmentId)).thenReturn(Optional.of(appointment));
-            when(appointmentRepository.save(any(Appointment.class))).thenThrow(new RuntimeException("db down"));
+
+            StoreLocation location = StoreLocation.builder()
+                    .id(appointment.getStoreLocationId())
+                    .storePrefix("PP")
+                    .build();
+            when(storeLocationRepository.getById(appointment.getStoreLocationId())).thenReturn(Optional.of(location));
+
+            when(serviceOrderPort.creteServiceOrder(any(Appointment.class), eq("PP")))
+                    .thenThrow(new RuntimeException("downstream error"));
 
             UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
                     appointmentId,
-                    AppointmentStatus.CONFIRMED.name()
+                    AppointmentStatus.CONFIRMED.name(),
+                    "reason"
             );
 
             assertThrows(BadRequestException.class, () -> useCase.execute(command));

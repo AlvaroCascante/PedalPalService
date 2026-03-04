@@ -7,14 +7,15 @@ import com.quetoquenana.pedalpal.appointment.application.usecase.ConfirmAppointm
 import com.quetoquenana.pedalpal.appointment.application.usecase.CreateAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentStatusUseCase;
 import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentUseCase;
+import com.quetoquenana.pedalpal.appointment.application.usecase.CancelAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
 import com.quetoquenana.pedalpal.appointment.presentation.controller.AppointmentController;
 import com.quetoquenana.pedalpal.appointment.mapper.AppointmentApiMapper;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
-import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
-import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
+import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,15 +64,18 @@ class AppointmentControllerTest {
     AppointmentQueryService appointmentQueryService;
 
     @MockitoBean
-    CurrentUserProvider currentUserProvider;
+    CurrentUserPort currentUserProvider;
 
     @MockitoBean
     MessageSource messageSource;
 
+    @MockitoBean
+    CancelAppointmentUseCase cancelAppointmentUseCase;
+
     @BeforeEach
     void setUpAuth() {
         when(currentUserProvider.getCurrentUser())
-                .thenReturn(Optional.of(new SecurityUser(AUTH_USER_ID, "test-user", "Test User", false)));
+                .thenReturn(Optional.of(new AuthenticatedUser(AUTH_USER_ID, "test-user", "Test User", false)));
     }
 
     @Test

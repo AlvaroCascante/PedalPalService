@@ -28,6 +28,11 @@ public class Appointment extends Auditable {
         this.status = AppointmentStatus.CONFIRMED;
     }
 
+    public void cancel(AppointmentStatus status, String reason) {
+        this.status = status;
+        this.notes = reason;
+    }
+
     // Equality based on bikeId, storeLocationId, and scheduledAt, as they uniquely identify an appointment
     @Override
     public boolean equals(Object o) {

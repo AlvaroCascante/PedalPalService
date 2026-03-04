@@ -20,8 +20,8 @@ import com.quetoquenana.pedalpal.bike.mapper.BikeApiMapper;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
 import com.quetoquenana.pedalpal.util.TestBikeData;
 import com.quetoquenana.pedalpal.util.TestJsonBodies;
-import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
-import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
+import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -82,7 +82,7 @@ class BikeControllerTest {
     ReplaceBikeComponentUseCase replaceBikeComponentUseCase;
 
     @MockitoBean
-    CurrentUserProvider currentUserProvider;
+    CurrentUserPort currentUserProvider;
 
     @MockitoBean
     BikeHistoryQueryService bikeHistoryQueryService;
@@ -95,7 +95,7 @@ class BikeControllerTest {
     @org.junit.jupiter.api.BeforeEach
     void setUpAuth() {
         when(currentUserProvider.getCurrentUser())
-                .thenReturn(Optional.of(new SecurityUser(AUTH_USER_ID, "test-user", "Test User", false)));
+                .thenReturn(Optional.of(new AuthenticatedUser(AUTH_USER_ID, "test-user", "Test User", false)));
     }
 
     @Test

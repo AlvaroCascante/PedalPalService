@@ -6,6 +6,7 @@ import java.util.UUID;
 public record StoreLocationResponse(
         UUID id,
         String name,
+        String storePrefix,
         String website,
         String address,
         BigDecimal latitude,

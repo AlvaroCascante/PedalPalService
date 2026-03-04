@@ -71,7 +71,8 @@ class UpdateAppointmentStatusUseCaseTest {
 
             UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
                     id,
-                    AppointmentStatus.CONFIRMED.name()
+                    AppointmentStatus.CONFIRMED.name(),
+                    "Customer confirmed the appointment"
             );
 
             AppointmentResult result = useCase.execute(command);
@@ -101,7 +102,9 @@ class UpdateAppointmentStatusUseCaseTest {
 
             UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
                     id,
-                    "   "
+                    "   ",
+                    "Customer provided blank status"
+
             );
 
             assertThrows(BadRequestException.class, () -> useCase.execute(command));
@@ -120,7 +123,8 @@ class UpdateAppointmentStatusUseCaseTest {
 
             UpdateAppointmentStatusCommand command = new UpdateAppointmentStatusCommand(
                     id,
-                    AppointmentStatus.CONFIRMED.name()
+                    AppointmentStatus.CONFIRMED.name(),
+                    "Customer confirmed the appointment"
             );
 
             assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));

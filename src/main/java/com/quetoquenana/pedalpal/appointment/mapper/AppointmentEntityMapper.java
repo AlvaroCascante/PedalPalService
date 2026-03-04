@@ -61,6 +61,7 @@ public class AppointmentEntityMapper {
     private RequestedService toModel(AppointmentServiceEntity entity) {
         return RequestedService.builder()
                 .id(entity.getId())
+                .serviceId(entity.getProductId())
                 .name(entity.getProductNameSnapshot())
                 .price(entity.getPriceSnapshot())
                 .build();

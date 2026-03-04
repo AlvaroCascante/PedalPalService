@@ -30,10 +30,11 @@ public class StoreEntityMapper {
         return model;
     }
 
-    private StoreLocation toModel(StoreLocationEntity entity) {
+    public StoreLocation toModel(StoreLocationEntity entity) {
         StoreLocation model = StoreLocation.builder()
                 .id(entity.getId())
                 .name(entity.getName())
+                .storePrefix(entity.getStorePrefix())
                 .website(entity.getWebsite())
                 .address(entity.getAddress())
                 .latitude(entity.getLatitude())

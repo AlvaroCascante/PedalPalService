@@ -15,8 +15,8 @@ import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnn
 import com.quetoquenana.pedalpal.announcement.presentation.dto.response.AnnouncementResponse;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
-import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
-import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
+import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,14 +41,14 @@ public class AnnouncementController {
     private final UpdateAnnouncementStatusUseCase updateStatusUseCase;
     private final AnnouncementQueryService queryService;
     private final AnnouncementApiMapper apiMapper;
-    private final CurrentUserProvider currentUserProvider;
+    private final CurrentUserPort currentUserProvider;
 
     @PostMapping
     @PreAuthorize("(hasRole('ADMIN'))")
     public ResponseEntity<ApiResponse> create(
             @Valid @RequestBody CreateAnnouncementRequest request
     ) {
-        SecurityUser authenticatedUser = getAuthenticatedUserId();
+        AuthenticatedUser authenticatedUser = getAuthenticatedUserId();
         CreateAnnouncementCommand command = apiMapper.toCommand(authenticatedUser.userId(), authenticatedUser.isAdmin(), request);
         AnnouncementResult result = createUseCase.execute(command);
         AnnouncementResponse response = apiMapper.toResponse(result);
@@ -62,7 +62,7 @@ public class AnnouncementController {
             @PathVariable UUID id,
             @Valid @RequestBody UpdateAnnouncementRequest request
     ) {
-        SecurityUser authenticatedUser = getAuthenticatedUserId();
+        AuthenticatedUser authenticatedUser = getAuthenticatedUserId();
         UpdateAnnouncementCommand command = apiMapper.toCommand(id, authenticatedUser.userId(), request);
         AnnouncementResult result = updateUseCase.execute(command);
         AnnouncementResponse response = apiMapper.toResponse(result);
@@ -75,7 +75,7 @@ public class AnnouncementController {
             @PathVariable UUID id,
             @Valid @RequestBody UpdateAnnouncementStatusRequest request
     ) {
-        SecurityUser authenticatedUser = getAuthenticatedUserId();
+        AuthenticatedUser authenticatedUser = getAuthenticatedUserId();
         UpdateAnnouncementStatusCommand command = apiMapper.toCommand(id, authenticatedUser.userId(), request);
         AnnouncementResult result = updateStatusUseCase.execute(command);
         AnnouncementResponse response = apiMapper.toResponse(result);
@@ -102,7 +102,7 @@ public class AnnouncementController {
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
-    private SecurityUser getAuthenticatedUserId() {
+    private AuthenticatedUser getAuthenticatedUserId() {
         return currentUserProvider.getCurrentUser()
                 .orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
     }

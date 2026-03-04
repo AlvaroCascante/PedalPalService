@@ -14,8 +14,9 @@ CREATE TABLE store_locations (
     store_id UUID NOT NULL,
 
     name VARCHAR(50) NOT NULL,
+    store_prefix VARCHAR(5) NOT NULL,
     website VARCHAR(100),
-    address TEXT,
+    address VARCHAR,
     latitude DECIMAL(9,6),
     longitude DECIMAL(9,6),
     phone VARCHAR(50),

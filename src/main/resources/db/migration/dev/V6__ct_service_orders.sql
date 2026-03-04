@@ -2,10 +2,12 @@ CREATE TABLE service_orders (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     appointment_id UUID REFERENCES appointments(id), -- nullable (for walk-ins)
     bike_id UUID NOT NULL REFERENCES bikes(id),
+    order_number VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL,
     started_at TIMESTAMP WITH TIME ZONE,
     completed_at TIMESTAMP WITH TIME ZONE,
     total_price NUMERIC(12,2),
+    notes VARCHAR NOT NULL,
 
     version BIGINT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -13,6 +15,8 @@ CREATE TABLE service_orders (
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by UUID
 );
+
+CREATE SEQUENCE service_order_number_seq START 1;
 
 CREATE INDEX idx_service_orders_bike ON service_orders(bike_id);
 CREATE INDEX idx_service_orders_status ON service_orders(status);

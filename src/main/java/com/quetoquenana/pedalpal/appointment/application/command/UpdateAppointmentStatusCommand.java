@@ -4,7 +4,8 @@ import java.util.UUID;
 
 public record UpdateAppointmentStatusCommand(
         UUID id,
-        String status
+        String status,
+        String reason
 ) {
 }
 

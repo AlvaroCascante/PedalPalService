@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.Year;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -24,6 +25,8 @@ public class ServiceOrder extends Auditable {
     private Instant completedAt;
     private BigDecimal totalPrice;
     private ServiceOrderStatus status;
+    private String orderNumber;
+    private String notes;
 
     private List<ServiceOrderDetail> requestedServices;
 
@@ -33,6 +36,7 @@ public class ServiceOrder extends Auditable {
                         .productId(service.getServiceId())
                         .productNameSnapshot(service.getName())
                         .priceSnapshot(service.getPrice())
+                        .status(ServiceOrderDetailStatus.PENDING)
                         .build())
                 .toList();
 
@@ -50,10 +54,20 @@ public class ServiceOrder extends Auditable {
                 .build();
     }
 
+    public void generateOrderNumber(String prefix, String storePrefix, long sequence) {
+        this.orderNumber = prefix + "-" + storePrefix + "-" + Year.now() + "-" + String.format("%06d", sequence);
+    }
+
     public void addRequestedService(ServiceOrderDetail service) {
         if (this.requestedServices == null) {
             this.requestedServices = new java.util.ArrayList<>();
         }
         requestedServices.add(service);
+    }
+
+
+    public void cancel(ServiceOrderStatus status, String reason) {
+        this.status = status;
+        this.notes = reason;
     }
 }

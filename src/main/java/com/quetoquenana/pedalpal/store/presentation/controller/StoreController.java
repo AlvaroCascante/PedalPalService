@@ -1,8 +1,8 @@
 package com.quetoquenana.pedalpal.store.presentation.controller;
 
+import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
-import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
 import com.quetoquenana.pedalpal.store.application.query.StoreQueryService;
 import com.quetoquenana.pedalpal.store.application.result.StoreResult;
 import com.quetoquenana.pedalpal.store.mapper.StoreApiMapper;
@@ -28,7 +28,7 @@ public class StoreController {
 
     private final StoreApiMapper apiMapper;
 
-    private final CurrentUserProvider currentUserProvider;
+    private final CurrentUserPort currentUserProvider;
 
     @GetMapping("/{id}")
     @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN'))")

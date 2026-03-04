@@ -20,6 +20,8 @@ public class ServiceOrderEntityMapper {
                 .completedAt(entity.getCompletedAt())
                 .totalPrice(entity.getTotalPrice())
                 .status(entity.getStatus())
+                .orderNumber(entity.getOrderNumber())
+                .notes(entity.getNotes())
                 .build();
         model.setVersion(entity.getVersion());
 
@@ -55,6 +57,7 @@ public class ServiceOrderEntityMapper {
                 .startedAt(model.getStartedAt())
                 .completedAt(model.getCompletedAt())
                 .totalPrice(model.getTotalPrice())
+                .orderNumber(model.getOrderNumber())
                 .build();
         entity.setVersion(model.getVersion());
         model.getRequestedServices()

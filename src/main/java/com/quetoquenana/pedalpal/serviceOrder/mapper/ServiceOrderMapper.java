@@ -23,7 +23,9 @@ public class ServiceOrderMapper {
                 model.getStartedAt(),
                 model.getCompletedAt(),
                 model.getStatus(),
+                model.getOrderNumber(),
                 model.getTotalPrice(),
+                model.getNotes(),
                 requestedServices
         );
     }

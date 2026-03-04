@@ -34,7 +34,7 @@ public class StoreApiMapper {
                 ? Collections.emptySet() : result.locations()
                 .stream()
                 .filter(c -> locationStatuses.contains(c.status()))
-                .map(this::toStoreLocationResponse)
+                .map(this::toResponse)
                 .collect(Collectors.toSet()
                 );
 
@@ -45,13 +45,14 @@ public class StoreApiMapper {
         );
     }
 
-    private StoreLocationResponse toStoreLocationResponse(StoreLocationResult result) {
+    private StoreLocationResponse toResponse(StoreLocationResult result) {
         Locale locale = LocaleContextHolder.getLocale();
         String statusLabel = messageSource.getMessage(result.status().getKey(), null, locale);
 
         return new StoreLocationResponse(
                 result.id(),
                 result.name(),
+                result.storePrefix(),
                 result.website(),
                 result.address(),
                 result.latitude(),

@@ -3,8 +3,8 @@ package com.quetoquenana.pedalpal.systemCode.controller;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
-import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
-import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
+import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.systemCode.application.query.SystemCodeQueryService;
 import com.quetoquenana.pedalpal.systemCode.application.result.SystemCodeResult;
 import com.quetoquenana.pedalpal.systemCode.mapper.SystemCodeApiMapper;
@@ -51,7 +51,7 @@ class SystemCodeControllerTest {
     SystemCodeApiMapper apiMapper;
 
     @MockitoBean
-    CurrentUserProvider currentUserProvider;
+    CurrentUserPort currentUserProvider;
 
     @MockitoBean
     MessageSource messageSource;
@@ -59,7 +59,7 @@ class SystemCodeControllerTest {
     @BeforeEach
     void setUpAuth() {
         when(currentUserProvider.getCurrentUser())
-                .thenReturn(Optional.of(new SecurityUser(AUTH_USER_ID, "test-user", "Test User", false)));
+                .thenReturn(Optional.of(new AuthenticatedUser(AUTH_USER_ID, "test-user", "Test User", false)));
     }
 
     @Test
@@ -122,4 +122,3 @@ class SystemCodeControllerTest {
         verify(queryService, never()).getById(eq(id));
     }
 }
-

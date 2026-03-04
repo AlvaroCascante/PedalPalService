@@ -31,6 +31,9 @@ public class ServiceOrderEntity extends AuditableEntity {
     @Column(name = "bike_id", nullable = false)
     private UUID bikeId;
 
+    @Column(name = "order_number", nullable = false)
+    private String orderNumber;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)
     private ServiceOrderStatus status;
@@ -43,6 +46,9 @@ public class ServiceOrderEntity extends AuditableEntity {
 
     @Column(name = "total_price", precision = 10, scale = 2)
     private BigDecimal totalPrice;
+
+    @Column(name = "notes")
+    private String notes;
 
     @OneToMany(mappedBy = "serviceOrder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference

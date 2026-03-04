@@ -8,6 +8,7 @@ import java.util.UUID;
 public record StoreLocationResult(
         UUID id,
         String name,
+        String storePrefix,
         String website,
         String address,
         BigDecimal latitude,

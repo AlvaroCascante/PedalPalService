@@ -33,4 +33,9 @@ public class ServiceOrderRepositoryImpl implements ServiceOrderRepository {
     public Optional<ServiceOrder> getByAppointmentId(UUID appointmentId) {
         return repository.getByAppointmentId(appointmentId).map(mapper::toModel);
     }
+
+    @Override
+    public long getNextServiceOrderNumber() {
+        return repository.getNextServiceOrderNumber();
+    }
 }

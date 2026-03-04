@@ -16,6 +16,7 @@ import java.util.UUID;
 public class StoreLocation extends Auditable {
     private UUID id;
     private String name;
+    private String storePrefix;
     private String website;
     private String address;
     private BigDecimal latitude;

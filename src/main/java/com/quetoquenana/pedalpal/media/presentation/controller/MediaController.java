@@ -11,8 +11,8 @@ import com.quetoquenana.pedalpal.media.mapper.MediaApiMapper;
 import com.quetoquenana.pedalpal.media.presentation.dto.request.ConfirmUploadRequest;
 import com.quetoquenana.pedalpal.media.presentation.dto.request.UploadMediaRequest;
 import com.quetoquenana.pedalpal.media.presentation.dto.response.UploadMediaResponse;
-import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
-import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
+import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public class MediaController {
     private final UploadMediaUseCase useCase;
     private final ConfirmUploadUseCase confirmUploadUseCase;
     private final MediaApiMapper mapper;
-    private final CurrentUserProvider currentUserProvider;
+    private final CurrentUserPort currentUserProvider;
 
     //@PostMapping("/upload") -- Not required for now, probably all upload will be handled
     // by the owner controller and the media will be stored in a separate service, but we can keep it for future use if needed
@@ -42,7 +42,7 @@ public class MediaController {
     ) {
         log.info("POST /v1/media/upload Received request to upload: {}", request);
 
-        SecurityUser authenticatedUser = currentUserProvider.getCurrentUser()
+        AuthenticatedUser authenticatedUser = currentUserProvider.getCurrentUser()
                 .orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
 
         UploadMediaCommand command = mapper.toCommand(
@@ -60,7 +60,7 @@ public class MediaController {
             @RequestBody ConfirmUploadRequest request
     ) {
         log.info("POST /v1/media/confirm-upload Received request to confirm upload: {}", request);
-        SecurityUser authenticatedUser = currentUserProvider.getCurrentUser()
+        AuthenticatedUser authenticatedUser = currentUserProvider.getCurrentUser()
                 .orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
 
         ConfirmUploadCommand command = mapper.toCommand(request, authenticatedUser.userId());

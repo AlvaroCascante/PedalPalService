@@ -28,6 +28,7 @@ public class StoreMapper {
         return new StoreLocationResult(
                 model.getId(),
                 model.getName(),
+                model.getStorePrefix(),
                 model.getWebsite(),
                 model.getAddress(),
                 model.getLatitude(),

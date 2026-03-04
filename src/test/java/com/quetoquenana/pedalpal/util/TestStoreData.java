@@ -23,6 +23,7 @@ public final class TestStoreData {
                         new StoreLocationResult(
                                 UUID.randomUUID(),
                                 "Main Location",
+                                "SJO",
                                 "https://example.com",
                                 "123 Main St",
                                 new BigDecimal("9.928069"),
@@ -34,6 +35,7 @@ public final class TestStoreData {
                         new StoreLocationResult(
                                 UUID.randomUUID(),
                                 "Inactive Location",
+                                "SJO",
                                 null,
                                 null,
                                 null,
@@ -54,6 +56,7 @@ public final class TestStoreData {
                         new StoreLocationResponse(
                                 UUID.randomUUID(),
                                 "Main Location",
+                                "SJO",
                                 "https://example.com",
                                 "123 Main St",
                                 new BigDecimal("9.928069"),

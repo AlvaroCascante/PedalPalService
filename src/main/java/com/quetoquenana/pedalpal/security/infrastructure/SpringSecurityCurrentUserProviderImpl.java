@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.security.infrastructure;
 
-import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
-import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
+import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -16,16 +16,16 @@ import static com.quetoquenana.pedalpal.common.util.Constants.JWTClaims.KEY_USER
 import static com.quetoquenana.pedalpal.common.util.Constants.Roles.ROLE_ADMIN;
 
 @Component
-public class SpringSecurityCurrentUserProviderImpl implements CurrentUserProvider {
+public class SpringSecurityCurrentUserProviderImpl implements CurrentUserPort {
 
     @Override
-    public Optional<SecurityUser> getCurrentUser() {
+    public Optional<AuthenticatedUser> getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
             return Optional.empty();
         }
         Jwt jwt = extractJwt(auth);
-        return buildSecurityUser(jwt, auth);
+        return buildUser(jwt, auth);
     }
 
     private Jwt extractJwt(Authentication auth) {
@@ -38,14 +38,16 @@ public class SpringSecurityCurrentUserProviderImpl implements CurrentUserProvide
         return null;
     }
 
-    private Optional<SecurityUser> buildSecurityUser(Jwt jwt, Authentication auth) {
-        if (jwt == null) return Optional.empty();
+    private Optional<AuthenticatedUser> buildUser(Jwt jwt, Authentication auth) {
+        if (jwt == null || auth == null) {
+            return Optional.empty();
+        }
 
         UUID userId = extractUserId(jwt);
         boolean isAdmin = auth.getAuthorities().stream()
                 .anyMatch(a -> ROLE_ADMIN.equals(a.getAuthority()));
 
-        return Optional.of(new SecurityUser(
+        return Optional.of(new AuthenticatedUser(
                 userId,
                 auth.getName(),
                 jwt.getClaimAsString(KEY_NAME),

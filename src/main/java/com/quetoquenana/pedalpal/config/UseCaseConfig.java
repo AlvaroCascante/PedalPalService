@@ -5,11 +5,8 @@ import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnounce
 import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
 import com.quetoquenana.pedalpal.announcement.mapper.AnnouncementMapper;
-import com.quetoquenana.pedalpal.appointment.application.usecase.ConfirmAppointmentUseCase;
+import com.quetoquenana.pedalpal.appointment.application.usecase.*;
 import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
-import com.quetoquenana.pedalpal.appointment.application.usecase.CreateAppointmentUseCase;
-import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentStatusUseCase;
-import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
 import com.quetoquenana.pedalpal.bike.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.useCase.*;
@@ -17,8 +14,8 @@ import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.common.application.port.UploadMediaPort;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
-import com.quetoquenana.pedalpal.serviceOrder.mapper.ServiceOrderMapper;
-import com.quetoquenana.pedalpal.serviceOrder.domain.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.serviceOrder.application.port.ServiceOrderPort;
+import com.quetoquenana.pedalpal.store.domain.repository.StoreLocationRepository;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import com.quetoquenana.pedalpal.media.application.port.CdnUrlProvider;
 import com.quetoquenana.pedalpal.media.application.port.StorageProvider;
@@ -76,17 +73,30 @@ public class UseCaseConfig {
      * Appointment Use Cases
      */
     @Bean
+    public CancelAppointmentUseCase createCancelAppointmentUseCase(
+            AppointmentMapper mapper,
+            AppointmentRepository repository,
+            ServiceOrderPort serviceOrderPort
+    ) {
+        return new CancelAppointmentUseCase(
+                mapper,
+                repository,
+                serviceOrderPort
+        );
+    }
+
+    @Bean
     public ConfirmAppointmentUseCase createConfirmAppointmentUseCase(
             AppointmentMapper mapper,
-            AppointmentRepository appointmentRepository,
-            ServiceOrderMapper serviceOrderMapper,
-            ServiceOrderRepository serviceOrderRepository
+            AppointmentRepository repository,
+            StoreLocationRepository storeLocationRepository,
+            ServiceOrderPort serviceOrderPort
     ) {
         return new ConfirmAppointmentUseCase(
                 mapper,
-                appointmentRepository,
-                serviceOrderMapper,
-                serviceOrderRepository
+                repository,
+                storeLocationRepository,
+                serviceOrderPort
         );
     }
 

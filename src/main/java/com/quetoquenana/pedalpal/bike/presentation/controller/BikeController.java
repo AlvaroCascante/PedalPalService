@@ -6,12 +6,12 @@ import com.quetoquenana.pedalpal.bike.application.result.BikeHistoryResult;
 import com.quetoquenana.pedalpal.bike.application.useCase.*;
 import com.quetoquenana.pedalpal.bike.presentation.dto.request.*;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeHistoryResponse;
-import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
+import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.bike.application.query.BikeQueryService;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
-import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeResponse;
 import com.quetoquenana.pedalpal.bike.mapper.BikeApiMapper;
@@ -49,7 +49,7 @@ public class BikeController {
 
     private final BikeApiMapper apiMapper;
 
-    private final CurrentUserProvider currentUserProvider;
+    private final CurrentUserPort currentUserProvider;
 
     private final CreateBikeUploadMediaUseCase createBikeUploadMediaUseCase;
 
@@ -210,7 +210,7 @@ public class BikeController {
     ) {
         log.info("POST /v1/api/bikes/{}/media Received request to generate upload URLs: {}", id, request);
 
-        SecurityUser authenticatedUser = getAuthenticatedUser();
+        AuthenticatedUser authenticatedUser = getAuthenticatedUser();
         CreateBikeUploadMediaCommand command = apiMapper.toCommand(
                 id,
                 authenticatedUser.userId(),
@@ -228,7 +228,7 @@ public class BikeController {
         return getAuthenticatedUser().userId();
     }
 
-    private SecurityUser getAuthenticatedUser() {
+    private AuthenticatedUser getAuthenticatedUser() {
         return currentUserProvider.getCurrentUser()
                 .orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
     }

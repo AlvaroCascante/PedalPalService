@@ -14,7 +14,9 @@ public record ServiceOrderResult(
         Instant startedAt,
         Instant completedAt,
         ServiceOrderStatus status,
+        String orderNumber,
         BigDecimal totalPrice,
+        String notes,
         List<ServiceOrderDetailResult> requestedServices
 ) {
 }

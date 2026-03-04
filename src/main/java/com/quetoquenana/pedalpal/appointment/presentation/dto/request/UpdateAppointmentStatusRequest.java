@@ -6,7 +6,10 @@ import lombok.Builder;
 @Builder
 public record UpdateAppointmentStatusRequest(
         @NotBlank(message = "{appointment.status.required}")
-        String status
+        String status,
+
+        @NotBlank(message = "{appointment.reason.required}")
+        String reason
 ) {
 }
 

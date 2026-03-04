@@ -8,7 +8,6 @@ import com.quetoquenana.pedalpal.appointment.application.result.AppointmentListI
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentServiceResult;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
 import com.quetoquenana.pedalpal.appointment.application.result.ConfirmAppointmentResult;
-import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
 import com.quetoquenana.pedalpal.appointment.domain.model.ServiceType;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.request.CreateAppointmentRequest;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppointmentRequest;
@@ -72,11 +71,7 @@ public class AppointmentApiMapper {
     }
 
     public UpdateAppointmentStatusCommand toCommand(UUID id, UpdateAppointmentStatusRequest request) {
-        return new UpdateAppointmentStatusCommand(id, request.status());
-    }
-
-    public UpdateAppointmentStatusCommand toCommand(UUID id) {
-        return new UpdateAppointmentStatusCommand(id, AppointmentStatus.CONFIRMED.name());
+        return new UpdateAppointmentStatusCommand(id, request.status(), request.reason());
     }
 
     public AppointmentResponse toResponse(AppointmentResult result) {
@@ -113,7 +108,7 @@ public class AppointmentApiMapper {
                 result.appointmentResult().scheduledAt(),
                 statusLabel,
                 result.appointmentResult().notes(),
-                result.serviceOrderResult().id().toString(),
+                result.serviceOrderResult().orderNumber(),
                 requestedServices
         );
     }

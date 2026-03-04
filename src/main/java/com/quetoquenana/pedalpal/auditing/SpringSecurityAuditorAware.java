@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.auditing;
 
-import com.quetoquenana.pedalpal.security.application.CurrentUserProvider;
-import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
+import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -12,17 +12,15 @@ import java.util.UUID;
 @Component("auditorProvider")
 public class SpringSecurityAuditorAware implements AuditorAware<UUID> {
 
-    private final CurrentUserProvider currentUserProvider;
+    private final CurrentUserPort currentUserPort;
 
-    public SpringSecurityAuditorAware(CurrentUserProvider currentUserProvider) {
-        this.currentUserProvider = currentUserProvider;
+    public SpringSecurityAuditorAware(CurrentUserPort currentUserPort) {
+        this.currentUserPort = currentUserPort;
     }
 
     @Override
     @NonNull
     public Optional<UUID> getCurrentAuditor() {
-        return currentUserProvider
-                .getCurrentUser()
-                .map(SecurityUser::userId);
+        return currentUserPort.getCurrentUser().map(AuthenticatedUser::userId);
     }
 }

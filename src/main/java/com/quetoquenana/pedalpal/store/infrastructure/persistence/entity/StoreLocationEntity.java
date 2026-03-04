@@ -33,10 +33,13 @@ public class StoreLocationEntity extends AuditableEntity {
     @Column(name = "name", length = 50)
     private String name;
 
+    @Column(name = "store_prefix", length = 5)
+    private String storePrefix;
+
     @Column(name = "website", length = 100)
     private String website;
 
-    @Column(name = "address", columnDefinition = "text")
+    @Column(name = "address")
     private String address;
 
     @Column(name = "latitude")
