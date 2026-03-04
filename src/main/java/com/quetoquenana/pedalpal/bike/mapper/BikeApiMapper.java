@@ -4,11 +4,15 @@ import com.quetoquenana.pedalpal.bike.application.command.*;
 import com.quetoquenana.pedalpal.bike.application.result.BikeComponentResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeHistoryResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
+import com.quetoquenana.pedalpal.bike.application.result.BikeUploadMediaResult;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
 import com.quetoquenana.pedalpal.bike.presentation.dto.request.*;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeComponentResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeHistoryResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeResponse;
+import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeUploadMediaResponse;
+import com.quetoquenana.pedalpal.media.presentation.dto.response.UploadMediaResponse;
+import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -134,6 +138,24 @@ public class BikeApiMapper {
         );
     }
 
+    public CreateBikeUploadMediaCommand toCommand(
+            UUID bikeId,
+            UUID authenticatedUserId,
+            boolean isAdmin,
+            CreateBikeUploadMediaRequest request
+    ) {
+        return new CreateBikeUploadMediaCommand(
+                bikeId,
+                authenticatedUserId,
+                isAdmin,
+                request.isPublic(),
+                request.mediaFiles()
+                        .stream()
+                        .map(this::toCommand)
+                        .toList()
+        );
+    }
+
     public BikeResponse toResponse(BikeResult result) {
         return toResponse(result, Set.of(BikeComponentStatus.ACTIVE));
     }
@@ -194,6 +216,31 @@ public class BikeApiMapper {
                 result.performedBy(),
                 result.type(),
                 result.payload()
+        );
+    }
+
+    private BikeMediaCommand toCommand(BikeMediaRequest request) {
+        return new BikeMediaCommand(
+                request.contentType(),
+                request.mediaType(),
+                request.isPrimary(),
+                request.title(),
+                request.altText()
+        );
+    }
+
+    public BikeUploadMediaResponse toResponse(BikeUploadMediaResult result) {
+        return new BikeUploadMediaResponse(
+                result.uploadMediaResults().stream().map(this::toResponse).collect(Collectors.toSet())
+        );
+    }
+
+    private UploadMediaResponse toResponse(UploadMediaResult result) {
+        return new UploadMediaResponse(
+                result.mediaId(),
+                result.uploadUrl(),
+                result.storageKey(),
+                result.expiresAt()
         );
     }
 }

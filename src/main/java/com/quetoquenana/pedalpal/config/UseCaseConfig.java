@@ -228,6 +228,19 @@ public class UseCaseConfig {
         );
     }
 
+    @Bean
+    public CreateBikeUploadMediaUseCase createCreateBikeUploadMediaUseCase(
+            BikeMapper bikeMapper,
+            BikeRepository bikeRepository,
+            UploadMediaPort uploadMediaPort
+    ) {
+        return new CreateBikeUploadMediaUseCase(
+                bikeMapper,
+                bikeRepository,
+                uploadMediaPort
+        );
+    }
+
     /*
      * Media Use Cases
      */

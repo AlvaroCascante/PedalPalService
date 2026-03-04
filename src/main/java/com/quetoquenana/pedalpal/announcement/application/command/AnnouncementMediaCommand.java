@@ -4,6 +4,6 @@ public record AnnouncementMediaCommand(
         String contentType,
         String mediaType,
         boolean isPrimary,
-        String title,
+        String name,
         String altText
 ) {}

@@ -35,6 +35,7 @@ public class AnnouncementApiMapper {
         return new CreateAnnouncementCommand(
                 authenticatedUserId,
                 isAdmin,
+                true, // isPublic is always true for announcements
                 request.title(),
                 request.subTitle(),
                 request.description(),
@@ -51,7 +52,7 @@ public class AnnouncementApiMapper {
                 request.contentType(),
                 request.mediaType(),
                 request.isPrimary(),
-                request.title(),
+                request.name(),
                 request.altText()
         );
     }
@@ -94,8 +95,8 @@ public class AnnouncementApiMapper {
     private UploadMediaResponse toResponse(UploadMediaResult result) {
         return new UploadMediaResponse(
                 result.mediaId(),
-                result.storageKey(),
                 result.uploadUrl(),
+                result.storageKey(),
                 result.expiresAt()
         );
     }

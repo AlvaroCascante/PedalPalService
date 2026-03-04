@@ -8,8 +8,8 @@ import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
 import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.common.application.command.UploadMediaSpecCommand;
 import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
-import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
+import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -25,7 +25,7 @@ public class AnnouncementMapper {
                 .description(command.description())
                 .position(command.position())
                 .url(command.url())
-                .status(GeneralStatus.DRAFT)
+                .status(MediaStatus.DRAFT)
                 .build();
     }
 
@@ -58,8 +58,8 @@ public class AnnouncementMapper {
     public UploadMediaResult toResult(UploadMediaResult mediaUploadResponse) {
         return new UploadMediaResult(
                 mediaUploadResponse.mediaId(),
-                mediaUploadResponse.storageKey(),
                 mediaUploadResponse.uploadUrl(),
+                mediaUploadResponse.storageKey(),
                 mediaUploadResponse.expiresAt()
         );
     }
@@ -86,6 +86,7 @@ public class AnnouncementMapper {
         return new UploadMediaCommand(
                 command.authenticatedUserId(),
                 command.isAdmin(),
+                command.isPublic(),
                 announcement.getId(),
                 MediaReferenceType.ANNOUNCEMENT,
                 command.mediaFiles()
@@ -97,10 +98,10 @@ public class AnnouncementMapper {
 
     private UploadMediaSpecCommand toMediaUploadRequest(AnnouncementMediaCommand spec) {
         return new UploadMediaSpecCommand(
-                spec.contentType(),
                 spec.mediaType(),
+                spec.contentType(),
                 spec.isPrimary(),
-                spec.title(),
+                spec.name(),
                 spec.altText()
         );
     }

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Builder
@@ -19,4 +20,15 @@ public class SystemCode {
     private String codeKey;
     private GeneralStatus status;
     private Integer position;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof SystemCode that)) return false;
+        return Objects.equals(category, that.category) && Objects.equals(code, that.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(category, code);
+    }
 }

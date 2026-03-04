@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 
 @Builder
@@ -18,4 +19,16 @@ public class Product extends Auditable {
     private String description;
     private BigDecimal price;
     private GeneralStatus status;
+
+    // Equality based on name, as it is the main identifying feature of a product
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Product product)) return false;
+        return Objects.equals(name, product.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name);
+    }
 }

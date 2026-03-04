@@ -9,7 +9,7 @@ import com.quetoquenana.pedalpal.announcement.presentation.dto.request.CreateAnn
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementStatusRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.response.AnnouncementResponse;
-import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
+import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 
 import java.util.UUID;
 
@@ -47,6 +47,7 @@ public final class TestAnnouncementData {
         return new CreateAnnouncementCommand(
                 authUserId,
                     true,
+                true,
                 "Title",
                 "Subtitle",
                 "Description",
@@ -80,7 +81,7 @@ public final class TestAnnouncementData {
                 .description("Old description")
                 .position(1)
                 .url("https://old.example.com")
-                .status(GeneralStatus.ACTIVE)
+                .status(MediaStatus.ACTIVE)
                 .build();
     }
 
@@ -92,7 +93,7 @@ public final class TestAnnouncementData {
                 .description("Description")
                 .position(1)
                 .url("https://example.com")
-                .status(GeneralStatus.ACTIVE)
+                .status(MediaStatus.ACTIVE)
                 .build();
     }
 

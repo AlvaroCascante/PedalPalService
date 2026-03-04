@@ -11,7 +11,7 @@ CREATE TABLE media (
     status VARCHAR(50) NOT NULL, -- PENDING, UPLOADED, PROCESSED, FAILED, etc.
     storage_key VARCHAR NOT NULL, -- The key used to store the media in the storage provider (e.g. S3 key)
     provider VARCHAR(50) NOT NULL,
-    provider_asset_id VARCHAR(50) NOT NULL,
+    provider_asset_id VARCHAR(50), -- The ID of the asset in the storage provider (e.g. S3 object version ID)
 
     title VARCHAR(50),
     alt_text VARCHAR,

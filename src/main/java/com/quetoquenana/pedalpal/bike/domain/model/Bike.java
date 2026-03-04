@@ -199,4 +199,15 @@ public class Bike extends Auditable {
         this.usageTimeMinutes = newUsageTimeMinutes;
         return Optional.of(change);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Bike bike)) return false;
+        return Objects.equals(ownerId, bike.ownerId) && Objects.equals(name, bike.name) && type == bike.type && Objects.equals(brand, bike.brand) && Objects.equals(model, bike.model) && Objects.equals(year, bike.year) && Objects.equals(serialNumber, bike.serialNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ownerId, name, type, brand, model, year, serialNumber);
+    }
 }

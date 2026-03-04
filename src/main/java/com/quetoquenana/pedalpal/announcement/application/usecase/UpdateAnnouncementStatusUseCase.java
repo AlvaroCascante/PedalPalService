@@ -5,10 +5,10 @@ import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementRes
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
 import com.quetoquenana.pedalpal.announcement.mapper.AnnouncementMapper;
-import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
+import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +36,7 @@ public class UpdateAnnouncementStatusUseCase {
                 throw new BadRequestException("announcement.update.status.required");
             }
 
-            announcement.setStatus(GeneralStatus.from(command.status()));
+            announcement.setStatus(MediaStatus.from(command.status()));
             Announcement saved = repository.save(announcement);
             return mapper.toResult(saved);
         } catch (BadRequestException ex) {

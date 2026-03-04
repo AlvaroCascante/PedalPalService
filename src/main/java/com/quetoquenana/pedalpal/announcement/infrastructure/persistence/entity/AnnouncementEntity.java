@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.announcement.infrastructure.persistence.entity;
 
-import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.auditing.domain.model.AuditableEntity;
+import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,5 +38,5 @@ public class AnnouncementEntity extends AuditableEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private GeneralStatus status;
+    private MediaStatus status;
 }

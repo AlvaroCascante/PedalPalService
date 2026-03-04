@@ -7,7 +7,7 @@ import java.util.Locale;
 
 @Getter
 public enum MediaStatus {
-        PENDING("media.status.pending"),
+        DRAFT("media.status.draft"),
         ACTIVE("media.status.active"),
         INACTIVE("media.status.inactive"),
         FAILED("media.status.failed"),

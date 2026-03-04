@@ -33,6 +33,12 @@ public final class TestJsonBodies {
         return "{\"status\":\"" + escapeJson(status) + "\"}";
     }
 
+    public static String uploadBikeMediaMinimal(String contentType, String mediaType) {
+        return "{\"mediaFiles\":[{\"contentType\":\"" + escapeJson(contentType)
+                + "\",\"mediaType\":\"" + escapeJson(mediaType)
+                + "\",\"isPrimary\":true,\"title\":\"Primary\",\"altText\":\"Bike photo\"}]}";
+    }
+
     private static String escapeJson(String value) {
         if (value == null) return "";
         return value

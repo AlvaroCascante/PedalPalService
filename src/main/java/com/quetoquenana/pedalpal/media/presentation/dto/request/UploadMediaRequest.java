@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.UUID;
 
 public record UploadMediaRequest(
+        boolean isPublic, // Indicates whether the media being uploaded should be publicly accessible or not
+
         @NotNull(message = "{upload.media.referenceId.null}")
         UUID referenceId,  // The ID of the entity this media is associated with (e.g., a post, user profile, etc.)
 

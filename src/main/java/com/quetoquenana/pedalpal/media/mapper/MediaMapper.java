@@ -29,7 +29,7 @@ public class MediaMapper {
                 .mediaType(MediaType.from(spec.mediaType()))
                 .contentType(spec.contentType())
                 .isPrimary(spec.isPrimary())
-                .status(MediaStatus.PENDING)
+                .status(MediaStatus.DRAFT)
                 .storageKey(buildStorageKey(
                         mediaId,
                         command,

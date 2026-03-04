@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 public record AnnouncementMediaRequest(
         @NotBlank(message = "{announcement.create.media.contentType.blank}")
         @Size(max = 50, message = "{announcement.create.media.contentType.max}")
-        String contentType,
+        String contentType, //
 
         @NotBlank(message = "{announcement.create.media.mediaType.blank}")
         @Size(max = 50, message = "{announcement.create.media.mediaType.max}")
@@ -15,6 +15,6 @@ public record AnnouncementMediaRequest(
         boolean isPrimary,
 
         @Size(max = 50, message = "{announcement.create.media.title.max}")
-        String title,
+        String name,
         String altText
 ) {}

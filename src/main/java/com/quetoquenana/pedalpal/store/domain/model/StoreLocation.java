@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 
 @Builder
@@ -22,4 +23,15 @@ public class StoreLocation extends Auditable {
     private String phone;
     private String timezone;
     private GeneralStatus status;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof StoreLocation that)) return false;
+        return Objects.equals(name, that.name) && Objects.equals(website, that.website) && Objects.equals(address, that.address) && Objects.equals(latitude, that.latitude) && Objects.equals(longitude, that.longitude);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, website, address, latitude, longitude);
+    }
 }

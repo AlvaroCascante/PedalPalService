@@ -15,6 +15,8 @@ import com.quetoquenana.pedalpal.security.domain.model.SecurityUser;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeResponse;
 import com.quetoquenana.pedalpal.bike.mapper.BikeApiMapper;
+import com.quetoquenana.pedalpal.bike.application.result.BikeUploadMediaResult;
+import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeUploadMediaResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +50,8 @@ public class BikeController {
     private final BikeApiMapper apiMapper;
 
     private final CurrentUserProvider currentUserProvider;
+
+    private final CreateBikeUploadMediaUseCase createBikeUploadMediaUseCase;
 
     @GetMapping("/{id}")
     @PreAuthorize("(hasRole('USER'))")
@@ -198,9 +202,34 @@ public class BikeController {
                 .body(new ApiResponse(response));
     }
 
+    @PostMapping("/{id}/media")
+    @PreAuthorize("(hasRole('USER'))")
+    public ResponseEntity<ApiResponse> uploadMedia(
+            @PathVariable("id") UUID id,
+            @Valid @RequestBody CreateBikeUploadMediaRequest request
+    ) {
+        log.info("POST /v1/api/bikes/{}/media Received request to generate upload URLs: {}", id, request);
+
+        SecurityUser authenticatedUser = getAuthenticatedUser();
+        CreateBikeUploadMediaCommand command = apiMapper.toCommand(
+                id,
+                authenticatedUser.userId(),
+                authenticatedUser.isAdmin(),
+                request
+        );
+
+        BikeUploadMediaResult result = createBikeUploadMediaUseCase.execute(command);
+        BikeUploadMediaResponse response = apiMapper.toResponse(result);
+
+        return ResponseEntity.ok(new ApiResponse(response));
+    }
+
     private UUID getAuthenticatedUserId() {
-        SecurityUser user = currentUserProvider.getCurrentUser()
+        return getAuthenticatedUser().userId();
+    }
+
+    private SecurityUser getAuthenticatedUser() {
+        return currentUserProvider.getCurrentUser()
                 .orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
-        return  user.userId();
     }
 }

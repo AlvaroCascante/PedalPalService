@@ -26,10 +26,10 @@ public class R2StorageProvider implements StorageProvider {
     private final S3Presigner presigner;
 
     @Value("${cloudflare.r2.public.bucket}")
-    private String privateBucket;
+    private String publicBucket;
 
     @Value("${cloudflare.r2.private.bucket}")
-    private String publicBucket;
+    private String privateBucket;
 
     @Value("${cloudflare.r2.presign.ttl.minutes:10}")
     private final long defaultTtlMinutes = 10;

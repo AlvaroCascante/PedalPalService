@@ -36,7 +36,7 @@ public class Media {
             Long sizeBytes,
             Map<String, Object> metadata
     ) {
-        if (this.status != MediaStatus.PENDING) {
+        if (this.status != MediaStatus.DRAFT) {
             throw new BusinessException("media.not.pending");
         }
         this.providerAssetId = providerAssetId;

@@ -58,7 +58,7 @@ public class MediaEntity extends AuditableEntity {
     @Column(name = "provider", nullable = false, length = 50)
     private String provider;
 
-    @Column(name = "provider_asset_id", nullable = false, length = 50)
+    @Column(name = "provider_asset_id", length = 50)
     private String providerAssetId;
 
     @Column(name = "title", length = 50)

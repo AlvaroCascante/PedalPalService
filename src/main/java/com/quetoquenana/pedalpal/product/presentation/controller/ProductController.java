@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -66,7 +65,7 @@ public class ProductController {
     @PreAuthorize("(hasRole('USER'))")
     public ResponseEntity<ApiResponse> findActivePackages() {
         log.info("GET /v1/api/packages/active Received request to find active packages");
-        List<ProductPackageResult> result = queryService.getActiveProductPackages();
+        Set<ProductPackageResult> result = queryService.getActiveProductPackages();
         Set<ProductPackageResponse> response = result.stream().map(apiMapper::toResponse).collect(Collectors.toSet());
         return ResponseEntity.ok(new ApiResponse(response));
     }

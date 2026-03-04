@@ -4,10 +4,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quetoquenana.pedalpal.bike.application.command.AddBikeComponentCommand;
 import com.quetoquenana.pedalpal.bike.application.command.CreateBikeCommand;
+import com.quetoquenana.pedalpal.bike.application.command.CreateBikeUploadMediaCommand;
 import com.quetoquenana.pedalpal.bike.application.result.BikeComponentResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeHistoryResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
+import com.quetoquenana.pedalpal.bike.application.result.BikeUploadMediaResult;
 import com.quetoquenana.pedalpal.bike.domain.model.*;
+import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
+import com.quetoquenana.pedalpal.common.application.command.UploadMediaSpecCommand;
+import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
+import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -106,6 +112,41 @@ public class BikeMapper {
                 model.getPerformedBy(),
                 model.getType(),
                 model.getPayload()
+        );
+    }
+
+    public BikeUploadMediaResult toResult(java.util.Set<UploadMediaResult> mediaUploadResponse) {
+        return new BikeUploadMediaResult(
+                mediaUploadResponse.stream().map(this::toResult).collect(Collectors.toSet())
+        );
+    }
+
+    public UploadMediaCommand toMediaUploadRequest(Bike bike, CreateBikeUploadMediaCommand command) {
+        return new UploadMediaCommand(
+                command.authenticatedUserId(),
+                command.isAdmin(),
+                command.isPublic(),
+                bike.getId(),
+                MediaReferenceType.BIKE,
+                command.mediaFiles()
+                        .stream()
+                        .map(spec -> new UploadMediaSpecCommand(
+                                spec.mediaType(),
+                                spec.contentType(),
+                                spec.isPrimary(),
+                                spec.title(),
+                                spec.altText()
+                        ))
+                        .collect(Collectors.toSet())
+        );
+    }
+
+    private UploadMediaResult toResult(UploadMediaResult mediaUploadResponse) {
+        return new UploadMediaResult(
+                mediaUploadResponse.mediaId(),
+                mediaUploadResponse.uploadUrl(),
+                mediaUploadResponse.storageKey(),
+                mediaUploadResponse.expiresAt()
         );
     }
 

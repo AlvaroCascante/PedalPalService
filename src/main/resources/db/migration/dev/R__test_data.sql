@@ -62,4 +62,3 @@ INSERT INTO packages_products (package_id, product_id)
 SELECT '11111111-1111-1111-1111-111111111303', p.id FROM products p
 WHERE p.name IN ('Cambio de llantas TBL', 'Cambio de líquido TBL', 'Instalación de cinta TBL', 'Instalación de válvula TBL', 'Instalación de gusanillo TBL')
 ON CONFLICT (package_id, product_id) DO NOTHING;
-

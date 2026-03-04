@@ -44,11 +44,11 @@ public class ProductQueryService {
                 .map(mapper::toProductResult)
                 .collect(Collectors.toSet());
     }
-    public List<ProductPackageResult> getActiveProductPackages() {
+    public Set<ProductPackageResult> getActiveProductPackages() {
         List<ProductPackage> models = productPackageRepository.findByStatus(GeneralStatus.ACTIVE);
 
         return models.stream()
                 .map(mapper::toProductPackageResult)
-                .toList();
+                .collect(Collectors.toSet());
     }
 }

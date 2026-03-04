@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,5 +28,17 @@ public class ProductPackage extends Auditable {
 
     public void addProduct(Product product) {
         products.add(product);
+    }
+
+    // Equality based on name, as it is the main identifying feature of a product package
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ProductPackage that)) return false;
+        return Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name);
     }
 }

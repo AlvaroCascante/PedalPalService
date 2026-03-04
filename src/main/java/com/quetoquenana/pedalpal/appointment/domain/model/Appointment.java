@@ -4,7 +4,7 @@ import com.quetoquenana.pedalpal.common.domain.model.Auditable;
 import lombok.*;
 
 import java.time.Instant;
-import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,15 +24,20 @@ public class Appointment extends Auditable {
 
     private Set<RequestedService> requestedServices;
 
-    public void addRequestedService(RequestedService service) {
-        if (this.requestedServices == null) {
-            this.requestedServices = new HashSet<>();
-        }
-        requestedServices.add(service);
-    }
-
     public void confirm() {
         this.status = AppointmentStatus.CONFIRMED;
+    }
+
+    // Equality based on bikeId, storeLocationId, and scheduledAt, as they uniquely identify an appointment
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Appointment that)) return false;
+        return Objects.equals(bikeId, that.bikeId) && Objects.equals(storeLocationId, that.storeLocationId) && Objects.equals(scheduledAt, that.scheduledAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bikeId, storeLocationId, scheduledAt);
     }
 }
 

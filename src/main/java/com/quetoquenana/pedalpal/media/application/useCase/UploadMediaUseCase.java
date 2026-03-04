@@ -10,6 +10,7 @@ import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
 import com.quetoquenana.pedalpal.media.mapper.MediaMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
@@ -24,6 +25,9 @@ public class UploadMediaUseCase {
     private final MediaMapper mapper;
     private final StorageProvider storageProvider;
     private final OwnershipValidator ownershipValidator;
+
+    @Value("${app.media.default-provider}")
+    private String defaultStorageProvider;
 
     public Set<UploadMediaResult> execute(UploadMediaCommand command) {
         // Validate ownership
@@ -41,8 +45,9 @@ public class UploadMediaUseCase {
                     SignedUrl signedUrl = storageProvider.generateUploadUrl(
                             model.getStorageKey(),
                             model.getContentType(),
-                            model.getIsPrimary()
+                            command.isPublic()
                     );
+                    model.setProvider(defaultStorageProvider);
                     model.setSignedUrl(signedUrl);
                     return model;
                 })

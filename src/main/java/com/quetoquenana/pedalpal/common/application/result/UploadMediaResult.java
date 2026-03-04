@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public record UploadMediaResult(
         UUID mediaId,
-        String storageKey,
         String uploadUrl,
+        String storageKey,
         Instant expiresAt
 ) {}

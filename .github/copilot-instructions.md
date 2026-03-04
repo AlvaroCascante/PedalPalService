@@ -58,6 +58,7 @@ This document specifies the default set of rules for Copilot to use when generat
 - Remove unused imports and code.
 - Keep methods short and focused.
 - Use Lombok annotations to reduce boilerplate, but document their usage.
+- For records avoid the use of @Builder, as records are immutable and do not require builders.
 
 ### 11. General Best Practices
 - Follow Clean architecture principles

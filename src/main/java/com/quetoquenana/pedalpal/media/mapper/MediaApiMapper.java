@@ -27,6 +27,7 @@ public class MediaApiMapper {
         return new UploadMediaCommand(
                 authenticatedUserId,
                 isAdmin,
+                request.isPublic(),
                 request.referenceId(),
                 MediaReferenceType.from(request.referenceType()),
                 request.mediaSpecs().stream().map(this::toCommand).collect(Collectors.toSet())
