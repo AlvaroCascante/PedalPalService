@@ -27,7 +27,7 @@ public class ProductPackageEntity extends AuditableEntity {
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @Column(name = "description", columnDefinition = "text")
+    @Column(name = "description")
     private String description;
 
     @Column(name = "price", precision = 10, scale = 2)

@@ -47,7 +47,7 @@ public class CreateAppointmentUseCase {
 
         try {
             Appointment appointment = mapper.toModel(command);
-            Set<RequestedService> services = snapshotRequestedServices(command.requestedServices());
+            List<RequestedService> services = snapshotRequestedServices(command.requestedServices());
             appointment.setRequestedServices(services);
             appointment = appointmentRepository.save(appointment);
             return mapper.toResult(appointment);
@@ -60,12 +60,12 @@ public class CreateAppointmentUseCase {
         }
     }
 
-    private Set<RequestedService> snapshotRequestedServices(List<RequestedServiceCommand> requestedServices) {
+    private List<RequestedService> snapshotRequestedServices(List<RequestedServiceCommand> requestedServices) {
         if (requestedServices == null || requestedServices.isEmpty()) {
             throw new BadRequestException("appointment.requestedServices.required");
         }
 
-        Set<RequestedService> services = new HashSet<>();
+        List<RequestedService> services = new ArrayList<>();
 
         for (RequestedServiceCommand serviceCommand : requestedServices) {
             if (serviceCommand == null) {

@@ -9,26 +9,26 @@ import lombok.Builder;
 @Builder
 public record UpdateAnnouncementRequest(
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, message = "{announcement.update.title.blank}")
-        @Size(max = 50, message = "{announcement.update.title.max}")
+        @Size(min = 1, message = "{announcement.title.blank}")
+        @Size(max = 50, message = "{announcement.title.max}")
         String title,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, message = "{announcement.update.subtitle.blank}")
-        @Size(max = 250, message = "{announcement.update.subtitle.max}")
+        @Size(min = 1, message = "{announcement.subtitle.blank}")
+        @Size(max = 250, message = "{announcement.subtitle.max}")
         String subTitle,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(max = 250, message = "{announcement.update.description.max}")
+        @Size(max = 250, message = "{announcement.description.max}")
         String description,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Min(value = 1, message = "{announcement.update.position.invalid}")
+        @Min(value = 1, message = "{announcement.position.invalid}")
         Integer position,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, message = "{announcement.update.url.blank}")
-        @Size(max = 500, message = "{announcement.update.url.max}")
+        @Size(min = 1, message = "{announcement.url.blank}")
+        @Size(max = 500, message = "{announcement.url.max}")
         String url
 ) {
 }

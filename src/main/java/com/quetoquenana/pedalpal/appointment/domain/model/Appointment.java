@@ -4,8 +4,8 @@ import com.quetoquenana.pedalpal.common.domain.model.Auditable;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -22,7 +22,7 @@ public class Appointment extends Auditable {
     private AppointmentStatus status;
     private String notes;
 
-    private Set<RequestedService> requestedServices;
+    private List<RequestedService> requestedServices;
 
     public void confirm() {
         this.status = AppointmentStatus.CONFIRMED;

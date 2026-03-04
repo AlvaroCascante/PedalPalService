@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static com.quetoquenana.pedalpal.common.util.Constants.BikeComponents.COMPONENT_TYPE;
@@ -72,18 +73,11 @@ public class ReplaceBikeComponentUseCase {
                     userId,
                     oldComponent.getId(),
                     BikeHistoryEventType.COMPONENT_REPLACED,
-                null,
-                    LocalDateTime.now()
-            )
-        );
-
-        eventPublisher.publishEvent(
-            new BikeHistoryEvent(
-                    bikeId,
-                    userId,
-                    newComponent.getId(),
-                    BikeHistoryEventType.COMPONENT_ADDED,
-                    null,
+                    List.of(BikeChangeItem.of(
+                            BikeField.BIKE_COMPONENT,
+                            oldComponent.getName(),
+                            newComponent.getName()
+                    )),
                     LocalDateTime.now()
             )
         );

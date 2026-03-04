@@ -104,7 +104,7 @@ class UpdateAnnouncementUseCaseTest {
             );
 
             BadRequestException ex = assertThrows(BadRequestException.class, () -> useCase.execute(command));
-            assertEquals("announcement.update.title.blank", ex.getMessage());
+            assertEquals("announcement.title.blank", ex.getMessage());
             verify(repository, never()).save(any());
         }
     }

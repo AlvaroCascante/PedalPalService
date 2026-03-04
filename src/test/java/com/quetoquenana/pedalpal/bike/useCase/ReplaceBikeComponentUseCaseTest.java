@@ -131,11 +131,10 @@ class ReplaceBikeComponentUseCaseTest {
             assertEquals(BikeComponentStatus.REPLACED, existing.getStatus());
             assertEquals(bikeId, result.id());
 
-            verify(eventPublisher, times(2)).publishEvent(historyEventCaptor.capture());
+            verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
             var events = historyEventCaptor.getAllValues();
-            assertEquals(2, events.size());
-            assertEquals(BikeHistoryEventType.COMPONENT_REPLACED, events.get(0).bikeHistoryEventType());
-            assertEquals(BikeHistoryEventType.COMPONENT_ADDED, events.get(1).bikeHistoryEventType());
+            assertEquals(1, events.size());
+            assertEquals(BikeHistoryEventType.COMPONENT_REPLACED, events.getFirst().bikeHistoryEventType());
         }
     }
 

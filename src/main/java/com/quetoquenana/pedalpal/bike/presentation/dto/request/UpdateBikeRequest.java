@@ -14,39 +14,42 @@ import jakarta.validation.constraints.Size;
  */
 public record UpdateBikeRequest(
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, message = "{bike.update.name.blank}")
+        @Size(min = 1, message = "{bike.name.blank}")
+        @Size(max = 50, message = "{bike.name.max}")
         String name,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, message = "{bike.update.brand.blank}")
+        @Size(min = 1, message = "{bike.brand.blank}")
+        @Size(max = 50, message = "{bike.brand.max}")
         String brand,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, message = "{bike.update.model.blank}")
+        @Size(min = 1, message = "{bike.model.blank}")
+        @Size(max = 50, message = "{bike.model.max}")
         String model,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Min(value = 1900, message = "{bike.update.year.invalid}")
+        @Min(value = 1900, message = "{bike.year.invalid}")
         Integer year,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, message = "{bike.update.type.blank}")
+        @Size(min = 1, message = "{bike.type.blank}")
         String type,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, message = "{bike.update.serial.blank}")
+        @Size(min = 1, message = "{bike.serial.blank}")
         String serialNumber,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, message = "{bike.update.notes.blank}")
+        @Size(min = 1, message = "{bike.notes.blank}")
         String notes,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Min(value = 0, message = "{bike.update.odometer.invalid}")
+        @Min(value = 0, message = "{bike.odometer.invalid}")
         Integer odometerKm,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Min(value = 0, message = "{bike.update.usage.invalid}")
+        @Min(value = 0, message = "{bike.usage.invalid}")
         Integer usageTimeMinutes,
 
         @JsonSetter(contentNulls = Nulls.FAIL)

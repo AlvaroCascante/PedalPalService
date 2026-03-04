@@ -17,9 +17,10 @@ public record BikeMediaRequest(
 
         boolean isPrimary,
 
-        @Size(max = 50, message = "{bike.upload.media.title.max}")
-        String title,
+        @Size(max = 50, message = "{bike.upload.media.name.max}")
+        String name,
 
+        @Size(max = 250, message = "{bike.upload.media.altText.max}")
         String altText
 ) {
 }

@@ -70,7 +70,7 @@ class ConfirmAppointmentUseCaseTest {
                     .storeLocationId(UUID.randomUUID())
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
                     .status(AppointmentStatus.REQUESTED)
-                    .requestedServices(new HashSet<>())
+                    .requestedServices(new ArrayList<>())
                     .build();
 
             when(appointmentRepository.getById(appointmentId)).thenReturn(Optional.of(appointment));
@@ -129,7 +129,7 @@ class ConfirmAppointmentUseCaseTest {
                     .storeLocationId(UUID.randomUUID())
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
                     .status(AppointmentStatus.REQUESTED)
-                    .requestedServices(new HashSet<>())
+                    .requestedServices(new ArrayList<>())
                     .build();
 
             // Requested services to sum: 10.50 + 2.25 = 12.75
@@ -221,7 +221,7 @@ class ConfirmAppointmentUseCaseTest {
                     .storeLocationId(UUID.randomUUID())
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
                     .status(AppointmentStatus.REQUESTED)
-                    .requestedServices(new HashSet<>())
+                    .requestedServices(new ArrayList<>())
                     .build();
 
             when(appointmentRepository.getById(appointmentId)).thenReturn(Optional.of(appointment));

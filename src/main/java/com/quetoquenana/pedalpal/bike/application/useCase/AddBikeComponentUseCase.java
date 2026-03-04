@@ -1,10 +1,10 @@
 package com.quetoquenana.pedalpal.bike.application.useCase;
 
 import com.quetoquenana.pedalpal.bike.application.command.AddBikeComponentCommand;
-import com.quetoquenana.pedalpal.bike.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.domain.model.*;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.bike.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static com.quetoquenana.pedalpal.common.util.Constants.BikeComponents.COMPONENT_TYPE;
@@ -41,12 +42,17 @@ public class AddBikeComponentUseCase {
             bike.addComponent(component);
             bikeRepository.save(bike);
 
-            publishHistoryEvent(bike.getId(), command.authenticatedUserId(), component);
+            publishHistoryEvent(
+                    bike.getId(),
+                    command.authenticatedUserId(),
+                    component.getId(),
+                    component.getName()
+            );
 
             return bikeMapper.toResult(bike);
         } catch (RuntimeException ex) {
             log.error("RuntimeException on AddBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
-            throw new BusinessException("bike.add.component.failed");
+            throw new BusinessException("bike.component.add.failed");
         }
     }
 
@@ -61,14 +67,23 @@ public class AddBikeComponentUseCase {
         return bike;
     }
 
-    private void publishHistoryEvent(UUID bikeId, UUID userId, BikeComponent component) {
+    private void publishHistoryEvent(
+            UUID bikeId,
+            UUID userId,
+            UUID componentId,
+            String componentName
+    ) {
         eventPublisher.publishEvent(
             new BikeHistoryEvent(
                     bikeId,
                     userId,
-                    component.getId(),
+                    componentId,
                     BikeHistoryEventType.COMPONENT_ADDED,
-                    null,
+                    List.of(BikeChangeItem.of(
+                            BikeField.BIKE_COMPONENT,
+                            "",
+                            componentName
+                    )),
                     LocalDateTime.now()
             )
         );

@@ -4,17 +4,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record AnnouncementMediaRequest(
-        @NotBlank(message = "{announcement.create.media.contentType.blank}")
-        @Size(max = 50, message = "{announcement.create.media.contentType.max}")
-        String contentType, //
+        @NotBlank(message = "{announcement.media.contentType.blank}")
+        @Size(max = 50, message = "{announcement.media.contentType.max}")
+        String contentType,
 
-        @NotBlank(message = "{announcement.create.media.mediaType.blank}")
-        @Size(max = 50, message = "{announcement.create.media.mediaType.max}")
+        @NotBlank(message = "{announcement.media.mediaType.blank}")
+        @Size(max = 50, message = "{announcement.media.mediaType.max}")
         String mediaType,
 
         boolean isPrimary,
 
-        @Size(max = 50, message = "{announcement.create.media.title.max}")
+        @Size(max = 50, message = "{announcement.media.title.max}")
         String name,
         String altText
 ) {}

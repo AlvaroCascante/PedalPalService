@@ -35,8 +35,8 @@ public class MediaController {
     private final MediaApiMapper mapper;
     private final CurrentUserProvider currentUserProvider;
 
-
-    @PostMapping("/upload")
+    //@PostMapping("/upload") -- Not required for now, probably all upload will be handled
+    // by the owner controller and the media will be stored in a separate service, but we can keep it for future use if needed
     public ResponseEntity<ApiResponse> upload(
             @RequestBody UploadMediaRequest request
     ) {

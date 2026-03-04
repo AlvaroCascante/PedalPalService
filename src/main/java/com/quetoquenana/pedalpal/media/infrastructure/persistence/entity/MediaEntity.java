@@ -39,7 +39,7 @@ public class MediaEntity extends AuditableEntity {
     @Column(name = "media_type", nullable = false, length = 50)
     private MediaType mediaType;
 
-    @Column(name = "content_type", nullable = false)
+    @Column(name = "content_type", nullable = false, length = 50)
     private String contentType;
 
     @Column(name = "is_primary")
@@ -61,8 +61,8 @@ public class MediaEntity extends AuditableEntity {
     @Column(name = "provider_asset_id", length = 50)
     private String providerAssetId;
 
-    @Column(name = "title", length = 50)
-    private String title;
+    @Column(name = "name", length = 50)
+    private String name;
 
     @Column(name = "alt_text")
     private String altText;

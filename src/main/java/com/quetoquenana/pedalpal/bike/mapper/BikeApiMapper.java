@@ -209,12 +209,15 @@ public class BikeApiMapper {
     }
 
     public BikeHistoryResponse toResponse(BikeHistoryResult result) {
+        Locale locale = LocaleContextHolder.getLocale();
+        String typeLabel = messageSource.getMessage(result.type().getKey(), null, locale);
+
         return new BikeHistoryResponse(
                 result.id(),
                 result.bikeId(),
                 result.occurredAt(),
                 result.performedBy(),
-                result.type(),
+                typeLabel,
                 result.payload()
         );
     }
@@ -224,7 +227,7 @@ public class BikeApiMapper {
                 request.contentType(),
                 request.mediaType(),
                 request.isPrimary(),
-                request.title(),
+                request.name(),
                 request.altText()
         );
     }

@@ -4,8 +4,9 @@ import java.util.UUID;
 
 public record SystemCodeResponse(
         UUID id,
+        String category,
         String code,
-        String name,
+        String codeDescription,
         String status,
         Integer position
 ) { }

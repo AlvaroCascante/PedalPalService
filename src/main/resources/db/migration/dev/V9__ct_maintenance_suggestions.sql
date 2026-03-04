@@ -1,6 +1,6 @@
 CREATE TABLE maintenance_suggestions (
-    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    bike_id uuid NOT NULL,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    bike_id UUID NOT NULL,
 
     suggestion_type VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL,
@@ -11,17 +11,17 @@ CREATE TABLE maintenance_suggestions (
     raw_prompt TEXT,
     raw_response TEXT,
 
-    version bigint NOT NULL DEFAULT 0,
+    version BIGINT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by uuid NOT NULL,
+    created_by UUID NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by varchar NOT NULL,
+    updated_by UUID NOT NULL,
 
     CONSTRAINT fk_bs_bike FOREIGN KEY (bike_id) REFERENCES bikes(id)
 );
 
 CREATE TABLE maintenance_suggestion_items (
-    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     suggestion_id UUID NOT NULL,
 
     package_id UUID,

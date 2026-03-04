@@ -49,6 +49,7 @@ public class AppointmentEntity extends AuditableEntity {
         if (this.services == null) {
             this.services = new HashSet<>();
         }
+        service.setAppointment(this);
         services.add(service);
     }
 }

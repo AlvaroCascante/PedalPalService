@@ -14,31 +14,31 @@ import jakarta.validation.constraints.Size;
  */
 public record UpdateBikeComponentRequest(
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, message = "{bike.add.component.name.blank}")
+        @Size(min = 1, message = "{bike.component.name.blank}")
         String name,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, message = "{bike.add.component.type.required}")
+        @Size(min = 1, message = "{bike.component.type.required}")
         String type,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, max = 100, message = "{bike.add.component.brand.max}")
+        @Size(min = 1, max = 50, message = "{bike.component.brand.max}")
         String brand,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, max = 100, message = "{bike.add.component.model.max}")
+        @Size(min = 1, max = 50, message = "{bike.component.model.max}")
         String model,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Size(min = 1, max = 1000, message = "{bike.add.component.notes.max}")
+        @Size(min = 1, max = 250, message = "{bike.component.notes.max}")
         String notes,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Min(value = 0, message = "{bike.add.component.odometer.invalid}")
+        @Min(value = 0, message = "{bike.component.odometer.invalid}")
         Integer odometerKm,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        @Min(value = 0, message = "{bike.add.component.usage.invalid}")
+        @Min(value = 0, message = "{bike.component.usage.invalid}")
         Integer usageTimeMinutes
 ) {
 }

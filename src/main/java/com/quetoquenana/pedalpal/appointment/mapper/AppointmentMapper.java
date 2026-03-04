@@ -5,6 +5,7 @@ import com.quetoquenana.pedalpal.appointment.application.result.AppointmentListI
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentServiceResult;
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
+import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
 import com.quetoquenana.pedalpal.appointment.domain.model.RequestedService;
 import org.springframework.stereotype.Component;
 
@@ -45,6 +46,7 @@ public class AppointmentMapper {
                 .bikeId(command.bikeId())
                 .storeLocationId(command.storeLocationId())
                 .scheduledAt(command.scheduledAt())
+                .status(AppointmentStatus.REQUESTED)
                 .notes(command.notes())
                 .build();
     }

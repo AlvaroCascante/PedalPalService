@@ -55,7 +55,7 @@ public class ServiceOrderDetailEntity extends AuditableEntity {
     @Column(name = "completed_at")
     private Instant completedAt;
 
-    @Column(name = "notes", columnDefinition = "text")
+    @Column(name = "notes")
     private String notes;
 
 

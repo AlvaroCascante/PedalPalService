@@ -70,7 +70,7 @@ public class BikeController {
     public ResponseEntity<ApiResponse> getBikeHistory(@PathVariable("id") UUID id) {
         log.info("GET /v1/api/bikes/{}/history Received request to get bike history", id);
         List<BikeHistoryResult> result = bikeHistoryQueryService.findByBikeId(id, getAuthenticatedUserId());
-        Set<BikeHistoryResponse> response = result.stream().map(apiMapper::toResponse).collect(Collectors.toSet());
+        List<BikeHistoryResponse> response = result.stream().map(apiMapper::toResponse).toList();
         return ResponseEntity.ok(new ApiResponse(response));
     }
 

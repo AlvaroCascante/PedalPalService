@@ -1,8 +1,11 @@
 package com.quetoquenana.pedalpal.bike.domain.model;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 import java.util.Locale;
 
+@Getter
 public enum BikeHistoryEventType {
     CREATED("bike.history.created"),
     UPDATED("bike.history.updated"),

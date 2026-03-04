@@ -31,10 +31,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -138,6 +135,6 @@ class AppointmentControllerTest {
         mockMvc.perform(get("/v1/api/appointments/{id}", appointmentId))
                 .andExpect(status().isForbidden());
 
-        org.mockito.Mockito.verify(appointmentQueryService, never()).getById(any());
+        verify(appointmentQueryService, never()).getById(any());
     }
 }

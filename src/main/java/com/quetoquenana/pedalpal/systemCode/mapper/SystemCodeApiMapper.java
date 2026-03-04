@@ -17,13 +17,14 @@ public class SystemCodeApiMapper {
 
     public SystemCodeResponse toResponse(SystemCodeResult result) {
         Locale locale = LocaleContextHolder.getLocale();
-        String name = messageSource.getMessage(result.codeKey(), null, locale);
+        String codeDescription = messageSource.getMessage(result.codeKey(), null, locale);
         String statusLabel = messageSource.getMessage(result.status().getKey(), null, locale);
 
         return new SystemCodeResponse(
                 result.id(),
+                result.category(),
                 result.code(),
-                name,
+                codeDescription,
                 statusLabel,
                 result.position()
         );

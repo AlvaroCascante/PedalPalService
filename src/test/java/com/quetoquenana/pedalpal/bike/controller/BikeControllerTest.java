@@ -459,8 +459,8 @@ class BikeControllerTest {
                         .content(TestJsonBodies.uploadBikeMediaMinimal("image/jpeg", "IMAGE")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.uploadMediaResponse[0].mediaId").isNotEmpty())
-                .andExpect(jsonPath("$.data.uploadMediaResponse[0].storageKey").value("bike/media/key.jpg"))
-                .andExpect(jsonPath("$.data.uploadMediaResponse[0].uploadUrl").value("https://upload.example/key"));
+                .andExpect(jsonPath("$.data.uploadMediaResponse[0].uploadUrl").value("bike/media/key.jpg"))
+                .andExpect(jsonPath("$.data.uploadMediaResponse[0].storageKey").value("https://upload.example/key"));
     }
 
     @Test

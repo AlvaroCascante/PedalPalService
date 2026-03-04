@@ -2,38 +2,38 @@ package com.quetoquenana.pedalpal.bike.presentation.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record CreateBikeRequest(
-        @NotBlank(message = "{bike.create.name.blank}")
+        @NotBlank(message = "{bike.name.blank}")
+        @Size(max = 50, message = "{bike.name.max}")
         String name,
 
-        boolean isPublic,
-
-        @NotNull(message = "{bike.create.type.required}")
+        @NotBlank(message = "{bike.type.required}")
         String type,
 
-        @Size(max = 100, message = "{bike.create.brand.max}")
+        @Size(max = 50, message = "{bike.brand.max}")
         String brand,
 
-        @Size(max = 100, message = "{bike.create.model.max}")
+        @Size(max = 50, message = "{bike.model.max}")
         String model,
 
-        @Min(value = 1900, message = "{bike.create.year.invalid}")
+        @Min(value = 1900, message = "{bike.year.invalid}")
         Integer year,
 
-        @Size(max = 100, message = "{bike.create.serial.max}")
+        @Size(max = 50, message = "{bike.serial.max}")
         String serialNumber,
 
-        @Size(max = 1000, message = "{bike.create.notes.max}")
+        @Size(max = 250, message = "{bike.notes.max}")
         String notes,
 
-        @Min(value = 0, message = "{bike.create.odometer.invalid}")
+        @Min(value = 0, message = "{bike.odometer.invalid}")
         Integer odometerKm,
 
-        @Min(value = 0, message = "{bike.create.usage.invalid}")
+        @Min(value = 0, message = "{bike.usage.invalid}")
         Integer usageTimeMinutes,
+
+        boolean isPublic,
 
         boolean isExternalSync
 ) {

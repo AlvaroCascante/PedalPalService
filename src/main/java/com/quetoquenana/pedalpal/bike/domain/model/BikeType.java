@@ -7,13 +7,13 @@ import java.util.Locale;
 
 @Getter
 public enum BikeType {
-    MTB("bike.type.mtb"),
-    ROAD("bike.type.road"),
-    HYBRID("bike.type.hybrid"),
-    GRAVEL("bike.type.gravel"),
     BMX("bike.type.bmx"),
     E_BIKE("bike.type.ebike"),
-    OTHER("bike.type.other");
+    GRAVEL("bike.type.gravel"),
+    HYBRID("bike.type.hybrid"),
+    MTB("bike.type.mtb"),
+    OTHER("bike.type.other"),
+    ROAD("bike.type.road");
 
     private final String key;
 

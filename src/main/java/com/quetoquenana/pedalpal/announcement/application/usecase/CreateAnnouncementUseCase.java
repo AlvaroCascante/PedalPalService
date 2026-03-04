@@ -52,7 +52,7 @@ public class CreateAnnouncementUseCase {
 
     private void validate(CreateAnnouncementCommand command) {
         if (command.title() == null || command.title().trim().isEmpty()) {
-            throw new BadRequestException("announcement.create.title.blank");
+            throw new BadRequestException("announcement.title.blank");
         }
     }
 }

@@ -1,12 +1,12 @@
 CREATE TABLE system_codes (
-    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    category varchar NOT NULL,
-    code varchar NOT NULL,
-    label varchar,
-    description varchar,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    category VARCHAR(50) NOT NULL,
+    code VARCHAR(50) NOT NULL,
+    code_key VARCHAR(100) NOT NULL, -- Used for i18n lookups
     status VARCHAR(50) NOT NULL,
-    code_key varchar, -- Used for i18n lookups
-    position int,
+    label VARCHAR(50),
+    description VARCHAR,
+    position INT,
 
     CONSTRAINT ux_system_codes_category_code UNIQUE (category, code)
 );

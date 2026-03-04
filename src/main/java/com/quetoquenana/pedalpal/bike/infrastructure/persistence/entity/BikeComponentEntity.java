@@ -21,7 +21,6 @@ import java.util.UUID;
 public class BikeComponentEntity extends AuditableEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private UUID id;
 
@@ -47,7 +46,7 @@ public class BikeComponentEntity extends AuditableEntity {
     @Column(name = "model", length = 50)
     private String model;
 
-    @Column(name = "notes", columnDefinition = "text")
+    @Column(name = "notes")
     private String notes;
 
     @Column(name = "odometer_km")

@@ -6,9 +6,9 @@ import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnounce
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
 import com.quetoquenana.pedalpal.announcement.mapper.AnnouncementMapper;
-import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
+import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import com.quetoquenana.pedalpal.util.TestAnnouncementData;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -66,7 +66,7 @@ class UpdateAnnouncementStatusUseCaseTest {
             useCase.execute(command);
 
             verify(repository, times(1)).save(announcementCaptor.capture());
-            assertEquals(GeneralStatus.INACTIVE, announcementCaptor.getValue().getStatus());
+            assertEquals(MediaStatus.INACTIVE, announcementCaptor.getValue().getStatus());
         }
     }
 
@@ -90,7 +90,7 @@ class UpdateAnnouncementStatusUseCaseTest {
             when(repository.getById(id)).thenReturn(Optional.of(TestAnnouncementData.existingAnnouncement(id)));
 
             BadRequestException ex = assertThrows(BadRequestException.class, () -> useCase.execute(TestAnnouncementData.statusCommand(id, userId, "  ")));
-            assertEquals("announcement.update.status.required", ex.getMessage());
+            assertEquals("announcement.status.blank", ex.getMessage());
         }
     }
 }

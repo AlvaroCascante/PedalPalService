@@ -24,7 +24,7 @@ public class AnnouncementEntity extends AuditableEntity {
     @Column(name = "title", nullable = false, length = 50)
     private String title;
 
-    @Column(name = "sub_title", length = 50)
+    @Column(name = "sub_title", length = 100)
     private String subtitle;
 
     @Column(name = "description")

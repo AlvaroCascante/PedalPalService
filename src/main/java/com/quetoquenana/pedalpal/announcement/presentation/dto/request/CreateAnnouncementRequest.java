@@ -8,20 +8,20 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 public record CreateAnnouncementRequest(
-        @NotBlank(message = "{announcement.create.title.blank}")
-        @Size(max = 50, message = "{announcement.create.title.max}")
+        @NotBlank(message = "{announcement.title.blank}")
+        @Size(max = 50, message = "{announcement.title.max}")
         String title,
 
-        @Size(max = 50, message = "{announcement.create.subtitle.max}")
+        @Size(max = 100, message = "{announcement.subtitle.max}")
         String subTitle,
 
-        @Size(max = 250, message = "{announcement.create.description.max}")
+        @Size(max = 250, message = "{announcement.description.max}")
         String description,
 
-        @Min(value = 1, message = "{announcement.create.position.invalid}")
+        @Min(value = 1, message = "{announcement.position.invalid}")
         Integer position,
 
-        @Size(max = 250, message = "{announcement.create.url.max}")
+        @Size(max = 250, message = "{announcement.url.max}")
         String url,
 
         @Valid

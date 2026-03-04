@@ -24,7 +24,7 @@ public class MediaEntityMapper {
                 .providerAssetId(entity.getProviderAssetId())
                 .sizeBytes(entity.getSizeBytes())
                 .metadata(entity.getMetadata())
-                .title(entity.getTitle())
+                .title(entity.getName())
                 .altText(entity.getAltText())
                 .build();
     }
@@ -44,7 +44,7 @@ public class MediaEntityMapper {
                 .providerAssetId(model.getProviderAssetId())
                 .sizeBytes(model.getSizeBytes())
                 .metadata(model.getMetadata())
-                .title(model.getTitle())
+                .name(model.getTitle())
                 .altText(model.getAltText())
                 .build();
     }

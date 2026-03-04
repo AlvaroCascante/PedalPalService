@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -47,8 +48,10 @@ public class BikeMapper {
 
     public BikeComponent toModel(
             AddBikeComponentCommand command,
-            SystemCode componentType) {
+            SystemCode componentType
+    ) {
         return BikeComponent.builder()
+                .id(UUID.randomUUID())
                 .name(command.name())
                 .componentType(componentType)
                 .status(BikeComponentStatus.ACTIVE)

@@ -51,7 +51,7 @@ class UpdateAppointmentStatusUseCaseTest {
                     .storeLocationId(UUID.randomUUID())
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
                     .status(AppointmentStatus.REQUESTED)
-                    .requestedServices(new HashSet<>())
+                    .requestedServices(new ArrayList<>())
                     .build();
 
             when(appointmentRepository.getById(id)).thenReturn(Optional.of(appointment));
@@ -94,7 +94,7 @@ class UpdateAppointmentStatusUseCaseTest {
                     .storeLocationId(UUID.randomUUID())
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
                     .status(AppointmentStatus.REQUESTED)
-                    .requestedServices(new HashSet<>())
+                    .requestedServices(new ArrayList<>())
                     .build();
 
             when(appointmentRepository.getById(id)).thenReturn(Optional.of(appointment));

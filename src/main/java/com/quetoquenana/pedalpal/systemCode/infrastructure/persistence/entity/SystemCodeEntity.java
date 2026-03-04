@@ -20,24 +20,24 @@ public class SystemCodeEntity {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "category", nullable = false)
+    @Column(name = "category", length = 50, nullable = false)
     private String category;
 
-    @Column(name = "code", nullable = false)
+    @Column(name = "code", length = 50, nullable = false)
     private String code;
 
-    @Column(name = "label")
+    @Column(name = "code_key", length =  100, nullable = false)
+    private String codeKey;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 50, nullable = false)
+    private GeneralStatus status;
+
+    @Column(name = "label", length = 50)
     private String label;
 
     @Column(name = "description")
     private String description;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 50)
-    private GeneralStatus status;
-
-    @Column(name = "code_key")
-    private String codeKey;
 
     @Column(name = "position")
     private Integer position;

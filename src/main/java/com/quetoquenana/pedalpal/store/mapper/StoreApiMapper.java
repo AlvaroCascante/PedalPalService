@@ -22,7 +22,7 @@ public class StoreApiMapper {
     private final MessageSource messageSource;
 
     public StoreResponse toResponse(StoreResult result) {
-        return this.toResponse(result,  Set.of(GeneralStatus.ACTIVE));
+        return this.toResponse(result, Set.of(GeneralStatus.ACTIVE));
     }
 
     public StoreResponse toResponse(StoreResult result, Set<GeneralStatus> locationStatuses) {

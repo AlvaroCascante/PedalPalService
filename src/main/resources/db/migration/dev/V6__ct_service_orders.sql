@@ -7,9 +7,9 @@ CREATE TABLE service_orders (
     completed_at TIMESTAMP WITH TIME ZONE,
     total_price NUMERIC(12,2),
 
-    version bigint NOT NULL DEFAULT 0,
+    version BIGINT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by uuid NOT NULL,
+    created_by UUID NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by UUID
 );
@@ -31,11 +31,11 @@ CREATE TABLE service_order_details (
     completed_at TIMESTAMP WITH TIME ZONE,
 
     deposit_amount NUMERIC(10,2),
-    notes TEXT,
+    notes VARCHAR,
 
     version bigint NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by uuid NOT NULL,
+    created_by UUID NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by UUID
 );
@@ -50,9 +50,9 @@ CREATE TABLE service_order_detail_comments (
     comment TEXT NOT NULL,
     image_url VARCHAR(250),
 
-    version bigint NOT NULL DEFAULT 0,
+    version BIGINT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by uuid NOT NULL,
+    created_by UUID NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by uuid NULL
+    updated_by UUID NULL
 );

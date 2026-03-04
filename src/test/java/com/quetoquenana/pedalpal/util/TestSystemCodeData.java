@@ -27,6 +27,7 @@ public final class TestSystemCodeData {
     public static SystemCodeResponse systemCodeResponse(UUID id) {
         return new SystemCodeResponse(
                 id,
+                "COMPONENT_TYPE",
                 "CHAIN",
                 "Chain",
                 "ACTIVE",

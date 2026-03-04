@@ -184,7 +184,7 @@ class CreateAnnouncementUseCaseTest {
             );
 
             BadRequestException ex = assertThrows(BadRequestException.class, () -> useCase.execute(command));
-            assertEquals("announcement.create.title.blank", ex.getMessage());
+            assertEquals("announcement.title.blank", ex.getMessage());
         }
     }
 }

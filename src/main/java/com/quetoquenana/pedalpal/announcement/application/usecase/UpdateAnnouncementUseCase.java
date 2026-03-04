@@ -45,9 +45,9 @@ public class UpdateAnnouncementUseCase {
     }
 
     private void validate(UpdateAnnouncementCommand command) {
-        rejectBlankIfPresent(command.title(), "announcement.update.title.blank");
-        rejectBlankIfPresent(command.subTitle(), "announcement.update.subtitle.blank");
-        rejectBlankIfPresent(command.url(), "announcement.update.url.blank");
+        rejectBlankIfPresent(command.title(), "announcement.title.blank");
+        rejectBlankIfPresent(command.subTitle(), "announcement.subtitle.blank");
+        rejectBlankIfPresent(command.url(), "announcement.url.blank");
     }
 
     private void rejectBlankIfPresent(String value, String messageKey) {

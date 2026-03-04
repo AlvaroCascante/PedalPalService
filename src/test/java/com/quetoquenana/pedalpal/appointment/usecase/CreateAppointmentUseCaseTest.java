@@ -13,9 +13,11 @@ import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeType;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.product.domain.model.Product;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
+import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,6 +56,9 @@ class CreateAppointmentUseCaseTest {
     @Mock
     ProductRepository productRepository;
 
+    @Mock
+    ProductPackageRepository productPackageRepository;
+
     @InjectMocks
     CreateAppointmentUseCase useCase;
 
@@ -73,9 +78,9 @@ class CreateAppointmentUseCaseTest {
                     .bikeId(bikeId)
                     .storeLocationId(storeLocationId)
                     .scheduledAt(Instant.parse("2026-02-25T10:00:00Z"))
-                    .status(AppointmentStatus.REQUESTED)
+                    .status(AppointmentStatus.REQUESTED) // Important: mapper doesn't set it; use case must default it.
                     .notes("notes")
-                    .requestedServices(new HashSet<>())
+                    .requestedServices(new ArrayList<>())
                     .build();
 
             when(mapper.toModel(any(CreateAppointmentCommand.class))).thenReturn(mapped);
@@ -108,10 +113,10 @@ class CreateAppointmentUseCaseTest {
                     .name("Chain")
                     .description("Bike chain")
                     .price(new BigDecimal("19.99"))
-                    .status(com.quetoquenana.pedalpal.common.domain.model.GeneralStatus.ACTIVE)
+                    .status(GeneralStatus.ACTIVE)
                     .build();
 
-            when(productRepository.getByIdAndStatus(eq(productId), eq(com.quetoquenana.pedalpal.common.domain.model.GeneralStatus.ACTIVE)))
+            when(productRepository.getByIdAndStatus(eq(productId), eq(GeneralStatus.ACTIVE)))
                     .thenReturn(Optional.of(product));
 
             when(appointmentRepository.save(any(Appointment.class))).thenAnswer(inv -> {
@@ -139,8 +144,8 @@ class CreateAppointmentUseCaseTest {
             assertEquals(storeLocationId, saved.getStoreLocationId());
             assertEquals(AppointmentStatus.REQUESTED, saved.getStatus());
             assertEquals(1, saved.getRequestedServices().size());
-            assertEquals("Chain", saved.getRequestedServices().iterator().next().getName());
-            assertEquals(new BigDecimal("19.99"), saved.getRequestedServices().iterator().next().getPrice());
+            assertEquals("Chain", saved.getRequestedServices().getFirst().getName());
+            assertEquals(new BigDecimal("19.99"), saved.getRequestedServices().getFirst().getPrice());
             assertNotNull(result.id());
         }
     }

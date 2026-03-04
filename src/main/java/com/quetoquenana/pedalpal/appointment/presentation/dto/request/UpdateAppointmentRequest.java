@@ -12,7 +12,7 @@ public record UpdateAppointmentRequest(
         UUID authenticatedUserId,
         Instant scheduledAt,
         String notes,
-        List<CreateAppointmentRequest.RequestedServiceRequestItem> requestedServices
+        List<RequestedServiceItemRequest> requestedServices
 ) {
 }
 

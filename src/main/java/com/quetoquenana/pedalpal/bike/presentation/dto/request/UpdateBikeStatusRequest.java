@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
  * PATCH request DTO for bike status updates.
  */
 public record UpdateBikeStatusRequest(
-        @NotNull(message = "{bike.update.status.blank}")
+        @NotNull(message = "{bike.status.blank}")
         String status
 ) {
 }

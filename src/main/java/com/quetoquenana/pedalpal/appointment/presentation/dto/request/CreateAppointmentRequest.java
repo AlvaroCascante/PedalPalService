@@ -8,26 +8,20 @@ import java.util.List;
 import java.util.UUID;
 
 public record CreateAppointmentRequest(
-        @NotNull(message = "{appointment.create.bikeId.required}")
+        @NotNull(message = "{appointment.bikeId.required}")
         UUID bikeId,
 
-        @NotNull(message = "{appointment.create.storeLocationId.required}")
+        @NotNull(message = "{appointment.storeLocationId.required}")
         UUID storeLocationId,
 
-        @NotNull(message = "{appointment.create.scheduledAt.required}")
+        @NotNull(message = "{appointment.scheduledAt.required}")
         Instant scheduledAt,
 
         String notes,
 
         @Valid
-        List<RequestedServiceRequestItem> requestedServices
+        @NotNull(message = "{appointment.requestedServices.required}")
+        List<RequestedServiceItemRequest> requestedServices
 ) {
-    public record RequestedServiceRequestItem(
-            @NotNull(message = "{appointment.create.service.serviceId.required}")
-            UUID serviceId,
-            @NotNull(message = "{appointment.create.service.serviceType.required}")
-            String serviceType
-    ) {
-    }
 }
 

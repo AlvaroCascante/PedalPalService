@@ -33,7 +33,7 @@ public class UpdateAnnouncementStatusUseCase {
 
         try {
             if (command.status() == null || command.status().trim().isEmpty()) {
-                throw new BadRequestException("announcement.update.status.required");
+                throw new BadRequestException("announcement.status.blank");
             }
 
             announcement.setStatus(MediaStatus.from(command.status()));
@@ -44,7 +44,7 @@ public class UpdateAnnouncementStatusUseCase {
             throw ex;
         } catch (RuntimeException ex) {
             log.error("RuntimeException on UpdateAnnouncementStatusUseCase -- Command: {}: Error: {}", command, ex.getMessage());
-            throw new BusinessException("announcement.update.status.failed");
+            throw new BusinessException("announcement.status.update.failed");
         }
     }
 }

@@ -1,11 +1,11 @@
 package com.quetoquenana.pedalpal.appointment.presentation.dto.request;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 @Builder
 public record UpdateAppointmentStatusRequest(
-        @NotNull(message = "{appointment.update.status.required}")
+        @NotBlank(message = "{appointment.status.required}")
         String status
 ) {
 }

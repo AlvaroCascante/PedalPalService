@@ -57,7 +57,7 @@ public class BikeEntity extends AuditableEntity {
     @Column(name = "serial_number", unique = true, length = 50)
     private String serialNumber;
 
-    @Column(name = "notes", columnDefinition = "text")
+    @Column(name = "notes")
     private String notes;
 
     @Column(name = "odometer_km")

@@ -5,7 +5,7 @@ import lombok.Builder;
 
 @Builder
 public record UpdateAnnouncementStatusRequest(
-        @Size(min = 1, message = "{announcement.update.status.blank}")
+        @Size(min = 1, message = "{announcement.status.blank}")
         String status
 ) {
 }

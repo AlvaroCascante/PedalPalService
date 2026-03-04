@@ -1,25 +1,25 @@
 CREATE TABLE bikes (
-    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    owner_id uuid NOT NULL,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    owner_id UUID NOT NULL,
     name VARCHAR(50) NOT NULL,
     type VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL,
-    is_public boolean,
-    is_external_sync boolean,
+    is_public BOOLEAN,
+    is_external_sync BOOLEAN,
 
     brand VARCHAR(50),
     model VARCHAR(50),
-    year int,
+    year INT,
     serial_number VARCHAR(50),
-    notes text,
-    odometer_km int,
-    usage_time_minutes int,
+    notes VARCHAR,
+    odometer_km INT,
+    usage_time_minutes INT,
 
-    version bigint NOT NULL DEFAULT 0,
+    version BIGINT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by uuid NOT NULL,
+    created_by UUID NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by uuid NULL
+    updated_by UUID NULL
 );
 
 CREATE UNIQUE INDEX uk_bikes_serial_number_not_null -- Enforce uniqueness of serial_number when it's not null
@@ -27,34 +27,34 @@ CREATE UNIQUE INDEX uk_bikes_serial_number_not_null -- Enforce uniqueness of ser
     WHERE serial_number IS NOT NULL;
 
 CREATE TABLE bike_components (
-    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    bike_id uuid NOT NULL,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    bike_id UUID NOT NULL,
 
-    component_type uuid NOT NULL, -- references system_codes(id) where category='COMPONENT_TYPE'
+    component_type UUID NOT NULL, -- references system_codes(id) where category='COMPONENT_TYPE'
     name VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL,
 
     brand VARCHAR(50),
     model VARCHAR(50),
-    notes text,
+    notes VARCHAR,
 
-    odometer_km int,
-    usage_time_minutes int,
+    odometer_km INT,
+    usage_time_minutes INT,
 
-    version bigint NOT NULL DEFAULT 0,
+    version BIGINT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by uuid NOT NULL,
+    created_by UUID NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by uuid NULL,
+    updated_by UUID NULL,
 
     CONSTRAINT fk_bc_bike FOREIGN KEY (bike_id) REFERENCES bikes(id),
     CONSTRAINT fk_bc_component_type FOREIGN KEY (component_type) REFERENCES system_codes(id)
 );
 
 CREATE TABLE bike_history (
-    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    bike_id uuid NOT NULL,
-    reference_id uuid NOT NULL,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    bike_id UUID NOT NULL,
+    reference_id UUID NOT NULL,
 
     occurred_at TIMESTAMP NOT NULL,
     performed_by UUID NOT NULL,
