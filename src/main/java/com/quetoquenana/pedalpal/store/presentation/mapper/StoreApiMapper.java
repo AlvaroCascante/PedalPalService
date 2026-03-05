@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.store.mapper;
+package com.quetoquenana.pedalpal.store.presentation.mapper;
 
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.store.application.result.StoreLocationResult;

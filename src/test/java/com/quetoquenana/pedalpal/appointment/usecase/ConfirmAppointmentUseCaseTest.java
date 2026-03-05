@@ -9,6 +9,7 @@ import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
 import com.quetoquenana.pedalpal.appointment.domain.model.RequestedService;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
 import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
+import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.serviceOrder.application.port.ServiceOrderPort;
@@ -81,6 +82,8 @@ class ConfirmAppointmentUseCaseTest {
             StoreLocation location = StoreLocation.builder()
                     .id(appointment.getStoreLocationId())
                     .storePrefix("PP")
+                    .name("Main Location")
+                    .status(GeneralStatus.ACTIVE)
                     .build();
             when(storeLocationRepository.getById(appointment.getStoreLocationId())).thenReturn(Optional.of(location));
 
@@ -156,6 +159,8 @@ class ConfirmAppointmentUseCaseTest {
             StoreLocation location = StoreLocation.builder()
                     .id(appointment.getStoreLocationId())
                     .storePrefix("PP")
+                    .name("Main Location")
+                    .status(GeneralStatus.ACTIVE)
                     .build();
             when(storeLocationRepository.getById(appointment.getStoreLocationId())).thenReturn(Optional.of(location));
 
@@ -240,6 +245,8 @@ class ConfirmAppointmentUseCaseTest {
             StoreLocation location = StoreLocation.builder()
                     .id(appointment.getStoreLocationId())
                     .storePrefix("PP")
+                    .name("Main Location")
+                    .status(GeneralStatus.ACTIVE)
                     .build();
             when(storeLocationRepository.getById(appointment.getStoreLocationId())).thenReturn(Optional.of(location));
 

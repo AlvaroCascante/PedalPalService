@@ -1,19 +1,25 @@
-package com.quetoquenana.pedalpal.store.mapper;
+package com.quetoquenana.pedalpal.store.infrastructure.persistence.mapper;
 
 import com.quetoquenana.pedalpal.store.infrastructure.persistence.entity.StoreEntity;
 import com.quetoquenana.pedalpal.store.infrastructure.persistence.entity.StoreLocationEntity;
 import com.quetoquenana.pedalpal.store.domain.model.Store;
 import com.quetoquenana.pedalpal.store.domain.model.StoreLocation;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.Set;
 
-@Component
-@RequiredArgsConstructor
-public class StoreEntityMapper {
+/**
+ * Maps store persistence entities to domain models and back.
+ */
+public final class StoreEntityMapper {
 
-    public Store toModel(StoreEntity entity) {
+    private StoreEntityMapper() {
+    }
+
+    /**
+     * Converts a store entity into a domain model.
+     */
+    public static Store toModel(StoreEntity entity) {
         Store model = Store.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -24,13 +30,16 @@ public class StoreEntityMapper {
         if (entity.getLocations() != null) {
             entity.getLocations()
                     .stream()
-                    .map(this::toModel)
+                    .map(StoreEntityMapper::toModel)
                     .forEach(model::addLocation);
         }
         return model;
     }
 
-    public StoreLocation toModel(StoreLocationEntity entity) {
+    /**
+     * Converts a store location entity into a domain model.
+     */
+    public static StoreLocation toModel(StoreLocationEntity entity) {
         StoreLocation model = StoreLocation.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -47,20 +56,23 @@ public class StoreEntityMapper {
         return model;
     }
 
-    public StoreEntity toEntity(Store model) {
+    /**
+     * Converts a store domain model into a persistence entity.
+     */
+    public static StoreEntity toEntity(Store model) {
         StoreEntity entity = StoreEntity.builder()
                 .id(model.getId())
                 .name(model.getName())
                 .build();
         entity.setVersion(model.getVersion());
-        model.getLocations()
-                .stream()
-                .map(this::toEntity)
+        Set<StoreLocation> locations = model.getLocations() == null ? Set.of() : model.getLocations();
+        locations.stream()
+                .map(StoreEntityMapper::toEntity)
                 .forEach(entity::addLocation);
         return entity;
     }
 
-    private StoreLocationEntity toEntity(StoreLocation model) {
+    private static StoreLocationEntity toEntity(StoreLocation model) {
         StoreLocationEntity entity = StoreLocationEntity.builder()
                 .id(model.getId())
                 .name(model.getName())

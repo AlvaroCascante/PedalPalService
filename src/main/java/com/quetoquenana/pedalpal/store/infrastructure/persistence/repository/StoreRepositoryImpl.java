@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.store.infrastructure.persistence.repository;
 
 import com.quetoquenana.pedalpal.store.infrastructure.persistence.entity.StoreEntity;
-import com.quetoquenana.pedalpal.store.mapper.StoreEntityMapper;
+import com.quetoquenana.pedalpal.store.infrastructure.persistence.mapper.StoreEntityMapper;
 import com.quetoquenana.pedalpal.store.domain.model.Store;
 import com.quetoquenana.pedalpal.store.domain.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,26 +13,24 @@ import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
-public class StoreRepositoryImpl implements StoreRepository {
+class StoreRepositoryImpl implements StoreRepository {
 
     private final StoreJpaRepository repository;
-    private final StoreEntityMapper mapper;
 
     @Override
     public Optional<Store> getById(UUID id) {
-        return repository.findById(id).map(mapper::toModel);
+        return repository.findById(id).map(StoreEntityMapper::toModel);
     }
 
     @Override
     public List<Store> getAll() {
-        return repository.findAll().stream().map(mapper::toModel).toList();
+        return repository.findAll().stream().map(StoreEntityMapper::toModel).toList();
     }
 
     @Override
     public Store save(Store store) {
         // Map the Bike domain model to a BikeEntity
-        StoreEntity entity = mapper.toEntity(store);
-        return mapper.toModel(repository.save(entity));
+        StoreEntity entity = StoreEntityMapper.toEntity(store);
+        return StoreEntityMapper.toModel(repository.save(entity));
     }
 }
-

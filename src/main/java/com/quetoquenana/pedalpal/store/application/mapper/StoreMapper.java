@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.store.mapper;
+package com.quetoquenana.pedalpal.store.application.mapper;
 
 import com.quetoquenana.pedalpal.store.application.result.StoreLocationResult;
 import com.quetoquenana.pedalpal.store.application.result.StoreResult;
@@ -7,18 +7,26 @@ import com.quetoquenana.pedalpal.store.domain.model.StoreLocation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Maps store domain models to application results.
+ */
 @Component
 @RequiredArgsConstructor
 public class StoreMapper {
 
+    /**
+     * Builds a result DTO from a domain model.
+     */
     public StoreResult toResult(Store model) {
+        Set<StoreLocation> locations = model.getLocations() == null ? Collections.emptySet() : model.getLocations();
         return new StoreResult(
                 model.getId(),
                 model.getName(),
-                model.getLocations()
-                        .stream()
+                locations.stream()
                         .map(this::toResult)
                         .collect(Collectors.toSet())
         );

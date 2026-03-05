@@ -5,7 +5,7 @@ import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.store.application.query.StoreQueryService;
 import com.quetoquenana.pedalpal.store.application.result.StoreResult;
-import com.quetoquenana.pedalpal.store.mapper.StoreApiMapper;
+import com.quetoquenana.pedalpal.store.presentation.mapper.StoreApiMapper;
 import com.quetoquenana.pedalpal.store.presentation.dto.response.StoreResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
