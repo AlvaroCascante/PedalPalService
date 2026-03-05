@@ -1,12 +1,19 @@
-package com.quetoquenana.pedalpal.systemCode.mapper;
+package com.quetoquenana.pedalpal.systemCode.infrastructure.persistence.mapper;
 
 import com.quetoquenana.pedalpal.systemCode.infrastructure.persistence.entity.SystemCodeEntity;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
-import org.springframework.stereotype.Component;
 
-@Component
-public class SystemCodeEntityMapper {
+/**
+ * Maps SystemCode entities to domain models and back.
+ */
+public final class SystemCodeEntityMapper {
 
+    private SystemCodeEntityMapper() {
+    }
+
+    /**
+     * Converts a persistence entity into a domain model.
+     */
     public static SystemCode toModel(SystemCodeEntity entity) {
         return SystemCode.builder()
                 .id(entity.getId())
@@ -20,6 +27,9 @@ public class SystemCodeEntityMapper {
                 .build();
     }
 
+    /**
+     * Converts a domain model into a persistence entity.
+     */
     public static SystemCodeEntity toEntity(SystemCode model) {
         return SystemCodeEntity.builder()
                 .id(model.getId())
@@ -33,4 +43,3 @@ public class SystemCodeEntityMapper {
                 .build();
     }
 }
-

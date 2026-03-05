@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.systemCode.mapper;
+package com.quetoquenana.pedalpal.systemCode.presentation.mapper;
 
 import com.quetoquenana.pedalpal.systemCode.application.result.SystemCodeResult;
 import com.quetoquenana.pedalpal.systemCode.presentation.dto.response.SystemCodeResponse;
@@ -9,12 +9,18 @@ import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
+/**
+ * Maps SystemCode results to API responses with localized labels.
+ */
 @Component
 @RequiredArgsConstructor
 public class SystemCodeApiMapper {
 
     private final MessageSource messageSource;
 
+    /**
+     * Builds a localized API response from the query result.
+     */
     public SystemCodeResponse toResponse(SystemCodeResult result) {
         Locale locale = LocaleContextHolder.getLocale();
         String codeDescription = messageSource.getMessage(result.codeKey(), null, locale);

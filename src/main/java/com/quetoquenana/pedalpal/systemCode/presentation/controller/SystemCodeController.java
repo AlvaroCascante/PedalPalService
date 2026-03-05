@@ -3,7 +3,7 @@ package com.quetoquenana.pedalpal.systemCode.presentation.controller;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.systemCode.application.query.SystemCodeQueryService;
 import com.quetoquenana.pedalpal.systemCode.application.result.SystemCodeResult;
-import com.quetoquenana.pedalpal.systemCode.mapper.SystemCodeApiMapper;
+import com.quetoquenana.pedalpal.systemCode.presentation.mapper.SystemCodeApiMapper;
 import com.quetoquenana.pedalpal.systemCode.presentation.dto.response.SystemCodeResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +19,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * REST controller for read-only SystemCode endpoints.
+ */
 @RestController
 @RequestMapping("/v1/api")
 @RequiredArgsConstructor
@@ -29,17 +32,23 @@ public class SystemCodeController {
 
     private final SystemCodeApiMapper apiMapper;
 
+    /**
+     * Returns a system code by id.
+     */
     @GetMapping("/system-codes/{id}")
     @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN'))")
     public ResponseEntity<ApiResponse> getById(
             @PathVariable("id") UUID id
     ) {
-        log.info("GET /v1/api/components/{} Received request to get component by id", id);
+        log.info("GET /v1/api/system-codes/{} Received request to get system code by id", id);
         SystemCodeResult result = queryService.getById(id);
         SystemCodeResponse response = apiMapper.toResponse(result);
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
+    /**
+     * Returns active component system codes.
+     */
     @GetMapping("/components")
     @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN'))")
     public ResponseEntity<ApiResponse> getActiveComponents() {

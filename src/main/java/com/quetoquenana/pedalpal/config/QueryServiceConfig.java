@@ -23,7 +23,7 @@ import com.quetoquenana.pedalpal.store.application.query.StoreQueryService;
 import com.quetoquenana.pedalpal.store.domain.repository.StoreRepository;
 import com.quetoquenana.pedalpal.systemCode.application.query.SystemCodeQueryService;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
-import com.quetoquenana.pedalpal.systemCode.mapper.SystemCodeMapper;
+import com.quetoquenana.pedalpal.systemCode.application.mapper.SystemCodeMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -1,7 +1,8 @@
 package com.quetoquenana.pedalpal.systemCode.infrastructure.persistence.repository;
 
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
-import com.quetoquenana.pedalpal.systemCode.mapper.SystemCodeEntityMapper;
+import com.quetoquenana.pedalpal.systemCode.infrastructure.persistence.entity.SystemCodeEntity;
+import com.quetoquenana.pedalpal.systemCode.infrastructure.persistence.mapper.SystemCodeEntityMapper;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +12,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Persistence adapter for SystemCode operations.
+ */
 @Repository
 @RequiredArgsConstructor
-public class SystemCodeRepositoryImpl implements SystemCodeRepository {
+class SystemCodeRepositoryImpl implements SystemCodeRepository {
 
     private final SystemCodeJpaRepository repository;
 
@@ -24,12 +28,15 @@ public class SystemCodeRepositoryImpl implements SystemCodeRepository {
 
     @Override
     public SystemCode save(SystemCode systemCode) {
-        return null;
+        SystemCodeEntity entity = SystemCodeEntityMapper.toEntity(systemCode);
+        return SystemCodeEntityMapper.toModel(repository.save(entity));
     }
 
     @Override
     public SystemCode update(UUID systemCodeId, SystemCode systemCode) {
-        return null;
+        SystemCodeEntity entity = SystemCodeEntityMapper.toEntity(systemCode);
+        entity.setId(systemCodeId);
+        return SystemCodeEntityMapper.toModel(repository.save(entity));
     }
 
     @Override

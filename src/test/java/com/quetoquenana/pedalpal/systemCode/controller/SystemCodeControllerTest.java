@@ -7,7 +7,7 @@ import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.systemCode.application.query.SystemCodeQueryService;
 import com.quetoquenana.pedalpal.systemCode.application.result.SystemCodeResult;
-import com.quetoquenana.pedalpal.systemCode.mapper.SystemCodeApiMapper;
+import com.quetoquenana.pedalpal.systemCode.presentation.mapper.SystemCodeApiMapper;
 import com.quetoquenana.pedalpal.systemCode.presentation.controller.SystemCodeController;
 import com.quetoquenana.pedalpal.systemCode.presentation.dto.response.SystemCodeResponse;
 import com.quetoquenana.pedalpal.util.TestSystemCodeData;

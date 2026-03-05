@@ -8,7 +8,9 @@ import lombok.Setter;
 import java.util.Objects;
 import java.util.UUID;
 
-@Builder
+/**
+ * Domain model for system codes with basic invariants.
+ */
 @Getter
 @Setter
 public class SystemCode {
@@ -20,6 +22,67 @@ public class SystemCode {
     private String codeKey;
     private GeneralStatus status;
     private Integer position;
+
+    /**
+     * Creates a SystemCode with validated core fields.
+     */
+    @Builder
+    public SystemCode(UUID id,
+                      String category,
+                      String code,
+                      String label,
+                      String description,
+                      String codeKey,
+                      GeneralStatus status,
+                      Integer position) {
+        validateNotBlank("category", category);
+        validateNotBlank("code", code);
+        validateStatus(status);
+        this.id = id;
+        this.category = category;
+        this.code = code;
+        this.label = label;
+        this.description = description;
+        this.codeKey = codeKey;
+        this.status = status;
+        this.position = position;
+    }
+
+    /**
+     * Updates the category value with validation.
+     */
+    public void setCategory(String category) {
+        validateNotBlank("category", category);
+        this.category = category;
+    }
+
+    /**
+     * Updates the code value with validation.
+     */
+    public void setCode(String code) {
+        validateNotBlank("code", code);
+        this.code = code;
+    }
+
+    /**
+     * Updates the status value with validation.
+     */
+    public void setStatus(GeneralStatus status) {
+        validateStatus(status);
+        this.status = status;
+    }
+
+    private static void validateNotBlank(String field, String value) {
+        if (value == null || value.isBlank()) {
+            throw new IllegalArgumentException(field + " is required");
+        }
+    }
+
+    private static void validateStatus(GeneralStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("status is required");
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

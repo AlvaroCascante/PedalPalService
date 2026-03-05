@@ -6,7 +6,7 @@ import com.quetoquenana.pedalpal.bike.domain.model.BikeHistory;
 import com.quetoquenana.pedalpal.bike.infrastructure.persistence.entity.BikeComponentEntity;
 import com.quetoquenana.pedalpal.bike.infrastructure.persistence.entity.BikeEntity;
 import com.quetoquenana.pedalpal.bike.infrastructure.persistence.entity.BikeHistoryEntity;
-import com.quetoquenana.pedalpal.systemCode.mapper.SystemCodeEntityMapper;
+import com.quetoquenana.pedalpal.systemCode.infrastructure.persistence.mapper.SystemCodeEntityMapper;
 import org.springframework.stereotype.Component;
 
 @Component
