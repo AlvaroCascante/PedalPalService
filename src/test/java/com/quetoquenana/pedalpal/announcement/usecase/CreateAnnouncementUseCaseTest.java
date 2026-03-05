@@ -4,13 +4,13 @@ import com.quetoquenana.pedalpal.announcement.application.command.CreateAnnounce
 import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementResult;
 import com.quetoquenana.pedalpal.announcement.application.usecase.CreateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
+import com.quetoquenana.pedalpal.announcement.domain.model.AnnouncementStatus;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
 import com.quetoquenana.pedalpal.announcement.mapper.AnnouncementMapper;
 import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.common.application.port.UploadMediaPort;
 import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
-import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import com.quetoquenana.pedalpal.util.TestAnnouncementData;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -68,15 +68,15 @@ class CreateAnnouncementUseCaseTest {
                     .description(command.description())
                     .position(command.position())
                     .url(command.url())
-                    .status(MediaStatus.ACTIVE)
+                    .status(AnnouncementStatus.DRAFT)
                     .build();
 
             Announcement saved = TestAnnouncementData.existingAnnouncement(savedId);
 
             UploadMediaCommand mediaCommand = new UploadMediaCommand(
                     authUserId,
-                    command.isAdmin(),
-                    command.isPublic(),
+                    true,
+                    true,
                     savedId,
                     com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType.ANNOUNCEMENT,
                     java.util.Set.of()
@@ -112,15 +112,15 @@ class CreateAnnouncementUseCaseTest {
 
             Announcement model = Announcement.builder()
                     .title(command.title())
-                    .status(MediaStatus.ACTIVE)
+                    .status(AnnouncementStatus.DRAFT)
                     .build();
 
             Announcement saved = TestAnnouncementData.existingAnnouncement(savedId);
 
             UploadMediaCommand mediaCommand = new UploadMediaCommand(
                     authUserId,
-                    command.isAdmin(),
-                    command.isPublic(),
+                    true,
+                    true,
                     savedId,
                     com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType.ANNOUNCEMENT,
                     java.util.Set.of()
@@ -173,14 +173,12 @@ class CreateAnnouncementUseCaseTest {
         void shouldThrowBadRequest_whenTitleIsBlank() {
             CreateAnnouncementCommand command = new CreateAnnouncementCommand(
                     UUID.randomUUID(),
-                        true,
-                    true,
                     "   ",
                     null,
                     null,
                     null,
                     null,
-                    null
+                    java.util.List.of()
             );
 
             BadRequestException ex = assertThrows(BadRequestException.class, () -> useCase.execute(command));

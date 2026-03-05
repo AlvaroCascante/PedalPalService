@@ -19,11 +19,12 @@ import com.quetoquenana.pedalpal.store.domain.repository.StoreLocationRepository
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import com.quetoquenana.pedalpal.media.application.port.CdnUrlProvider;
 import com.quetoquenana.pedalpal.media.application.port.StorageProvider;
-import com.quetoquenana.pedalpal.media.application.useCase.ConfirmUploadUseCase;
-import com.quetoquenana.pedalpal.media.application.useCase.UploadMediaUseCase;
+import com.quetoquenana.pedalpal.media.application.port.OwnershipValidationPort;
+import com.quetoquenana.pedalpal.media.application.useCase.ConfirmMediaUploadUseCase;
+import com.quetoquenana.pedalpal.media.application.useCase.MediaUploadUseCase;
 import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
-import com.quetoquenana.pedalpal.media.mapper.MediaMapper;
-import com.quetoquenana.pedalpal.security.application.OwnershipValidator;
+import com.quetoquenana.pedalpal.media.application.mapper.MediaMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -72,6 +73,11 @@ public class UseCaseConfig {
     /*
      * Appointment Use Cases
      */
+    @Bean
+    public MediaMapper createMediaMapper() {
+        return new MediaMapper();
+    }
+
     @Bean
     public CancelAppointmentUseCase createCancelAppointmentUseCase(
             AppointmentMapper mapper,
@@ -255,12 +261,12 @@ public class UseCaseConfig {
      * Media Use Cases
      */
     @Bean
-    public ConfirmUploadUseCase createConfirmUploadUseCase(
+    public ConfirmMediaUploadUseCase createConfirmUploadUseCase(
             MediaRepository repository,
             MediaMapper mapper,
             CdnUrlProvider cdnUrlProvider
     ) {
-        return new ConfirmUploadUseCase(
+        return new ConfirmMediaUploadUseCase(
                 repository,
                 mapper,
                 cdnUrlProvider
@@ -268,17 +274,20 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public UploadMediaUseCase createGenerateUploadUrlUseCase(
+    public MediaUploadUseCase createGenerateUploadUrlUseCase(
             MediaRepository repository,
             MediaMapper mapper,
             StorageProvider storageProvider,
-            OwnershipValidator ownershipValidator
+            OwnershipValidationPort ownershipValidationPort,
+            @Value("${app.media.default-provider}")
+            String defaultStorageProvider
     ) {
-        return new UploadMediaUseCase(
+        return new MediaUploadUseCase(
                 repository,
                 mapper,
                 storageProvider,
-                ownershipValidator
+                ownershipValidationPort,
+                defaultStorageProvider
         );
     }
 }

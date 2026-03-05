@@ -3,7 +3,7 @@ package com.quetoquenana.pedalpal.media.infrastructure.persistence.repository;
 import com.quetoquenana.pedalpal.media.domain.model.Media;
 import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
 import com.quetoquenana.pedalpal.media.infrastructure.persistence.entity.MediaEntity;
-import com.quetoquenana.pedalpal.media.mapper.MediaEntityMapper;
+import com.quetoquenana.pedalpal.media.infrastructure.persistence.mapper.MediaEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

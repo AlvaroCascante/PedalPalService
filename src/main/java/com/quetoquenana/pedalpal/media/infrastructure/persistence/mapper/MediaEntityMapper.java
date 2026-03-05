@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.media.mapper;
+package com.quetoquenana.pedalpal.media.infrastructure.persistence.mapper;
 
 import com.quetoquenana.pedalpal.media.domain.model.Media;
 import com.quetoquenana.pedalpal.media.infrastructure.persistence.entity.MediaEntity;

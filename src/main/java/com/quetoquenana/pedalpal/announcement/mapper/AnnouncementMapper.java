@@ -5,13 +5,14 @@ import com.quetoquenana.pedalpal.announcement.application.command.CreateAnnounce
 import com.quetoquenana.pedalpal.announcement.application.command.UpdateAnnouncementCommand;
 import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementResult;
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
+import com.quetoquenana.pedalpal.announcement.domain.model.AnnouncementStatus;
 import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.common.application.command.UploadMediaSpecCommand;
 import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
 import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
-import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public class AnnouncementMapper {
                 .description(command.description())
                 .position(command.position())
                 .url(command.url())
-                .status(MediaStatus.DRAFT)
+                .status(AnnouncementStatus.DRAFT)
                 .build();
     }
 
@@ -83,16 +84,20 @@ public class AnnouncementMapper {
     }
 
     public UploadMediaCommand toMediaUploadRequest(Announcement announcement, CreateAnnouncementCommand command) {
+        Set<UploadMediaSpecCommand> specs = command.mediaFiles() == null
+                ? Collections.emptySet()
+                : command.mediaFiles()
+                .stream()
+                .map(this::toMediaUploadRequest)
+                .collect(Collectors.toSet());
+
         return new UploadMediaCommand(
                 command.authenticatedUserId(),
-                command.isAdmin(),
-                command.isPublic(),
+                true,
+                true,
                 announcement.getId(),
                 MediaReferenceType.ANNOUNCEMENT,
-                command.mediaFiles()
-                        .stream()
-                        .map(this::toMediaUploadRequest)
-                        .collect(Collectors.toSet())
+                specs
         );
     }
 

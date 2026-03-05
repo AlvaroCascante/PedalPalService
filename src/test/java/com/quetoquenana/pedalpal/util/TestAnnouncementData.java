@@ -5,11 +5,11 @@ import com.quetoquenana.pedalpal.announcement.application.command.UpdateAnnounce
 import com.quetoquenana.pedalpal.announcement.application.command.UpdateAnnouncementStatusCommand;
 import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementResult;
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
+import com.quetoquenana.pedalpal.announcement.domain.model.AnnouncementStatus;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.CreateAnnouncementRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementStatusRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.response.AnnouncementResponse;
-import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 
 import java.util.UUID;
 
@@ -46,8 +46,6 @@ public final class TestAnnouncementData {
     public static CreateAnnouncementCommand createCommand(UUID authUserId) {
         return new CreateAnnouncementCommand(
                 authUserId,
-                    true,
-                true,
                 "Title",
                 "Subtitle",
                 "Description",
@@ -81,7 +79,7 @@ public final class TestAnnouncementData {
                 .description("Old description")
                 .position(1)
                 .url("https://old.example.com")
-                .status(MediaStatus.ACTIVE)
+                .status(AnnouncementStatus.DRAFT)
                 .build();
     }
 
@@ -93,7 +91,7 @@ public final class TestAnnouncementData {
                 .description("Description")
                 .position(1)
                 .url("https://example.com")
-                .status(MediaStatus.ACTIVE)
+                .status(AnnouncementStatus.DRAFT)
                 .build();
     }
 

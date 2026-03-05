@@ -13,10 +13,10 @@ import com.quetoquenana.pedalpal.announcement.presentation.dto.request.CreateAnn
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementStatusRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.response.AnnouncementResponse;
-import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
-import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
+import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
+import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,7 @@ public class AnnouncementController {
             @Valid @RequestBody CreateAnnouncementRequest request
     ) {
         AuthenticatedUser authenticatedUser = getAuthenticatedUserId();
-        CreateAnnouncementCommand command = apiMapper.toCommand(authenticatedUser.userId(), authenticatedUser.isAdmin(), request);
+        CreateAnnouncementCommand command = apiMapper.toCommand(authenticatedUser.userId(), request);
         AnnouncementResult result = createUseCase.execute(command);
         AnnouncementResponse response = apiMapper.toResponse(result);
         return ResponseEntity.created(URI.create("/api/announcements/" + response.id()))

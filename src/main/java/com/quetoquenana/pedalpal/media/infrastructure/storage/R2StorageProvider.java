@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.media.infrastructure.storage;
 
+import com.quetoquenana.pedalpal.media.application.model.SignedUrl;
 import com.quetoquenana.pedalpal.media.application.port.StorageProvider;
-import com.quetoquenana.pedalpal.media.domain.model.SignedUrl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

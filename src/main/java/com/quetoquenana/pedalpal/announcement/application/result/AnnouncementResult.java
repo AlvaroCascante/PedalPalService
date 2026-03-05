@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.announcement.application.result;
 
+import com.quetoquenana.pedalpal.announcement.domain.model.AnnouncementStatus;
 import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
-import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import lombok.Builder;
 
 import java.util.Set;
@@ -15,7 +15,7 @@ public record AnnouncementResult(
         String description,
         Integer position,
         String url,
-        MediaStatus status,
+        AnnouncementStatus status,
         Set<UploadMediaResult> uploadMediaResults
 ) {
 }

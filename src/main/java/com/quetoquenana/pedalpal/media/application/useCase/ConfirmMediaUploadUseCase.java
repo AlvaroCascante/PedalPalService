@@ -1,12 +1,14 @@
 package com.quetoquenana.pedalpal.media.application.useCase;
 
+import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.media.application.command.ConfirmUploadCommand;
 import com.quetoquenana.pedalpal.media.application.port.CdnUrlProvider;
 import com.quetoquenana.pedalpal.media.application.result.ConfirmedUploadResult;
 import com.quetoquenana.pedalpal.media.domain.model.Media;
+import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
-import com.quetoquenana.pedalpal.media.mapper.MediaMapper;
+import com.quetoquenana.pedalpal.media.application.mapper.MediaMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class ConfirmUploadUseCase {
+public class ConfirmMediaUploadUseCase {
 
     private final MediaRepository repository;
     private final MediaMapper mapper;
@@ -24,18 +26,22 @@ public class ConfirmUploadUseCase {
         Media model = repository.getByStorageKey(command.storageKey())
                 .orElseThrow(() -> new RecordNotFoundException("media.not-found"));
 
-        model.confirmUploaded(
+        if (model.getStatus() != MediaStatus.DRAFT) {
+            throw new BusinessException("media.not.pending");
+        }
+
+        Media confirmed = model.confirmUploaded(
                 command.providerAssetId(),
                 command.sizeBytes(),
                 command.metadata()
         );
 
         // Persist
-        repository.save(model);
+        repository.save(confirmed);
 
-        String cdnUrl = cdnUrlProvider.providePublic(model.getStorageKey());
+        String cdnUrl = cdnUrlProvider.providePublic(confirmed.getStorageKey());
 
         // Return result
-        return mapper.toConfirmedResult(model, cdnUrl);
+        return mapper.toConfirmedResult(confirmed, cdnUrl);
     }
 }

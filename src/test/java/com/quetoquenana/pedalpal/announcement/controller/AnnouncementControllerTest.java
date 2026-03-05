@@ -131,7 +131,7 @@ class AnnouncementControllerTest {
         AnnouncementResult result = TestAnnouncementData.result(id);
         AnnouncementResponse response = TestAnnouncementData.response(id);
 
-        when(apiMapper.toCommand(eq(AUTH_USER_ID), eq(true), any()))
+        when(apiMapper.toCommand(eq(AUTH_USER_ID), any(com.quetoquenana.pedalpal.announcement.presentation.dto.request.CreateAnnouncementRequest.class)))
                 .thenReturn(TestAnnouncementData.createCommand(AUTH_USER_ID));
         when(createUseCase.execute(any())).thenReturn(result);
         when(apiMapper.toResponse(result)).thenReturn(response);

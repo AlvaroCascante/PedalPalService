@@ -1,11 +1,11 @@
-package com.quetoquenana.pedalpal.media.mapper;
+package com.quetoquenana.pedalpal.media.application.mapper;
 
 import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.common.application.command.UploadMediaSpecCommand;
 import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
+import com.quetoquenana.pedalpal.media.application.model.SignedUrl;
 import com.quetoquenana.pedalpal.media.application.result.ConfirmedUploadResult;
 import com.quetoquenana.pedalpal.media.domain.model.*;
-import org.springframework.stereotype.Component;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -14,7 +14,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Component
 public class MediaMapper {
 
     public Media toModel(UploadMediaCommand command,
@@ -51,7 +50,7 @@ public class MediaMapper {
             Clock clock
     ) {
         LocalDate today = LocalDate.now(clock);
-        String ext = ContentTypeExtensions.extensionFor(spec.contentType());
+        String ext = MediaContentType.extensionFor(spec.contentType());
         String type = referenceType.name().toLowerCase(Locale.ROOT);
 
         return type + "/" +  //announcement, profile, etc.
@@ -63,19 +62,23 @@ public class MediaMapper {
     }
 
     public Set<UploadMediaResult> toResult(
-            Set<Media> models
+            Set<Media> models,
+            java.util.Map<UUID, SignedUrl> signedUrls
     ) {
-        return models.stream().map(this::toResult).collect(Collectors.toSet());
+        return models.stream()
+                .map(model -> toResult(model, signedUrls.get(model.getId())))
+                .collect(Collectors.toSet());
     }
 
-    private UploadMediaResult toResult(
-            Media model
-    ){
-            return new UploadMediaResult(
+    public UploadMediaResult toResult(
+            Media model,
+            SignedUrl signedUrl
+    ) {
+        return new UploadMediaResult(
                 model.getId(),
-                model.getSignedUrl().url(),
+                signedUrl.url(),
                 model.getStorageKey(),
-                model.getSignedUrl().expiresAt()
+                signedUrl.expiresAt()
         );
     }
 

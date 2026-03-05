@@ -1,7 +1,6 @@
 package com.quetoquenana.pedalpal.announcement.domain.model;
 
 import com.quetoquenana.pedalpal.common.domain.model.Auditable;
-import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import lombok.*;
 
 import java.util.Objects;
@@ -20,7 +19,7 @@ public class Announcement extends Auditable {
     private String description;
     private Integer position;
     private String url;
-    private MediaStatus status;
+    private AnnouncementStatus status;
 
     // Equality based on title and subtitle, as they are the main identifying features of an announcement
     @Override

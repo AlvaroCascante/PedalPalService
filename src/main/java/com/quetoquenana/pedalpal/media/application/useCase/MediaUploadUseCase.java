@@ -3,14 +3,13 @@ package com.quetoquenana.pedalpal.media.application.useCase;
 import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
 import com.quetoquenana.pedalpal.media.application.port.StorageProvider;
 import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
-import com.quetoquenana.pedalpal.security.application.OwnershipValidator;
+import com.quetoquenana.pedalpal.media.application.port.OwnershipValidationPort;
 import com.quetoquenana.pedalpal.media.domain.model.Media;
-import com.quetoquenana.pedalpal.media.domain.model.SignedUrl;
+import com.quetoquenana.pedalpal.media.application.model.SignedUrl;
 import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
-import com.quetoquenana.pedalpal.media.mapper.MediaMapper;
+import com.quetoquenana.pedalpal.media.application.mapper.MediaMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
@@ -19,19 +18,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class UploadMediaUseCase {
+public class MediaUploadUseCase {
 
     private final MediaRepository repository;
     private final MediaMapper mapper;
     private final StorageProvider storageProvider;
-    private final OwnershipValidator ownershipValidator;
-
-    @Value("${app.media.default-provider}")
-    private String defaultStorageProvider;
+    private final OwnershipValidationPort ownershipValidationPort;
+    private final String defaultStorageProvider;
 
     public Set<UploadMediaResult> execute(UploadMediaCommand command) {
         // Validate ownership
-        ownershipValidator.validate(
+        ownershipValidationPort.validate(
                 command.referenceType(),
                 command.referenceId(),
                 command.authenticatedUserId(),
@@ -39,7 +36,7 @@ public class UploadMediaUseCase {
         );
 
         // Build models + signedUrl in one pass
-        Set<Media> models = command.mediaSpecs().stream()
+        return command.mediaSpecs().stream()
                 .map(spec -> {
                     Media model = mapper.toModel(command, spec);
                     SignedUrl signedUrl = storageProvider.generateUploadUrl(
@@ -47,16 +44,10 @@ public class UploadMediaUseCase {
                             model.getContentType(),
                             command.isPublic()
                     );
-                    model.setProvider(defaultStorageProvider);
-                    model.setSignedUrl(signedUrl);
-                    return model;
+                    Media persisted = model.assignProvider(defaultStorageProvider);
+                    repository.save(persisted);
+                    return mapper.toResult(persisted, signedUrl);
                 })
                 .collect(Collectors.toSet());
-
-        // Persist
-        models.forEach(repository::save);
-
-        // Return result
-        return mapper.toResult(models);
     }
 }

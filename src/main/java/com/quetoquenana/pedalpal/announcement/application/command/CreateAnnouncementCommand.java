@@ -5,8 +5,6 @@ import java.util.UUID;
 
 public record CreateAnnouncementCommand(
         UUID authenticatedUserId,
-        boolean isAdmin,
-        boolean isPublic,
         String title,
         String subTitle,
         String description,

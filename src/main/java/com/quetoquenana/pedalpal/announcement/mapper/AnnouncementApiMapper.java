@@ -17,6 +17,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,21 +30,20 @@ public class AnnouncementApiMapper {
 
     public CreateAnnouncementCommand toCommand(
             UUID authenticatedUserId,
-            boolean isAdmin,
             CreateAnnouncementRequest request
     ) {
+        List<AnnouncementMediaCommand> mediaCommands = request.mediaFiles() == null
+                ? List.of()
+                : request.mediaFiles().stream().map(this::toCommand).toList();
+
         return new CreateAnnouncementCommand(
                 authenticatedUserId,
-                isAdmin,
-                true, // isPublic is always true for announcements
                 request.title(),
                 request.subTitle(),
                 request.description(),
                 request.position(),
                 request.url(),
-                request.mediaFiles()
-                        .stream()
-                        .map(this::toCommand).toList()
+                mediaCommands
         );
     }
 

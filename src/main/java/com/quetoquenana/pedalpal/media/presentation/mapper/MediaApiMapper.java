@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.media.mapper;
+package com.quetoquenana.pedalpal.media.presentation.mapper;
 
 import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
 import com.quetoquenana.pedalpal.media.application.command.ConfirmUploadCommand;
