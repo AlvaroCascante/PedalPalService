@@ -2,14 +2,10 @@ package com.quetoquenana.pedalpal.systemCode.application.mapper;
 
 import com.quetoquenana.pedalpal.systemCode.application.result.SystemCodeResult;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 /**
  * Maps SystemCode domain models to application results.
  */
-@Component
-@RequiredArgsConstructor
 public class SystemCodeMapper {
 
     /**

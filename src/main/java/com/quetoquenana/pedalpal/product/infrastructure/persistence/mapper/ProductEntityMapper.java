@@ -1,17 +1,21 @@
-package com.quetoquenana.pedalpal.product.mapper;
+package com.quetoquenana.pedalpal.product.infrastructure.persistence.mapper;
 
-import com.quetoquenana.pedalpal.product.infrastructure.persistence.entity.ProductEntity;
-import com.quetoquenana.pedalpal.product.infrastructure.persistence.entity.ProductPackageEntity;
 import com.quetoquenana.pedalpal.product.domain.model.Product;
 import com.quetoquenana.pedalpal.product.domain.model.ProductPackage;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import com.quetoquenana.pedalpal.product.infrastructure.persistence.entity.ProductEntity;
+import com.quetoquenana.pedalpal.product.infrastructure.persistence.entity.ProductPackageEntity;
 
-@Component
-@RequiredArgsConstructor
+/**
+ * Maps product persistence entities to domain models and back.
+ * Prefer static utility if they are pure and dependency‑free.
+ * If they need JPA helpers, converters, or other collaborators,
+ * use DI and keep them package‑private when possible.
+ */
 public class ProductEntityMapper {
 
-    public ProductPackage toModel(ProductPackageEntity entity) {
+    private ProductEntityMapper() {}
+
+    public static ProductPackage toModel(ProductPackageEntity entity) {
         ProductPackage model = ProductPackage.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -23,13 +27,13 @@ public class ProductEntityMapper {
         if (entity.getProducts() != null) {
             entity.getProducts()
                     .stream()
-                    .map(this::toModel)
+                    .map(ProductEntityMapper::toModel)
                     .forEach(model::addProduct);
         }
         return model;
     }
 
-    public Product toModel(ProductEntity entity) {
+    public static Product toModel(ProductEntity entity) {
         Product model = Product.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -41,7 +45,7 @@ public class ProductEntityMapper {
         return model;
     }
 
-    public ProductPackageEntity toEntity(ProductPackage model) {
+    public static ProductPackageEntity toEntity(ProductPackage model) {
         ProductPackageEntity entity = ProductPackageEntity.builder()
                 .id(model.getId())
                 .name(model.getName())
@@ -52,12 +56,12 @@ public class ProductEntityMapper {
         entity.setVersion(model.getVersion());
         model.getProducts()
                 .stream()
-                .map(this::toEntity)
+                .map(ProductEntityMapper::toEntity)
                 .forEach(entity::addProduct);
         return entity;
     }
 
-    public ProductEntity toEntity(Product model) {
+    public static ProductEntity toEntity(Product model) {
         ProductEntity entity = ProductEntity.builder()
                 .id(model.getId())
                 .name(model.getName())

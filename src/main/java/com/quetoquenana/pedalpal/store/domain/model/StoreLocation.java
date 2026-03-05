@@ -2,6 +2,7 @@ package com.quetoquenana.pedalpal.store.domain.model;
 
 import com.quetoquenana.pedalpal.common.domain.model.Auditable;
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
+import com.quetoquenana.pedalpal.common.exception.DomainException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,7 +43,7 @@ public class StoreLocation extends Auditable {
                          String timezone,
                          GeneralStatus status) {
         validateNotBlank("name", name);
-        validateStatus(status);
+        validateNotBlank("status", status.name());
         this.id = id;
         this.name = name;
         this.storePrefix = storePrefix;
@@ -67,19 +68,13 @@ public class StoreLocation extends Auditable {
      * Updates the status value with validation.
      */
     public void setStatus(GeneralStatus status) {
-        validateStatus(status);
+        validateNotBlank("status", status.name());
         this.status = status;
     }
 
     private static void validateNotBlank(String field, String value) {
         if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException(field + " is required");
-        }
-    }
-
-    private static void validateStatus(GeneralStatus status) {
-        if (status == null) {
-            throw new IllegalArgumentException("status is required");
+            throw new DomainException("StoreLocation " + field + " is required");
         }
     }
 

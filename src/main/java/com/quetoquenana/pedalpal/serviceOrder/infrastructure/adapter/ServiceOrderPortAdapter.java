@@ -7,7 +7,7 @@ import com.quetoquenana.pedalpal.serviceOrder.application.result.ServiceOrderRes
 import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrder;
 import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrderStatus;
 import com.quetoquenana.pedalpal.serviceOrder.domain.repository.ServiceOrderRepository;
-import com.quetoquenana.pedalpal.serviceOrder.mapper.ServiceOrderMapper;
+import com.quetoquenana.pedalpal.serviceOrder.application.mapper.ServiceOrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

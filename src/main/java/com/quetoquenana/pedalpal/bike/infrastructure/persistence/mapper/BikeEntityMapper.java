@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.bike.mapper;
+package com.quetoquenana.pedalpal.bike.infrastructure.persistence.mapper;
 
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponent;
@@ -7,12 +7,18 @@ import com.quetoquenana.pedalpal.bike.infrastructure.persistence.entity.BikeComp
 import com.quetoquenana.pedalpal.bike.infrastructure.persistence.entity.BikeEntity;
 import com.quetoquenana.pedalpal.bike.infrastructure.persistence.entity.BikeHistoryEntity;
 import com.quetoquenana.pedalpal.systemCode.infrastructure.persistence.mapper.SystemCodeEntityMapper;
-import org.springframework.stereotype.Component;
 
-@Component
+/**
+ * Maps bike persistence entities to domain models and back.
+ * Prefer static utility if they are pure and dependency‑free.
+ * If they need JPA helpers, converters, or other collaborators,
+ * use DI and keep them package‑private when possible.
+ */
 public class BikeEntityMapper {
 
-    public Bike toModel(BikeEntity entity) {
+    private BikeEntityMapper() {}
+
+    public static Bike toModel(BikeEntity entity) {
         Bike model = Bike.builder()
                 .id(entity.getId())
                 .ownerId(entity.getOwnerId())
@@ -33,13 +39,13 @@ public class BikeEntityMapper {
         if (entity.getComponents() != null) {
             entity.getComponents()
                     .stream()
-                    .map(this::toModel)
+                    .map(BikeEntityMapper::toModel)
                     .forEach(model::addComponent);
         }
         return model;
     }
 
-    private BikeComponent toModel(BikeComponentEntity entity) {
+    private static BikeComponent toModel(BikeComponentEntity entity) {
         BikeComponent model = BikeComponent.builder()
                 .id(entity.getId())
                 .componentType(SystemCodeEntityMapper.toModel(entity.getComponentType()))
@@ -55,7 +61,7 @@ public class BikeEntityMapper {
         return model;
     }
 
-    public BikeHistory toModel(BikeHistoryEntity entity) {
+    public static BikeHistory toModel(BikeHistoryEntity entity) {
         return BikeHistory.builder()
                 .id(entity.getId())
                 .bikeId(entity.getBikeId())
@@ -66,7 +72,7 @@ public class BikeEntityMapper {
                 .build();
     }
 
-    public BikeEntity toEntity(Bike model) {
+    public static BikeEntity toEntity(Bike model) {
         BikeEntity entity = BikeEntity.builder()
                 .id(model.getId())
                 .ownerId(model.getOwnerId())
@@ -86,12 +92,12 @@ public class BikeEntityMapper {
         entity.setVersion(model.getVersion());
         model.getComponents()
                 .stream()
-                .map(this::toEntity)
+                .map(BikeEntityMapper::toEntity)
                 .forEach(entity::addComponent);
         return entity;
     }
 
-    private BikeComponentEntity toEntity(BikeComponent model) {
+    private static BikeComponentEntity toEntity(BikeComponent model) {
         BikeComponentEntity entity = BikeComponentEntity.builder()
                 .id(model.getId())
                 .componentType(SystemCodeEntityMapper.toEntity(model.getComponentType()))
@@ -107,7 +113,7 @@ public class BikeEntityMapper {
         return entity;
     }
 
-    public BikeHistoryEntity toEntity(BikeHistory bikeHistory) {
+    public static BikeHistoryEntity toEntity(BikeHistory bikeHistory) {
         return BikeHistoryEntity.builder()
                 .id(bikeHistory.getId())
                 .bikeId(bikeHistory.getBikeId())

@@ -8,7 +8,7 @@ import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementRes
 import com.quetoquenana.pedalpal.announcement.application.usecase.CreateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementStatusUseCase;
 import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementUseCase;
-import com.quetoquenana.pedalpal.announcement.mapper.AnnouncementApiMapper;
+import com.quetoquenana.pedalpal.announcement.presentation.mapper.AnnouncementApiMapper;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.CreateAnnouncementRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementStatusRequest;

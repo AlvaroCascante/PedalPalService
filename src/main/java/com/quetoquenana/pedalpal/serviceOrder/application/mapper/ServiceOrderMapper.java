@@ -1,14 +1,12 @@
-package com.quetoquenana.pedalpal.serviceOrder.mapper;
+package com.quetoquenana.pedalpal.serviceOrder.application.mapper;
 
 import com.quetoquenana.pedalpal.serviceOrder.application.result.ServiceOrderDetailResult;
 import com.quetoquenana.pedalpal.serviceOrder.application.result.ServiceOrderResult;
 import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrder;
 import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrderDetail;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class ServiceOrderMapper {
 
     public ServiceOrderResult toResult(ServiceOrder model) {

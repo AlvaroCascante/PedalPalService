@@ -4,7 +4,7 @@ import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.bike.infrastructure.persistence.entity.BikeEntity;
-import com.quetoquenana.pedalpal.bike.mapper.BikeEntityMapper;
+import com.quetoquenana.pedalpal.bike.infrastructure.persistence.mapper.BikeEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -17,18 +17,17 @@ import java.util.UUID;
 public class BikeRepositoryImpl implements BikeRepository {
 
     private final BikeJpaRepository repository;
-    private final BikeEntityMapper mapper;
 
     @Override
     public Bike save(Bike bike) {
         // Map the Bike domain model to a BikeEntity
-        BikeEntity entity = mapper.toEntity(bike);
-        return mapper.toModel(repository.save(entity));
+        BikeEntity entity = BikeEntityMapper.toEntity(bike);
+        return BikeEntityMapper.toModel(repository.save(entity));
     }
 
     @Override
     public Optional<Bike> getById(UUID id) {
-        return repository.findById(id).map(mapper::toModel);
+        return repository.findById(id).map(BikeEntityMapper::toModel);
     }
 
     @Override
@@ -48,14 +47,14 @@ public class BikeRepositoryImpl implements BikeRepository {
 
     @Override
     public Optional<Bike> findByIdAndOwnerId(UUID id, UUID ownerId) {
-        return repository.findByIdAndOwnerId(id, ownerId).map(mapper::toModel);
+        return repository.findByIdAndOwnerId(id, ownerId).map(BikeEntityMapper::toModel);
     }
 
     @Override
     public List<Bike> findByOwnerIdAndStatus(UUID ownerId, BikeStatus bikeStatus) {
         return repository.findByOwnerIdAndStatus(ownerId, bikeStatus)
                 .stream()
-                .map(mapper::toModel)
+                .map(BikeEntityMapper::toModel)
                 .toList();
     }
 }

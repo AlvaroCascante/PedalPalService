@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.bike.mapper;
+package com.quetoquenana.pedalpal.bike.presentation.mapper;
 
 import com.quetoquenana.pedalpal.bike.application.command.*;
 import com.quetoquenana.pedalpal.bike.application.result.BikeComponentResult;
@@ -16,7 +16,6 @@ import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Locale;
@@ -24,7 +23,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Component
 @RequiredArgsConstructor
 public class BikeApiMapper {
 

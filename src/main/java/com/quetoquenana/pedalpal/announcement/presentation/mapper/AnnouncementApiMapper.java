@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.announcement.mapper;
+package com.quetoquenana.pedalpal.announcement.presentation.mapper;
 
 import com.quetoquenana.pedalpal.announcement.application.command.AnnouncementMediaCommand;
 import com.quetoquenana.pedalpal.announcement.application.command.CreateAnnouncementCommand;
@@ -15,14 +15,12 @@ import com.quetoquenana.pedalpal.media.presentation.dto.response.UploadMediaResp
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Component
 @RequiredArgsConstructor
 public class AnnouncementApiMapper {
 

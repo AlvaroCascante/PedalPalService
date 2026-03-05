@@ -5,11 +5,13 @@ import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 
 /**
  * Maps SystemCode entities to domain models and back.
+ * Prefer static utility if they are pure and dependency‑free.
+ * If they need JPA helpers, converters, or other collaborators,
+ * use DI and keep them package‑private when possible.
  */
 public final class SystemCodeEntityMapper {
 
-    private SystemCodeEntityMapper() {
-    }
+    private SystemCodeEntityMapper() {}
 
     /**
      * Converts a persistence entity into a domain model.

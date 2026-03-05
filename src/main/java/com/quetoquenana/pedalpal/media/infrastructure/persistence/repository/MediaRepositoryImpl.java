@@ -16,32 +16,31 @@ import java.util.UUID;
 public class MediaRepositoryImpl implements MediaRepository {
 
     private final MediaJpaRepository repository;
-    private final MediaEntityMapper mapper;
 
     @Override
     public Optional<Media> getById(UUID id) {
-        return repository.findById(id).map(mapper::toModel);
+        return repository.findById(id).map(MediaEntityMapper::toModel);
     }
 
     @Override
     public Optional<Media> getByStorageKey(String storageKey) {
-        return repository.getByStorageKey(storageKey).map(mapper::toModel);
+        return repository.getByStorageKey(storageKey).map(MediaEntityMapper::toModel);
     }
 
     @Override
     public List<Media> findByOwnerId(UUID id) {
-        return repository.findByOwnerId(id).stream().map(mapper::toModel).toList();
+        return repository.findByOwnerId(id).stream().map(MediaEntityMapper::toModel).toList();
     }
 
     @Override
     public List<Media> findByReferenceId(UUID id) {
-        return repository.findByReferenceId(id).stream().map(mapper::toModel).toList();
+        return repository.findByReferenceId(id).stream().map(MediaEntityMapper::toModel).toList();
     }
 
     @Override
     public Media save(Media model) {
-        MediaEntity entity = mapper.toEntity(model);
-        return mapper.toModel(repository.save(entity));
+        MediaEntity entity = MediaEntityMapper.toEntity(model);
+        return MediaEntityMapper.toModel(repository.save(entity));
     }
 }
 

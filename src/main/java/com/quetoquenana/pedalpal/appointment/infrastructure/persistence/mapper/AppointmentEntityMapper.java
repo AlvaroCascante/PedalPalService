@@ -1,19 +1,23 @@
-package com.quetoquenana.pedalpal.appointment.mapper;
+package com.quetoquenana.pedalpal.appointment.infrastructure.persistence.mapper;
 
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.model.RequestedService;
 import com.quetoquenana.pedalpal.appointment.infrastructure.persistence.entity.AppointmentEntity;
 import com.quetoquenana.pedalpal.appointment.infrastructure.persistence.entity.AppointmentServiceEntity;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
-@RequiredArgsConstructor
+/**
+ * Maps appointment persistence entities to domain models and back.
+ * Prefer static utility if they are pure and dependency‑free.
+ * If they need JPA helpers, converters, or other collaborators,
+ * use DI and keep them package‑private when possible.
+ */
 public class AppointmentEntityMapper {
 
-    public AppointmentEntity toEntity(Appointment model) {
+    private AppointmentEntityMapper() {}
+
+    public static AppointmentEntity toEntity(Appointment model) {
         AppointmentEntity entity = AppointmentEntity.builder()
                 .id(model.getId())
                 .bikeId(model.getBikeId())
@@ -25,12 +29,12 @@ public class AppointmentEntityMapper {
         entity.setVersion(model.getVersion());
         model.getRequestedServices()
                 .stream()
-                .map(this::toEntity)
+                .map(AppointmentEntityMapper::toEntity)
                 .forEach(entity::addRequestedService);
         return entity;
     }
 
-    private AppointmentServiceEntity toEntity(RequestedService model) {
+    private static AppointmentServiceEntity toEntity(RequestedService model) {
         return AppointmentServiceEntity.builder()
                 .id(model.getId())
                 .productId(model.getServiceId())
@@ -39,10 +43,10 @@ public class AppointmentEntityMapper {
                 .build();
     }
 
-    public Appointment toModel(AppointmentEntity entity) {
+    public static Appointment toModel(AppointmentEntity entity) {
         List<RequestedService> requestedServices = entity.getServices() == null
                 ? List.of()
-                : entity.getServices().stream().map(this::toModel).toList();
+                : entity.getServices().stream().map(AppointmentEntityMapper::toModel).toList();
 
         Appointment domain = Appointment.builder()
                 .id(entity.getId())
@@ -58,7 +62,7 @@ public class AppointmentEntityMapper {
         return domain;
     }
 
-    private RequestedService toModel(AppointmentServiceEntity entity) {
+    private static RequestedService toModel(AppointmentServiceEntity entity) {
         return RequestedService.builder()
                 .id(entity.getId())
                 .serviceId(entity.getProductId())

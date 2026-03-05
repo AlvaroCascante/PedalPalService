@@ -14,7 +14,7 @@ import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeResponse;
-import com.quetoquenana.pedalpal.bike.mapper.BikeApiMapper;
+import com.quetoquenana.pedalpal.bike.presentation.mapper.BikeApiMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeUploadMediaResult;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeUploadMediaResponse;
 import jakarta.validation.Valid;

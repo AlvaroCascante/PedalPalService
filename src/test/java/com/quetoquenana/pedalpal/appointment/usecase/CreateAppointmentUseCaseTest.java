@@ -2,7 +2,7 @@ package com.quetoquenana.pedalpal.appointment.usecase;
 
 import com.quetoquenana.pedalpal.appointment.application.command.CreateAppointmentCommand;
 import com.quetoquenana.pedalpal.appointment.application.command.RequestedServiceCommand;
-import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
+import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
 import com.quetoquenana.pedalpal.appointment.application.usecase.CreateAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;

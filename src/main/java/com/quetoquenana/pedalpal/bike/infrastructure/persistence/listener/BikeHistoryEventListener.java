@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.bike.infrastructure.persistence.listener;
 
-import com.quetoquenana.pedalpal.bike.mapper.BikeMapper;
+import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeHistory;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEvent;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeHistoryRepository;

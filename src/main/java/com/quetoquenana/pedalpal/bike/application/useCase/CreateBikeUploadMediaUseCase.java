@@ -4,7 +4,7 @@ import com.quetoquenana.pedalpal.bike.application.command.CreateBikeUploadMediaC
 import com.quetoquenana.pedalpal.bike.application.result.BikeUploadMediaResult;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
-import com.quetoquenana.pedalpal.bike.mapper.BikeMapper;
+import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.common.application.port.UploadMediaPort;
 import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;

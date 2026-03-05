@@ -4,7 +4,7 @@ import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.product.application.query.ProductQueryService;
 import com.quetoquenana.pedalpal.product.application.result.ProductPackageResult;
 import com.quetoquenana.pedalpal.product.application.result.ProductResult;
-import com.quetoquenana.pedalpal.product.mapper.ProductApiMapper;
+import com.quetoquenana.pedalpal.product.presentation.mapper.ProductApiMapper;
 import com.quetoquenana.pedalpal.product.presentation.dto.response.ProductPackageResponse;
 import com.quetoquenana.pedalpal.product.presentation.dto.response.ProductResponse;
 import lombok.RequiredArgsConstructor;

@@ -4,8 +4,6 @@ import com.quetoquenana.pedalpal.store.application.result.StoreLocationResult;
 import com.quetoquenana.pedalpal.store.application.result.StoreResult;
 import com.quetoquenana.pedalpal.store.domain.model.Store;
 import com.quetoquenana.pedalpal.store.domain.model.StoreLocation;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Set;
@@ -14,8 +12,6 @@ import java.util.stream.Collectors;
 /**
  * Maps store domain models to application results.
  */
-@Component
-@RequiredArgsConstructor
 public class StoreMapper {
 
     /**
@@ -32,7 +28,7 @@ public class StoreMapper {
         );
     }
 
-    private StoreLocationResult toResult(StoreLocation model) {
+    public StoreLocationResult toResult(StoreLocation model) {
         return new StoreLocationResult(
                 model.getId(),
                 model.getName(),

@@ -2,14 +2,18 @@ package com.quetoquenana.pedalpal.media.infrastructure.persistence.mapper;
 
 import com.quetoquenana.pedalpal.media.domain.model.Media;
 import com.quetoquenana.pedalpal.media.infrastructure.persistence.entity.MediaEntity;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
-@RequiredArgsConstructor
+/**
+ * Maps media persistence entities to domain models and back.
+ * Prefer static utility if they are pure and dependency‑free.
+ * If they need JPA helpers, converters, or other collaborators,
+ * use DI and keep them package‑private when possible.
+ */
 public class MediaEntityMapper {
 
-    public Media toModel(MediaEntity entity) {
+    private MediaEntityMapper() {}
+
+    public static Media toModel(MediaEntity entity) {
         return Media.builder()
                 .id(entity.getId())
                 .ownerId(entity.getOwnerId())
@@ -29,7 +33,7 @@ public class MediaEntityMapper {
                 .build();
     }
 
-    public MediaEntity toEntity(Media model) {
+    public static MediaEntity toEntity(Media model) {
         return MediaEntity.builder()
                 .id(model.getId())
                 .ownerId(model.getOwnerId())

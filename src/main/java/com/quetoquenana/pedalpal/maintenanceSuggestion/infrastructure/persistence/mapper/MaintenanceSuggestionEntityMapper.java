@@ -1,14 +1,19 @@
-package com.quetoquenana.pedalpal.maintenanceSuggestion.mapper;
+package com.quetoquenana.pedalpal.maintenanceSuggestion.infrastructure.persistence.mapper;
 
-import com.quetoquenana.pedalpal.maintenanceSuggestion.infrastructure.persistence.entity.MaintenanceSuggestionEntity;
 import com.quetoquenana.pedalpal.maintenanceSuggestion.domain.model.MaintenanceSuggestion;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import com.quetoquenana.pedalpal.maintenanceSuggestion.infrastructure.persistence.entity.MaintenanceSuggestionEntity;
 
-@Component
-@RequiredArgsConstructor
+/**
+ * Maps MaintenanceSugges persistence entities to domain models and back.
+ * Prefer static utility if they are pure and dependency‑free.
+ * If they need JPA helpers, converters, or other collaborators,
+ * use DI and keep them package‑private when possible.
+ */
 public class MaintenanceSuggestionEntityMapper {
-    public MaintenanceSuggestionEntity toEntity(MaintenanceSuggestion model) {
+
+    private MaintenanceSuggestionEntityMapper() {}
+
+    public static MaintenanceSuggestionEntity toEntity(MaintenanceSuggestion model) {
         MaintenanceSuggestionEntity entity = MaintenanceSuggestionEntity.builder()
                 .id(model.getId())
                 .bikeId(model.getBikeId())
@@ -23,7 +28,7 @@ public class MaintenanceSuggestionEntityMapper {
         return entity;
     }
 
-    public MaintenanceSuggestion toModel(MaintenanceSuggestionEntity  entity) {
+    public static MaintenanceSuggestion toModel(MaintenanceSuggestionEntity  entity) {
         MaintenanceSuggestion domain = MaintenanceSuggestion.builder()
                 .id(entity.getId())
                 .bikeId(entity.getBikeId())

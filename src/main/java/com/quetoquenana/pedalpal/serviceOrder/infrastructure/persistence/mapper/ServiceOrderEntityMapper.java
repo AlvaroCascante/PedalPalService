@@ -1,17 +1,21 @@
-package com.quetoquenana.pedalpal.serviceOrder.mapper;
+package com.quetoquenana.pedalpal.serviceOrder.infrastructure.persistence.mapper;
 
-import com.quetoquenana.pedalpal.serviceOrder.infrastructure.persistence.entity.ServiceOrderDetailEntity;
-import com.quetoquenana.pedalpal.serviceOrder.infrastructure.persistence.entity.ServiceOrderEntity;
 import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrder;
 import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrderDetail;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import com.quetoquenana.pedalpal.serviceOrder.infrastructure.persistence.entity.ServiceOrderDetailEntity;
+import com.quetoquenana.pedalpal.serviceOrder.infrastructure.persistence.entity.ServiceOrderEntity;
 
-@Component
-@RequiredArgsConstructor
+/**
+ * Maps ServiceOrder persistence entities to domain models and back.
+ * Prefer static utility if they are pure and dependency‑free.
+ * If they need JPA helpers, converters, or other collaborators,
+ * use DI and keep them package‑private when possible.
+ */
 public class ServiceOrderEntityMapper {
 
-    public ServiceOrder toModel(ServiceOrderEntity entity) {
+    private ServiceOrderEntityMapper() {}
+
+    public static ServiceOrder toModel(ServiceOrderEntity entity) {
         ServiceOrder model = ServiceOrder.builder()
                 .id(entity.getId())
                 .appointmentId(entity.getAppointmentId())
@@ -28,13 +32,13 @@ public class ServiceOrderEntityMapper {
         if (entity.getServiceOrderDetails() != null) {
             entity.getServiceOrderDetails()
                     .stream()
-                    .map(this::toModel)
+                    .map(ServiceOrderEntityMapper::toModel)
                     .forEach(model::addRequestedService);
         }
         return model;
     }
 
-    private ServiceOrderDetail toModel(ServiceOrderDetailEntity entity) {
+    private static ServiceOrderDetail toModel(ServiceOrderDetailEntity entity) {
         return ServiceOrderDetail.builder()
                 .id(entity.getId())
                 .productId(entity.getProductId())
@@ -48,7 +52,7 @@ public class ServiceOrderEntityMapper {
                 .build();
     }
 
-    public ServiceOrderEntity toEntity(ServiceOrder model) {
+    public static ServiceOrderEntity toEntity(ServiceOrder model) {
         ServiceOrderEntity entity = ServiceOrderEntity.builder()
                 .id(model.getId())
                 .appointmentId(model.getAppointmentId())
@@ -62,12 +66,12 @@ public class ServiceOrderEntityMapper {
         entity.setVersion(model.getVersion());
         model.getRequestedServices()
                 .stream()
-                .map(this::toEntity)
+                .map(ServiceOrderEntityMapper::toEntity)
                 .forEach(entity::addServiceOrderDetail);
         return entity;
     }
 
-    private ServiceOrderDetailEntity toEntity(ServiceOrderDetail model) {
+    private static ServiceOrderDetailEntity toEntity(ServiceOrderDetail model) {
         return ServiceOrderDetailEntity.builder()
                 .id(model.getId())
                 .productId(model.getProductId())

@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.appointment.mapper;
+package com.quetoquenana.pedalpal.appointment.application.mapper;
 
 import com.quetoquenana.pedalpal.appointment.application.command.CreateAppointmentCommand;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentListItemResult;
@@ -7,11 +7,9 @@ import com.quetoquenana.pedalpal.appointment.application.result.AppointmentServi
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
 import com.quetoquenana.pedalpal.appointment.domain.model.RequestedService;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class AppointmentMapper {
 
     public AppointmentResult toResult(Appointment model) {

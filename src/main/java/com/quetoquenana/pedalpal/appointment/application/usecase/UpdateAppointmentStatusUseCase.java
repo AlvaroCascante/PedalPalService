@@ -5,7 +5,7 @@ import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResul
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
-import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
+import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;

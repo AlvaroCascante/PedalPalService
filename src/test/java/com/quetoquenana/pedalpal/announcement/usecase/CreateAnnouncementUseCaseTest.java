@@ -6,7 +6,7 @@ import com.quetoquenana.pedalpal.announcement.application.usecase.CreateAnnounce
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
 import com.quetoquenana.pedalpal.announcement.domain.model.AnnouncementStatus;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
-import com.quetoquenana.pedalpal.announcement.mapper.AnnouncementMapper;
+import com.quetoquenana.pedalpal.announcement.application.mapper.AnnouncementMapper;
 import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.common.application.port.UploadMediaPort;
 import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;

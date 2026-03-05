@@ -1,15 +1,19 @@
-package com.quetoquenana.pedalpal.announcement.mapper;
+package com.quetoquenana.pedalpal.announcement.infrastructure.persistence.mapper;
 
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
 import com.quetoquenana.pedalpal.announcement.infrastructure.persistence.entity.AnnouncementEntity;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
-@RequiredArgsConstructor
+/**
+ * Maps announcement persistence entities to domain models and back.
+ * Prefer static utility if they are pure and dependency‑free.
+ * If they need JPA helpers, converters, or other collaborators,
+ * use DI and keep them package‑private when possible.
+ */
 public class AnnouncementEntityMapper {
 
-    public AnnouncementEntity toEntity(Announcement model) {
+    private AnnouncementEntityMapper() {}
+
+    public static AnnouncementEntity toEntity(Announcement model) {
         AnnouncementEntity entity = AnnouncementEntity.builder()
                 .id(model.getId())
                 .title(model.getTitle())
@@ -23,7 +27,7 @@ public class AnnouncementEntityMapper {
         return entity;
     }
 
-    public Announcement toModel(AnnouncementEntity entity) {
+    public static Announcement toModel(AnnouncementEntity entity) {
         Announcement domain = Announcement.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())

@@ -1,25 +1,24 @@
-package com.quetoquenana.pedalpal.appointment.mapper;
+package com.quetoquenana.pedalpal.appointment.presentation.mapper;
 
 import com.quetoquenana.pedalpal.appointment.application.command.CreateAppointmentCommand;
 import com.quetoquenana.pedalpal.appointment.application.command.RequestedServiceCommand;
 import com.quetoquenana.pedalpal.appointment.application.command.UpdateAppointmentCommand;
 import com.quetoquenana.pedalpal.appointment.application.command.UpdateAppointmentStatusCommand;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentListItemResult;
-import com.quetoquenana.pedalpal.appointment.application.result.AppointmentServiceResult;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
+import com.quetoquenana.pedalpal.appointment.application.result.AppointmentServiceResult;
 import com.quetoquenana.pedalpal.appointment.application.result.ConfirmAppointmentResult;
 import com.quetoquenana.pedalpal.appointment.domain.model.ServiceType;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.request.CreateAppointmentRequest;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppointmentRequest;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppointmentStatusRequest;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentListItemResponse;
-import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentServiceResponse;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentResponse;
+import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentServiceResponse;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.ConfirmAppointmentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Locale;
@@ -27,7 +26,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Component
 @RequiredArgsConstructor
 public class AppointmentApiMapper {
 

@@ -10,12 +10,10 @@ import com.quetoquenana.pedalpal.media.presentation.dto.request.UploadMediaReque
 import com.quetoquenana.pedalpal.media.presentation.dto.request.UploadMediaSpecRequest;
 import com.quetoquenana.pedalpal.media.presentation.dto.response.UploadMediaResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Component
 @RequiredArgsConstructor
 public class MediaApiMapper {
 

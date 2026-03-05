@@ -8,7 +8,7 @@ import com.quetoquenana.pedalpal.appointment.application.result.AppointmentListI
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
 import com.quetoquenana.pedalpal.appointment.application.result.ConfirmAppointmentResult;
 import com.quetoquenana.pedalpal.appointment.application.usecase.*;
-import com.quetoquenana.pedalpal.appointment.mapper.AppointmentApiMapper;
+import com.quetoquenana.pedalpal.appointment.presentation.mapper.AppointmentApiMapper;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.request.CreateAppointmentRequest;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppointmentRequest;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppointmentStatusRequest;

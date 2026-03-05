@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.announcement.mapper;
+package com.quetoquenana.pedalpal.announcement.application.mapper;
 
 import com.quetoquenana.pedalpal.announcement.application.command.AnnouncementMediaCommand;
 import com.quetoquenana.pedalpal.announcement.application.command.CreateAnnouncementCommand;
@@ -10,13 +10,11 @@ import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.common.application.command.UploadMediaSpecCommand;
 import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
 import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
-import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
 public class AnnouncementMapper {
 
     public Announcement toModel(CreateAnnouncementCommand command) {

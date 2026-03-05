@@ -41,6 +41,14 @@ public class ControllerExceptionAdvice {
         return ResponseEntity.internalServerError().body(new ApiResponse(message, HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }
 
+    @ExceptionHandler(DomainException.class)
+    public ResponseEntity<ApiResponse> handleDomainException(
+            DomainException ex, Locale locale) {
+        log.warn("DomainException: {}", ex.getMessage());
+        String message = messageSource.getMessage(ex.getMessageKey(), ex.getMessageArgs(), locale);
+        return ResponseEntity.badRequest().body(new ApiResponse(message, HttpStatus.BAD_REQUEST.value()));
+    }
+
     @ExceptionHandler(ForbiddenAccessException.class)
     public ResponseEntity<ApiResponse> handleForbiddenAccessExceptionException(
             ForbiddenAccessException ex, Locale locale) {

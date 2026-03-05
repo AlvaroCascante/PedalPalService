@@ -4,33 +4,33 @@ import com.quetoquenana.pedalpal.announcement.application.usecase.CreateAnnounce
 import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementStatusUseCase;
 import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
-import com.quetoquenana.pedalpal.announcement.mapper.AnnouncementMapper;
+import com.quetoquenana.pedalpal.announcement.application.mapper.AnnouncementMapper;
 import com.quetoquenana.pedalpal.appointment.application.usecase.*;
-import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
-import com.quetoquenana.pedalpal.bike.mapper.BikeMapper;
+import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.bike.application.useCase.*;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.common.application.port.UploadMediaPort;
+import com.quetoquenana.pedalpal.media.application.mapper.MediaMapper;
+import com.quetoquenana.pedalpal.media.application.port.CdnUrlProvider;
+import com.quetoquenana.pedalpal.media.application.port.OwnershipValidationPort;
+import com.quetoquenana.pedalpal.media.application.port.StorageProvider;
+import com.quetoquenana.pedalpal.media.application.useCase.ConfirmMediaUploadUseCase;
+import com.quetoquenana.pedalpal.media.application.useCase.MediaUploadUseCase;
+import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
 import com.quetoquenana.pedalpal.serviceOrder.application.port.ServiceOrderPort;
 import com.quetoquenana.pedalpal.store.domain.repository.StoreLocationRepository;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
-import com.quetoquenana.pedalpal.media.application.port.CdnUrlProvider;
-import com.quetoquenana.pedalpal.media.application.port.StorageProvider;
-import com.quetoquenana.pedalpal.media.application.port.OwnershipValidationPort;
-import com.quetoquenana.pedalpal.media.application.useCase.ConfirmMediaUploadUseCase;
-import com.quetoquenana.pedalpal.media.application.useCase.MediaUploadUseCase;
-import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
-import com.quetoquenana.pedalpal.media.application.mapper.MediaMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class UseCaseConfig {
+public class BeansUseCasesConfig {
 
     /*
      * Announcements Use Cases
@@ -73,11 +73,6 @@ public class UseCaseConfig {
     /*
      * Appointment Use Cases
      */
-    @Bean
-    public MediaMapper createMediaMapper() {
-        return new MediaMapper();
-    }
-
     @Bean
     public CancelAppointmentUseCase createCancelAppointmentUseCase(
             AppointmentMapper mapper,

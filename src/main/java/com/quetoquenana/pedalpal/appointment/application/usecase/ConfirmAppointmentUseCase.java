@@ -4,7 +4,7 @@ import com.quetoquenana.pedalpal.appointment.application.command.UpdateAppointme
 import com.quetoquenana.pedalpal.appointment.application.result.ConfirmAppointmentResult;
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
-import com.quetoquenana.pedalpal.appointment.mapper.AppointmentMapper;
+import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.serviceOrder.application.port.ServiceOrderPort;

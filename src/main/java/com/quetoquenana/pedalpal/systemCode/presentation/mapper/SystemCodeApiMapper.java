@@ -5,14 +5,12 @@ import com.quetoquenana.pedalpal.systemCode.presentation.dto.response.SystemCode
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
 /**
  * Maps SystemCode results to API responses with localized labels.
  */
-@Component
 @RequiredArgsConstructor
 public class SystemCodeApiMapper {
 

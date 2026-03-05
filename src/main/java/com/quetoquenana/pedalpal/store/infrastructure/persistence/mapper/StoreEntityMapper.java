@@ -10,11 +10,13 @@ import java.util.Set;
 
 /**
  * Maps store persistence entities to domain models and back.
+ * Prefer static utility if they are pure and dependency‑free.
+ * If they need JPA helpers, converters, or other collaborators,
+ * use DI and keep them package‑private when possible.
  */
 public final class StoreEntityMapper {
 
-    private StoreEntityMapper() {
-    }
+    private StoreEntityMapper() {}
 
     /**
      * Converts a store entity into a domain model.
