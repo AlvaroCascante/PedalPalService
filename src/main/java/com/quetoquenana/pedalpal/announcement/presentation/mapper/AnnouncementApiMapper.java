@@ -3,12 +3,10 @@ package com.quetoquenana.pedalpal.announcement.presentation.mapper;
 import com.quetoquenana.pedalpal.announcement.application.command.AnnouncementMediaCommand;
 import com.quetoquenana.pedalpal.announcement.application.command.CreateAnnouncementCommand;
 import com.quetoquenana.pedalpal.announcement.application.command.UpdateAnnouncementCommand;
-import com.quetoquenana.pedalpal.announcement.application.command.UpdateAnnouncementStatusCommand;
 import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementResult;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.AnnouncementMediaRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.CreateAnnouncementRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementRequest;
-import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementStatusRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.response.AnnouncementResponse;
 import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
 import com.quetoquenana.pedalpal.media.presentation.dto.response.UploadMediaResponse;
@@ -67,11 +65,15 @@ public class AnnouncementApiMapper {
         );
     }
 
-    public UpdateAnnouncementStatusCommand toCommand(UUID id, UUID authenticatedUserId, UpdateAnnouncementStatusRequest request) {
-        return new UpdateAnnouncementStatusCommand(
+    public UpdateAnnouncementCommand toCommand(UUID id, UUID authenticatedUserId) {
+        return new UpdateAnnouncementCommand(
                 id,
                 authenticatedUserId,
-                request.status()
+                null,
+                null,
+                null,
+                null,
+                null
         );
     }
 
@@ -87,7 +89,10 @@ public class AnnouncementApiMapper {
                 result.position(),
                 result.url(),
                 statusLabel,
-                result.uploadMediaResults().stream().map(this::toResponse).collect(Collectors.toSet()));
+                result.uploadMediaResults()
+                        .stream()
+                        .map(this::toResponse)
+                        .collect(Collectors.toSet()));
     }
 
     private UploadMediaResponse toResponse(UploadMediaResult result) {

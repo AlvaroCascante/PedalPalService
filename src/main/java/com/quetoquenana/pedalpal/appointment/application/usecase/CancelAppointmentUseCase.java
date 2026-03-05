@@ -35,20 +35,15 @@ public class CancelAppointmentUseCase {
         Appointment appointment = appointmentRepository.getById(command.id())
                 .orElseThrow(() -> new RecordNotFoundException("appointment.not.found"));
 
-        try {
-            validateStatusTransition(appointment.getStatus());
-            applyPatch(appointment, command);
-            appointmentRepository.save(appointment);
-            ServiceOrderResult serviceOrderResult = serviceOrderPort.cancelServiceOrder(appointment.getId(), command.reason());
+        validateStatusTransition(appointment.getStatus());
+        applyPatch(appointment, command);
+        appointmentRepository.save(appointment);
+        ServiceOrderResult serviceOrderResult = serviceOrderPort.cancelServiceOrder(appointment.getId(), command.reason());
 
-            return new ConfirmAppointmentResult(
-                    mapper.toResult(appointment),
-                    serviceOrderResult
-            );
-        } catch (RuntimeException ex) {
-            log.error("RuntimeException updating appointment status {}: {}", command.id(), ex.getMessage());
-            throw new BadRequestException("appointment.update.failed");
-        }
+        return new ConfirmAppointmentResult(
+                mapper.toResult(appointment),
+                serviceOrderResult
+        );
     }
 
     private void validateStatusTransition(AppointmentStatus status) {

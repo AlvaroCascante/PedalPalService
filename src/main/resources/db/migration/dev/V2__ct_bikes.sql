@@ -56,7 +56,7 @@ CREATE TABLE bike_history (
     bike_id UUID NOT NULL,
     reference_id UUID NOT NULL,
 
-    occurred_at TIMESTAMP NOT NULL,
+    occurred_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     performed_by UUID NOT NULL,
 
     type VARCHAR(50) NOT NULL,

@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -14,7 +14,7 @@ public class BikeHistory {
     private UUID id;
     private UUID bikeId;
     private UUID referenceId;
-    private LocalDateTime occurredAt;
+    private Instant occurredAt;
     private UUID performedBy;
     private BikeHistoryEventType type;
     private String payload;

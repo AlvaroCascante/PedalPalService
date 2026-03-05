@@ -3,11 +3,10 @@ package com.quetoquenana.pedalpal.announcement.controller;
 import com.quetoquenana.pedalpal.announcement.application.query.AnnouncementQueryService;
 import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementResult;
 import com.quetoquenana.pedalpal.announcement.application.usecase.CreateAnnouncementUseCase;
-import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementStatusUseCase;
+import com.quetoquenana.pedalpal.announcement.application.usecase.InactivateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.presentation.mapper.AnnouncementApiMapper;
 import com.quetoquenana.pedalpal.announcement.presentation.controller.AnnouncementController;
-import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementStatusRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.response.AnnouncementResponse;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
@@ -58,7 +57,7 @@ class AnnouncementControllerTest {
     UpdateAnnouncementUseCase updateUseCase;
 
     @MockitoBean
-    UpdateAnnouncementStatusUseCase updateStatusUseCase;
+    InactivateAnnouncementUseCase updateStatusUseCase;
 
     @MockitoBean
     AnnouncementQueryService queryService;
@@ -146,18 +145,16 @@ class AnnouncementControllerTest {
     }
 
     @Test
-    void shouldReturn200_whenUpdateStatus() throws Exception {
+    void shouldReturn200_whenPublish() throws Exception {
         UUID id = UUID.randomUUID();
 
         AnnouncementResult result = TestAnnouncementData.result(id);
         AnnouncementResponse response = TestAnnouncementData.response(id);
 
-        when(apiMapper.toCommand(eq(id), eq(AUTH_USER_ID), any(UpdateAnnouncementStatusRequest.class)))
-                .thenReturn(TestAnnouncementData.statusCommand(id, AUTH_USER_ID, "INACTIVE"));
-        when(updateStatusUseCase.execute(any())).thenReturn(result);
+        when(apiMapper.toCommand(eq(id), eq(AUTH_USER_ID))) .thenReturn(TestAnnouncementData.statusCommand(id, AUTH_USER_ID));when(updateStatusUseCase.execute(any())).thenReturn(result);
         when(apiMapper.toResponse(result)).thenReturn(response);
 
-        mockMvc.perform(patch("/v1/api/announcements/{id}/status", id)
+        mockMvc.perform(patch("/v1/api/announcements/{id}/publish", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"status\":\"INACTIVE\"}"))
                 .andExpect(status().isOk())

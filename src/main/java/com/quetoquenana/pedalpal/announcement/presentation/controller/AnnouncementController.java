@@ -2,16 +2,15 @@ package com.quetoquenana.pedalpal.announcement.presentation.controller;
 
 import com.quetoquenana.pedalpal.announcement.application.command.CreateAnnouncementCommand;
 import com.quetoquenana.pedalpal.announcement.application.command.UpdateAnnouncementCommand;
-import com.quetoquenana.pedalpal.announcement.application.command.UpdateAnnouncementStatusCommand;
 import com.quetoquenana.pedalpal.announcement.application.query.AnnouncementQueryService;
 import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementResult;
+import com.quetoquenana.pedalpal.announcement.application.usecase.ActivateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.application.usecase.CreateAnnouncementUseCase;
-import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementStatusUseCase;
+import com.quetoquenana.pedalpal.announcement.application.usecase.InactivateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.presentation.mapper.AnnouncementApiMapper;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.CreateAnnouncementRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementRequest;
-import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementStatusRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.response.AnnouncementResponse;
 import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
@@ -36,9 +35,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AnnouncementController {
 
+    private final ActivateAnnouncementUseCase activateAnnouncementUseCase;
+    private final InactivateAnnouncementUseCase inactivateAnnouncementUseCase;
     private final CreateAnnouncementUseCase createUseCase;
     private final UpdateAnnouncementUseCase updateUseCase;
-    private final UpdateAnnouncementStatusUseCase updateStatusUseCase;
     private final AnnouncementQueryService queryService;
     private final AnnouncementApiMapper apiMapper;
     private final CurrentUserPort currentUserProvider;
@@ -69,15 +69,33 @@ public class AnnouncementController {
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
-    @PatchMapping("/{id}/status")
+    @PatchMapping("/{id}/activate")
     @PreAuthorize("(hasRole('ADMIN'))")
-    public ResponseEntity<ApiResponse> updateStatus(
-            @PathVariable UUID id,
-            @Valid @RequestBody UpdateAnnouncementStatusRequest request
+    public ResponseEntity<ApiResponse> activate(
+            @PathVariable UUID id
     ) {
         AuthenticatedUser authenticatedUser = getAuthenticatedUserId();
-        UpdateAnnouncementStatusCommand command = apiMapper.toCommand(id, authenticatedUser.userId(), request);
-        AnnouncementResult result = updateStatusUseCase.execute(command);
+        UpdateAnnouncementCommand command = apiMapper.toCommand(
+                id,
+                authenticatedUser.userId()
+        );
+        AnnouncementResult result = activateAnnouncementUseCase.execute(command);
+        AnnouncementResponse response = apiMapper.toResponse(result);
+        return ResponseEntity.ok(new ApiResponse(response));
+    }
+
+
+    @PatchMapping("/{id}/inactivate")
+    @PreAuthorize("(hasRole('ADMIN'))")
+    public ResponseEntity<ApiResponse> inactivate(
+            @PathVariable UUID id
+    ) {
+        AuthenticatedUser authenticatedUser = getAuthenticatedUserId();
+        UpdateAnnouncementCommand command = apiMapper.toCommand(
+                id,
+                authenticatedUser.userId()
+        );
+        AnnouncementResult result = inactivateAnnouncementUseCase.execute(command);
         AnnouncementResponse response = apiMapper.toResponse(result);
         return ResponseEntity.ok(new ApiResponse(response));
     }

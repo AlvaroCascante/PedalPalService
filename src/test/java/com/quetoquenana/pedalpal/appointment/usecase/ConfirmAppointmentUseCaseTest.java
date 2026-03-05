@@ -10,7 +10,6 @@ import com.quetoquenana.pedalpal.appointment.domain.model.RequestedService;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
 import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
-import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.serviceOrder.application.port.ServiceOrderPort;
 import com.quetoquenana.pedalpal.serviceOrder.application.result.ServiceOrderResult;
@@ -259,7 +258,7 @@ class ConfirmAppointmentUseCaseTest {
                     "reason"
             );
 
-            assertThrows(BadRequestException.class, () -> useCase.execute(command));
+            assertThrows(RuntimeException.class, () -> useCase.execute(command));
         }
     }
 }

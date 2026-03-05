@@ -6,7 +6,6 @@ import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.domain.model.*;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
-import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
@@ -15,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,22 +50,16 @@ public class ReplaceBikeComponentUseCase {
         SystemCode componentType = systemCodeRepository.findByCategoryAndCode(COMPONENT_TYPE, command.type())
                 .orElseThrow(() -> new RecordNotFoundException("bike.component.type.not.found", command.type()));
 
-        try {
-            BikeComponent newComponent = bikeMapper.toModel(command, componentType);
-            component.changeStatus(BikeComponentStatus.REPLACED);
-            bike.addComponent(newComponent);
-            bikeRepository.save(bike);
+        BikeComponent newComponent = bikeMapper.toModel(command, componentType);
+        component.changeStatus(BikeComponentStatus.REPLACED);
+        bike.addComponent(newComponent);
+        bikeRepository.save(bike);
 
-            publishHistoryEvent(bike.getId(), command.authenticatedUserId(), component, newComponent);
-            return bikeMapper.toResult(bike);
-        } catch (RuntimeException ex) {
-            log.error("RuntimeException on ReplaceBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
-            throw new BusinessException("bike.replace.component.failed");
-        }
+        publishHistoryEvent(bike.getId(), command.authenticatedUserId(), component, newComponent);
+        return bikeMapper.toResult(bike);
     }
 
     private void publishHistoryEvent(UUID bikeId, UUID userId, BikeComponent oldComponent, BikeComponent newComponent) {
-
         eventPublisher.publishEvent(
             new BikeHistoryEvent(
                     bikeId,
@@ -78,7 +71,7 @@ public class ReplaceBikeComponentUseCase {
                             oldComponent.getName(),
                             newComponent.getName()
                     )),
-                    LocalDateTime.now()
+                    Instant.now()
             )
         );
     }

@@ -1,5 +1,6 @@
 package com.quetoquenana.pedalpal.media.domain.model;
 
+import com.quetoquenana.pedalpal.common.domain.model.Auditable;
 import lombok.*;
 
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Media {
+public class Media extends Auditable {
 
     private UUID id;
     private UUID ownerId; // ID of the user who owns this media (could be the uploader or the entity owner, depending on the use case)
@@ -35,18 +36,8 @@ public class Media {
     /**
      * Confirms an upload by storing provider details and activating the media.
      */
-    public Media confirmUploaded(
-            String providerAssetId,
-            Long sizeBytes,
-            Map<String, Object> metadata
-    ) {
-        Map<String, Object> mergedMetadata = mergeMetadata(metadata);
-        return this.toBuilder()
-                .providerAssetId(providerAssetId)
-                .sizeBytes(sizeBytes)
-                .metadata(mergedMetadata)
-                .status(MediaStatus.ACTIVE)
-                .build();
+    public void confirmUploaded() {
+        this.status = MediaStatus.ACTIVE;
     }
 
     /**

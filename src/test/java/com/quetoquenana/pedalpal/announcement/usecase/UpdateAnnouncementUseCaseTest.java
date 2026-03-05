@@ -61,7 +61,7 @@ class UpdateAnnouncementUseCaseTest {
             AnnouncementResult actual = useCase.execute(command);
 
             assertEquals(id, actual.id());
-            verify(mapper, times(1)).applyPatch(existing, command);
+            verify(mapper, times(1)).applyUpdate(existing, command);
             verify(repository, times(1)).save(existing);
         }
     }

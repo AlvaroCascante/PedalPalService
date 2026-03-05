@@ -14,7 +14,7 @@ public class MediaEntityMapper {
     private MediaEntityMapper() {}
 
     public static Media toModel(MediaEntity entity) {
-        return Media.builder()
+        Media model = Media.builder()
                 .id(entity.getId())
                 .ownerId(entity.getOwnerId())
                 .referenceId(entity.getReferenceId())
@@ -31,10 +31,12 @@ public class MediaEntityMapper {
                 .title(entity.getName())
                 .altText(entity.getAltText())
                 .build();
+        model.setVersion(entity.getVersion());
+        return model;
     }
 
     public static MediaEntity toEntity(Media model) {
-        return MediaEntity.builder()
+        MediaEntity entity = MediaEntity.builder()
                 .id(model.getId())
                 .ownerId(model.getOwnerId())
                 .referenceId(model.getReferenceId())
@@ -51,5 +53,7 @@ public class MediaEntityMapper {
                 .name(model.getTitle())
                 .altText(model.getAltText())
                 .build();
+        entity.setVersion(model.getVersion());
+        return entity;
     }
 }

@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,19 +31,11 @@ public class UpdateBikeUseCase {
     public BikeResult execute(UpdateBikeCommand command) {
         Bike bike = validate(command);
 
-        try {
-            List<BikeChangeItem> bikeChangeItems = applyPatch(bike, command);
-            bikeRepository.save(bike);
+        List<BikeChangeItem> bikeChangeItems = applyPatch(bike, command);
+        bikeRepository.save(bike);
 
-            publishHistoryEvent(bike.getId(), command.authenticatedUserId(), bikeChangeItems);
-            return bikeMapper.toResult(bike);
-        } catch (BadRequestException ex) {
-            log.error("BadRequestException on UpdateBikeUseCase -- Command: {}: Error: {}", command, ex.getMessage());
-            throw ex;
-        } catch (RuntimeException ex) {
-            log.error("RuntimeException on UpdateBikeUseCase -- Command: {}: Error: {}", command, ex.getMessage());
-            throw new BusinessException("bike.update.failed");
-        }
+        publishHistoryEvent(bike.getId(), command.authenticatedUserId(), bikeChangeItems);
+        return bikeMapper.toResult(bike);
     }
 
     private Bike validate(UpdateBikeCommand command) {
@@ -71,7 +63,7 @@ public class UpdateBikeUseCase {
                         bikeId,
                         BikeHistoryEventType.UPDATED,
                         bikeChangeItems,
-                        LocalDateTime.now()
+                        Instant.now()
                 )
             );
         }

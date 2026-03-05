@@ -29,15 +29,7 @@ public class AnnouncementMapper {
     }
 
     public AnnouncementResult toResult(Announcement model) {
-        return AnnouncementResult.builder()
-                .id(model.getId())
-                .title(model.getTitle())
-                .subTitle(model.getSubTitle())
-                .description(model.getDescription())
-                .position(model.getPosition())
-                .url(model.getUrl())
-                .status(model.getStatus())
-                .build();
+        return this.toResult(model, Collections.emptySet());
     }
 
     public AnnouncementResult toResult(Announcement model, Set<UploadMediaResult> mediaUploadResponse) {
@@ -63,24 +55,6 @@ public class AnnouncementMapper {
         );
     }
 
-    public void applyPatch(Announcement model, UpdateAnnouncementCommand command) {
-        if (command.title() != null) {
-            model.setTitle(command.title());
-        }
-        if (command.subTitle() != null) {
-            model.setSubTitle(command.subTitle());
-        }
-        if (command.description() != null) {
-            model.setDescription(command.description());
-        }
-        if (command.position() != null) {
-            model.setPosition(command.position());
-        }
-        if (command.url() != null) {
-            model.setUrl(command.url());
-        }
-    }
-
     public UploadMediaCommand toMediaUploadRequest(Announcement announcement, CreateAnnouncementCommand command) {
         Set<UploadMediaSpecCommand> specs = command.mediaFiles() == null
                 ? Collections.emptySet()
@@ -99,13 +73,31 @@ public class AnnouncementMapper {
         );
     }
 
-    private UploadMediaSpecCommand toMediaUploadRequest(AnnouncementMediaCommand spec) {
+    private UploadMediaSpecCommand toMediaUploadRequest(AnnouncementMediaCommand command) {
         return new UploadMediaSpecCommand(
-                spec.mediaType(),
-                spec.contentType(),
-                spec.isPrimary(),
-                spec.name(),
-                spec.altText()
+                command.mediaType(),
+                command.contentType(),
+                command.isPrimary(),
+                command.name(),
+                command.altText()
         );
+    }
+
+    public void applyUpdate(Announcement model, UpdateAnnouncementCommand command) {
+        if (command.title() != null) {
+            model.setTitle(command.title());
+        }
+        if (command.subTitle() != null) {
+            model.setSubTitle(command.subTitle());
+        }
+        if (command.description() != null) {
+            model.setDescription(command.description());
+        }
+        if (command.position() != null) {
+            model.setPosition(command.position());
+        }
+        if (command.url() != null) {
+            model.setUrl(command.url());
+        }
     }
 }

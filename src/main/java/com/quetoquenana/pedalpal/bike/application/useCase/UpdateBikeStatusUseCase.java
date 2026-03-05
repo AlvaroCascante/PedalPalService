@@ -5,7 +5,6 @@ import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.domain.model.*;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
-import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -30,19 +29,12 @@ public class UpdateBikeStatusUseCase {
     public BikeResult execute(UpdateBikeStatusCommand command) {
         Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
                 .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
-        try {
-            List<BikeChangeItem> bikeChangeItems = applyPatch(bike, command);
-            bikeRepository.save(bike);
 
-            publishHistoryEvent(bike.getId(), command.authenticatedUserId(), bikeChangeItems);
-            return bikeMapper.toResult(bike);
-        } catch (BadRequestException ex) {
-            log.error("BadRequestException on UpdateBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
-            throw ex;
-        } catch (RuntimeException ex) {
-            log.error("RuntimeException on UpdateBikeStatusUseCase -- Command: {}: Error: {}", command, ex.getMessage());
-            throw new BusinessException("bike.update.status.failed");
-        }
+        List<BikeChangeItem> bikeChangeItems = applyPatch(bike, command);
+        bikeRepository.save(bike);
+
+        publishHistoryEvent(bike.getId(), command.authenticatedUserId(), bikeChangeItems);
+        return bikeMapper.toResult(bike);
     }
 
     private void publishHistoryEvent(UUID bikeId, UUID userId, List<BikeChangeItem> bikeChangeItems) {
@@ -54,7 +46,7 @@ public class UpdateBikeStatusUseCase {
                             bikeId,
                             BikeHistoryEventType.STATUS_CHANGED,
                             bikeChangeItems,
-                            LocalDateTime.now()
+                            Instant.now()
                     )
             );
         }

@@ -21,6 +21,14 @@ public class Announcement extends Auditable {
     private String url;
     private AnnouncementStatus status;
 
+    public void activate() {
+        this.status = AnnouncementStatus.ACTIVE;
+    }
+
+    public void inactivate() {
+        this.status = AnnouncementStatus.INACTIVE;
+    }
+
     // Equality based on title and subtitle, as they are the main identifying features of an announcement
     @Override
     public boolean equals(Object o) {

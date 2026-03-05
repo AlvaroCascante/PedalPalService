@@ -10,12 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 /*
- * Use case for updating an announcement.
- * It retrieves the announcement, applies updates based on the command, and saves it.
+ * Use case for updating the status of an announcement.
+ * It retrieves the announcement, updates its status based on the command, and saves it.
  * It also handles exceptions and logs errors.
  */
 @RequiredArgsConstructor
-public class UpdateAnnouncementUseCase {
+public class InactivateAnnouncementUseCase {
 
     private final AnnouncementRepository repository;
     private final AnnouncementMapper mapper;
@@ -25,10 +25,8 @@ public class UpdateAnnouncementUseCase {
         Announcement announcement = repository.getById(command.id())
                 .orElseThrow(() -> new RecordNotFoundException("announcement.not.found"));
 
-        mapper.applyUpdate(announcement, command);
-
+        announcement.inactivate();
         repository.save(announcement);
-
         return mapper.toResult(announcement);
     }
 }

@@ -5,7 +5,6 @@ import com.quetoquenana.pedalpal.media.application.command.ConfirmUploadCommand;
 import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.common.application.command.UploadMediaSpecCommand;
 import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
-import com.quetoquenana.pedalpal.media.presentation.dto.request.ConfirmUploadRequest;
 import com.quetoquenana.pedalpal.media.presentation.dto.request.UploadMediaRequest;
 import com.quetoquenana.pedalpal.media.presentation.dto.request.UploadMediaSpecRequest;
 import com.quetoquenana.pedalpal.media.presentation.dto.response.UploadMediaResponse;
@@ -52,15 +51,12 @@ public class MediaApiMapper {
     }
 
     public ConfirmUploadCommand toCommand(
-            ConfirmUploadRequest request,
+            UUID mediaId,
             UUID authenticatedUserId
     ) {
         return new ConfirmUploadCommand(
-                request.storageKey(),
-                request.providerAssetId(),
-                authenticatedUserId,
-                request.sizeBytes(),
-                request.metadata()
+                mediaId,
+                authenticatedUserId
         );
     }
 }

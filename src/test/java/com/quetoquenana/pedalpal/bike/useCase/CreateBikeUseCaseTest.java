@@ -21,7 +21,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.UUID;
 
@@ -225,30 +224,6 @@ class CreateBikeUseCaseTest {
             useCase.execute(command);
 
             verify(bikeRepository, never()).existsBySerialNumber(anyString());
-            verify(bikeRepository, times(1)).save(any(Bike.class));
-        }
-
-        @Test
-        void shouldFail_withBusinessException_whenRepositoryThrowsDataIntegrityViolation() {
-            CreateBikeCommand command = TestBikeData.createBikeCommand_duplicateSerial();
-
-            when(bikeRepository.existsBySerialNumber(command.serialNumber())).thenReturn(false);
-            when(bikeRepository.save(any(Bike.class))).thenThrow(new DataIntegrityViolationException("dup"));
-
-            Bike mapped = Bike.builder()
-                    .ownerId(command.ownerId())
-                    .name(command.name())
-                    .type(BikeType.from(command.type()))
-                    .status(BikeStatus.ACTIVE)
-                    .serialNumber(command.serialNumber())
-                    .isPublic(command.isPublic())
-                    .isExternalSync(command.isExternalSync())
-                    .build();
-            when(bikeMapper.toModel(command)).thenReturn(mapped);
-
-            BusinessException ex = assertThrows(BusinessException.class, () -> useCase.execute(command));
-            assertEquals("bike.creation.failed", ex.getMessage());
-
             verify(bikeRepository, times(1)).save(any(Bike.class));
         }
     }

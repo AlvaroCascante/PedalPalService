@@ -5,7 +5,6 @@ import com.quetoquenana.pedalpal.appointment.application.result.ConfirmAppointme
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
 import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
-import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.serviceOrder.application.port.ServiceOrderPort;
 import com.quetoquenana.pedalpal.serviceOrder.application.result.ServiceOrderResult;
@@ -36,24 +35,20 @@ public class ConfirmAppointmentUseCase {
     public ConfirmAppointmentResult execute(UpdateAppointmentStatusCommand command) {
         Appointment appointment = repository.getById(command.id())
                 .orElseThrow(() -> new RecordNotFoundException("appointment.not.found"));
-        try {
-            StoreLocation location = storeLocationRepository.getById(appointment.getStoreLocationId())
-                    .orElseThrow(() -> new RecordNotFoundException("store.location.not.found"));
 
-            appointment.confirm();
+        StoreLocation location = storeLocationRepository.getById(appointment.getStoreLocationId())
+                .orElseThrow(() -> new RecordNotFoundException("store.location.not.found"));
 
-            repository.save(appointment);
+        appointment.confirm();
 
-            ServiceOrderResult serviceOrderResult = serviceOrderPort.creteServiceOrder(appointment, location.getStorePrefix());
+        repository.save(appointment);
 
-            return new ConfirmAppointmentResult(
-                    mapper.toResult(appointment),
-                    serviceOrderResult
-            );
-        } catch (RuntimeException ex) {
-            log.error("RuntimeException updating appointment status {}: {}", command.id(), ex.getMessage());
-            throw new BadRequestException("appointment.update.failed");
-        }
+        ServiceOrderResult serviceOrderResult = serviceOrderPort.creteServiceOrder(appointment, location.getStorePrefix());
+
+        return new ConfirmAppointmentResult(
+                mapper.toResult(appointment),
+                serviceOrderResult
+        );
     }
 }
 

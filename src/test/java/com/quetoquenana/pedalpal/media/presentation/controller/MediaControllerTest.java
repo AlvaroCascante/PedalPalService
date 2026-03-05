@@ -3,6 +3,7 @@ package com.quetoquenana.pedalpal.media.presentation.controller;
 import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
+import com.quetoquenana.pedalpal.media.application.command.ConfirmUploadCommand;
 import com.quetoquenana.pedalpal.media.application.result.ConfirmedUploadResult;
 import com.quetoquenana.pedalpal.media.application.useCase.ConfirmMediaUploadUseCase;
 import com.quetoquenana.pedalpal.media.application.useCase.MediaUploadUseCase;
@@ -32,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = MediaController.class)
-@Import({SecurityConfig.class, MediaApiMapper.class})
+@Import({SecurityConfig.class})
 @WithMockJwt(userId = "00000000-0000-0000-0000-000000000001", roles = {"ADMIN"})
 class MediaControllerTest {
 
@@ -46,6 +47,9 @@ class MediaControllerTest {
 
     @MockitoBean
     ConfirmMediaUploadUseCase confirmMediaUploadUseCase;
+
+    @MockitoBean
+    MediaApiMapper mapper;
 
     @MockitoBean
     CurrentUserPort currentUserProvider;
@@ -62,18 +66,20 @@ class MediaControllerTest {
     @Test
     void shouldReturn200_whenConfirmUpload() throws Exception {
         UUID mediaId = UUID.randomUUID();
+        ConfirmUploadCommand command = new ConfirmUploadCommand(mediaId, AUTH_USER_ID);
         ConfirmedUploadResult result = new ConfirmedUploadResult(mediaId, "media/key", "ACTIVE", "https://cdn");
 
+        when(mapper.toCommand(mediaId, AUTH_USER_ID)).thenReturn(command);
         when(confirmMediaUploadUseCase.execute(any())).thenReturn(result);
 
-        mockMvc.perform(post("/v1/media/confirm-upload")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"storageKey\":\"media/key\",\"providerAssetId\":\"asset-1\",\"sizeBytes\":123,\"metadata\":{\"width\":800}}"))
+        mockMvc.perform(post("/v1/api/media/{id}/confirm", mediaId)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.mediaId").value(mediaId.toString()))
                 .andExpect(jsonPath("$.data.storageKey").value("media/key"));
 
         verify(confirmMediaUploadUseCase, times(1)).execute(any());
+        verify(mapper, times(1)).toCommand(mediaId, AUTH_USER_ID);
     }
 
     @Test
@@ -82,12 +88,11 @@ class MediaControllerTest {
         when(messageSource.getMessage(eq("authentication.required"), any(), any()))
                 .thenReturn("authentication.required");
 
-        mockMvc.perform(post("/v1/media/confirm-upload")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"storageKey\":\"media/key\",\"providerAssetId\":\"asset-1\"}"))
+        mockMvc.perform(post("/v1/api/media/{id}/confirm", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
 
         verify(confirmMediaUploadUseCase, never()).execute(any());
+        verify(mapper, never()).toCommand(any(), any());
     }
 }
-

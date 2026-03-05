@@ -20,19 +20,19 @@ public class BikeHistoryQueryService {
     private final BikeHistoryRepository bikeHistoryRepository;
 
     public BikeHistoryResult getById(UUID id) {
-        BikeHistory bikeHistory = bikeHistoryRepository.getById(id)
+        BikeHistory response = bikeHistoryRepository.getById(id)
                 .orElseThrow(RecordNotFoundException::new);
 
-        return mapper.toResult(bikeHistory);
+        return mapper.toResult(response);
     }
 
     public List<BikeHistoryResult> findByBikeId(UUID id, UUID ownerId) {
         Bike bike = repository.findByIdAndOwnerId(id, ownerId)
                 .orElseThrow(RecordNotFoundException::new);
 
-        List<BikeHistory> bikes = bikeHistoryRepository.findByBikeId(bike.getId());
+        List<BikeHistory> response = bikeHistoryRepository.findByBikeId(bike.getId());
 
-        return bikes.stream()
+        return response.stream()
                 .map(mapper::toResult)
                 .toList();
     }

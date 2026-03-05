@@ -1,13 +1,12 @@
 package com.quetoquenana.pedalpal.announcement.usecase;
 
-import com.quetoquenana.pedalpal.announcement.application.command.UpdateAnnouncementStatusCommand;
+import com.quetoquenana.pedalpal.announcement.application.command.UpdateAnnouncementCommand;
 import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementResult;
-import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementStatusUseCase;
+import com.quetoquenana.pedalpal.announcement.application.usecase.InactivateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
 import com.quetoquenana.pedalpal.announcement.domain.model.AnnouncementStatus;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
 import com.quetoquenana.pedalpal.announcement.application.mapper.AnnouncementMapper;
-import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.util.TestAnnouncementData;
 import org.junit.jupiter.api.Nested;
@@ -31,7 +30,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class UpdateAnnouncementStatusUseCaseTest {
+class InactivateAnnouncementUseCaseTest {
 
     @Mock
     AnnouncementRepository repository;
@@ -40,7 +39,7 @@ class UpdateAnnouncementStatusUseCaseTest {
     AnnouncementMapper mapper;
 
     @InjectMocks
-    UpdateAnnouncementStatusUseCase useCase;
+    InactivateAnnouncementUseCase useCase;
 
     @Captor
     ArgumentCaptor<Announcement> announcementCaptor;
@@ -61,7 +60,7 @@ class UpdateAnnouncementStatusUseCaseTest {
             AnnouncementResult result = TestAnnouncementData.result(id);
             when(mapper.toResult(saved)).thenReturn(result);
 
-            UpdateAnnouncementStatusCommand command = TestAnnouncementData.statusCommand(id, userId, "INACTIVE");
+            UpdateAnnouncementCommand command = TestAnnouncementData.statusCommand(id, userId);
 
             useCase.execute(command);
 
@@ -79,18 +78,8 @@ class UpdateAnnouncementStatusUseCaseTest {
             UUID userId = UUID.randomUUID();
             when(repository.getById(id)).thenReturn(Optional.empty());
 
-            assertThrows(RecordNotFoundException.class, () -> useCase.execute(TestAnnouncementData.statusCommand(id, userId, "ACTIVE")));
+            assertThrows(RecordNotFoundException.class, () -> useCase.execute(TestAnnouncementData.statusCommand(id, userId)));
             verify(repository, never()).save(any());
-        }
-
-        @Test
-        void shouldThrowBadRequest_whenStatusIsBlank() {
-            UUID id = UUID.randomUUID();
-            UUID userId = UUID.randomUUID();
-            when(repository.getById(id)).thenReturn(Optional.of(TestAnnouncementData.existingAnnouncement(id)));
-
-            BadRequestException ex = assertThrows(BadRequestException.class, () -> useCase.execute(TestAnnouncementData.statusCommand(id, userId, "  ")));
-            assertEquals("announcement.status.blank", ex.getMessage());
         }
     }
 }

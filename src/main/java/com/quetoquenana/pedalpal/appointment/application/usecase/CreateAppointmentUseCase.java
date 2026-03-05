@@ -10,7 +10,6 @@ import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentReposi
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
-import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.product.domain.model.Product;
 import com.quetoquenana.pedalpal.product.domain.model.ProductPackage;
@@ -45,19 +44,12 @@ public class CreateAppointmentUseCase {
     public AppointmentResult execute(CreateAppointmentCommand command) {
         validate(command);
 
-        try {
-            Appointment appointment = mapper.toModel(command);
-            List<RequestedService> services = snapshotRequestedServices(command.requestedServices());
-            appointment.setRequestedServices(services);
-            appointment = appointmentRepository.save(appointment);
-            return mapper.toResult(appointment);
-        } catch (BadRequestException | RecordNotFoundException ex) {
-            log.error("Error creating appointment: {}", ex.getMessage());
-            throw ex;
-        } catch (RuntimeException ex) {
-            log.error("RuntimeException creating appointment: {}", ex.getMessage());
-            throw new BusinessException("appointment.creation.failed");
-        }
+
+        Appointment appointment = mapper.toModel(command);
+        List<RequestedService> services = snapshotRequestedServices(command.requestedServices());
+        appointment.setRequestedServices(services);
+        appointment = appointmentRepository.save(appointment);
+        return mapper.toResult(appointment);
     }
 
     private List<RequestedService> snapshotRequestedServices(List<RequestedServiceCommand> requestedServices) {

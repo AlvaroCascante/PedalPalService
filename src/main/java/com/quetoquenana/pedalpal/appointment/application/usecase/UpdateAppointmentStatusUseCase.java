@@ -31,14 +31,9 @@ public class UpdateAppointmentStatusUseCase {
         Appointment appointment = appointmentRepository.getById(command.id())
                 .orElseThrow(() -> new RecordNotFoundException("appointment.not.found"));
 
-        try {
-            applyPatch(appointment, command);
-            Appointment saved = appointmentRepository.save(appointment);
-            return mapper.toResult(saved);
-        } catch (RuntimeException ex) {
-            log.error("RuntimeException updating appointment status {}: {}", command.id(), ex.getMessage());
-            throw new BadRequestException("appointment.update.failed");
-        }
+        applyPatch(appointment, command);
+        Appointment saved = appointmentRepository.save(appointment);
+        return mapper.toResult(saved);
     }
 
     private void applyPatch(Appointment appointment, UpdateAppointmentStatusCommand command) {

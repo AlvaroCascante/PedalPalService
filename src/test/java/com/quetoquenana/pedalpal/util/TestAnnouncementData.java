@@ -2,7 +2,6 @@ package com.quetoquenana.pedalpal.util;
 
 import com.quetoquenana.pedalpal.announcement.application.command.CreateAnnouncementCommand;
 import com.quetoquenana.pedalpal.announcement.application.command.UpdateAnnouncementCommand;
-import com.quetoquenana.pedalpal.announcement.application.command.UpdateAnnouncementStatusCommand;
 import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementResult;
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
 import com.quetoquenana.pedalpal.announcement.domain.model.AnnouncementStatus;
@@ -67,8 +66,8 @@ public final class TestAnnouncementData {
         );
     }
 
-    public static UpdateAnnouncementStatusCommand statusCommand(UUID id, UUID userId, String status) {
-        return new UpdateAnnouncementStatusCommand(id, userId, status);
+    public static UpdateAnnouncementCommand statusCommand(UUID id, UUID userId) {
+        return new UpdateAnnouncementCommand(id, userId, null, null, null, null, null);
     }
 
     public static Announcement existingAnnouncement(UUID id) {

@@ -9,7 +9,6 @@ import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.common.application.port.UploadMediaPort;
 import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
-import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,17 +37,9 @@ public class CreateBikeUploadMediaUseCase {
         Bike bike = repository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
                 .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
 
-        try {
-            UploadMediaCommand mediaRequest = mapper.toMediaUploadRequest(bike, command);
-            Set<UploadMediaResult> mediaResult = uploadMediaPort.generateUploadUrls(mediaRequest);
-            return mapper.toResult(mediaResult);
-        } catch (BadRequestException ex) {
-            log.error("BadRequestException on CreateBikeUploadMediaUseCase -- Command: {}: Error: {}", command, ex.getMessage());
-            throw ex;
-        } catch (RuntimeException ex) {
-            log.error("RuntimeException on CreateBikeUploadMediaUseCase -- Command: {}: Error: {}", command, ex.getMessage());
-            throw new BusinessException("bike.upload.media.failed");
-        }
+        UploadMediaCommand mediaRequest = mapper.toMediaUploadRequest(bike, command);
+        Set<UploadMediaResult> mediaResult = uploadMediaPort.generateUploadUrls(mediaRequest);
+        return mapper.toResult(mediaResult);
     }
 
     private void validate(CreateBikeUploadMediaCommand command) {

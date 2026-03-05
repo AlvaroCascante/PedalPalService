@@ -1,7 +1,8 @@
 package com.quetoquenana.pedalpal.config;
 
+import com.quetoquenana.pedalpal.announcement.application.usecase.ActivateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.application.usecase.CreateAnnouncementUseCase;
-import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementStatusUseCase;
+import com.quetoquenana.pedalpal.announcement.application.usecase.InactivateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
 import com.quetoquenana.pedalpal.announcement.application.mapper.AnnouncementMapper;
@@ -36,6 +37,17 @@ public class BeansUseCasesConfig {
      * Announcements Use Cases
      */
     @Bean
+    public ActivateAnnouncementUseCase createActivateAnnouncementUseCase(
+            AnnouncementRepository repository,
+            AnnouncementMapper mapper
+    ) {
+        return new ActivateAnnouncementUseCase(
+                repository,
+                mapper
+        );
+    }
+
+    @Bean
     public CreateAnnouncementUseCase createCreateAnnouncementUseCase(
             AnnouncementMapper mapper,
             AnnouncementRepository repository,
@@ -49,11 +61,11 @@ public class BeansUseCasesConfig {
     }
 
     @Bean
-    public UpdateAnnouncementStatusUseCase createUpdateAnnouncementStatusUseCase(
+    public InactivateAnnouncementUseCase createInactivateAnnouncementUseCase(
             AnnouncementRepository repository,
             AnnouncementMapper mapper
     ) {
-        return new UpdateAnnouncementStatusUseCase(
+        return new InactivateAnnouncementUseCase(
                 repository,
                 mapper
         );

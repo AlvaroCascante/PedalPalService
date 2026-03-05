@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.auditing;
+package com.quetoquenana.pedalpal.auditing.provider;
 
 import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;

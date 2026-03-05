@@ -15,16 +15,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ConfirmMediaUploadUseCaseTest {
@@ -47,8 +43,9 @@ class ConfirmMediaUploadUseCaseTest {
 
     @Test
     void shouldThrowWhenMediaNotFound() {
-        ConfirmUploadCommand command = new ConfirmUploadCommand("missing", "asset", UUID.randomUUID(), 10L, Map.of());
-        when(repository.getByStorageKey("missing")).thenReturn(Optional.empty());
+        UUID mediaId = UUID.randomUUID();
+        ConfirmUploadCommand command = new ConfirmUploadCommand(mediaId, UUID.randomUUID());
+        when(repository.getById(mediaId)).thenReturn(Optional.empty());
 
         assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
 
@@ -57,14 +54,15 @@ class ConfirmMediaUploadUseCaseTest {
 
     @Test
     void shouldThrowWhenMediaNotDraft() {
-        ConfirmUploadCommand command = new ConfirmUploadCommand("key", "asset", UUID.randomUUID(), 10L, Map.of());
+        UUID mediaId = UUID.randomUUID();
+        ConfirmUploadCommand command = new ConfirmUploadCommand(mediaId, UUID.randomUUID());
         Media model = Media.builder()
-                .id(UUID.randomUUID())
+                .id(mediaId)
                 .storageKey("key")
                 .status(MediaStatus.ACTIVE)
                 .build();
 
-        when(repository.getByStorageKey("key")).thenReturn(Optional.of(model));
+        when(repository.getById(mediaId)).thenReturn(Optional.of(model));
 
         assertThrows(BusinessException.class, () -> useCase.execute(command));
 
@@ -74,25 +72,23 @@ class ConfirmMediaUploadUseCaseTest {
     @Test
     void shouldConfirmUploadAndReturnResult() {
         UUID mediaId = UUID.randomUUID();
-        ConfirmUploadCommand command = new ConfirmUploadCommand("key", "asset", UUID.randomUUID(), 10L, Map.of("width", 100));
+        ConfirmUploadCommand command = new ConfirmUploadCommand(mediaId, UUID.randomUUID());
         Media model = Media.builder()
                 .id(mediaId)
                 .storageKey("key")
                 .status(MediaStatus.DRAFT)
                 .build();
-        Media confirmed = model.confirmUploaded("asset", 10L, Map.of("width", 100));
 
         ConfirmedUploadResult result = new ConfirmedUploadResult(mediaId, "key", "ACTIVE", "https://cdn");
 
-        when(repository.getByStorageKey("key")).thenReturn(Optional.of(model));
-        when(repository.save(confirmed)).thenReturn(confirmed);
+        when(repository.getById(mediaId)).thenReturn(Optional.of(model));
+        when(repository.save(model)).thenReturn(model);
         when(cdnUrlProvider.providePublic("key")).thenReturn("https://cdn");
-        when(mapper.toConfirmedResult(confirmed, "https://cdn")).thenReturn(result);
+        when(mapper.toConfirmedResult(model, "https://cdn")).thenReturn(result);
 
         ConfirmedUploadResult actual = useCase.execute(command);
 
         assertEquals(result, actual);
-        verify(repository).save(confirmed);
+        verify(repository).save(model);
     }
 }
-

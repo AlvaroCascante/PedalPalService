@@ -1,12 +1,11 @@
 package com.quetoquenana.pedalpal.bike.application.useCase;
 
 import com.quetoquenana.pedalpal.bike.application.command.AddBikeComponentCommand;
+import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.domain.model.*;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
-import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
-import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
@@ -15,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,23 +36,18 @@ public class AddBikeComponentUseCase {
         SystemCode componentType = systemCodeRepository.findByCategoryAndCode(COMPONENT_TYPE, command.type())
                 .orElseThrow(() -> new RecordNotFoundException("bike.component.type.not.found", command.type()));
 
-        try {
-            BikeComponent component = bikeMapper.toModel(command, componentType);
-            bike.addComponent(component);
-            bikeRepository.save(bike);
+        BikeComponent component = bikeMapper.toModel(command, componentType);
+        bike.addComponent(component);
+        bikeRepository.save(bike);
 
-            publishHistoryEvent(
-                    bike.getId(),
-                    command.authenticatedUserId(),
-                    component.getId(),
-                    component.getName()
-            );
+        publishHistoryEvent(
+                bike.getId(),
+                command.authenticatedUserId(),
+                component.getId(),
+                component.getName()
+        );
 
-            return bikeMapper.toResult(bike);
-        } catch (RuntimeException ex) {
-            log.error("RuntimeException on AddBikeComponentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
-            throw new BusinessException("bike.component.add.failed");
-        }
+        return bikeMapper.toResult(bike);
     }
 
     private Bike validate(AddBikeComponentCommand command) {
@@ -84,7 +78,7 @@ public class AddBikeComponentUseCase {
                             "",
                             componentName
                     )),
-                    LocalDateTime.now()
+                    Instant.now()
             )
         );
     }

@@ -1,6 +1,8 @@
 package com.quetoquenana.pedalpal.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.quetoquenana.pedalpal.announcement.application.mapper.AnnouncementMapper;
 import com.quetoquenana.pedalpal.announcement.presentation.mapper.AnnouncementApiMapper;
 import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
@@ -26,7 +28,10 @@ public class BeansMappersConfig {
 
     @Bean
     public ObjectMapper createObjectMapper() {
-        return new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return objectMapper;
     }
 
     @Bean

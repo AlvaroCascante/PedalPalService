@@ -5,7 +5,7 @@ import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEventType;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -30,7 +30,7 @@ public class BikeHistoryEntity {
     private UUID referenceId;
 
     @Column(name = "occurred_at", nullable = false)
-    private LocalDateTime occurredAt;
+    private Instant occurredAt;
 
     @Column(name = "performed_by", nullable = false)
     private UUID performedBy;

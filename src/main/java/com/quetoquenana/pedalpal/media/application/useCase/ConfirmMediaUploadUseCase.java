@@ -23,25 +23,21 @@ public class ConfirmMediaUploadUseCase {
     private final CdnUrlProvider cdnUrlProvider;
 
     public ConfirmedUploadResult execute(ConfirmUploadCommand command) {
-        Media model = repository.getByStorageKey(command.storageKey())
-                .orElseThrow(() -> new RecordNotFoundException("media.not-found"));
+        Media model = repository.getById(command.mediaId())
+                .orElseThrow(() -> new RecordNotFoundException("media.not.found"));
 
-        if (model.getStatus() != MediaStatus.DRAFT) {
+        if (!model.getStatus().equals(MediaStatus.DRAFT)) {
             throw new BusinessException("media.not.pending");
         }
 
-        Media confirmed = model.confirmUploaded(
-                command.providerAssetId(),
-                command.sizeBytes(),
-                command.metadata()
-        );
+        model.confirmUploaded();
 
         // Persist
-        repository.save(confirmed);
+        repository.save(model);
 
-        String cdnUrl = cdnUrlProvider.providePublic(confirmed.getStorageKey());
+        String cdnUrl = cdnUrlProvider.providePublic(model.getStorageKey());
 
         // Return result
-        return mapper.toConfirmedResult(confirmed, cdnUrl);
+        return mapper.toConfirmedResult(model, cdnUrl);
     }
 }

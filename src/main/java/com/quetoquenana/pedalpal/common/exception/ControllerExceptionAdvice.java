@@ -3,6 +3,7 @@ package com.quetoquenana.pedalpal.common.exception;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -37,6 +38,14 @@ public class ControllerExceptionAdvice {
     public ResponseEntity<ApiResponse> handleBusinessException(
             BusinessException ex, Locale locale) {
         log.warn("BusinessException: {}", ex.getMessage());
+        String message = messageSource.getMessage(ex.getMessageKey(), ex.getMessageArgs(), locale);
+        return ResponseEntity.internalServerError().body(new ApiResponse(message, HttpStatus.INTERNAL_SERVER_ERROR.value()));
+    }
+    
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiResponse> handleDataIntegrityViolationException(
+            DomainException ex, Locale locale) {
+        log.warn("DataIntegrityViolationException: {}", ex.getMessage());
         String message = messageSource.getMessage(ex.getMessageKey(), ex.getMessageArgs(), locale);
         return ResponseEntity.internalServerError().body(new ApiResponse(message, HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }

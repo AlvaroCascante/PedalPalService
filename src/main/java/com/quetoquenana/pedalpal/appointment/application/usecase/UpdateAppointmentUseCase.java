@@ -6,7 +6,6 @@ import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
 import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
-import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,17 +30,9 @@ public class UpdateAppointmentUseCase {
         Appointment appointment = appointmentRepository.getById(command.id())
                 .orElseThrow(() -> new RecordNotFoundException("appointment.not.found"));
 
-        try {
-            applyPatch(appointment, command);
-            appointmentRepository.save(appointment);
-            return mapper.toResult(appointment);
-        } catch (BadRequestException ex) {
-            log.error("BadRequestException on UpdateAppointmentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
-            throw ex;
-        } catch (RuntimeException ex) {
-            log.error("RuntimeException on UpdateAppointmentUseCase -- Command: {}: Error: {}", command, ex.getMessage());
-            throw new BusinessException("appointment.update.failed");
-        }
+        applyPatch(appointment, command);
+        appointmentRepository.save(appointment);
+        return mapper.toResult(appointment);
     }
 
     private void applyPatch(Appointment appointment, UpdateAppointmentCommand command) {
