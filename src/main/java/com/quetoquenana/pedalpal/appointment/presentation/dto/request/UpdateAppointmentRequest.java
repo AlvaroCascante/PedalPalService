@@ -8,6 +8,7 @@ import java.util.UUID;
 @Builder
 public record UpdateAppointmentRequest(
         UUID authenticatedUserId,
+        UUID customerId,
         Instant scheduledAt,
         String notes
 ) {

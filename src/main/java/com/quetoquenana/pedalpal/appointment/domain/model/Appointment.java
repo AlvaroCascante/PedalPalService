@@ -19,6 +19,7 @@ public class Appointment extends Auditable {
 
     private UUID id;
     private UUID bikeId;
+    private UUID customerId;
     private UUID storeLocationId;
     private Instant scheduledAt;
     private AppointmentStatus status;

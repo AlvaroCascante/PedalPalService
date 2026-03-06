@@ -12,6 +12,7 @@ import com.quetoquenana.pedalpal.appointment.domain.model.RequestedService;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 public class AppointmentMapper {
 
@@ -23,6 +24,7 @@ public class AppointmentMapper {
         return new AppointmentResult(
                 model.getId(),
                 model.getBikeId(),
+                model.getCustomerId(),
                 model.getStoreLocationId(),
                 model.getScheduledAt(),
                 model.getStatus(),
@@ -53,11 +55,13 @@ public class AppointmentMapper {
                 serviceOrderNumber
         );
     }
-    public Appointment toModel(CreateAppointmentCommand command) {
+
+    public Appointment toModel(UUID customerId, CreateAppointmentCommand command) {
         // The requested services are handled separately in the use case,
         // so we only map the basic appointment fields here
         return Appointment.builder()
                 .bikeId(command.bikeId())
+                .customerId(customerId)
                 .storeLocationId(command.storeLocationId())
                 .scheduledAt(command.scheduledAt())
                 .status(AppointmentStatus.REQUESTED)

@@ -86,6 +86,7 @@ class AppointmentControllerTest {
                 appointmentId,
                 UUID.randomUUID(),
                 UUID.randomUUID(),
+                UUID.randomUUID(),
                 Instant.parse("2026-02-25T10:00:00Z"),
                 AppointmentStatus.REQUESTED,
                 "notes",

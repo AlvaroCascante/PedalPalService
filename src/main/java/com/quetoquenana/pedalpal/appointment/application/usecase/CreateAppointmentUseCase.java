@@ -9,7 +9,9 @@ import com.quetoquenana.pedalpal.appointment.domain.model.RequestedService;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
+import com.quetoquenana.pedalpal.common.domain.model.UserType;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.product.domain.model.Product;
@@ -42,9 +44,20 @@ public class CreateAppointmentUseCase {
 
     @Transactional
     public AppointmentResult execute(CreateAppointmentCommand command) {
-        validate(command);
+        AuthenticatedUser authenticatedUser = authenticatedUserPort.getAuthenticatedUser()
+                .orElseThrow(() -> new RecordNotFoundException("authentication.required"));
 
-        Appointment appointment = mapper.toModel(command);
+        bikeRepository.findByIdAndOwnerId(command.bikeId(), authenticatedUser.userId())
+                .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
+
+        if (command.requestedServices() == null || command.requestedServices().isEmpty()) {
+            throw new BadRequestException("appointment.requestedServices.required");
+        }
+
+        // If ADMIN, use the customerId from the command, otherwise use the authenticated user's ID
+        UUID customerId = authenticatedUser.type().equals(UserType.ADMIN) ? command.customerId() : authenticatedUser.userId();
+
+        Appointment appointment = mapper.toModel(customerId, command);
         List<RequestedService> services = snapshotRequestedServices(command.requestedServices());
         appointment.setRequestedServices(services);
         appointment = repository.save(appointment);
@@ -124,18 +137,5 @@ public class CreateAppointmentUseCase {
                         .price(product.getPrice())
                         .build()
         );
-    }
-
-    private void validate(CreateAppointmentCommand command) {
-        UUID authenticatedUserId = authenticatedUserPort.getAuthenticatedUser()
-                .orElseThrow(() -> new RecordNotFoundException("authentication.required"))
-                .userId();
-
-        bikeRepository.findByIdAndOwnerId(command.bikeId(), authenticatedUserId)
-                .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
-
-        if (command.requestedServices() == null || command.requestedServices().isEmpty()) {
-            throw new BadRequestException("appointment.requestedServices.required");
-        }
     }
 }

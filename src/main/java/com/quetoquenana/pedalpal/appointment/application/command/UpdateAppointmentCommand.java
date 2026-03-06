@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public record UpdateAppointmentCommand(
         UUID id,
+        UUID customerId,
         Instant scheduledAt,
         String notes
 ) {

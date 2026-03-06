@@ -6,6 +6,7 @@ import java.util.UUID;
 
 public record CreateAppointmentCommand(
         UUID bikeId,
+        UUID customerId,
         UUID storeLocationId,
         Instant scheduledAt,
         String notes,

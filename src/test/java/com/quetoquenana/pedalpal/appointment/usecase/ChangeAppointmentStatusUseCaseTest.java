@@ -40,8 +40,7 @@ class ChangeAppointmentStatusUseCaseTest {
     @Mock
     private AppointmentRepository repository;
 
-    @Mock
-    private AppointmentMapper mapper;
+    private final AppointmentMapper mapper = new AppointmentMapper();
 
     @Mock
     private AppointmentTransitionHandler transitionHandler;
@@ -78,7 +77,7 @@ class ChangeAppointmentStatusUseCaseTest {
 
         when(authenticatedUserPort.getAuthenticatedUser())
                 .thenReturn(Optional.of(new AuthenticatedUser(userId, "admin", "Admin", UserType.ADMIN)));
-        when(repository.findById(appointmentId)).thenReturn(Optional.of(appointment));
+        when(repository.findByIdAndCustomerId(appointmentId, userId)).thenReturn(Optional.of(appointment));
         when(repository.save(any(Appointment.class))).thenAnswer(inv -> inv.getArgument(0));
         when(transitionHandler.supports(AppointmentStatus.REQUESTED, AppointmentStatus.CONFIRMED)).thenReturn(true);
         when(transitionHandler.handle(
@@ -90,6 +89,7 @@ class ChangeAppointmentStatusUseCaseTest {
 
         ChangeAppointmentStatusResult result = useCase.execute(new ChangeAppointmentStatusCommand(
                 appointmentId,
+                userId,
                 "CONFIRMED",
                 null,
                 null,
@@ -117,10 +117,11 @@ class ChangeAppointmentStatusUseCaseTest {
 
         when(authenticatedUserPort.getAuthenticatedUser())
                 .thenReturn(Optional.of(new AuthenticatedUser(userId, "admin", "Admin", UserType.ADMIN)));
-        when(repository.findById(appointmentId)).thenReturn(Optional.empty());
+        when(repository.findByIdAndCustomerId(appointmentId, userId)).thenReturn(Optional.empty());
 
         assertThrows(RecordNotFoundException.class, () -> useCase.execute(new ChangeAppointmentStatusCommand(
                 appointmentId,
+                userId,
                 "CONFIRMED",
                 null,
                 null,
@@ -149,10 +150,11 @@ class ChangeAppointmentStatusUseCaseTest {
 
         when(authenticatedUserPort.getAuthenticatedUser())
                 .thenReturn(Optional.of(new AuthenticatedUser(userId, "customer", "Customer", UserType.CUSTOMER)));
-        when(repository.findById(appointmentId)).thenReturn(Optional.of(appointment));
+        when(repository.findByIdAndCustomerId(appointmentId, userId)).thenReturn(Optional.of(appointment));
 
         assertThrows(BadRequestException.class, () -> useCase.execute(new ChangeAppointmentStatusCommand(
                 appointmentId,
+                userId,
                 "CANCELED",
                 " ",
                 null,
@@ -181,10 +183,11 @@ class ChangeAppointmentStatusUseCaseTest {
 
         when(authenticatedUserPort.getAuthenticatedUser())
                 .thenReturn(Optional.of(new AuthenticatedUser(userId, "customer", "Customer", UserType.CUSTOMER)));
-        when(repository.findById(appointmentId)).thenReturn(Optional.of(appointment));
+        when(repository.findByIdAndCustomerId(appointmentId, userId)).thenReturn(Optional.of(appointment));
 
         assertThrows(ForbiddenAccessException.class, () -> useCase.execute(new ChangeAppointmentStatusCommand(
                 appointmentId,
+                userId,
                 "CONFIRMED",
                 null,
                 null,
@@ -213,11 +216,12 @@ class ChangeAppointmentStatusUseCaseTest {
 
         when(authenticatedUserPort.getAuthenticatedUser())
                 .thenReturn(Optional.of(new AuthenticatedUser(userId, "tech", "Technician", UserType.TECHNICIAN)));
-        when(repository.findById(appointmentId)).thenReturn(Optional.of(appointment));
+        when(repository.findByIdAndCustomerId(appointmentId, userId)).thenReturn(Optional.of(appointment));
         when(repository.save(any(Appointment.class))).thenAnswer(inv -> inv.getArgument(0));
 
         ChangeAppointmentStatusResult result = useCase.execute(new ChangeAppointmentStatusCommand(
                 appointmentId,
+                userId,
                 "IN_PROGRESS",
                 null,
                 null,
@@ -249,10 +253,11 @@ class ChangeAppointmentStatusUseCaseTest {
 
         when(authenticatedUserPort.getAuthenticatedUser())
                 .thenReturn(Optional.of(new AuthenticatedUser(userId, "tech", "Technician", UserType.TECHNICIAN)));
-        when(repository.findById(appointmentId)).thenReturn(Optional.of(appointment));
+        when(repository.findByIdAndCustomerId(appointmentId, userId)).thenReturn(Optional.of(appointment));
 
         assertThrows(ForbiddenAccessException.class, () -> useCase.execute(new ChangeAppointmentStatusCommand(
                 appointmentId,
+                userId,
                 "CANCELED",
                 "no parts",
                 null,

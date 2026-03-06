@@ -28,6 +28,9 @@ public class AppointmentEntity extends AuditableEntity {
     @Column(name = "bike_id", nullable = false)
     private UUID bikeId;
 
+    @Column(name = "customer_id", nullable = false)
+    private UUID customerId;
+
     @Column(name = "store_location_id", nullable = false)
     private UUID storeLocationId;
 

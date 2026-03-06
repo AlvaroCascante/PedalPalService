@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Single entry point for appointment status transitions.
@@ -35,23 +36,26 @@ public class ChangeAppointmentStatusUseCase {
 
     @Transactional
     public ChangeAppointmentStatusResult execute(ChangeAppointmentStatusCommand command) {
-        AuthenticatedUser currentUser = authenticatedUserPort.getAuthenticatedUser().
+        AuthenticatedUser authenticatedUser = authenticatedUserPort.getAuthenticatedUser().
             orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
 
-        Appointment appointment = repository.findById(command.appointmentId())
+        // If ADMIN, use the customerId from the command, otherwise use the authenticated user's ID
+        UUID customerId = authenticatedUser.type().equals(UserType.ADMIN) ? command.customerId() : authenticatedUser.userId();
+
+        Appointment appointment = repository.findByIdAndCustomerId(command.appointmentId(), customerId)
                 .orElseThrow(() -> new RecordNotFoundException("appointment.not.found", command.appointmentId()));
 
         AppointmentStatus fromStatus = appointment.getStatus();
         AppointmentStatus toStatus = AppointmentStatus.from(command.toStatus());
 
-        if (!isTransitionAuthorized(currentUser.type(), fromStatus, toStatus)) {
+        if (!isTransitionAuthorized(authenticatedUser.type(), fromStatus, toStatus)) {
             throw new ForbiddenAccessException("appointment.status.unauthorized");
         }
 
         appointment.changeStatusTo(
                 toStatus,
                 new Appointment.AppointmentStatusChangeContext(
-                        currentUser.userId(),
+                        authenticatedUser.userId(),
                         command.technicianId(),
                         command.closureReason(),
                         command.note()
@@ -63,7 +67,7 @@ public class ChangeAppointmentStatusUseCase {
         String serviceOrderNumber = null;
         for (AppointmentTransitionHandler handler : transitionHandlers) {
             if (handler.supports(fromStatus, toStatus)) {
-                String handlerResult = handler.handle(appointment, fromStatus, command, currentUser.userId());
+                String handlerResult = handler.handle(appointment, fromStatus, command, authenticatedUser.userId());
                 if (handlerResult != null && !handlerResult.isBlank()) {
                     serviceOrderNumber = handlerResult;
                 }

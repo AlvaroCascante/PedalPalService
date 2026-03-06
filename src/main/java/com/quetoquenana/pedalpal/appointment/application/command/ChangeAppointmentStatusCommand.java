@@ -7,6 +7,7 @@ import java.util.UUID;
  */
 public record ChangeAppointmentStatusCommand(
         UUID appointmentId,
+        UUID customerId,
         String toStatus,
         String closureReason,
         UUID technicianId,

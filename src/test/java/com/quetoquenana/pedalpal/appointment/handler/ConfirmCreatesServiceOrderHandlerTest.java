@@ -40,21 +40,22 @@ class ConfirmCreatesServiceOrderHandlerTest {
     @Test
     void shouldReturnExistingOrderNumberWhenAlreadyCreated() {
         UUID appointmentId = UUID.randomUUID();
+        UUID customerId = UUID.randomUUID();
 
         Appointment appointment = Appointment.builder()
-                .id(appointmentId)
+                .id(customerId)
                 .bikeId(UUID.randomUUID())
                 .status(AppointmentStatus.CONFIRMED)
                 .requestedServices(List.of())
                 .build();
 
         ServiceOrder existing = ServiceOrder.builder().orderNumber("SO-2026-000123").build();
-        when(serviceOrderRepository.findByAppointmentId(appointmentId)).thenReturn(Optional.of(existing));
+        when(serviceOrderRepository.findByAppointmentId(customerId)).thenReturn(Optional.of(existing));
 
         String result = handler.handle(
                 appointment,
                 AppointmentStatus.REQUESTED,
-                new ChangeAppointmentStatusCommand(appointmentId, "CONFIRMED", null, null, null),
+                new ChangeAppointmentStatusCommand(customerId, customerId, "CONFIRMED", null, null, null),
                 UUID.randomUUID()
         );
 
@@ -65,6 +66,7 @@ class ConfirmCreatesServiceOrderHandlerTest {
     @Test
     void shouldCreateOrderWhenDoesNotExist() {
         UUID appointmentId = UUID.randomUUID();
+        UUID customerId = UUID.randomUUID();
 
         Appointment appointment = Appointment.builder()
                 .id(appointmentId)
@@ -83,7 +85,7 @@ class ConfirmCreatesServiceOrderHandlerTest {
         String result = handler.handle(
                 appointment,
                 AppointmentStatus.REQUESTED,
-                new ChangeAppointmentStatusCommand(appointmentId, "CONFIRMED", null, null, null),
+                new ChangeAppointmentStatusCommand(appointmentId, customerId, "CONFIRMED", null, null, null),
                 UUID.randomUUID()
         );
 

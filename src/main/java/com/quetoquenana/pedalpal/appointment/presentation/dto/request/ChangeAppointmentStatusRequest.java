@@ -10,6 +10,7 @@ import java.util.UUID;
 public record ChangeAppointmentStatusRequest(
         @NotBlank(message = "{appointment.status.required}")
         String toStatus,
+        UUID customerId,
         String closureReason,
         UUID technicianId,
         String note

@@ -66,6 +66,7 @@ class InProgressUpdatesServiceOrderHandlerTest {
                 AppointmentStatus.BIKE_RECEIVED,
                 new ChangeAppointmentStatusCommand(
                         appointmentId,
+                        authenticatedUserId,
                         "IN_PROGRESS",
                         null,
                         null,

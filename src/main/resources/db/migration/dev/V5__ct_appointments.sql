@@ -1,6 +1,7 @@
 CREATE TABLE appointments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     bike_id UUID NOT NULL,
+    customer_id UUID NOT NULL,
     store_location_id UUID NOT NULL,
     scheduled_at TIMESTAMP WITH TIME ZONE NOT NULL,
     status VARCHAR(50) NOT NULL,

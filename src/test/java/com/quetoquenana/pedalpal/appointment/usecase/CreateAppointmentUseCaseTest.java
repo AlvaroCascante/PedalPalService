@@ -103,12 +103,13 @@ class CreateAppointmentUseCaseTest {
                     .requestedServices(new ArrayList<>())
                     .build();
 
-            when(mapper.toModel(any(CreateAppointmentCommand.class))).thenReturn(mapped);
+            when(mapper.toModel(any(), any())).thenReturn(mapped);
             when(mapper.toResult(any(Appointment.class))).thenAnswer(inv -> {
                 Appointment a = inv.getArgument(0, Appointment.class);
                 return new AppointmentResult(
                         a.getId(),
                         a.getBikeId(),
+                        a.getCustomerId(),
                         a.getStoreLocationId(),
                         a.getScheduledAt(),
                         a.getStatus(),
@@ -148,6 +149,7 @@ class CreateAppointmentUseCaseTest {
             // serviceId refers to Product id in snapshotting logic
             CreateAppointmentCommand command = new CreateAppointmentCommand(
                     bikeId,
+                    ownerId,
                     storeLocationId,
                     Instant.parse("2026-02-25T10:00:00Z"),
                     "notes",
@@ -183,6 +185,7 @@ class CreateAppointmentUseCaseTest {
             CreateAppointmentCommand command = new CreateAppointmentCommand(
                     bikeId,
                     UUID.randomUUID(),
+                    UUID.randomUUID(),
                     Instant.parse("2026-02-25T10:00:00Z"),
                     null,
                     List.of(new RequestedServiceCommand(UUID.randomUUID(), ServiceType.PRODUCT))
@@ -191,7 +194,7 @@ class CreateAppointmentUseCaseTest {
             assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
 
             verify(appointmentRepository, never()).save(any(Appointment.class));
-            verify(mapper, never()).toModel(any(CreateAppointmentCommand.class));
+            verify(mapper, never()).toModel(any(), any());
         }
     }
 

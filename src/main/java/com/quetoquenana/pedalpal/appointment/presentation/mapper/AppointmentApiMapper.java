@@ -42,6 +42,7 @@ public class AppointmentApiMapper {
 
         return new CreateAppointmentCommand(
                 request.bikeId(),
+                request.customerId(),
                 request.storeLocationId(),
                 request.scheduledAt(),
                 request.notes(),
@@ -52,6 +53,7 @@ public class AppointmentApiMapper {
     public UpdateAppointmentCommand toCommand(UUID id, UpdateAppointmentRequest request) {
         return new UpdateAppointmentCommand(
                 id,
+                request.customerId(),
                 request.scheduledAt(),
                 request.notes()
         );
@@ -60,6 +62,7 @@ public class AppointmentApiMapper {
     public ChangeAppointmentStatusCommand toCommand(UUID id, ChangeAppointmentStatusRequest request) {
         return new ChangeAppointmentStatusCommand(
                 id,
+                request.customerId(),
                 request.toStatus(),
                 request.closureReason(),
                 request.technicianId(),

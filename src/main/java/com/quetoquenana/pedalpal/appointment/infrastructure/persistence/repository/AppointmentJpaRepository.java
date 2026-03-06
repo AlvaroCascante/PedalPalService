@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface AppointmentJpaRepository extends JpaRepository<AppointmentEntity, UUID> {
@@ -16,4 +17,6 @@ public interface AppointmentJpaRepository extends JpaRepository<AppointmentEntit
 
     @Query("select a from AppointmentEntity a where a.bikeId = :bikeId and a.scheduledAt < :now order by a.scheduledAt desc")
     List<AppointmentEntity> findPastByBikeId(@Param("bikeId") UUID bikeId, @Param("now") Instant now);
+
+    Optional<AppointmentEntity> findByIdAndCustomerId(UUID id, UUID customerId);
 }

@@ -7,11 +7,14 @@ import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
 import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
+import com.quetoquenana.pedalpal.common.domain.model.UserType;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 /*
  * Use case for updating an appointment.
@@ -28,10 +31,12 @@ public class UpdateAppointmentUseCase {
 
     @Transactional
     public AppointmentResult execute(UpdateAppointmentCommand command) {
-        AuthenticatedUser currentUser = authenticatedUserPort.getAuthenticatedUser().
+        AuthenticatedUser authenticatedUser = authenticatedUserPort.getAuthenticatedUser().
                 orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
 
-        Appointment appointment = repository.findById(command.id())
+        // If ADMIN, use the customerId from the command, otherwise use the authenticated user's ID
+        UUID customerId = authenticatedUser.type().equals(UserType.ADMIN) ? command.customerId() : authenticatedUser.userId();
+        Appointment appointment = repository.findByIdAndCustomerId(command.id(), customerId)
                 .orElseThrow(() -> new RecordNotFoundException("appointment.not.found"));
 
         mapper.applyPatch(appointment, command);

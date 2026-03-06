@@ -14,6 +14,8 @@ public record CreateAppointmentRequest(
         @NotNull(message = "{appointment.storeLocationId.required}")
         UUID storeLocationId,
 
+        UUID customerId,
+
         @NotNull(message = "{appointment.scheduledAt.required}")
         Instant scheduledAt,
 

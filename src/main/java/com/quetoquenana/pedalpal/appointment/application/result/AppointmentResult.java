@@ -9,6 +9,7 @@ import java.util.UUID;
 public record AppointmentResult(
         UUID id,
         UUID bikeId,
+        UUID customerId,
         UUID storeLocationId,
         Instant scheduledAt,
         AppointmentStatus status,
