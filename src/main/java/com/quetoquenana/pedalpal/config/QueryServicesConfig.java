@@ -11,6 +11,7 @@ import com.quetoquenana.pedalpal.bike.application.query.BikeHistoryQueryService;
 import com.quetoquenana.pedalpal.bike.application.query.BikeQueryService;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeHistoryRepository;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
 import com.quetoquenana.pedalpal.product.application.mapper.ProductMapper;
 import com.quetoquenana.pedalpal.product.application.query.ProductQueryService;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
@@ -29,7 +30,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BeansQueryServicesConfig {
+public class QueryServicesConfig {
 
     @Bean
     public AnnouncementQueryService createAnnouncementQueryService(
@@ -56,9 +57,11 @@ public class BeansQueryServicesConfig {
     @Bean
     public BikeQueryService createBikeQueryService(
             BikeMapper mapper,
-            BikeRepository repository
+            BikeRepository repository,
+            AuthenticatedUserPort authenticatedUserPort
     ) {
         return new BikeQueryService(
+                authenticatedUserPort,
                 mapper,
                 repository
         );
@@ -68,9 +71,11 @@ public class BeansQueryServicesConfig {
     public BikeHistoryQueryService createBikeHistoryQueryService(
             BikeMapper mapper,
             BikeRepository repository,
-            BikeHistoryRepository bikeHistoryRepository
+            BikeHistoryRepository bikeHistoryRepository,
+            AuthenticatedUserPort authenticatedUserPort
     ) {
         return new BikeHistoryQueryService(
+                authenticatedUserPort,
                 mapper,
                 repository,
                 bikeHistoryRepository);

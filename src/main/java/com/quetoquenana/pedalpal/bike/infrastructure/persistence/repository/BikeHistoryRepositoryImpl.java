@@ -23,9 +23,9 @@ public class BikeHistoryRepositoryImpl implements BikeHistoryRepository {
     }
 
     @Override
-    public BikeHistory save(BikeHistory bikeHistory) {
+    public void save(BikeHistory bikeHistory) {
         BikeHistoryEntity entity = BikeEntityMapper.toEntity(bikeHistory);
-        return BikeEntityMapper.toModel(repository.save(entity));
+        BikeEntityMapper.toModel(repository.save(entity));
     }
 
     @Override

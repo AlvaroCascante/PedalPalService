@@ -10,10 +10,9 @@ import java.util.UUID;
 public interface AppointmentRepository {
     Appointment save(Appointment appointment);
 
-    Optional<Appointment> getById(UUID id);
+    Optional<Appointment> findById(UUID id);
 
     List<Appointment> findUpcomingByBikeId(UUID bikeId, Instant now);
 
     List<Appointment> findPastByBikeId(UUID bikeId, Instant now);
 }
-

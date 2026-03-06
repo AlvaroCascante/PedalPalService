@@ -1,17 +1,21 @@
 package com.quetoquenana.pedalpal.config;
 
+import com.quetoquenana.pedalpal.announcement.application.mapper.AnnouncementMapper;
 import com.quetoquenana.pedalpal.announcement.application.usecase.ActivateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.application.usecase.CreateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.application.usecase.InactivateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
-import com.quetoquenana.pedalpal.announcement.application.mapper.AnnouncementMapper;
+import com.quetoquenana.pedalpal.appointment.application.handler.CompletedUpdatesServiceOrderHandler;
+import com.quetoquenana.pedalpal.appointment.application.handler.ConfirmCreatesServiceOrderHandler;
+import com.quetoquenana.pedalpal.appointment.application.handler.InProgressUpdatesServiceOrderHandler;
+import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.appointment.application.usecase.*;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
-import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
+import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.useCase.*;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
-import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
 import com.quetoquenana.pedalpal.common.application.port.UploadMediaPort;
 import com.quetoquenana.pedalpal.media.application.mapper.MediaMapper;
 import com.quetoquenana.pedalpal.media.application.port.CdnUrlProvider;
@@ -22,16 +26,17 @@ import com.quetoquenana.pedalpal.media.application.useCase.MediaUploadUseCase;
 import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
-import com.quetoquenana.pedalpal.serviceOrder.application.port.ServiceOrderPort;
-import com.quetoquenana.pedalpal.store.domain.repository.StoreLocationRepository;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Clock;
+import java.util.List;
+
 @Configuration
-public class BeansUseCasesConfig {
+public class UseCaseConfig {
 
     /*
      * Announcements Use Cases
@@ -86,44 +91,41 @@ public class BeansUseCasesConfig {
      * Appointment Use Cases
      */
     @Bean
-    public CancelAppointmentUseCase createCancelAppointmentUseCase(
+    public ChangeAppointmentStatusUseCase createChangeAppointmentStatusUseCase(
             AppointmentMapper mapper,
             AppointmentRepository repository,
-            ServiceOrderPort serviceOrderPort
+            AuthenticatedUserPort authenticatedUserPort,
+            CompletedUpdatesServiceOrderHandler completedUpdatesServiceOrderHandler,
+            ConfirmCreatesServiceOrderHandler confirmCreatesServiceOrderHandler,
+            InProgressUpdatesServiceOrderHandler inProgressUpdatesServiceOrderHandler,
+            Clock clock
     ) {
-        return new CancelAppointmentUseCase(
+        return new ChangeAppointmentStatusUseCase(
                 mapper,
                 repository,
-                serviceOrderPort
-        );
-    }
-
-    @Bean
-    public ConfirmAppointmentUseCase createConfirmAppointmentUseCase(
-            AppointmentMapper mapper,
-            AppointmentRepository repository,
-            StoreLocationRepository storeLocationRepository,
-            ServiceOrderPort serviceOrderPort
-    ) {
-        return new ConfirmAppointmentUseCase(
-                mapper,
-                repository,
-                storeLocationRepository,
-                serviceOrderPort
+                authenticatedUserPort,
+                List.of(
+                        completedUpdatesServiceOrderHandler,
+                        confirmCreatesServiceOrderHandler,
+                        inProgressUpdatesServiceOrderHandler
+                ),
+                clock
         );
     }
 
     @Bean
     public CreateAppointmentUseCase createCreateAppointmentUseCase(
             AppointmentMapper mapper,
-            AppointmentRepository appointmentRepository,
+            AppointmentRepository repository,
+            AuthenticatedUserPort authenticatedUserPort,
             BikeRepository bikeRepository,
             ProductRepository productRepository,
             ProductPackageRepository productPackageRepository
     ) {
         return new CreateAppointmentUseCase(
                 mapper,
-                appointmentRepository,
+                repository,
+                authenticatedUserPort,
                 bikeRepository,
                 productRepository,
                 productPackageRepository
@@ -131,24 +133,15 @@ public class BeansUseCasesConfig {
     }
 
     @Bean
-    public UpdateAppointmentStatusUseCase createUpdateAppointmentStatusUseCase(
-            AppointmentMapper mapper,
-            AppointmentRepository appointmentRepository
-    ) {
-        return new UpdateAppointmentStatusUseCase(
-                mapper,
-                appointmentRepository
-        );
-    }
-
-    @Bean
     public UpdateAppointmentUseCase createUpdateAppointmentUseCase(
             AppointmentMapper mapper,
-            AppointmentRepository appointmentRepository
+            AppointmentRepository repository,
+            AuthenticatedUserPort authenticatedUserPort
     ) {
         return new UpdateAppointmentUseCase(
                 mapper,
-                appointmentRepository
+                repository,
+                authenticatedUserPort
         );
     }
 
@@ -157,109 +150,126 @@ public class BeansUseCasesConfig {
      */
     @Bean
     public AddBikeComponentUseCase createAddBikeComponentUseCase(
-            ApplicationEventPublisher eventPublisher,
-            BikeMapper bikeMapper,
-            BikeRepository bikeRepository,
+            ApplicationEventPublisher applicationEventPublisher,
+            AuthenticatedUserPort authenticatedUserPort,
+            BikeMapper mapper,
+            BikeRepository repository,
             SystemCodeRepository systemCodeRepository
     ) {
         return new AddBikeComponentUseCase(
-                bikeMapper,
-                bikeRepository,
-                systemCodeRepository,
-                eventPublisher
+                applicationEventPublisher,
+                authenticatedUserPort,
+                mapper,
+                repository,
+                systemCodeRepository
         );
     }
 
     @Bean
     public CreateBikeUseCase createCreateBikeUseCase(
-            ApplicationEventPublisher eventPublisher,
-            BikeMapper bikeMapper,
-            BikeRepository bikeRepository
+            ApplicationEventPublisher applicationEventPublisher,
+            AuthenticatedUserPort authenticatedUserPort,
+            BikeMapper mapper,
+            BikeRepository repository
     ) {
         return new CreateBikeUseCase(
-                bikeMapper,
-                bikeRepository,
-                eventPublisher
+                applicationEventPublisher,
+                authenticatedUserPort,
+                mapper,
+                repository
         );
     }
 
     @Bean
     public ReplaceBikeComponentUseCase createReplaceBikeComponentUseCase(
-            ApplicationEventPublisher eventPublisher,
-            BikeMapper bikeMapper,
-            BikeRepository bikeRepository,
-            SystemCodeRepository systemCodeRepository
+            ApplicationEventPublisher applicationEventPublisher,
+            BikeMapper mapper,
+            BikeRepository repository,
+            SystemCodeRepository systemCodeRepository,
+            AuthenticatedUserPort authenticatedUserPort
     ) {
         return new ReplaceBikeComponentUseCase(
-                bikeMapper,
-                bikeRepository,
-                systemCodeRepository,
-                eventPublisher
+                applicationEventPublisher,
+                authenticatedUserPort,
+                mapper,
+                repository,
+                systemCodeRepository
         );
     }
 
     @Bean
     public UpdateBikeStatusUseCase createUpdateBikeStatusUseCase(
-            ApplicationEventPublisher eventPublisher,
-            BikeMapper bikeMapper,
-            BikeRepository bikeRepository
+            ApplicationEventPublisher applicationEventPublisher,
+            BikeMapper mapper,
+            BikeRepository repository,
+            AuthenticatedUserPort authenticatedUserPort
     ) {
         return new UpdateBikeStatusUseCase(
-                bikeMapper,
-                bikeRepository,
-                eventPublisher
+                applicationEventPublisher,
+                authenticatedUserPort,
+                mapper,
+                repository
         );
     }
 
     @Bean
     public UpdateBikeUseCase createUpdateBikeUseCase(
-            ApplicationEventPublisher eventPublisher,
-            BikeMapper bikeMapper,
-            BikeRepository bikeRepository
+            ApplicationEventPublisher applicationEventPublisher,
+            BikeMapper mapper,
+            BikeRepository repository,
+            AuthenticatedUserPort authenticatedUserPort
     ) {
         return new UpdateBikeUseCase(
-                bikeMapper,
-                bikeRepository,
-                eventPublisher
+                applicationEventPublisher,
+                authenticatedUserPort,
+                mapper,
+                repository
         );
     }
 
     @Bean
     public UpdateBikeComponentUseCase createUpdateBikeComponentUseCase(
-            ApplicationEventPublisher eventPublisher,
-            BikeMapper bikeMapper,
-            BikeRepository bikeRepository,
-            SystemCodeRepository systemCodeRepository
+            ApplicationEventPublisher applicationEventPublisher,
+            BikeMapper mapper,
+            BikeRepository repository,
+            SystemCodeRepository systemCodeRepository,
+            AuthenticatedUserPort authenticatedUserPort
     ) {
         return new UpdateBikeComponentUseCase(
-                bikeMapper,
-                bikeRepository,
-                systemCodeRepository,
-                eventPublisher);
+                applicationEventPublisher,
+                authenticatedUserPort,
+                mapper,
+                repository,
+                systemCodeRepository
+        );
     }
 
     @Bean
     public UpdateBikeComponentStatusUseCase createUpdateBikeComponentStatusUseCase(
-            ApplicationEventPublisher eventPublisher,
-            BikeMapper bikeMapper,
-            BikeRepository bikeRepository
+            ApplicationEventPublisher applicationEventPublisher,
+            BikeMapper mapper,
+            BikeRepository repository,
+            AuthenticatedUserPort authenticatedUserPort
     ) {
         return new UpdateBikeComponentStatusUseCase(
-                bikeMapper,
-                bikeRepository,
-                eventPublisher
+                applicationEventPublisher,
+                authenticatedUserPort,
+                mapper,
+                repository
         );
     }
 
     @Bean
     public CreateBikeUploadMediaUseCase createCreateBikeUploadMediaUseCase(
-            BikeMapper bikeMapper,
-            BikeRepository bikeRepository,
-            UploadMediaPort uploadMediaPort
+            BikeMapper mapper,
+            BikeRepository repository,
+            UploadMediaPort uploadMediaPort,
+            AuthenticatedUserPort authenticatedUserPort
     ) {
         return new CreateBikeUploadMediaUseCase(
-                bikeMapper,
-                bikeRepository,
+                authenticatedUserPort,
+                mapper,
+                repository,
                 uploadMediaPort
         );
     }
@@ -286,6 +296,7 @@ public class BeansUseCasesConfig {
             MediaMapper mapper,
             StorageProvider storageProvider,
             OwnershipValidationPort ownershipValidationPort,
+            AuthenticatedUserPort authenticatedUserPort,
             @Value("${app.media.default-provider}")
             String defaultStorageProvider
     ) {
@@ -294,7 +305,9 @@ public class BeansUseCasesConfig {
                 mapper,
                 storageProvider,
                 ownershipValidationPort,
+                authenticatedUserPort,
                 defaultStorageProvider
+
         );
     }
 }

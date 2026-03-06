@@ -5,7 +5,6 @@ import java.util.UUID;
 public record UpdateBikeComponentCommand(
         UUID bikeId,
         UUID componentId,
-        UUID authenticatedUserId,
         String type,
         String name,
         String brand,

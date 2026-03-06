@@ -9,15 +9,18 @@ import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEvent;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEventType;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeType;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
+import com.quetoquenana.pedalpal.common.domain.model.UserType;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.util.TestBikeData;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
@@ -38,10 +41,22 @@ class UpdateBikeUseCaseTest {
     BikeMapper bikeMapper;
 
     @Mock
-    ApplicationEventPublisher eventPublisher;
+    ApplicationEventPublisher applicationEventPublisher;
 
-    @InjectMocks
+    @Mock
+    AuthenticatedUserPort authenticatedUserPort;
+
     UpdateBikeUseCase useCase;
+
+    @BeforeEach
+    void setUp() {
+        useCase = new UpdateBikeUseCase(
+                applicationEventPublisher,
+                authenticatedUserPort,
+                bikeMapper,
+                bikeRepository
+        );
+    }
 
     @Captor
     ArgumentCaptor<BikeHistoryEvent> historyEventCaptor;
@@ -53,9 +68,10 @@ class UpdateBikeUseCaseTest {
         void shouldUpdateOnlyName_whenOnlyNameIsProvided() {
             UUID bikeId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
 
-            when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(bike));
+            when(bikeRepository.findByIdAndOwnerId(eq(bikeId), eq(ownerId))).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> {
                 Bike toSave = inv.getArgument(0, Bike.class);
                 toSave.setId(bikeId);
@@ -75,7 +91,7 @@ class UpdateBikeUseCaseTest {
             verify(bikeRepository).findByIdAndOwnerId(eq(bikeId), eq(ownerId));
             verify(bikeRepository).save(any(Bike.class));
 
-            verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
+            verify(applicationEventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
             BikeHistoryEvent event = historyEventCaptor.getValue();
             assertEquals(bikeId, event.bikeId());
             assertEquals(ownerId, event.performedBy());
@@ -89,9 +105,10 @@ class UpdateBikeUseCaseTest {
         void shouldUpdateMultipleFields_whenProvided() {
             UUID bikeId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
 
-            when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(bike));
+            when(bikeRepository.findByIdAndOwnerId(eq(bikeId), eq(ownerId))).thenReturn(Optional.of(bike));
             when(bikeRepository.existsBySerialNumber("NEW-SN")).thenReturn(false);
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
             when(bikeMapper.toResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
@@ -111,7 +128,7 @@ class UpdateBikeUseCaseTest {
             verify(bikeRepository).findByIdAndOwnerId(eq(bikeId), eq(ownerId));
             verify(bikeRepository).save(any(Bike.class));
 
-            verify(eventPublisher, times(1)).publishEvent(any(BikeHistoryEvent.class));
+            verify(applicationEventPublisher, times(1)).publishEvent(any(BikeHistoryEvent.class));
         }
     }
 
@@ -122,9 +139,10 @@ class UpdateBikeUseCaseTest {
         void shouldNotModifyFields_whenNotPresentInCommand() {
             UUID bikeId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
 
-            when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(bike));
+            when(bikeRepository.findByIdAndOwnerId(eq(bikeId), eq(ownerId))).thenReturn(Optional.of(bike));
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
             when(bikeMapper.toResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
 
@@ -138,16 +156,17 @@ class UpdateBikeUseCaseTest {
 
             verify(bikeRepository).findByIdAndOwnerId(eq(bikeId), eq(ownerId));
             verify(bikeRepository).save(any(Bike.class));
-            verify(eventPublisher, never()).publishEvent(any());
+            verify(applicationEventPublisher, never()).publishEvent(any());
         }
 
         @Test
         void shouldThrowBadRequest_whenBlankFieldProvided() {
             UUID bikeId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
 
-            when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(bike));
+            when(bikeRepository.findByIdAndOwnerId(eq(bikeId), eq(ownerId))).thenReturn(Optional.of(bike));
 
             UpdateBikeCommand command = TestBikeData.updateBikeCommand_blankName(bikeId, ownerId);
 
@@ -156,26 +175,28 @@ class UpdateBikeUseCaseTest {
 
             verify(bikeRepository).findByIdAndOwnerId(eq(bikeId), eq(ownerId));
             verify(bikeRepository, never()).save(any());
-            verify(eventPublisher, never()).publishEvent(any());
+            verify(applicationEventPublisher, never()).publishEvent(any());
         }
 
         @Test
         void shouldThrowRecordNotFound_whenBikeDoesNotExist() {
             UUID bikeId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
             when(bikeRepository.findByIdAndOwnerId(eq(bikeId), eq(ownerId))).thenReturn(Optional.empty());
 
             UpdateBikeCommand command = TestBikeData.updateBikeCommand_nameOnlyNotFound(bikeId, ownerId);
 
             assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
             verify(bikeRepository, never()).save(any());
-            verify(eventPublisher, never()).publishEvent(any());
+            verify(applicationEventPublisher, never()).publishEvent(any());
         }
 
         @Test
         void shouldThrowRecordNotFound_whenOwnerDoesNotMatchAuthenticatedUser() {
             UUID bikeId = UUID.randomUUID();
             UUID otherUser = UUID.randomUUID();
+            mockAuthenticatedUser(otherUser);
 
             when(bikeRepository.findByIdAndOwnerId(eq(bikeId), eq(otherUser))).thenReturn(Optional.empty());
 
@@ -183,7 +204,12 @@ class UpdateBikeUseCaseTest {
 
             assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
             verify(bikeRepository, never()).save(any());
-            verify(eventPublisher, never()).publishEvent(any());
+            verify(applicationEventPublisher, never()).publishEvent(any());
         }
+    }
+
+    private void mockAuthenticatedUser(UUID ownerId) {
+        when(authenticatedUserPort.getAuthenticatedUser())
+                .thenReturn(Optional.of(new AuthenticatedUser(ownerId, "test-user", "Test User", UserType.CUSTOMER)));
     }
 }

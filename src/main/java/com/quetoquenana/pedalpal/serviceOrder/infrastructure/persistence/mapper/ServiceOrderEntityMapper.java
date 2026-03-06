@@ -62,12 +62,16 @@ public class ServiceOrderEntityMapper {
                 .completedAt(model.getCompletedAt())
                 .totalPrice(model.getTotalPrice())
                 .orderNumber(model.getOrderNumber())
+                .notes(model.getNotes())
                 .build();
         entity.setVersion(model.getVersion());
-        model.getRequestedServices()
-                .stream()
-                .map(ServiceOrderEntityMapper::toEntity)
-                .forEach(entity::addServiceOrderDetail);
+
+        if (model.getRequestedServices() != null) {
+            model.getRequestedServices()
+                    .stream()
+                    .map(ServiceOrderEntityMapper::toEntity)
+                    .forEach(entity::addServiceOrderDetail);
+        }
         return entity;
     }
 

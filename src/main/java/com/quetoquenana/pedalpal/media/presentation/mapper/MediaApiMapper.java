@@ -17,13 +17,9 @@ import java.util.stream.Collectors;
 public class MediaApiMapper {
 
     public UploadMediaCommand toCommand(
-            UploadMediaRequest request,
-            UUID authenticatedUserId,
-            boolean isAdmin
+            UploadMediaRequest request
     ) {
         return new UploadMediaCommand(
-                authenticatedUserId,
-                isAdmin,
                 request.isPublic(),
                 request.referenceId(),
                 MediaReferenceType.from(request.referenceType()),
@@ -50,13 +46,7 @@ public class MediaApiMapper {
         );
     }
 
-    public ConfirmUploadCommand toCommand(
-            UUID mediaId,
-            UUID authenticatedUserId
-    ) {
-        return new ConfirmUploadCommand(
-                mediaId,
-                authenticatedUserId
-        );
+    public ConfirmUploadCommand toCommand(UUID mediaId) {
+        return new ConfirmUploadCommand(mediaId);
     }
 }

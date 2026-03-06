@@ -6,9 +6,11 @@ import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEvent;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.EventListener;
+import org.springframework.dao.DataAccessException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 @RequiredArgsConstructor
@@ -19,13 +21,13 @@ public class BikeHistoryEventListener {
     private final BikeMapper mapper;
 
     @Async
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handle(BikeHistoryEvent event) {
         log.debug("Received BikeHistoryEvent: {}", event);
         try {
             BikeHistory model = mapper.toModel(event);
             historyRepository.save(model);
-        } catch (Exception ex) {
+        } catch (DataAccessException ex) {
             log.error("Failed to save bike history", ex);
         }
     }

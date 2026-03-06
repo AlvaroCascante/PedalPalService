@@ -10,7 +10,7 @@ public enum ServiceOrderDetailStatus {
     PENDING("service.order.item.status.pending"),
     IN_PROGRESS("service.order.item.status.in_progress"),
     COMPLETED("service.order.item.status.completed"),
-    CANCELLED("service.order.item.status.cancelled"),
+    CANCELLED("service.order.item.status.canceled"),
     REJECTED("service.order.item.status.rejected"),
     UNKNOWN("service.order.item.status.unknown");
 

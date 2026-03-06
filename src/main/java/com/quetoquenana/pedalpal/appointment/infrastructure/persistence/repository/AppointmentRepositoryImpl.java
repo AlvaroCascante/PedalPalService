@@ -26,7 +26,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     }
 
     @Override
-    public Optional<Appointment> getById(UUID id) {
+    public Optional<Appointment> findById(UUID id) {
         return repository.findById(id).map(AppointmentEntityMapper::toModel);
     }
 
@@ -44,4 +44,3 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                 .toList();
     }
 }
-

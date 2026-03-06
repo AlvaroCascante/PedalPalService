@@ -11,7 +11,7 @@ public record AuthenticatedUser(
         UUID userId,
         String username,
         String name,
-        boolean isAdmin
+        UserType type
 ) {
 }
 

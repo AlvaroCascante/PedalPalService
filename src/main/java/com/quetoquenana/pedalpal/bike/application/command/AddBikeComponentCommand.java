@@ -5,7 +5,6 @@ import java.util.UUID;
 public record AddBikeComponentCommand(
         UUID componentId,
         UUID bikeId,
-        UUID authenticatedUserId,
         String type,
         String name,
         String brand,

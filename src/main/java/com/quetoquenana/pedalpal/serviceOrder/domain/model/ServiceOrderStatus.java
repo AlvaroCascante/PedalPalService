@@ -13,7 +13,7 @@ public enum ServiceOrderStatus {
     IN_PROGRESS("service.order.status.in_progress"),
     WAITING_PARTS("service.order.status.waiting.parts"),
     READY_FOR_PICKUP("service.order.status.ready.for.pickup"),
-    CANCELLED("service.order.status.cancelled"),
+    CANCELED("service.order.status.canceled"),
     COMPLETED("service.order.status.completed"),
     UNKNOWN("service.order.status.unknown");
 

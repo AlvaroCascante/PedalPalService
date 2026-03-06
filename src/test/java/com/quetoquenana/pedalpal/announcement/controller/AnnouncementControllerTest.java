@@ -3,6 +3,7 @@ package com.quetoquenana.pedalpal.announcement.controller;
 import com.quetoquenana.pedalpal.announcement.application.query.AnnouncementQueryService;
 import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementResult;
 import com.quetoquenana.pedalpal.announcement.application.usecase.CreateAnnouncementUseCase;
+import com.quetoquenana.pedalpal.announcement.application.usecase.ActivateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.application.usecase.InactivateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.presentation.mapper.AnnouncementApiMapper;
@@ -10,8 +11,9 @@ import com.quetoquenana.pedalpal.announcement.presentation.controller.Announceme
 import com.quetoquenana.pedalpal.announcement.presentation.dto.response.AnnouncementResponse;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
-import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
+import com.quetoquenana.pedalpal.common.domain.model.UserType;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.util.TestAnnouncementData;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,6 +59,9 @@ class AnnouncementControllerTest {
     UpdateAnnouncementUseCase updateUseCase;
 
     @MockitoBean
+    ActivateAnnouncementUseCase activateAnnouncementUseCase;
+
+    @MockitoBean
     InactivateAnnouncementUseCase updateStatusUseCase;
 
     @MockitoBean
@@ -66,15 +71,15 @@ class AnnouncementControllerTest {
     AnnouncementApiMapper apiMapper;
 
     @MockitoBean
-    CurrentUserPort currentUserProvider;
+    AuthenticatedUserPort currentUserProvider;
 
     @MockitoBean
     MessageSource messageSource;
 
     @BeforeEach
     void setUpAuth() {
-        when(currentUserProvider.getCurrentUser())
-                .thenReturn(Optional.of(new AuthenticatedUser(AUTH_USER_ID, "test-user", "Test User", false)));
+        when(currentUserProvider.getAuthenticatedUser())
+                .thenReturn(Optional.of(new AuthenticatedUser(AUTH_USER_ID, "test-user", "Test User", UserType.ADMIN)));
     }
 
     @Test
@@ -130,8 +135,8 @@ class AnnouncementControllerTest {
         AnnouncementResult result = TestAnnouncementData.result(id);
         AnnouncementResponse response = TestAnnouncementData.response(id);
 
-        when(apiMapper.toCommand(eq(AUTH_USER_ID), any(com.quetoquenana.pedalpal.announcement.presentation.dto.request.CreateAnnouncementRequest.class)))
-                .thenReturn(TestAnnouncementData.createCommand(AUTH_USER_ID));
+        when(apiMapper.toCommand(any(com.quetoquenana.pedalpal.announcement.presentation.dto.request.CreateAnnouncementRequest.class)))
+                .thenReturn(TestAnnouncementData.createCommand());
         when(createUseCase.execute(any())).thenReturn(result);
         when(apiMapper.toResponse(result)).thenReturn(response);
 
@@ -145,18 +150,18 @@ class AnnouncementControllerTest {
     }
 
     @Test
-    void shouldReturn200_whenPublish() throws Exception {
+    void shouldReturn200_whenInactivate() throws Exception {
         UUID id = UUID.randomUUID();
 
         AnnouncementResult result = TestAnnouncementData.result(id);
         AnnouncementResponse response = TestAnnouncementData.response(id);
 
-        when(apiMapper.toCommand(eq(id), eq(AUTH_USER_ID))) .thenReturn(TestAnnouncementData.statusCommand(id, AUTH_USER_ID));when(updateStatusUseCase.execute(any())).thenReturn(result);
+        when(apiMapper.toCommand(eq(id))).thenReturn(TestAnnouncementData.statusCommand(id));
+        when(updateStatusUseCase.execute(any())).thenReturn(result);
         when(apiMapper.toResponse(result)).thenReturn(response);
 
-        mockMvc.perform(patch("/v1/api/announcements/{id}/publish", id)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"status\":\"INACTIVE\"}"))
+        mockMvc.perform(patch("/v1/api/announcements/{id}/inactivate", id)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.id").value(id.toString()));
 

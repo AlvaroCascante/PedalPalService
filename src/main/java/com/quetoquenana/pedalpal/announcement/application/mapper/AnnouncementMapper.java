@@ -64,8 +64,6 @@ public class AnnouncementMapper {
                 .collect(Collectors.toSet());
 
         return new UploadMediaCommand(
-                command.authenticatedUserId(),
-                true,
                 true,
                 announcement.getId(),
                 MediaReferenceType.ANNOUNCEMENT,

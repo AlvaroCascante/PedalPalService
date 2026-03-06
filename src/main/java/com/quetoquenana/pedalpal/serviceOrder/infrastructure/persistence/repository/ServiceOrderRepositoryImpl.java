@@ -29,12 +29,12 @@ public class ServiceOrderRepositoryImpl implements ServiceOrderRepository {
     }
 
     @Override
-    public Optional<ServiceOrder> getByAppointmentId(UUID appointmentId) {
-        return repository.getByAppointmentId(appointmentId).map(ServiceOrderEntityMapper::toModel);
+    public Optional<ServiceOrder> findByAppointmentId(UUID appointmentId) {
+        return repository.findByAppointmentId(appointmentId).map(ServiceOrderEntityMapper::toModel);
     }
 
     @Override
-    public long getNextServiceOrderNumber() {
-        return repository.getNextServiceOrderNumber();
+    public long nextOrderSequence() {
+        return repository.nextOrderSequence();
     }
 }

@@ -7,7 +7,10 @@ import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeComponentUse
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEvent;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEventType;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
+import com.quetoquenana.pedalpal.common.domain.model.UserType;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
@@ -16,12 +19,12 @@ import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import com.quetoquenana.pedalpal.util.TestBikeData;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
@@ -46,9 +49,11 @@ class UpdateBikeComponentUseCaseTest {
     BikeMapper bikeMapper;
 
     @Mock
-    ApplicationEventPublisher eventPublisher;
+    ApplicationEventPublisher applicationEventPublisher;
 
-    @InjectMocks
+    @Mock
+    AuthenticatedUserPort authenticatedUserPort;
+
     UpdateBikeComponentUseCase useCase;
 
     @Captor
@@ -56,6 +61,17 @@ class UpdateBikeComponentUseCaseTest {
 
     @Captor
     ArgumentCaptor<BikeHistoryEvent> historyEventCaptor;
+
+    @BeforeEach
+    void setUp() {
+        useCase = new UpdateBikeComponentUseCase(
+                applicationEventPublisher,
+                authenticatedUserPort,
+                bikeMapper,
+                bikeRepository,
+                systemCodeRepository
+        );
+    }
 
     @Nested
     class HappyPath {
@@ -65,6 +81,7 @@ class UpdateBikeComponentUseCaseTest {
             UUID bikeId = UUID.randomUUID();
             UUID componentId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             Bike bike = bikeWithSingleComponent(bikeId, ownerId, componentId, "CHAIN", "Old chain");
 
@@ -75,7 +92,6 @@ class UpdateBikeComponentUseCaseTest {
             UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
                     bikeId,
                     componentId,
-                    ownerId,
                     null,
                     "New chain",
                     null,
@@ -96,7 +112,7 @@ class UpdateBikeComponentUseCaseTest {
             assertEquals("CHAIN", updated.getComponentType().getCode());
             assertEquals(bikeId, result.id());
             assertEquals(1, result.components().size());
-            verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
+            verify(applicationEventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
             BikeHistoryEvent event = historyEventCaptor.getValue();
             assertEquals(bikeId, event.bikeId());
             assertEquals(ownerId, event.performedBy());
@@ -109,6 +125,7 @@ class UpdateBikeComponentUseCaseTest {
             UUID bikeId = UUID.randomUUID();
             UUID componentId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             Bike bike = bikeWithSingleComponent(bikeId, ownerId, componentId, "CHAIN", "Chain");
 
@@ -130,7 +147,6 @@ class UpdateBikeComponentUseCaseTest {
             UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
                     bikeId,
                     componentId,
-                    ownerId,
                     "CASSETTE",
                     null,
                     null,
@@ -145,7 +161,7 @@ class UpdateBikeComponentUseCaseTest {
             verify(bikeRepository).save(bikeCaptor.capture());
             BikeComponent updated = bikeCaptor.getValue().getComponents().iterator().next();
             assertEquals("CASSETTE", updated.getComponentType().getCode());
-            verify(eventPublisher, times(1)).publishEvent(any(BikeHistoryEvent.class));
+            verify(applicationEventPublisher, times(1)).publishEvent(any(BikeHistoryEvent.class));
         }
 
         @Test
@@ -153,6 +169,7 @@ class UpdateBikeComponentUseCaseTest {
             UUID bikeId = UUID.randomUUID();
             UUID componentId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             Bike bike = bikeWithSingleComponent(bikeId, ownerId, componentId, "CHAIN", "Chain");
 
@@ -163,7 +180,6 @@ class UpdateBikeComponentUseCaseTest {
             UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
                     bikeId,
                     componentId,
-                    ownerId,
                     null,
                     "New name",
                     "New brand",
@@ -184,7 +200,7 @@ class UpdateBikeComponentUseCaseTest {
             assertEquals("New notes", updated.getNotes());
             assertEquals(111, updated.getOdometerKm());
             assertEquals(222, updated.getUsageTimeMinutes());
-            verify(eventPublisher, times(1)).publishEvent(any(BikeHistoryEvent.class));
+            verify(applicationEventPublisher, times(1)).publishEvent(any(BikeHistoryEvent.class));
         }
     }
 
@@ -196,6 +212,7 @@ class UpdateBikeComponentUseCaseTest {
             UUID bikeId = UUID.randomUUID();
             UUID componentId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             Bike bike = bikeWithSingleComponent(bikeId, ownerId, componentId, "CHAIN", "Chain");
             BikeComponent original = bike.getComponents().iterator().next();
@@ -207,7 +224,6 @@ class UpdateBikeComponentUseCaseTest {
             UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
                     bikeId,
                     componentId,
-                    ownerId,
                     null,
                     null,
                     null,
@@ -224,7 +240,7 @@ class UpdateBikeComponentUseCaseTest {
 
             assertEquals(original.getName(), updated.getName());
             assertEquals(original.getComponentType().getCode(), updated.getComponentType().getCode());
-            verify(eventPublisher, never()).publishEvent(any());
+            verify(applicationEventPublisher, never()).publishEvent(any());
         }
 
         @Test
@@ -232,6 +248,7 @@ class UpdateBikeComponentUseCaseTest {
             UUID bikeId = UUID.randomUUID();
             UUID componentId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             Bike bike = bikeWithSingleComponent(bikeId, ownerId, componentId, "CHAIN", "Chain");
 
@@ -240,7 +257,6 @@ class UpdateBikeComponentUseCaseTest {
             UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
                     bikeId,
                     componentId,
-                    ownerId,
                     null,
                     "   ",
                     null,
@@ -254,7 +270,7 @@ class UpdateBikeComponentUseCaseTest {
             assertEquals("bike.component.update.name.blank", ex.getMessage());
 
             verify(bikeRepository, never()).save(any());
-            verify(eventPublisher, never()).publishEvent(any());
+            verify(applicationEventPublisher, never()).publishEvent(any());
         }
 
         @Test
@@ -262,6 +278,7 @@ class UpdateBikeComponentUseCaseTest {
             UUID bikeId = UUID.randomUUID();
             UUID componentId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             Bike bike = bikeWithSingleComponent(bikeId, ownerId, componentId, "CHAIN", "Chain");
 
@@ -272,7 +289,6 @@ class UpdateBikeComponentUseCaseTest {
             UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
                     bikeId,
                     componentId,
-                    ownerId,
                     "   ",
                     null,
                     null,
@@ -286,7 +302,7 @@ class UpdateBikeComponentUseCaseTest {
             assertEquals("bike.component.type.not.found", ex.getMessage());
 
             verify(bikeRepository, never()).save(any());
-            verify(eventPublisher, never()).publishEvent(any());
+            verify(applicationEventPublisher, never()).publishEvent(any());
         }
     }
 
@@ -298,13 +314,13 @@ class UpdateBikeComponentUseCaseTest {
             UUID bikeId = UUID.randomUUID();
             UUID componentId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.empty());
 
             UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
                     bikeId,
                     componentId,
-                    ownerId,
                     null,
                     "New name",
                     null,
@@ -318,7 +334,7 @@ class UpdateBikeComponentUseCaseTest {
             assertEquals("bike.not.found", ex.getMessage());
 
             verify(bikeRepository, never()).save(any());
-            verify(eventPublisher, never()).publishEvent(any());
+            verify(applicationEventPublisher, never()).publishEvent(any());
         }
 
         @Test
@@ -326,6 +342,7 @@ class UpdateBikeComponentUseCaseTest {
             UUID bikeId = UUID.randomUUID();
             UUID componentId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             Bike bikeWithoutComponent = TestBikeData.existingBike(bikeId, ownerId);
 
@@ -334,7 +351,6 @@ class UpdateBikeComponentUseCaseTest {
             UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
                     bikeId,
                     componentId,
-                    ownerId,
                     null,
                     "New name",
                     null,
@@ -348,7 +364,7 @@ class UpdateBikeComponentUseCaseTest {
             assertEquals("bike.component.not.found", ex.getMessage());
 
             verify(bikeRepository, never()).save(any());
-            verify(eventPublisher, never()).publishEvent(any());
+            verify(applicationEventPublisher, never()).publishEvent(any());
         }
 
         @Test
@@ -356,6 +372,7 @@ class UpdateBikeComponentUseCaseTest {
             UUID bikeId = UUID.randomUUID();
             UUID componentId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             Bike bike = bikeWithSingleComponent(bikeId, ownerId, componentId, "CHAIN", "Chain");
 
@@ -366,7 +383,6 @@ class UpdateBikeComponentUseCaseTest {
             UpdateBikeComponentCommand command = new UpdateBikeComponentCommand(
                     bikeId,
                     componentId,
-                    ownerId,
                     "NOT_A_TYPE",
                     null,
                     null,
@@ -380,8 +396,13 @@ class UpdateBikeComponentUseCaseTest {
             assertEquals("bike.component.type.not.found", ex.getMessage());
 
             verify(bikeRepository, never()).save(any());
-            verify(eventPublisher, never()).publishEvent(any());
+            verify(applicationEventPublisher, never()).publishEvent(any());
         }
+    }
+
+    private void mockAuthenticatedUser(UUID ownerId) {
+        when(authenticatedUserPort.getAuthenticatedUser())
+                .thenReturn(Optional.of(new AuthenticatedUser(ownerId, "test-user", "Test User", UserType.CUSTOMER)));
     }
 
     private static Bike bikeWithSingleComponent(UUID bikeId, UUID ownerId, UUID componentId, String typeCode, String componentName) {

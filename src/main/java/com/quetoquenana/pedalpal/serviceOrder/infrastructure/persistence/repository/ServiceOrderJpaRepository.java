@@ -8,9 +8,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ServiceOrderJpaRepository extends JpaRepository<ServiceOrderEntity, UUID> {
-    Optional<ServiceOrderEntity> getByAppointmentId(UUID appointmentId);
+    Optional<ServiceOrderEntity> findByAppointmentId(UUID appointmentId);
 
     @Query(value = "SELECT nextval('service_order_number_seq')", nativeQuery = true)
-    long getNextServiceOrderNumber();
+    long nextOrderSequence();
 }
-

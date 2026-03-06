@@ -25,7 +25,6 @@ public class AnnouncementApiMapper {
     private final MessageSource messageSource;
 
     public CreateAnnouncementCommand toCommand(
-            UUID authenticatedUserId,
             CreateAnnouncementRequest request
     ) {
         List<AnnouncementMediaCommand> mediaCommands = request.mediaFiles() == null
@@ -33,7 +32,6 @@ public class AnnouncementApiMapper {
                 : request.mediaFiles().stream().map(this::toCommand).toList();
 
         return new CreateAnnouncementCommand(
-                authenticatedUserId,
                 request.title(),
                 request.subTitle(),
                 request.description(),
@@ -53,10 +51,9 @@ public class AnnouncementApiMapper {
         );
     }
 
-    public UpdateAnnouncementCommand toCommand(UUID id, UUID authenticatedUserId, UpdateAnnouncementRequest request) {
+    public UpdateAnnouncementCommand toCommand(UUID id, UpdateAnnouncementRequest request) {
         return new UpdateAnnouncementCommand(
                 id,
-                authenticatedUserId,
                 request.title(),
                 request.subTitle(),
                 request.description(),
@@ -65,16 +62,8 @@ public class AnnouncementApiMapper {
         );
     }
 
-    public UpdateAnnouncementCommand toCommand(UUID id, UUID authenticatedUserId) {
-        return new UpdateAnnouncementCommand(
-                id,
-                authenticatedUserId,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
+    public UpdateAnnouncementCommand toCommand(UUID id) {
+        return new UpdateAnnouncementCommand(id);
     }
 
     public AnnouncementResponse toResponse(AnnouncementResult result) {

@@ -21,7 +21,7 @@ public class AppointmentQueryService {
     private final AppointmentRepository repository;
 
     public AppointmentResult getById(UUID id) {
-        Appointment model = repository.getById(id)
+        Appointment model = repository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("appointment.not.found"));
         return mapper.toResult(model);
     }

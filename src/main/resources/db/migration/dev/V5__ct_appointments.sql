@@ -5,6 +5,7 @@ CREATE TABLE appointments (
     scheduled_at TIMESTAMP WITH TIME ZONE NOT NULL,
     status VARCHAR(50) NOT NULL,
     notes TEXT,
+    closure_reason TEXT,
 
     version BIGINT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,

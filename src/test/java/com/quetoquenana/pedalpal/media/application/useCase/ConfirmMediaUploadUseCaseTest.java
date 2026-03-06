@@ -44,7 +44,7 @@ class ConfirmMediaUploadUseCaseTest {
     @Test
     void shouldThrowWhenMediaNotFound() {
         UUID mediaId = UUID.randomUUID();
-        ConfirmUploadCommand command = new ConfirmUploadCommand(mediaId, UUID.randomUUID());
+        ConfirmUploadCommand command = new ConfirmUploadCommand(mediaId);
         when(repository.getById(mediaId)).thenReturn(Optional.empty());
 
         assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
@@ -55,7 +55,7 @@ class ConfirmMediaUploadUseCaseTest {
     @Test
     void shouldThrowWhenMediaNotDraft() {
         UUID mediaId = UUID.randomUUID();
-        ConfirmUploadCommand command = new ConfirmUploadCommand(mediaId, UUID.randomUUID());
+        ConfirmUploadCommand command = new ConfirmUploadCommand(mediaId);
         Media model = Media.builder()
                 .id(mediaId)
                 .storageKey("key")
@@ -72,7 +72,7 @@ class ConfirmMediaUploadUseCaseTest {
     @Test
     void shouldConfirmUploadAndReturnResult() {
         UUID mediaId = UUID.randomUUID();
-        ConfirmUploadCommand command = new ConfirmUploadCommand(mediaId, UUID.randomUUID());
+        ConfirmUploadCommand command = new ConfirmUploadCommand(mediaId);
         Media model = Media.builder()
                 .id(mediaId)
                 .storageKey("key")

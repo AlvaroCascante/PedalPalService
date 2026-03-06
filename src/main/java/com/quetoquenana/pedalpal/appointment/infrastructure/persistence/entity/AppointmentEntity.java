@@ -41,6 +41,9 @@ public class AppointmentEntity extends AuditableEntity {
     @Column(name = "notes", columnDefinition = "text")
     private String notes;
 
+    @Column(name = "closure_reason", columnDefinition = "text")
+    private String closureReason;
+
     @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<AppointmentServiceEntity> services;
@@ -53,4 +56,3 @@ public class AppointmentEntity extends AuditableEntity {
         services.add(service);
     }
 }
-

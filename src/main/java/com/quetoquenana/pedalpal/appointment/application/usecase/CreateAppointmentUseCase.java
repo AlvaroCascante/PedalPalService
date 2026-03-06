@@ -8,6 +8,7 @@ import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.model.RequestedService;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
@@ -17,7 +18,6 @@ import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageReposit
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -29,13 +29,13 @@ import java.util.*;
  * Snapshots the requested services, get the product name and price to be  preserved in case of products updates
  * It also handles exceptions and logs errors.
  */
-@Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class CreateAppointmentUseCase {
 
     private final AppointmentMapper mapper;
-    private final AppointmentRepository appointmentRepository;
+    private final AppointmentRepository repository;
+    private final AuthenticatedUserPort authenticatedUserPort;
     private final BikeRepository bikeRepository;
     private final ProductRepository productRepository;
     private final ProductPackageRepository productPackageRepository;
@@ -44,11 +44,10 @@ public class CreateAppointmentUseCase {
     public AppointmentResult execute(CreateAppointmentCommand command) {
         validate(command);
 
-
         Appointment appointment = mapper.toModel(command);
         List<RequestedService> services = snapshotRequestedServices(command.requestedServices());
         appointment.setRequestedServices(services);
-        appointment = appointmentRepository.save(appointment);
+        appointment = repository.save(appointment);
         return mapper.toResult(appointment);
     }
 
@@ -128,7 +127,11 @@ public class CreateAppointmentUseCase {
     }
 
     private void validate(CreateAppointmentCommand command) {
-        bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
+        UUID authenticatedUserId = authenticatedUserPort.getAuthenticatedUser()
+                .orElseThrow(() -> new RecordNotFoundException("authentication.required"))
+                .userId();
+
+        bikeRepository.findByIdAndOwnerId(command.bikeId(), authenticatedUserId)
                 .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
 
         if (command.requestedServices() == null || command.requestedServices().isEmpty()) {

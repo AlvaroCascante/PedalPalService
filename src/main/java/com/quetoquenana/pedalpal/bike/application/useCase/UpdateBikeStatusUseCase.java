@@ -4,7 +4,10 @@ import com.quetoquenana.pedalpal.bike.application.command.UpdateBikeStatusComman
 import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.domain.model.*;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
+import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,22 +21,26 @@ import java.util.List;
 import java.util.UUID;
 
 @Transactional
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class UpdateBikeStatusUseCase {
 
+    private final ApplicationEventPublisher eventPublisher;
+    private final AuthenticatedUserPort authenticatedUserPort;
     private final BikeMapper bikeMapper;
     private final BikeRepository bikeRepository;
-    private final ApplicationEventPublisher eventPublisher;
 
     public BikeResult execute(UpdateBikeStatusCommand command) {
-        Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
+        AuthenticatedUser currentUser = authenticatedUserPort.getAuthenticatedUser().
+                orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
+
+        Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), currentUser.userId())
                 .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
 
         List<BikeChangeItem> bikeChangeItems = applyPatch(bike, command);
         bikeRepository.save(bike);
 
-        publishHistoryEvent(bike.getId(), command.authenticatedUserId(), bikeChangeItems);
+        publishHistoryEvent(bike.getId(), currentUser.userId(), bikeChangeItems);
         return bikeMapper.toResult(bike);
     }
 

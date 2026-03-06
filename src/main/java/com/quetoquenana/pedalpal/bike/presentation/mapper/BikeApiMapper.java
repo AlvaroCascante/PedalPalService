@@ -29,11 +29,9 @@ public class BikeApiMapper {
     private final MessageSource messageSource;
 
     public CreateBikeCommand toCommand(
-            UUID ownerId,
             CreateBikeRequest request
     )   {
         return new CreateBikeCommand(
-                ownerId,
                 request.name(),
                 request.type(),
                 request.brand(),
@@ -50,12 +48,10 @@ public class BikeApiMapper {
 
     public UpdateBikeCommand toCommand(
             UUID bikeId,
-            UUID authenticatedUserId,
             UpdateBikeRequest request
     ) {
         return new UpdateBikeCommand(
                 bikeId,
-                authenticatedUserId,
                 request.name(),
                 request.type(),
                 request.brand(),
@@ -72,12 +68,10 @@ public class BikeApiMapper {
 
     public UpdateBikeStatusCommand toCommand(
             UUID bikeId,
-            UUID authenticatedUserId,
             UpdateBikeStatusRequest request
     ) {
         return new UpdateBikeStatusCommand(
                 bikeId,
-                authenticatedUserId,
                 request.status()
         );
     }
@@ -85,13 +79,11 @@ public class BikeApiMapper {
     public AddBikeComponentCommand toCommand(
             UUID bikeId,
             UUID componentId,
-            UUID authenticatedUserId,
             AddBikeComponentRequest request
     )   {
         return new AddBikeComponentCommand(
                 componentId,
                 bikeId,
-                authenticatedUserId,
                 request.type(),
                 request.name(),
                 request.brand(),
@@ -105,13 +97,11 @@ public class BikeApiMapper {
     public UpdateBikeComponentCommand toCommand(
             UUID bikeId,
             UUID componentId,
-            UUID authenticatedUserId,
             UpdateBikeComponentRequest request
     ) {
         return new UpdateBikeComponentCommand(
                 bikeId,
                 componentId,
-                authenticatedUserId,
                 request.type(),
                 request.name(),
                 request.brand(),
@@ -125,32 +115,36 @@ public class BikeApiMapper {
     public UpdateBikeComponentStatusCommand toCommand(
             UUID bikeId,
             UUID componentId,
-            UUID authenticatedUserId,
             UpdateBikeComponentStatusRequest request
     ) {
         return new UpdateBikeComponentStatusCommand(
                 bikeId,
                 componentId,
-                authenticatedUserId,
                 request.status()
         );
     }
 
     public CreateBikeUploadMediaCommand toCommand(
             UUID bikeId,
-            UUID authenticatedUserId,
-            boolean isAdmin,
             CreateBikeUploadMediaRequest request
     ) {
         return new CreateBikeUploadMediaCommand(
                 bikeId,
-                authenticatedUserId,
-                isAdmin,
                 request.isPublic(),
                 request.mediaFiles()
                         .stream()
                         .map(this::toCommand)
                         .toList()
+        );
+    }
+
+    private BikeMediaCommand toCommand(BikeMediaRequest request) {
+        return new BikeMediaCommand(
+                request.contentType(),
+                request.mediaType(),
+                request.isPrimary(),
+                request.name(),
+                request.altText()
         );
     }
 
@@ -217,16 +211,6 @@ public class BikeApiMapper {
                 result.performedBy(),
                 typeLabel,
                 result.payload()
-        );
-    }
-
-    private BikeMediaCommand toCommand(BikeMediaRequest request) {
-        return new BikeMediaCommand(
-                request.contentType(),
-                request.mediaType(),
-                request.isPrimary(),
-                request.name(),
-                request.altText()
         );
     }
 

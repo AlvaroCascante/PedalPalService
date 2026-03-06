@@ -41,12 +41,12 @@ public class ControllerExceptionAdvice {
         String message = messageSource.getMessage(ex.getMessageKey(), ex.getMessageArgs(), locale);
         return ResponseEntity.internalServerError().body(new ApiResponse(message, HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }
-    
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse> handleDataIntegrityViolationException(
             DomainException ex, Locale locale) {
-        log.warn("DataIntegrityViolationException: {}", ex.getMessage());
-        String message = messageSource.getMessage(ex.getMessageKey(), ex.getMessageArgs(), locale);
+        log.error("DataIntegrityViolationException: {}", ex.getMessage());
+        String message = messageSource.getMessage("bad.request", null, locale);
         return ResponseEntity.internalServerError().body(new ApiResponse(message, HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }
 

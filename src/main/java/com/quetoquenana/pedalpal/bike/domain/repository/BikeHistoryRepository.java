@@ -10,7 +10,7 @@ public interface BikeHistoryRepository {
 
     Optional<BikeHistory> getById(UUID id);
 
-    BikeHistory save(BikeHistory bikeHistory);
+    void save(BikeHistory bikeHistory);
 
     List<BikeHistory> findByBikeId(UUID bikeId);
 }

@@ -16,13 +16,14 @@ import java.util.stream.Collectors;
 
 public class MediaMapper {
 
-    public Media toModel(UploadMediaCommand command,
+    public Media toModel(UUID ownerId,
+                         UploadMediaCommand command,
                          UploadMediaSpecCommand spec
     ) {
         UUID mediaId = UUID.randomUUID();
         return Media.builder()
                 .id(mediaId)
-                .ownerId(command.authenticatedUserId())
+                .ownerId(ownerId)
                 .referenceId(command.referenceId())
                 .referenceType(command.referenceType())
                 .mediaType(MediaType.from(spec.mediaType()))
@@ -31,6 +32,7 @@ public class MediaMapper {
                 .status(MediaStatus.DRAFT)
                 .storageKey(buildStorageKey(
                         mediaId,
+                        ownerId,
                         command,
                         spec,
                         command.referenceType(),
@@ -44,6 +46,7 @@ public class MediaMapper {
 
     private String buildStorageKey(
             UUID mediaId,
+            UUID ownerId,
             UploadMediaCommand command,
             UploadMediaSpecCommand spec,
             MediaReferenceType referenceType,
@@ -54,7 +57,7 @@ public class MediaMapper {
         String type = referenceType.name().toLowerCase(Locale.ROOT);
 
         return type + "/" +  //announcement, profile, etc.
-                command.authenticatedUserId() + "/" +
+                ownerId + "/" +
                 today.getYear() + "/" +
                 String.format("%02d", today.getMonthValue()) + "/" +
                 String.format("%02d", today.getDayOfMonth()) + "/" +

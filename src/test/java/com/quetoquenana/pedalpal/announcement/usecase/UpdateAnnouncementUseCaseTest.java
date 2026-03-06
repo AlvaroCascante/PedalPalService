@@ -1,12 +1,11 @@
 package com.quetoquenana.pedalpal.announcement.usecase;
 
 import com.quetoquenana.pedalpal.announcement.application.command.UpdateAnnouncementCommand;
+import com.quetoquenana.pedalpal.announcement.application.mapper.AnnouncementMapper;
 import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementResult;
 import com.quetoquenana.pedalpal.announcement.application.usecase.UpdateAnnouncementUseCase;
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
-import com.quetoquenana.pedalpal.announcement.application.mapper.AnnouncementMapper;
-import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.util.TestAnnouncementData;
 import org.junit.jupiter.api.Nested;
@@ -45,7 +44,6 @@ class UpdateAnnouncementUseCaseTest {
         @Test
         void shouldUpdateTitle_whenProvided() {
             UUID id = UUID.randomUUID();
-            UUID auth = UUID.randomUUID();
 
             Announcement existing = TestAnnouncementData.existingAnnouncement(id);
             when(repository.getById(id)).thenReturn(Optional.of(existing));
@@ -56,7 +54,7 @@ class UpdateAnnouncementUseCaseTest {
             AnnouncementResult result = TestAnnouncementData.result(id);
             when(mapper.toResult(saved)).thenReturn(result);
 
-            UpdateAnnouncementCommand command = TestAnnouncementData.updateCommand_onlyTitle(id, auth);
+            UpdateAnnouncementCommand command = TestAnnouncementData.updateCommandOnlyTitle(id);
 
             AnnouncementResult actual = useCase.execute(command);
 
@@ -74,37 +72,9 @@ class UpdateAnnouncementUseCaseTest {
             UUID id = UUID.randomUUID();
             when(repository.getById(id)).thenReturn(Optional.empty());
 
-            UpdateAnnouncementCommand command = new UpdateAnnouncementCommand(
-                    id,
-                    UUID.randomUUID(),
-                    "New title",
-                    null,
-                    null,
-                    null,
-                    null
-            );
+            UpdateAnnouncementCommand command = new UpdateAnnouncementCommand(id);
 
             assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
-            verify(repository, never()).save(any());
-        }
-
-        @Test
-        void shouldThrowBadRequest_whenTitleIsBlank() {
-            UUID id = UUID.randomUUID();
-            when(repository.getById(id)).thenReturn(Optional.of(TestAnnouncementData.existingAnnouncement(id)));
-
-            UpdateAnnouncementCommand command = new UpdateAnnouncementCommand(
-                    id,
-                    UUID.randomUUID(),
-                    "   ",
-                    null,
-                    null,
-                    null,
-                    null
-            );
-
-            BadRequestException ex = assertThrows(BadRequestException.class, () -> useCase.execute(command));
-            assertEquals("announcement.title.blank", ex.getMessage());
             verify(repository, never()).save(any());
         }
     }

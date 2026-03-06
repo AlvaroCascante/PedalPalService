@@ -57,10 +57,9 @@ class CreateAnnouncementUseCaseTest {
 
         @Test
         void shouldCreateAnnouncement_whenCommandIsValid() {
-            UUID authUserId = UUID.randomUUID();
             UUID savedId = UUID.randomUUID();
 
-            CreateAnnouncementCommand command = TestAnnouncementData.createCommand(authUserId);
+            CreateAnnouncementCommand command = TestAnnouncementData.createCommand();
 
             Announcement model = Announcement.builder()
                     .title(command.title())
@@ -74,8 +73,6 @@ class CreateAnnouncementUseCaseTest {
             Announcement saved = TestAnnouncementData.existingAnnouncement(savedId);
 
             UploadMediaCommand mediaCommand = new UploadMediaCommand(
-                    authUserId,
-                    true,
                     true,
                     savedId,
                     com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType.ANNOUNCEMENT,
@@ -105,10 +102,9 @@ class CreateAnnouncementUseCaseTest {
 
         @Test
         void shouldReturnMediaResults_whenMediaUrlsGenerated() {
-            UUID authUserId = UUID.randomUUID();
             UUID savedId = UUID.randomUUID();
 
-            CreateAnnouncementCommand command = TestAnnouncementData.createCommand(authUserId);
+            CreateAnnouncementCommand command = TestAnnouncementData.createCommand();
 
             Announcement model = Announcement.builder()
                     .title(command.title())
@@ -118,8 +114,6 @@ class CreateAnnouncementUseCaseTest {
             Announcement saved = TestAnnouncementData.existingAnnouncement(savedId);
 
             UploadMediaCommand mediaCommand = new UploadMediaCommand(
-                    authUserId,
-                    true,
                     true,
                     savedId,
                     com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType.ANNOUNCEMENT,
@@ -172,7 +166,6 @@ class CreateAnnouncementUseCaseTest {
         @Test
         void shouldThrowBadRequest_whenTitleIsBlank() {
             CreateAnnouncementCommand command = new CreateAnnouncementCommand(
-                    UUID.randomUUID(),
                     "   ",
                     null,
                     null,

@@ -14,9 +14,7 @@ public interface OwnershipValidationPort {
      *
      * @param referenceType media reference type
      * @param referenceId reference identifier
-     * @param authenticatedUserId authenticated user identifier
-     * @param isAdmin whether the authenticated user has admin privileges
      */
-    void validate(MediaReferenceType referenceType, UUID referenceId, UUID authenticatedUserId, boolean isAdmin);
+    void validate(MediaReferenceType referenceType, UUID referenceId);
 }
 

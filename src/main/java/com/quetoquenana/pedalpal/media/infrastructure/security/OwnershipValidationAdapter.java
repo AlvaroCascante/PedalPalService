@@ -21,8 +21,8 @@ public class OwnershipValidationAdapter implements OwnershipValidationPort {
      * Delegates validation to the security module.
      */
     @Override
-    public void validate(MediaReferenceType referenceType, UUID referenceId, UUID authenticatedUserId, boolean isAdmin) {
-        ownershipValidator.validate(referenceType, referenceId, authenticatedUserId, isAdmin);
+    public void validate(MediaReferenceType referenceType, UUID referenceId) {
+        ownershipValidator.validate(referenceType, referenceId);
     }
 }
 

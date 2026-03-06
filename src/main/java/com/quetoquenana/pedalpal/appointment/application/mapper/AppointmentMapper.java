@@ -1,13 +1,16 @@
 package com.quetoquenana.pedalpal.appointment.application.mapper;
 
 import com.quetoquenana.pedalpal.appointment.application.command.CreateAppointmentCommand;
+import com.quetoquenana.pedalpal.appointment.application.command.UpdateAppointmentCommand;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentListItemResult;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentServiceResult;
+import com.quetoquenana.pedalpal.appointment.application.result.ChangeAppointmentStatusResult;
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
 import com.quetoquenana.pedalpal.appointment.domain.model.RequestedService;
 
+import java.time.Instant;
 import java.util.List;
 
 public class AppointmentMapper {
@@ -37,6 +40,19 @@ public class AppointmentMapper {
         );
     }
 
+    public ChangeAppointmentStatusResult toResult(
+            Appointment model,
+            AppointmentStatus fromStatus,
+            Instant now,
+            String serviceOrderNumber) {
+        return new ChangeAppointmentStatusResult(
+                model.getId(),
+                fromStatus,
+                model.getStatus(),
+                now,
+                serviceOrderNumber
+        );
+    }
     public Appointment toModel(CreateAppointmentCommand command) {
         // The requested services are handled separately in the use case,
         // so we only map the basic appointment fields here
@@ -57,5 +73,15 @@ public class AppointmentMapper {
                 model.getScheduledAt(),
                 model.getStatus()
         );
+    }
+
+    public void applyPatch(Appointment appointment, UpdateAppointmentCommand command) {
+        if (command.scheduledAt() != null) {
+            appointment.setScheduledAt(command.scheduledAt());
+        }
+
+        if (command.notes() != null) {
+            appointment.setNotes(command.notes());
+        }
     }
 }

@@ -5,7 +5,10 @@ import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.domain.model.*;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
+import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
@@ -21,37 +24,41 @@ import java.util.UUID;
 import static com.quetoquenana.pedalpal.common.util.Constants.BikeComponents.COMPONENT_TYPE;
 
 @Transactional
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class AddBikeComponentUseCase {
 
-    private final BikeMapper bikeMapper;
-    private final BikeRepository bikeRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final AuthenticatedUserPort authenticatedUserPort;
+    private final BikeMapper mapper;
+    private final BikeRepository repository;
     private final SystemCodeRepository systemCodeRepository;
-    private final ApplicationEventPublisher eventPublisher;
 
     public BikeResult execute(AddBikeComponentCommand command) {
-        Bike bike = validate(command);
+        AuthenticatedUser currentUser = authenticatedUserPort.getAuthenticatedUser().
+                orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
+
+        Bike bike = validate(currentUser.userId(), command);
 
         SystemCode componentType = systemCodeRepository.findByCategoryAndCode(COMPONENT_TYPE, command.type())
                 .orElseThrow(() -> new RecordNotFoundException("bike.component.type.not.found", command.type()));
 
-        BikeComponent component = bikeMapper.toModel(command, componentType);
+        BikeComponent component = mapper.toModel(command, componentType);
         bike.addComponent(component);
-        bikeRepository.save(bike);
+        repository.save(bike);
 
         publishHistoryEvent(
                 bike.getId(),
-                command.authenticatedUserId(),
+                currentUser.userId(),
                 component.getId(),
                 component.getName()
         );
 
-        return bikeMapper.toResult(bike);
+        return mapper.toResult(bike);
     }
 
-    private Bike validate(AddBikeComponentCommand command) {
-        Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
+    private Bike validate(UUID authenticatedUserId, AddBikeComponentCommand command) {
+        Bike bike = repository.findByIdAndOwnerId(command.bikeId(), authenticatedUserId)
                 .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
 
         if (bike.getStatus() == null || !bike.getStatus().equals(BikeStatus.ACTIVE)) {
@@ -67,7 +74,7 @@ public class AddBikeComponentUseCase {
             UUID componentId,
             String componentName
     ) {
-        eventPublisher.publishEvent(
+        applicationEventPublisher.publishEvent(
             new BikeHistoryEvent(
                     bikeId,
                     userId,

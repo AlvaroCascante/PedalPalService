@@ -10,8 +10,7 @@ public interface ServiceOrderRepository {
 
     Optional<ServiceOrder> getById(UUID id);
 
-    Optional<ServiceOrder> getByAppointmentId(UUID appointmentId);
+    Optional<ServiceOrder> findByAppointmentId(UUID appointmentId);
 
-    long getNextServiceOrderNumber();
+    long nextOrderSequence();
 }
-

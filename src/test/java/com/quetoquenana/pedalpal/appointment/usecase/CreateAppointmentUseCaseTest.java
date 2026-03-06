@@ -13,17 +13,20 @@ import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeType;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
+import com.quetoquenana.pedalpal.common.domain.model.UserType;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.product.domain.model.Product;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -59,8 +62,22 @@ class CreateAppointmentUseCaseTest {
     @Mock
     ProductPackageRepository productPackageRepository;
 
-    @InjectMocks
+    @Mock
+    AuthenticatedUserPort authenticatedUserPort;
+
     CreateAppointmentUseCase useCase;
+
+    @BeforeEach
+    void setUp() {
+        useCase = new CreateAppointmentUseCase(
+                mapper,
+                appointmentRepository,
+                authenticatedUserPort,
+                bikeRepository,
+                productRepository,
+                productPackageRepository
+        );
+    }
 
     @Captor
     ArgumentCaptor<Appointment> appointmentCaptor;
@@ -73,6 +90,9 @@ class CreateAppointmentUseCaseTest {
             UUID bikeId = UUID.randomUUID();
             UUID storeLocationId = UUID.randomUUID();
             UUID productId = UUID.randomUUID();
+            UUID ownerId = UUID.randomUUID();
+
+            mockAuthenticatedUser(ownerId);
 
             Appointment mapped = Appointment.builder()
                     .bikeId(bikeId)
@@ -97,10 +117,10 @@ class CreateAppointmentUseCaseTest {
                 );
             });
 
-            when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class)))
+            when(bikeRepository.findByIdAndOwnerId(eq(bikeId), eq(ownerId)))
                     .thenReturn(Optional.of(Bike.builder()
                             .id(bikeId)
-                            .ownerId(UUID.randomUUID())
+                            .ownerId(ownerId)
                             .name("Bike")
                             .type(BikeType.ROAD)
                             .status(BikeStatus.ACTIVE)
@@ -128,7 +148,6 @@ class CreateAppointmentUseCaseTest {
             // serviceId refers to Product id in snapshotting logic
             CreateAppointmentCommand command = new CreateAppointmentCommand(
                     bikeId,
-                    UUID.randomUUID(),
                     storeLocationId,
                     Instant.parse("2026-02-25T10:00:00Z"),
                     "notes",
@@ -156,12 +175,13 @@ class CreateAppointmentUseCaseTest {
         @Test
         void shouldThrowRecordNotFound_whenBikeDoesNotExist() {
             UUID bikeId = UUID.randomUUID();
+            UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
-            when(bikeRepository.findByIdAndOwnerId(any(UUID.class), any(UUID.class))).thenReturn(Optional.empty());
+            when(bikeRepository.findByIdAndOwnerId(eq(bikeId), eq(ownerId))).thenReturn(Optional.empty());
 
             CreateAppointmentCommand command = new CreateAppointmentCommand(
                     bikeId,
-                    UUID.randomUUID(),
                     UUID.randomUUID(),
                     Instant.parse("2026-02-25T10:00:00Z"),
                     null,
@@ -173,5 +193,10 @@ class CreateAppointmentUseCaseTest {
             verify(appointmentRepository, never()).save(any(Appointment.class));
             verify(mapper, never()).toModel(any(CreateAppointmentCommand.class));
         }
+    }
+
+    private void mockAuthenticatedUser(UUID ownerId) {
+        when(authenticatedUserPort.getAuthenticatedUser())
+                .thenReturn(Optional.of(new AuthenticatedUser(ownerId, "test-user", "Test User", UserType.CUSTOMER)));
     }
 }

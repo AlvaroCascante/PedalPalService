@@ -5,8 +5,11 @@ import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.domain.model.*;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
+import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,26 +23,30 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Transactional
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class UpdateBikeUseCase {
 
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final AuthenticatedUserPort authenticatedUserPort;
     private final BikeMapper bikeMapper;
     private final BikeRepository bikeRepository;
-    private final ApplicationEventPublisher eventPublisher;
 
     public BikeResult execute(UpdateBikeCommand command) {
-        Bike bike = validate(command);
+        AuthenticatedUser currentUser = authenticatedUserPort.getAuthenticatedUser().
+                orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
+
+        Bike bike = validate(currentUser.userId(), command);
 
         List<BikeChangeItem> bikeChangeItems = applyPatch(bike, command);
         bikeRepository.save(bike);
 
-        publishHistoryEvent(bike.getId(), command.authenticatedUserId(), bikeChangeItems);
+        publishHistoryEvent(bike.getId(), currentUser.userId(), bikeChangeItems);
         return bikeMapper.toResult(bike);
     }
 
-    private Bike validate(UpdateBikeCommand command) {
-        Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
+    private Bike validate(UUID authenticatedUserId, UpdateBikeCommand command) {
+        Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), authenticatedUserId)
                 .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
 
         if (!bike.getStatus().equals(BikeStatus.ACTIVE)) {
@@ -56,7 +63,7 @@ public class UpdateBikeUseCase {
 
     private void publishHistoryEvent(UUID bikeId, UUID userId, List<BikeChangeItem> bikeChangeItems) {
         if (!bikeChangeItems.isEmpty()) {
-            eventPublisher.publishEvent(
+            applicationEventPublisher.publishEvent(
                 new BikeHistoryEvent(
                         bikeId,
                         userId,

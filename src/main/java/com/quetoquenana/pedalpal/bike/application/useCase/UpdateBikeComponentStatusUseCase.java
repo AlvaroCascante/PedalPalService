@@ -4,7 +4,10 @@ import com.quetoquenana.pedalpal.bike.application.command.UpdateBikeComponentSta
 import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.domain.model.*;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
+import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,16 +21,20 @@ import java.util.List;
 import java.util.UUID;
 
 @Transactional
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class UpdateBikeComponentStatusUseCase {
 
+    private final ApplicationEventPublisher eventPublisher;
+    private final AuthenticatedUserPort authenticatedUserPort;
     private final BikeMapper bikeMapper;
     private final BikeRepository bikeRepository;
-    private final ApplicationEventPublisher eventPublisher;
 
     public BikeResult execute(UpdateBikeComponentStatusCommand command) {
-        Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
+        AuthenticatedUser currentUser = authenticatedUserPort.getAuthenticatedUser().
+                orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
+
+        Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), currentUser.userId())
                 .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
 
         BikeComponent component = bike.getComponents().stream()
@@ -37,7 +44,7 @@ public class UpdateBikeComponentStatusUseCase {
 
         List<BikeChangeItem> bikeChangeItems = applyPatch(component, command);
         bikeRepository.save(bike);
-        publishHistoryEvent(bike.getId(), command.authenticatedUserId(), component.getId(), bikeChangeItems);
+        publishHistoryEvent(bike.getId(), currentUser.userId(), component.getId(), bikeChangeItems);
         return bikeMapper.toResult(bike);
     }
 

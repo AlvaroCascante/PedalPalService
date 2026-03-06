@@ -26,7 +26,6 @@ public final class TestBikeData {
     public static UpdateBikeCommand updateBikeCommand_nameOnly(UUID bikeId, UUID ownerId, String name) {
         return new UpdateBikeCommand(
                 bikeId,
-                ownerId,
                 name,
                 null,
                 null,
@@ -62,7 +61,6 @@ public final class TestBikeData {
 
     public static CreateBikeCommand createBikeCommand_minimal(UUID ownerId) {
         return new CreateBikeCommand(
-                ownerId,
                 "My bike",
                 "ROAD",
                 null,
@@ -79,7 +77,6 @@ public final class TestBikeData {
 
     public static CreateBikeCommand createBikeCommand_withSerial(UUID ownerId, String serialNumber) {
         return new CreateBikeCommand(
-                ownerId,
                 "Canyon Ultimate",
                 "ROAD",
                 "Canyon",
@@ -96,7 +93,6 @@ public final class TestBikeData {
 
     public static CreateBikeCommand createBikeCommand_duplicateSerial() {
         return new CreateBikeCommand(
-                UUID.randomUUID(),
                 "My bike",
                 "ROAD",
                 null,
@@ -113,7 +109,6 @@ public final class TestBikeData {
 
     public static CreateBikeCommand createBikeCommand_basicWithSerial(UUID ownerId, String serialNumber) {
         return new CreateBikeCommand(
-                ownerId,
                 "Bike",
                 "ROAD",
                 null,
@@ -130,7 +125,6 @@ public final class TestBikeData {
 
     public static CreateBikeCommand createBikeCommand_basicNoSerial(UUID ownerId) {
         return new CreateBikeCommand(
-                ownerId,
                 "Bike",
                 "ROAD",
                 null,
@@ -148,7 +142,6 @@ public final class TestBikeData {
     public static UpdateBikeCommand updateBikeCommand_allFields(UUID bikeId, UUID ownerId) {
         return new UpdateBikeCommand(
                 bikeId,
-                ownerId,
                 "New name",
                 "MTB",
                 "New brand",
@@ -166,7 +159,6 @@ public final class TestBikeData {
     public static UpdateBikeCommand updateBikeCommand_noFields(UUID bikeId, UUID ownerId) {
         return new UpdateBikeCommand(
                 bikeId,
-                ownerId,
                 null,
                 null,
                 null,

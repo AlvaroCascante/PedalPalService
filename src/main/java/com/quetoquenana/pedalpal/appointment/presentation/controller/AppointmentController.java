@@ -1,24 +1,23 @@
 package com.quetoquenana.pedalpal.appointment.presentation.controller;
 
+import com.quetoquenana.pedalpal.appointment.application.command.ChangeAppointmentStatusCommand;
 import com.quetoquenana.pedalpal.appointment.application.command.CreateAppointmentCommand;
 import com.quetoquenana.pedalpal.appointment.application.command.UpdateAppointmentCommand;
-import com.quetoquenana.pedalpal.appointment.application.command.UpdateAppointmentStatusCommand;
 import com.quetoquenana.pedalpal.appointment.application.query.AppointmentQueryService;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentListItemResult;
 import com.quetoquenana.pedalpal.appointment.application.result.AppointmentResult;
-import com.quetoquenana.pedalpal.appointment.application.result.ConfirmAppointmentResult;
-import com.quetoquenana.pedalpal.appointment.application.usecase.*;
-import com.quetoquenana.pedalpal.appointment.presentation.mapper.AppointmentApiMapper;
+import com.quetoquenana.pedalpal.appointment.application.result.ChangeAppointmentStatusResult;
+import com.quetoquenana.pedalpal.appointment.application.usecase.ChangeAppointmentStatusUseCase;
+import com.quetoquenana.pedalpal.appointment.application.usecase.CreateAppointmentUseCase;
+import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentUseCase;
+import com.quetoquenana.pedalpal.appointment.presentation.dto.request.ChangeAppointmentStatusRequest;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.request.CreateAppointmentRequest;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppointmentRequest;
-import com.quetoquenana.pedalpal.appointment.presentation.dto.request.UpdateAppointmentStatusRequest;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentListItemResponse;
 import com.quetoquenana.pedalpal.appointment.presentation.dto.response.AppointmentResponse;
-import com.quetoquenana.pedalpal.appointment.presentation.dto.response.ConfirmAppointmentResponse;
-import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
+import com.quetoquenana.pedalpal.appointment.presentation.dto.response.ChangeAppointmentStatusResponse;
+import com.quetoquenana.pedalpal.appointment.presentation.mapper.AppointmentApiMapper;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
-import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
-import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,30 +36,27 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AppointmentController {
 
-    private final CancelAppointmentUseCase cancelAppointmentUseCase;
-    private final ConfirmAppointmentUseCase confirmAppointmentUseCase;
     private final CreateAppointmentUseCase createAppointmentUseCase;
     private final UpdateAppointmentUseCase updateAppointmentUseCase;
-    private final UpdateAppointmentStatusUseCase updateAppointmentStatusUseCase;
+    private final ChangeAppointmentStatusUseCase changeAppointmentStatusUseCase;
     private final AppointmentQueryService queryService;
     private final AppointmentApiMapper apiMapper;
-    private final CurrentUserPort currentUserProvider;
 
     @PostMapping
     @PreAuthorize("(hasRole('USER'))")
     public ResponseEntity<ApiResponse> create(
             @Valid @RequestBody CreateAppointmentRequest request
     ) {
-        CreateAppointmentCommand command = apiMapper.toCommand(request, getAuthenticatedUserId());
+        CreateAppointmentCommand command = apiMapper.toCommand(request);
         AppointmentResult result = createAppointmentUseCase.execute(command);
         AppointmentResponse response = apiMapper.toResponse(result);
         return ResponseEntity.created(URI.create("/api/appointments/" + response.id()))
                 .body(new ApiResponse(response));
     }
 
-    @PatchMapping("/{id}")
-    @PreAuthorize("(hasRole('USER'))")
-    public ResponseEntity<ApiResponse> update(
+    @PatchMapping("/{id}/reschedule")
+    @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN'))")
+    public ResponseEntity<ApiResponse> reschedule(
             @PathVariable UUID id,
             @Valid @RequestBody UpdateAppointmentRequest request
     ) {
@@ -71,39 +67,15 @@ public class AppointmentController {
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
-    @PatchMapping("/{id}/status")
-    @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN'))")
-    public ResponseEntity<ApiResponse> updateStatus(
+    @PostMapping("/{id}/status")
+    @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN')) or (hasRole('TECHNICIAN'))")
+    public ResponseEntity<ApiResponse> changeStatus(
             @PathVariable UUID id,
-            @Valid @RequestBody UpdateAppointmentStatusRequest request
+            @Valid @RequestBody ChangeAppointmentStatusRequest request
     ) {
-        UpdateAppointmentStatusCommand command = apiMapper.toCommand(id, request);
-        AppointmentResult result = updateAppointmentStatusUseCase.execute(command);
-        AppointmentResponse response = apiMapper.toResponse(result);
-        return ResponseEntity.ok(new ApiResponse(response));
-    }
-
-    @PatchMapping("/{id}/cance")
-    @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN'))")
-    public ResponseEntity<ApiResponse> cancelAppointment(
-            @PathVariable UUID id,
-            @Valid @RequestBody UpdateAppointmentStatusRequest request
-    ) {
-        UpdateAppointmentStatusCommand command = apiMapper.toCommand(id, request);
-        ConfirmAppointmentResult result = cancelAppointmentUseCase.execute(command);
-        ConfirmAppointmentResponse response = apiMapper.toResponse(result);
-        return ResponseEntity.ok(new ApiResponse(response));
-    }
-
-    @PatchMapping("/{id}/confirm")
-    @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN'))")
-    public ResponseEntity<ApiResponse> confirmAppointment(
-            @PathVariable UUID id,
-            @Valid @RequestBody UpdateAppointmentStatusRequest request
-    ) {
-        UpdateAppointmentStatusCommand command = apiMapper.toCommand(id, request);
-        ConfirmAppointmentResult result = confirmAppointmentUseCase.execute(command);
-        ConfirmAppointmentResponse response = apiMapper.toResponse(result);
+        ChangeAppointmentStatusCommand command = apiMapper.toCommand(id, request);
+        ChangeAppointmentStatusResult result = changeAppointmentStatusUseCase.execute(command);
+        ChangeAppointmentStatusResponse response = apiMapper.toResponse(result);
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
@@ -135,11 +107,5 @@ public class AppointmentController {
     ) {
         Set<AppointmentListItemResult> results = queryService.getPastAppointments(bikeId);
         return ResponseEntity.ok(new ApiResponse(results.stream().map(apiMapper::toListItemResponse).collect(Collectors.toSet())));
-    }
-
-    private UUID getAuthenticatedUserId() {
-        AuthenticatedUser user = currentUserProvider.getCurrentUser()
-                .orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
-        return user.userId();
     }
 }

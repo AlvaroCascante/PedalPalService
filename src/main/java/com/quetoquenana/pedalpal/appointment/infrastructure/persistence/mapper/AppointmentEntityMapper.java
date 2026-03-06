@@ -25,6 +25,7 @@ public class AppointmentEntityMapper {
                 .scheduledAt(model.getScheduledAt())
                 .status(model.getStatus())
                 .notes(model.getNotes())
+                .closureReason(model.getClosureReason())
                 .build();
         entity.setVersion(model.getVersion());
         model.getRequestedServices()
@@ -55,6 +56,7 @@ public class AppointmentEntityMapper {
                 .scheduledAt(entity.getScheduledAt())
                 .status(entity.getStatus())
                 .notes(entity.getNotes())
+                .closureReason(entity.getClosureReason())
                 .requestedServices(requestedServices)
                 .build();
 

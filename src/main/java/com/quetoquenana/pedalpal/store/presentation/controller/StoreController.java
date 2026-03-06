@@ -1,12 +1,11 @@
 package com.quetoquenana.pedalpal.store.presentation.controller;
 
-import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.store.application.query.StoreQueryService;
 import com.quetoquenana.pedalpal.store.application.result.StoreResult;
-import com.quetoquenana.pedalpal.store.presentation.mapper.StoreApiMapper;
 import com.quetoquenana.pedalpal.store.presentation.dto.response.StoreResponse;
+import com.quetoquenana.pedalpal.store.presentation.mapper.StoreApiMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +26,6 @@ public class StoreController {
     private final StoreQueryService queryService;
 
     private final StoreApiMapper apiMapper;
-
-    private final CurrentUserPort currentUserProvider;
 
     @GetMapping("/{id}")
     @PreAuthorize("(hasRole('USER')) or (hasRole('ADMIN'))")

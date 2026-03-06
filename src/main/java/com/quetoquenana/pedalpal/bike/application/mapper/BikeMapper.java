@@ -26,9 +26,9 @@ public class BikeMapper {
 
     private final ObjectMapper objectMapper;
 
-    public Bike toModel(CreateBikeCommand command) {
+    public Bike toModel(UUID ownerId, CreateBikeCommand command) {
         return Bike.builder()
-                .ownerId(command.ownerId())
+                .ownerId(ownerId)
                 .name(command.name())
                 .type(BikeType.from(command.type()))
                 .status(BikeStatus.ACTIVE)
@@ -124,8 +124,6 @@ public class BikeMapper {
 
     public UploadMediaCommand toMediaUploadRequest(Bike bike, CreateBikeUploadMediaCommand command) {
         return new UploadMediaCommand(
-                command.authenticatedUserId(),
-                command.isAdmin(),
                 command.isPublic(),
                 bike.getId(),
                 MediaReferenceType.BIKE,

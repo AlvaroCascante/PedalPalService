@@ -10,11 +10,11 @@ import java.util.Optional;
  * This port is defined in the application core so presentation/use cases don't depend on
  * Spring Security-specific types.
  */
-public interface CurrentUserPort {
+public interface AuthenticatedUserPort {
 
     /**
      * @return the currently authenticated user if present.
      */
-    Optional<AuthenticatedUser> getCurrentUser();
+    Optional<AuthenticatedUser> getAuthenticatedUser();
 }
 

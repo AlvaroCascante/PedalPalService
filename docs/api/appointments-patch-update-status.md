@@ -7,7 +7,11 @@ Updates only the appointment **status**.
 ## Security
 
 - Requires authentication.
-- Requires role: `USER` or `ADMIN`.
+- Requires role: `USER`, `TECHNICIAN`, or `ADMIN`.
+- Transition authorization rules:
+  - `CUSTOMER`: only `REQUESTED -> CANCELED`.
+  - `TECHNICIAN`: only `BIKE_RECEIVED -> IN_PROGRESS`, `IN_PROGRESS -> COMPLETED`, `COMPLETED -> BIKE_RETURNED`.
+  - `ADMIN`: any transition allowed by domain transition rules.
 
 ---
 
@@ -48,6 +52,12 @@ Returned when validation fails.
 
 ---
 
+### 403 Forbidden
+
+Returned when the authenticated user role is not authorized for the requested transition.
+
+---
+
 ### 404 Not Found
 
 Returned when appointment doesn’t exist.
@@ -65,4 +75,3 @@ Authorization: Bearer <jwt>
   "status": "CONFIRMED"
 }
 ```
-

@@ -42,9 +42,8 @@ public final class TestAnnouncementData {
         return new UpdateAnnouncementStatusRequest(status);
     }
 
-    public static CreateAnnouncementCommand createCommand(UUID authUserId) {
+    public static CreateAnnouncementCommand createCommand() {
         return new CreateAnnouncementCommand(
-                authUserId,
                 "Title",
                 "Subtitle",
                 "Description",
@@ -54,10 +53,9 @@ public final class TestAnnouncementData {
         );
     }
 
-    public static UpdateAnnouncementCommand updateCommand_onlyTitle(UUID id, UUID authUserId) {
+    public static UpdateAnnouncementCommand updateCommandOnlyTitle(UUID id) {
         return new UpdateAnnouncementCommand(
                 id,
-                authUserId,
                 "New title",
                 null,
                 null,
@@ -66,8 +64,8 @@ public final class TestAnnouncementData {
         );
     }
 
-    public static UpdateAnnouncementCommand statusCommand(UUID id, UUID userId) {
-        return new UpdateAnnouncementCommand(id, userId, null, null, null, null, null);
+    public static UpdateAnnouncementCommand statusCommand(UUID id) {
+        return new UpdateAnnouncementCommand(id, null, null, null, null, null);
     }
 
     public static Announcement existingAnnouncement(UUID id) {

@@ -9,15 +9,18 @@ import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEventType;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
+import com.quetoquenana.pedalpal.common.domain.model.UserType;
 import com.quetoquenana.pedalpal.util.TestBikeData;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
@@ -38,9 +41,11 @@ class UpdateBikeStatusUseCaseTest {
     BikeMapper bikeMapper;
 
     @Mock
-    ApplicationEventPublisher eventPublisher;
+    ApplicationEventPublisher applicationEventPublisher;
 
-    @InjectMocks
+    @Mock
+    AuthenticatedUserPort authenticatedUserPort;
+
     UpdateBikeStatusUseCase useCase;
 
     @Captor
@@ -49,6 +54,16 @@ class UpdateBikeStatusUseCaseTest {
     @Captor
     ArgumentCaptor<BikeHistoryEvent> historyEventCaptor;
 
+    @BeforeEach
+    void setUp() {
+        useCase = new UpdateBikeStatusUseCase(
+                applicationEventPublisher,
+                authenticatedUserPort,
+                bikeMapper,
+                bikeRepository
+        );
+    }
+
     @Nested
     class HappyPath {
 
@@ -56,6 +71,7 @@ class UpdateBikeStatusUseCaseTest {
         void shouldUpdateBikeStatus_whenValidStatusProvided() {
             UUID bikeId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
             bike.setStatus(BikeStatus.INACTIVE);
@@ -64,13 +80,13 @@ class UpdateBikeStatusUseCaseTest {
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
             when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithStatus(bikeId, "ACTIVE"));
 
-            UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, ownerId, "ACTIVE");
+            UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, "ACTIVE");
 
             BikeResult result = useCase.execute(command);
 
             verify(bikeRepository).save(bikeCaptor.capture());
             assertEquals(BikeStatus.ACTIVE, bikeCaptor.getValue().getStatus());
-            verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
+            verify(applicationEventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
             BikeHistoryEvent event = historyEventCaptor.getValue();
             assertEquals(bikeId, event.bikeId());
             assertEquals(ownerId, event.performedBy());
@@ -88,24 +104,26 @@ class UpdateBikeStatusUseCaseTest {
         void shouldThrowBadRequest_whenStatusIsBlank() {
             UUID bikeId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.of(bike));
 
-            UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, ownerId, "   ");
+            UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, "   ");
 
             BadRequestException ex = assertThrows(BadRequestException.class, () -> useCase.execute(command));
             assertEquals("bike.update.status.blank", ex.getMessage());
 
             verify(bikeRepository, never()).save(any());
-            verify(eventPublisher, never()).publishEvent(any());
+            verify(applicationEventPublisher, never()).publishEvent(any());
         }
 
         @Test
         void shouldNotUpdateStatus_whenStatusIsNull() {
             UUID bikeId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
             bike.setStatus(BikeStatus.INACTIVE);
@@ -114,19 +132,20 @@ class UpdateBikeStatusUseCaseTest {
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
             when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithStatus(bikeId, "INACTIVE"));
 
-            UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, ownerId, null);
+            UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, null);
 
             BikeResult result = useCase.execute(command);
 
             verify(bikeRepository).save(bikeCaptor.capture());
             assertEquals(BikeStatus.INACTIVE, bikeCaptor.getValue().getStatus());
-            verify(eventPublisher, never()).publishEvent(any());
+            verify(applicationEventPublisher, never()).publishEvent(any());
         }
 
         @Test
         void shouldSetUnknown_whenStatusIsNotRecognized() {
             UUID bikeId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             Bike bike = TestBikeData.existingBike(bikeId, ownerId);
             bike.setStatus(BikeStatus.ACTIVE);
@@ -135,13 +154,13 @@ class UpdateBikeStatusUseCaseTest {
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
             when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultWithStatus(bikeId, "UNKNOWN"));
 
-            UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, ownerId, "NOT_A_STATUS");
+            UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, "NOT_A_STATUS");
 
             BikeResult result = useCase.execute(command);
 
             verify(bikeRepository).save(bikeCaptor.capture());
             assertEquals(BikeStatus.UNKNOWN, bikeCaptor.getValue().getStatus());
-            verify(eventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
+            verify(applicationEventPublisher, times(1)).publishEvent(historyEventCaptor.capture());
             BikeHistoryEvent event = historyEventCaptor.getValue();
             assertEquals(bikeId, event.bikeId());
             assertEquals(ownerId, event.performedBy());
@@ -159,16 +178,22 @@ class UpdateBikeStatusUseCaseTest {
         void shouldThrowRecordNotFound_whenBikeDoesNotExistForOwner() {
             UUID bikeId = UUID.randomUUID();
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             when(bikeRepository.findByIdAndOwnerId(bikeId, ownerId)).thenReturn(Optional.empty());
 
-            UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, ownerId, "ACTIVE");
+            UpdateBikeStatusCommand command = new UpdateBikeStatusCommand(bikeId, "ACTIVE");
 
             RecordNotFoundException ex = assertThrows(RecordNotFoundException.class, () -> useCase.execute(command));
             assertEquals("bike.not.found", ex.getMessage());
 
             verify(bikeRepository, never()).save(any());
-            verify(eventPublisher, never()).publishEvent(any());
+            verify(applicationEventPublisher, never()).publishEvent(any());
         }
+    }
+
+    private void mockAuthenticatedUser(UUID ownerId) {
+        when(authenticatedUserPort.getAuthenticatedUser())
+                .thenReturn(Optional.of(new AuthenticatedUser(ownerId, "test-user", "Test User", UserType.CUSTOMER)));
     }
 }

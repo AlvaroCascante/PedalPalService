@@ -12,6 +12,9 @@ import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.util.TestBikeData;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEvent;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEventType;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
+import com.quetoquenana.pedalpal.common.domain.model.UserType;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +25,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,6 +43,9 @@ class CreateBikeUseCaseTest {
     @Mock
     BikeMapper bikeMapper;
 
+    @Mock
+    AuthenticatedUserPort authenticatedUserPort;
+
     @InjectMocks
     CreateBikeUseCase useCase;
 
@@ -54,6 +61,7 @@ class CreateBikeUseCaseTest {
         @Test
         void shouldCreateBikeSuccessfully_whenAllDataIsValid_andSerialIsNull() {
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             CreateBikeCommand command = TestBikeData.createBikeCommand_minimal(ownerId);
 
@@ -73,7 +81,7 @@ class CreateBikeUseCaseTest {
                     .isExternalSync(command.isExternalSync())
                     .build();
 
-            when(bikeMapper.toModel(command)).thenReturn(mapped);
+            when(bikeMapper.toModel(ownerId, command)).thenReturn(mapped);
             when(bikeMapper.toResult(any(Bike.class))).thenAnswer(inv -> {
                 Bike b = inv.getArgument(0, Bike.class);
                 return new BikeResult(
@@ -123,6 +131,7 @@ class CreateBikeUseCaseTest {
         @Test
         void shouldCreateBikeSuccessfully_withSerialNumber_whenSerialIsUnique() {
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             CreateBikeCommand command = TestBikeData.createBikeCommand_withSerial(ownerId, "SN-123");
 
@@ -151,7 +160,7 @@ class CreateBikeUseCaseTest {
                     .isExternalSync(command.isExternalSync())
                     .build();
 
-            when(bikeMapper.toModel(command)).thenReturn(mapped);
+            when(bikeMapper.toModel(ownerId, command)).thenReturn(mapped);
             when(bikeMapper.toResult(any(Bike.class))).thenAnswer(inv -> TestBikeData.bikeResultFromBike(inv.getArgument(0, Bike.class)));
 
             BikeResult result = useCase.execute(command);
@@ -193,9 +202,10 @@ class CreateBikeUseCaseTest {
         @Test
         void shouldFail_whenSerialNumberAlreadyExists_andNotPersistAnything() {
             CreateBikeCommand command = TestBikeData.createBikeCommand_duplicateSerial();
+            UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             when(bikeRepository.existsBySerialNumber(command.serialNumber())).thenReturn(true);
-
             BusinessException ex = assertThrows(BusinessException.class, () -> useCase.execute(command));
             assertEquals("bike.serial.number.already.exists", ex.getMessage());
 
@@ -205,12 +215,14 @@ class CreateBikeUseCaseTest {
 
         @Test
         void shouldNotCheckSerialUniqueness_whenSerialIsNull_andStillPersist() {
-            CreateBikeCommand command = TestBikeData.createBikeCommand_minimal(UUID.randomUUID());
+            UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
+            CreateBikeCommand command = TestBikeData.createBikeCommand_minimal(ownerId);
 
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
 
             Bike mapped = Bike.builder()
-                    .ownerId(command.ownerId())
+                    .ownerId(ownerId)
                     .name(command.name())
                     .type(BikeType.from(command.type()))
                     .status(BikeStatus.ACTIVE)
@@ -218,7 +230,7 @@ class CreateBikeUseCaseTest {
                     .isPublic(command.isPublic())
                     .isExternalSync(command.isExternalSync())
                     .build();
-            when(bikeMapper.toModel(command)).thenReturn(mapped);
+            when(bikeMapper.toModel(ownerId, command)).thenReturn(mapped);
             when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(UUID.randomUUID()));
 
             useCase.execute(command);
@@ -234,6 +246,7 @@ class CreateBikeUseCaseTest {
         @Test
         void shouldMapCommandToDomainBikeCorrectly_beforeSaving() {
             UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
 
             CreateBikeCommand command = TestBikeData.createBikeCommand_basicWithSerial(ownerId, "SN-999");
 
@@ -249,7 +262,7 @@ class CreateBikeUseCaseTest {
                     .isPublic(command.isPublic())
                     .isExternalSync(command.isExternalSync())
                     .build();
-            when(bikeMapper.toModel(command)).thenReturn(mapped);
+            when(bikeMapper.toModel(ownerId, command)).thenReturn(mapped);
             when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(UUID.randomUUID()));
 
             useCase.execute(command);
@@ -267,12 +280,14 @@ class CreateBikeUseCaseTest {
 
         @Test
         void shouldSetDefaultStatusToActive() {
-            CreateBikeCommand command = TestBikeData.createBikeCommand_basicNoSerial(UUID.randomUUID());
+            UUID ownerId = UUID.randomUUID();
+            mockAuthenticatedUser(ownerId);
+            CreateBikeCommand command = TestBikeData.createBikeCommand_basicNoSerial(ownerId);
 
             when(bikeRepository.save(any(Bike.class))).thenAnswer(inv -> inv.getArgument(0, Bike.class));
 
             Bike mapped = Bike.builder()
-                    .ownerId(command.ownerId())
+                    .ownerId(ownerId)
                     .name(command.name())
                     .type(BikeType.from(command.type()))
                     .status(BikeStatus.ACTIVE)
@@ -280,7 +295,7 @@ class CreateBikeUseCaseTest {
                     .isPublic(command.isPublic())
                     .isExternalSync(command.isExternalSync())
                     .build();
-            when(bikeMapper.toModel(command)).thenReturn(mapped);
+            when(bikeMapper.toModel(ownerId, command)).thenReturn(mapped);
             when(bikeMapper.toResult(any(Bike.class))).thenReturn(TestBikeData.bikeResultQuery(UUID.randomUUID()));
 
             useCase.execute(command);
@@ -296,12 +311,17 @@ class CreateBikeUseCaseTest {
         @Test
         void shouldNotCallSave_whenValidationFails_dueToDuplicateSerial() {
             CreateBikeCommand command = TestBikeData.createBikeCommand_duplicateSerial();
-
+            mockAuthenticatedUser(UUID.randomUUID());
             when(bikeRepository.existsBySerialNumber(command.serialNumber())).thenReturn(true);
 
             assertThrows(BusinessException.class, () -> useCase.execute(command));
 
             verify(bikeRepository, never()).save(any());
         }
+    }
+
+    private void mockAuthenticatedUser(UUID ownerId) {
+        when(authenticatedUserPort.getAuthenticatedUser())
+                .thenReturn(Optional.of(new AuthenticatedUser(ownerId, "test-user", "Test User", UserType.CUSTOMER)));
     }
 }

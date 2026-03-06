@@ -4,7 +4,6 @@ import java.util.UUID;
 
 public record UpdateBikeStatusCommand(
         UUID bikeId,
-        UUID authenticatedUserId,
         String status
 ) { }
 

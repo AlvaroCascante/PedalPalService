@@ -1,8 +1,9 @@
 package com.quetoquenana.pedalpal.store.controller;
 
-import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
+import com.quetoquenana.pedalpal.common.domain.model.UserType;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
 import com.quetoquenana.pedalpal.store.application.query.StoreQueryService;
@@ -52,15 +53,15 @@ class StoreControllerTest {
     StoreApiMapper apiMapper;
 
     @MockitoBean
-    CurrentUserPort currentUserProvider;
+    AuthenticatedUserPort currentUserProvider;
 
     @MockitoBean
     MessageSource messageSource;
 
     @BeforeEach
     void setUpAuth() {
-        when(currentUserProvider.getCurrentUser())
-                .thenReturn(Optional.of(new AuthenticatedUser(AUTH_USER_ID, "test-user", "Test User", false)));
+        when(currentUserProvider.getAuthenticatedUser())
+                .thenReturn(Optional.of(new AuthenticatedUser(AUTH_USER_ID, "test-user", "Test User", UserType.CUSTOMER)));
     }
 
     @Test

@@ -5,7 +5,10 @@ import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.domain.model.*;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
+import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
@@ -21,17 +24,21 @@ import java.util.UUID;
 import static com.quetoquenana.pedalpal.common.util.Constants.BikeComponents.COMPONENT_TYPE;
 
 @Transactional
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class ReplaceBikeComponentUseCase {
 
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final AuthenticatedUserPort authenticatedUserPort;
     private final BikeMapper bikeMapper;
     private final BikeRepository bikeRepository;
     private final SystemCodeRepository systemCodeRepository;
-    private final ApplicationEventPublisher eventPublisher;
 
     public BikeResult execute(AddBikeComponentCommand command) {
-        Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), command.authenticatedUserId())
+        AuthenticatedUser currentUser = authenticatedUserPort.getAuthenticatedUser().
+                orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
+
+        Bike bike = bikeRepository.findByIdAndOwnerId(command.bikeId(), currentUser.userId())
                 .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
 
         BikeComponent component = bike.getComponents().stream()
@@ -55,12 +62,12 @@ public class ReplaceBikeComponentUseCase {
         bike.addComponent(newComponent);
         bikeRepository.save(bike);
 
-        publishHistoryEvent(bike.getId(), command.authenticatedUserId(), component, newComponent);
+        publishHistoryEvent(bike.getId(), currentUser.userId(), component, newComponent);
         return bikeMapper.toResult(bike);
     }
 
     private void publishHistoryEvent(UUID bikeId, UUID userId, BikeComponent oldComponent, BikeComponent newComponent) {
-        eventPublisher.publishEvent(
+        applicationEventPublisher.publishEvent(
             new BikeHistoryEvent(
                     bikeId,
                     userId,

@@ -20,8 +20,9 @@ import com.quetoquenana.pedalpal.bike.presentation.mapper.BikeApiMapper;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
 import com.quetoquenana.pedalpal.util.TestBikeData;
 import com.quetoquenana.pedalpal.util.TestJsonBodies;
-import com.quetoquenana.pedalpal.common.application.port.CurrentUserPort;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
+import com.quetoquenana.pedalpal.common.domain.model.UserType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -82,7 +83,7 @@ class BikeControllerTest {
     ReplaceBikeComponentUseCase replaceBikeComponentUseCase;
 
     @MockitoBean
-    CurrentUserPort currentUserProvider;
+    AuthenticatedUserPort currentUserProvider;
 
     @MockitoBean
     BikeHistoryQueryService bikeHistoryQueryService;
@@ -94,8 +95,8 @@ class BikeControllerTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUpAuth() {
-        when(currentUserProvider.getCurrentUser())
-                .thenReturn(Optional.of(new AuthenticatedUser(AUTH_USER_ID, "test-user", "Test User", false)));
+        when(currentUserProvider.getAuthenticatedUser())
+                .thenReturn(Optional.of(new AuthenticatedUser(AUTH_USER_ID, "test-user", "Test User", UserType.CUSTOMER)));
     }
 
     @Test
@@ -105,7 +106,7 @@ class BikeControllerTest {
         when(messageSource.getMessage(any(String.class), any(), any(Locale.class)))
                 .thenReturn("Road");
 
-        when(bikeQueryService.getById(eq(bikeId), any(UUID.class)))
+        when(bikeQueryService.getById(eq(bikeId)))
                 .thenReturn(TestBikeData.bikeResultQuery(bikeId));
 
         mockMvc.perform(get("/v1/api/bikes/{id}", bikeId))
@@ -120,7 +121,7 @@ class BikeControllerTest {
         when(messageSource.getMessage(any(String.class), any(), any(Locale.class)))
                 .thenReturn("Road");
 
-        when(bikeQueryService.getById(eq(bikeId), any(UUID.class)))
+        when(bikeQueryService.getById(eq(bikeId)))
                 .thenReturn(TestBikeData.bikeResultQuery(bikeId));
 
         mockMvc.perform(get("/v1/api/bikes/{id}", bikeId)
@@ -136,7 +137,7 @@ class BikeControllerTest {
         when(messageSource.getMessage(any(String.class), any(), any(Locale.class)))
                 .thenReturn("Road");
 
-        when(bikeQueryService.getById(eq(bikeId), any(UUID.class)))
+        when(bikeQueryService.getById(eq(bikeId)))
                 .thenReturn(TestBikeData.bikeResultQuery(bikeId));
 
         mockMvc.perform(get("/v1/api/bikes/{id}", bikeId)
@@ -153,7 +154,7 @@ class BikeControllerTest {
         when(messageSource.getMessage(any(String.class), any(), any(Locale.class)))
                 .thenReturn("Road");
 
-        when(bikeQueryService.findActiveByOwnerId(any(UUID.class)))
+        when(bikeQueryService.findActiveByOwnerId())
                 .thenReturn(List.of(TestBikeData.bikeResultQuery(bikeId)));
 
         mockMvc.perform(get("/v1/api/bikes/active"))

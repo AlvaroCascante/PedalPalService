@@ -50,7 +50,6 @@ class InactivateAnnouncementUseCaseTest {
         @Test
         void shouldUpdateStatus_andPersist() {
             UUID id = UUID.randomUUID();
-            UUID userId = UUID.randomUUID();
             Announcement existing = TestAnnouncementData.existingAnnouncement(id);
             when(repository.getById(id)).thenReturn(Optional.of(existing));
 
@@ -60,7 +59,7 @@ class InactivateAnnouncementUseCaseTest {
             AnnouncementResult result = TestAnnouncementData.result(id);
             when(mapper.toResult(saved)).thenReturn(result);
 
-            UpdateAnnouncementCommand command = TestAnnouncementData.statusCommand(id, userId);
+            UpdateAnnouncementCommand command = TestAnnouncementData.statusCommand(id);
 
             useCase.execute(command);
 
@@ -75,12 +74,10 @@ class InactivateAnnouncementUseCaseTest {
         @Test
         void shouldThrowNotFound_whenAnnouncementDoesNotExist() {
             UUID id = UUID.randomUUID();
-            UUID userId = UUID.randomUUID();
             when(repository.getById(id)).thenReturn(Optional.empty());
 
-            assertThrows(RecordNotFoundException.class, () -> useCase.execute(TestAnnouncementData.statusCommand(id, userId)));
+            assertThrows(RecordNotFoundException.class, () -> useCase.execute(TestAnnouncementData.statusCommand(id)));
             verify(repository, never()).save(any());
         }
     }
 }
-

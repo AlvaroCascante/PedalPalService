@@ -8,8 +8,6 @@ import java.util.UUID;
  */
 public record CreateBikeUploadMediaCommand(
         UUID bikeId,
-        UUID authenticatedUserId,
-        boolean isAdmin,
         boolean isPublic,
         List<BikeMediaCommand> mediaFiles
 ) {
