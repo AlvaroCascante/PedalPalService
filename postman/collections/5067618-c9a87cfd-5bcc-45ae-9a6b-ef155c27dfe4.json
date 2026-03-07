@@ -6,6 +6,1132 @@
 	},
 	"item": [
 		{
+			"name": "Announcements",
+			"item": [
+				{
+					"name": "Get By ID",
+					"id": "5067618-8c72628a-1020-4ae5-a40a-0e2880d1276e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/announcements/:id",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"announcements",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "525ed320-303d-427d-8bb9-064fe31f023e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activate Announcement",
+					"id": "5067618-08086b57-d7ed-41ab-8eeb-44f14e13428f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/announcements/:id/activate",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"announcements",
+								":id",
+								"activate"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "525ed320-303d-427d-8bb9-064fe31f023e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inactivate Announcement",
+					"id": "5067618-3f92a084-e270-4e70-95af-e730b35eb411",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/announcements/:id/inactivate",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"announcements",
+								":id",
+								"inactivate"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "525ed320-303d-427d-8bb9-064fe31f023e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Announcement",
+					"id": "5067618-82ce6a66-b523-4fb2-a836-c3e094a919e1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"A new entry to read\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/announcements/:id",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"announcements",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "525ed320-303d-427d-8bb9-064fe31f023e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Announcement",
+					"id": "5067618-b1bbd230-4d5c-4878-ac9e-ec910c6ad254",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"First One\",\n    \"subTitle\": \"Of a lot\",\n    \"description\": \"Pinarello\",\n    \"position\": 1,\n    \"url\": \"quetoquenana.com\",\n    \"mediaFiles\": [\n        {\n            \"contentType\": \"image/png\",\n            \"mediaType\": \"image\",\n            \"isPrimary\": true,\n            \"name\": \"FirstImage\",\n            \"altText\": \"Alt text\"\n        },\n        {\n            \"contentType\": \"image/png\",\n            \"mediaType\": \"image\",\n            \"isPrimary\": false,\n            \"name\": \"SecondImage\",\n            \"altText\": \"Alt text\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/announcements",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"announcements"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "5067618-70d982b3-b395-4b44-a275-a252297369b9",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{user_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b6879ccd-94a3-4326-9e7a-4a50af4914cb",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c4c809c8-6970-43fb-b824-e46cd9f3d33b",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Appointments",
+			"item": [
+				{
+					"name": "Create Appointment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5558488b-cb50-4cab-b708-8906872dd534",
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    const appintmentId = jsonData.data.id;",
+									"    pm.collectionVariables.set(\"appintmentId\", appintmentId);",
+									"    console.log(\"appintmentId extracted:\", appintmentId);",
+									"    console.log(\"appintmentId set in collection:\", pm.collectionVariables.get(\"appintmentId\"));",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "5067618-e7c00162-bee2-4232-bbc4-469159b5e8f2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bikeId\": \"{{bikeId}}\",\n  \"storeLocationId\": \"{{storeLocationId}}\",\n  \"scheduledAt\": \"2026-03-15T12:30:00Z\",\n  \"notes\": \"Please check brakes and do a quick safety inspection.\",\n  \"requestedServices\": [\n    {\n      \"serviceType\": \"PACKAGE\",\n      \"serviceId\": \"11111111-1111-1111-1111-111111111301\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/appointments",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"appointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Appointment Status",
+					"id": "5067618-65b04642-820f-406d-8552-7c2a5e76c110",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"toStatus\": \"CANCELLED\",\n  \"closureReason\": \"Please check brakes and do a quick safety inspection.\",\n  \"note\": \"\",\n  \"technicianId\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/appointments/:id/status",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"appointments",
+								":id",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{appintmentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "89bfaa0d-0e14-4b0e-9f99-dd0d373d6fac",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "5067618-13870a5b-9ac5-4fd1-8c0a-1e88533095eb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bikeId\": \"6ce2691c-21d5-44b9-b755-43505c48719c\",\n  \"storeLocationId\": \"f7127a04-7d48-429f-b61a-cea869175d49\",\n  \"scheduledAt\": \"2026-03-04T12:30:00Z\",\n  \"notes\": \"Please check brakes and do a quick safety inspection.\",\n  \"requestedServices\": [\n    {\n      \"serviceType\": \"PACKAGE\",\n      \"serviceId\": \"11111111-1111-1111-1111-111111111302\"\n    },\n        {\n      \"serviceType\": \"PRODUCT\",\n      \"serviceId\": \"a8c8c7c1-96c6-4629-a9da-e1d05a838f65\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/appointments/:id",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"appointments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{appintmentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Upcoming",
+					"id": "5067618-8ce65d1c-ea67-4fa1-a2d5-2c13c2991347",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bikeId\": \"6ce2691c-21d5-44b9-b755-43505c48719c\",\n  \"storeLocationId\": \"f7127a04-7d48-429f-b61a-cea869175d49\",\n  \"scheduledAt\": \"2026-03-04T12:30:00Z\",\n  \"notes\": \"Please check brakes and do a quick safety inspection.\",\n  \"requestedServices\": [\n    {\n      \"serviceType\": \"PACKAGE\",\n      \"serviceId\": \"11111111-1111-1111-1111-111111111302\"\n    },\n        {\n      \"serviceType\": \"PRODUCT\",\n      \"serviceId\": \"a8c8c7c1-96c6-4629-a9da-e1d05a838f65\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/appointments/bike/:bikeId/upcoming",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"appointments",
+								"bike",
+								":bikeId",
+								"upcoming"
+							],
+							"variable": [
+								{
+									"key": "bikeId",
+									"value": "06162e8b-ce16-45df-bbf5-13fea36373c9"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "5067618-982b4e2d-7e90-4ab1-961f-8c4d80687280"
+		},
+		{
+			"name": "Bike",
+			"item": [
+				{
+					"name": "Create Bike",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0b65a5be-c503-4029-88c8-6f933d6971c5",
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    const bikeId = jsonData.data.id;",
+									"    pm.collectionVariables.set(\"bikeId\", bikeId);",
+									"    console.log(\"bikeId extracted:\", bikeId);",
+									"    console.log(\"bikeId set in collection:\", pm.collectionVariables.get(\"bikeId\"));",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "5067618-d084089a-04b2-4fc4-ab4a-d4cb0f4a5197",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"PilsenII\",\n    \"type\": \"ROAD\",\n    \"brand\": \"Pinarello\",\n    \"model\": \"Razha\",\n    \"year\": 2017,\n    \"serialNumber\": \"SN-123456789AB\",\n    \"notes\": \"Purchased at local store.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/bikes",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"bikes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By ID",
+					"id": "5067618-3fe0398f-8e72-4278-acd7-f7276760639e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/bikes/:id?componentStatus=ACTIVE&componentStatus=INACTIVE",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"bikes",
+								":id"
+							],
+							"query": [
+								{
+									"key": "componentStatus",
+									"value": "ACTIVE"
+								},
+								{
+									"key": "componentStatus",
+									"value": "INACTIVE"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{bikeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bike History",
+					"id": "5067618-b3666482-bbbf-4bd7-a197-c515d7a8c2ff",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/bikes/:id/history",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"bikes",
+								":id",
+								"history"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{bikeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Active",
+					"id": "5067618-d59e0aae-a378-470b-97e8-bf8b7125aac2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/bikes/active",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"bikes",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Bike",
+					"id": "5067618-aaafee6d-3842-4de2-b9ba-c3997172f6b4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"serialNumber\": \"SN-PII12345611711ABC123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/bikes/:id",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"bikes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{bikeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Bike Status",
+					"id": "5067618-0705c9f4-3fdf-4359-8df5-a83b523c908d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"ACTIVE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/bikes/:id/status",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"bikes",
+								":id",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{bikeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Bike Component",
+					"id": "5067618-46d1b097-3722-4850-b6f5-0d76419513b2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Shimano Center3\",\n  \"type\": \"CASSETTE\",\n  \"brand\": \"Shimano\",\n  \"model\": \"B07X-CER\",\n  \"notes\": \"Chain center CASSETTE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/bikes/:id/components",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"bikes",
+								":id",
+								"components"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{bikeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Bike Component",
+					"id": "5067618-6ab77cf7-fb70-4470-874a-097257d98f3f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"odometerKm\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/bikes/:bikeId/components/:componentId",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"bikes",
+								":bikeId",
+								"components",
+								":componentId"
+							],
+							"variable": [
+								{
+									"key": "bikeId",
+									"value": "{{bikeId}}"
+								},
+								{
+									"key": "componentId",
+									"value": "f332d1a1-564c-47f9-b457-3b8d484cecda"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Bike Component Status",
+					"id": "5067618-5a143b9e-b240-4b6d-bc5d-7e45f0db0cc4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"INACTIVE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:bikeId/components/:componentId/status",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"api",
+								"bikes",
+								":bikeId",
+								"components",
+								":componentId",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "bikeId",
+									"value": "{{bikeId}}"
+								},
+								{
+									"key": "componentId",
+									"value": "6e549504-a017-43e3-9364-ca85e0bd4679"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Replace Bike Component",
+					"id": "5067618-5b06f0c7-80d3-4120-a693-9155b3e87fc9",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"NEW Shimano Super Center\",\n  \"type\": \"CASSETTE\",\n  \"brand\": \"Shimano\",\n  \"model\": \"B07X-CER\",\n  \"notes\": \"Chain center CASSETTE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/bikes/:bikeId/components/:componentId/replace",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"bikes",
+								":bikeId",
+								"components",
+								":componentId",
+								"replace"
+							],
+							"variable": [
+								{
+									"key": "bikeId",
+									"value": "{{bikeId}}"
+								},
+								{
+									"key": "componentId",
+									"value": "1afef130-f09e-4505-a868-daaacdbce2a8"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "5067618-56d616ab-eda0-4c3d-abbc-5ee8c30f5d1e",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{user_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b6879ccd-94a3-4326-9e7a-4a50af4914cb",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c4c809c8-6970-43fb-b824-e46cd9f3d33b",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Media",
+			"item": [
+				{
+					"name": "Confirm Upload",
+					"id": "5067618-c2feb3f4-323d-4bb0-9479-f6ca05dd2aea",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/media/:id/confirm",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"media",
+								":id",
+								"confirm"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "61fe4aae-b263-4851-9912-a7dd2e7970b1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload",
+					"id": "5067618-e46a8168-99ba-453c-90a3-db0f5463d98b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/Users/alvarocascanteretana/Documents/f942dfdb-9abd-4ccf-ad48-f2a445602663.png"
+							}
+						},
+						"url": {
+							"raw": "https://pedal-pal-media-public-dev.db53fcf7aaa7edb74ff2679ba7f97863.r2.cloudflarestorage.com/announcement/4f080e84-c7f2-4831-b900-659e99c67c87/2026/03/05/c5184370-ee49-4dae-b930-0de00caed182.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260305T191807Z&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Credential=b9af4e01241674c802ab8eef1cde5d5c%2F20260305%2Fauto%2Fs3%2Faws4_request&X-Amz-Expires=600&X-Amz-Signature=7e8ea39dc756f2ca2985ee44053cc92a539380dc8c06e77e5e8b8bee440f117f",
+							"protocol": "https",
+							"host": [
+								"pedal-pal-media-public-dev",
+								"db53fcf7aaa7edb74ff2679ba7f97863",
+								"r2",
+								"cloudflarestorage",
+								"com"
+							],
+							"path": [
+								"announcement",
+								"4f080e84-c7f2-4831-b900-659e99c67c87",
+								"2026",
+								"03",
+								"05",
+								"c5184370-ee49-4dae-b930-0de00caed182.png"
+							],
+							"query": [
+								{
+									"key": "X-Amz-Algorithm",
+									"value": "AWS4-HMAC-SHA256"
+								},
+								{
+									"key": "X-Amz-Date",
+									"value": "20260305T191807Z"
+								},
+								{
+									"key": "X-Amz-SignedHeaders",
+									"value": "content-type%3Bhost"
+								},
+								{
+									"key": "X-Amz-Credential",
+									"value": "b9af4e01241674c802ab8eef1cde5d5c%2F20260305%2Fauto%2Fs3%2Faws4_request"
+								},
+								{
+									"key": "X-Amz-Expires",
+									"value": "600"
+								},
+								{
+									"key": "X-Amz-Signature",
+									"value": "7e8ea39dc756f2ca2985ee44053cc92a539380dc8c06e77e5e8b8bee440f117f"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "5067618-6119df6f-2d9c-405f-88d8-7572a1b7cb36"
+		},
+		{
 			"name": "Monitor",
 			"item": [
 				{
@@ -75,653 +1201,6 @@
 			"id": "5067618-71f054f9-f4f4-4721-bf6b-61137412ab8c"
 		},
 		{
-			"name": "Announcements",
-			"item": [
-				{
-					"name": "Get By ID",
-					"id": "5067618-8c72628a-1020-4ae5-a40a-0e2880d1276e",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{admin_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/landing-items/:id",
-							"host": [
-								"{{host_pedal_pal}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"landing-items",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "85b97a83-ad66-440f-affe-13904f0e6ab7"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create",
-					"id": "5067618-b1bbd230-4d5c-4878-ac9e-ec910c6ad254",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{admin_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"title\": \"First One\",\n    \"subTitle\": \"Of a lot\",\n    \"description\": \"Pinarello\",\n    \"position\": 1,\n    \"url\": \"quetoquenana.com\",\n    \"mediaFiles\": [\n        {\n            \"contentType\": \"image/png\",\n            \"mediaType\": \"ANNOUNCEMENT\",\n            \"isPrimary\": true,\n            \"name\": \"FirstImage\",\n            \"altText\": \"Alt text\"\n        },\n        {\n            \"contentType\": \"image/png\",\n            \"mediaType\": \"ANNOUNCEMENT\",\n            \"isPrimary\": false,\n            \"name\": \"SecondImage\",\n            \"altText\": \"Alt text\"\n        }\n    ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/announcements",
-							"host": [
-								"{{HOST_PEDALPAL_SERVICE}}"
-							],
-							"path": [
-								"{{path}}",
-								"announcements"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"id": "5067618-70d982b3-b395-4b44-a275-a252297369b9",
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "{{user_token}}",
-						"type": "string"
-					}
-				]
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "b6879ccd-94a3-4326-9e7a-4a50af4914cb",
-						"type": "text/javascript",
-						"packages": {},
-						"requests": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "c4c809c8-6970-43fb-b824-e46cd9f3d33b",
-						"type": "text/javascript",
-						"packages": {},
-						"requests": {},
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "Bike",
-			"item": [
-				{
-					"name": "Get By ID",
-					"id": "5067618-3fe0398f-8e72-4278-acd7-f7276760639e",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id?componentStatus=ACTIVE&componentStatus=INACTIVE",
-							"host": [
-								"{{host_pedal_pal}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"bikes",
-								":id"
-							],
-							"query": [
-								{
-									"key": "componentStatus",
-									"value": "ACTIVE"
-								},
-								{
-									"key": "componentStatus",
-									"value": "INACTIVE"
-								}
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "5aafcffb-6d92-482e-a93c-3c9c1508f0d8"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Bike History",
-					"id": "5067618-b3666482-bbbf-4bd7-a197-c515d7a8c2ff",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id/history",
-							"host": [
-								"{{host_pedal_pal}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"bikes",
-								":id",
-								"history"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "dda320d5-acbf-416a-b5ca-8ab81152b1b6"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Find Active",
-					"id": "5067618-d59e0aae-a378-470b-97e8-bf8b7125aac2",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{HOST_USER_SERVICE}}/{{path}}/bikes/active",
-							"host": [
-								"{{HOST_USER_SERVICE}}"
-							],
-							"path": [
-								"{{path}}",
-								"bikes",
-								"active"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create",
-					"id": "5067618-d084089a-04b2-4fc4-ab4a-d4cb0f4a5197",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Pilsen\",\n    \"type\": \"ROAD\",\n    \"brand\": \"Pinarello\",\n    \"model\": \"Razha\",\n    \"year\": 2017,\n    \"serialNumber\": \"SN-123456789MA\",\n    \"notes\": \"Purchased at local store.\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/bikes",
-							"host": [
-								"{{HOST_PEDALPAL_SERVICE}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"bikes"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Bike",
-					"id": "5067618-aaafee6d-3842-4de2-b9ba-c3997172f6b4",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"serialNumber\": \"SN-PII12345611711ABC123\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/bikes/:id",
-							"host": [
-								"{{HOST_PEDALPAL_SERVICE}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"bikes",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "dda320d5-acbf-416a-b5ca-8ab81152b1b6"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Bike Status",
-					"id": "5067618-0705c9f4-3fdf-4359-8df5-a83b523c908d",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"status\": \"ACTIVE\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/bikes/:id/status",
-							"host": [
-								"{{HOST_PEDALPAL_SERVICE}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"bikes",
-								":id",
-								"status"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "a172fb86-bd3e-4053-9a45-0d91cb0dbc82"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Bike Component",
-					"id": "5067618-46d1b097-3722-4850-b6f5-0d76419513b2",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"Shimano Chain\",\n  \"type\": \"CHAIN\",\n  \"brand\": \"Shimano\",\n  \"model\": \"B07X-CER\",\n  \"notes\": \"Chain center\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:id/components",
-							"host": [
-								"{{host_pedal_pal}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"bikes",
-								":id",
-								"components"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "5aafcffb-6d92-482e-a93c-3c9c1508f0d8"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Bike Component",
-					"id": "5067618-6ab77cf7-fb70-4470-874a-097257d98f3f",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"odometerKm\": 100\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:bikeId/components/:componentId",
-							"host": [
-								"{{host_pedal_pal}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"bikes",
-								":bikeId",
-								"components",
-								":componentId"
-							],
-							"variable": [
-								{
-									"key": "bikeId",
-									"value": "a172fb86-bd3e-4053-9a45-0d91cb0dbc82"
-								},
-								{
-									"key": "componentId",
-									"value": "6d36396b-7203-4591-8050-c3df35fa747c"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Bike Component Status",
-					"id": "5067618-5a143b9e-b240-4b6d-bc5d-7e45f0db0cc4",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"status\": \"INACTIVE\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:bikeId/components/:componentId/status",
-							"host": [
-								"{{host_pedal_pal}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"bikes",
-								":bikeId",
-								"components",
-								":componentId",
-								"status"
-							],
-							"variable": [
-								{
-									"key": "bikeId",
-									"value": "a0512331-f1f1-48c3-84fe-13f7292320f0"
-								},
-								{
-									"key": "componentId",
-									"value": "6e549504-a017-43e3-9364-ca85e0bd4679"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Replace Bike Component",
-					"id": "5067618-5b06f0c7-80d3-4120-a693-9155b3e87fc9",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"BMX Ceramic Center\",\n  \"type\": \"CASSETTE\",\n  \"brand\": \"SRAM\",\n  \"model\": \"B07X-CER\",\n  \"notes\": \"Ceramic center\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/bikes/:bikeId/components/:componentId/replace",
-							"host": [
-								"{{host_pedal_pal}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"bikes",
-								":bikeId",
-								"components",
-								":componentId",
-								"replace"
-							],
-							"variable": [
-								{
-									"key": "bikeId",
-									"value": "a0512331-f1f1-48c3-84fe-13f7292320f0"
-								},
-								{
-									"key": "componentId",
-									"value": "97c327ce-bcf5-4b03-9e71-ec09d128dc3d"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"id": "5067618-56d616ab-eda0-4c3d-abbc-5ee8c30f5d1e",
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "{{user_token}}",
-						"type": "string"
-					}
-				]
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "b6879ccd-94a3-4326-9e7a-4a50af4914cb",
-						"type": "text/javascript",
-						"packages": {},
-						"requests": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "c4c809c8-6970-43fb-b824-e46cd9f3d33b",
-						"type": "text/javascript",
-						"packages": {},
-						"requests": {},
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
 			"name": "Products",
 			"item": [
 				{
@@ -736,7 +1215,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{usera_token}}",
+									"value": "{{user_token}}",
 									"type": "string"
 								}
 							]
@@ -744,20 +1223,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/products/:id",
+							"raw": "{{host_pedal_pal}}/{{path}}/products/:id",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
 							"path": [
 								"{{path}}",
-								"api",
 								"products",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "7e9c8e5b-824a-4f2c-afe2-17e5461a5d65"
+									"value": "4a13ceba-8c4f-4f22-affb-8117134c08f4"
 								}
 							]
 						}
@@ -784,13 +1262,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/packages/:id",
+							"raw": "{{host_pedal_pal}}/{{path}}/packages/:id",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
 							"path": [
 								"{{path}}",
-								"api",
 								"packages",
 								":id"
 							],
@@ -824,13 +1301,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/products/active",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/products/active",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
-								"api",
 								"products",
 								"active"
 							]
@@ -858,13 +1334,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/api/packages/active",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/packages/active",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
-								"api",
 								"packages",
 								"active"
 							]
@@ -876,95 +1351,29 @@
 			"id": "5067618-981f044e-0411-4bd0-84de-878e07eb920a"
 		},
 		{
-			"name": "SystemCodes",
-			"item": [
-				{
-					"name": "Get By Id",
-					"id": "5067618-9b5ebcdc-2b3e-4b4a-abe5-1e15a55f8150",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/system-codes/:id",
-							"host": [
-								"{{host_pedal_pal}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"system-codes",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "627100b0-baac-4ee0-ac25-53e7f0b4c06e"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Component Types",
-					"id": "5067618-c4817feb-eaab-43cf-a073-ad232759054f",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept-Language",
-								"value": "en",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/components",
-							"host": [
-								"{{host_pedal_pal}}"
-							],
-							"path": [
-								"{{path}}",
-								"api",
-								"components"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"id": "5067618-26a90c92-e6ae-4d52-922d-53bd64c41b69"
-		},
-		{
 			"name": "Stores",
 			"item": [
 				{
 					"name": "Get Store By ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "df289fa6-170e-4bce-8bdd-d2be4158043e",
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    const storeLocationId = jsonData.data.locations[0].id;",
+									"    pm.collectionVariables.set(\"storeLocationId\", storeLocationId);",
+									"    console.log(\"storeLocationId extracted:\", storeLocationId);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"id": "5067618-10012854-3644-48db-8eda-c010bc065e7c",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -989,13 +1398,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/api/stores/:id",
+							"raw": "{{host_pedal_pal}}/{{path}}/stores/:id",
 							"host": [
 								"{{host_pedal_pal}}"
 							],
 							"path": [
 								"{{path}}",
-								"api",
 								"stores",
 								":id"
 							],
@@ -1049,13 +1457,96 @@
 				}
 			],
 			"id": "5067618-bad8e1ed-1d7b-466e-9cd3-44b3b7f65854"
+		},
+		{
+			"name": "SystemCodes",
+			"item": [
+				{
+					"name": "Get By Id",
+					"id": "5067618-9b5ebcdc-2b3e-4b4a-abe5-1e15a55f8150",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/system-codes/:id",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"system-codes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6b60bc98-5b43-410f-bf69-e355832552e0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Active Components",
+					"id": "5067618-c4817feb-eaab-43cf-a073-ad232759054f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "es",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/components",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"components"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "5067618-26a90c92-e6ae-4d52-922d-53bd64c41b69"
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "d65901d2-dbfb-4262-bb4c-f2e2bac65bf9",
+				"id": "71097760-b4ae-4ac0-b31a-8baaa5c5036b",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
@@ -1067,7 +1558,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "65dc9d81-ba89-43b8-82ec-fa79186de00c",
+				"id": "eda58013-e32c-4716-a49d-4fcc0b0cecb0",
 				"type": "text/javascript",
 				"packages": {},
 				"requests": {},
@@ -1092,6 +1583,22 @@
 		},
 		{
 			"key": "user_admin_token",
+			"value": ""
+		},
+		{
+			"key": "bikeId",
+			"value": ""
+		},
+		{
+			"key": "appintmentId",
+			"value": ""
+		},
+		{
+			"key": "storeLocationId",
+			"value": ""
+		},
+		{
+			"key": "announcementId",
 			"value": ""
 		}
 	]
