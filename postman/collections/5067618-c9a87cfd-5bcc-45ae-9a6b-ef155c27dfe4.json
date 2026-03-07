@@ -1077,11 +1077,11 @@
 						"body": {
 							"mode": "file",
 							"file": {
-								"src": "/Users/alvarocascanteretana/Documents/f942dfdb-9abd-4ccf-ad48-f2a445602663.png"
+								"src": "/Users/alvarocascanteretana/Documents/user.png"
 							}
 						},
 						"url": {
-							"raw": "https://pedal-pal-media-public-dev.db53fcf7aaa7edb74ff2679ba7f97863.r2.cloudflarestorage.com/announcement/4f080e84-c7f2-4831-b900-659e99c67c87/2026/03/05/c5184370-ee49-4dae-b930-0de00caed182.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260305T191807Z&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Credential=b9af4e01241674c802ab8eef1cde5d5c%2F20260305%2Fauto%2Fs3%2Faws4_request&X-Amz-Expires=600&X-Amz-Signature=7e8ea39dc756f2ca2985ee44053cc92a539380dc8c06e77e5e8b8bee440f117f",
+							"raw": "https://pedal-pal-media-public-dev.db53fcf7aaa7edb74ff2679ba7f97863.r2.cloudflarestorage.com/announcement/4f080e84-c7f2-4831-b900-659e99c67c87/2026/03/06/cac2574b-43f8-4c26-8efb-eff867b2db7c.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260307T024754Z&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Credential=b9af4e01241674c802ab8eef1cde5d5c%2F20260307%2Fauto%2Fs3%2Faws4_request&X-Amz-Expires=600&X-Amz-Signature=e17bdd109cc60d0d1d91645e5b022c73ac0f31a38120dcc1fd84716489b3609a",
 							"protocol": "https",
 							"host": [
 								"pedal-pal-media-public-dev",
@@ -1095,8 +1095,8 @@
 								"4f080e84-c7f2-4831-b900-659e99c67c87",
 								"2026",
 								"03",
-								"05",
-								"c5184370-ee49-4dae-b930-0de00caed182.png"
+								"06",
+								"cac2574b-43f8-4c26-8efb-eff867b2db7c.png"
 							],
 							"query": [
 								{
@@ -1105,7 +1105,7 @@
 								},
 								{
 									"key": "X-Amz-Date",
-									"value": "20260305T191807Z"
+									"value": "20260307T024754Z"
 								},
 								{
 									"key": "X-Amz-SignedHeaders",
@@ -1113,7 +1113,7 @@
 								},
 								{
 									"key": "X-Amz-Credential",
-									"value": "b9af4e01241674c802ab8eef1cde5d5c%2F20260305%2Fauto%2Fs3%2Faws4_request"
+									"value": "b9af4e01241674c802ab8eef1cde5d5c%2F20260307%2Fauto%2Fs3%2Faws4_request"
 								},
 								{
 									"key": "X-Amz-Expires",
@@ -1121,7 +1121,7 @@
 								},
 								{
 									"key": "X-Amz-Signature",
-									"value": "7e8ea39dc756f2ca2985ee44053cc92a539380dc8c06e77e5e8b8bee440f117f"
+									"value": "e17bdd109cc60d0d1d91645e5b022c73ac0f31a38120dcc1fd84716489b3609a"
 								}
 							]
 						}
