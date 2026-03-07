@@ -18,9 +18,9 @@ public final class AppointmentTransitions {
         rules.put(AppointmentStatus.CONFIRMED, EnumSet.of(AppointmentStatus.BIKE_RECEIVED, AppointmentStatus.NO_SHOW, AppointmentStatus.CANCELED));
         rules.put(AppointmentStatus.BIKE_RECEIVED, EnumSet.of(AppointmentStatus.IN_PROGRESS, AppointmentStatus.CANCELED));
         rules.put(AppointmentStatus.IN_PROGRESS, EnumSet.of(AppointmentStatus.COMPLETED, AppointmentStatus.CANCELED));
-        rules.put(AppointmentStatus.COMPLETED, EnumSet.of(AppointmentStatus.BIKE_RETURNED));
-        rules.put(AppointmentStatus.BIKE_RETURNED, EnumSet.noneOf(AppointmentStatus.class));
-        rules.put(AppointmentStatus.CANCELED, EnumSet.of(AppointmentStatus.BIKE_RETURNED));
+        rules.put(AppointmentStatus.COMPLETED, EnumSet.of(AppointmentStatus.BIKE_PICKED_UP));
+        rules.put(AppointmentStatus.BIKE_PICKED_UP, EnumSet.noneOf(AppointmentStatus.class));
+        rules.put(AppointmentStatus.CANCELED, EnumSet.of(AppointmentStatus.BIKE_PICKED_UP));
         rules.put(AppointmentStatus.REJECTED, EnumSet.noneOf(AppointmentStatus.class));
         rules.put(AppointmentStatus.NO_SHOW, EnumSet.noneOf(AppointmentStatus.class));
         rules.put(AppointmentStatus.UNKNOWN, EnumSet.noneOf(AppointmentStatus.class));

@@ -1,5 +1,6 @@
 package com.quetoquenana.pedalpal.appointment.presentation.dto.response;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -11,7 +12,8 @@ public record ChangeAppointmentStatusResponse(
         String fromStatus,
         String toStatus,
         Instant changedAt,
-        String serviceOrderNumber
+        String serviceOrderNumber,
+        BigDecimal deposit
 ) {
 }
 

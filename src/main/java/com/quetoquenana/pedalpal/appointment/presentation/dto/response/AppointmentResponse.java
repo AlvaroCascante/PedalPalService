@@ -1,5 +1,6 @@
 package com.quetoquenana.pedalpal.appointment.presentation.dto.response;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
@@ -11,6 +12,7 @@ public record AppointmentResponse(
         Instant scheduledAt,
         String status,
         String notes,
+        BigDecimal deposit,
         Set<AppointmentServiceResponse> requestedServices
 ) {
 }

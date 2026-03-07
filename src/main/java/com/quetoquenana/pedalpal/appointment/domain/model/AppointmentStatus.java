@@ -8,11 +8,12 @@ import java.util.Locale;
 @Getter
 public enum AppointmentStatus {
     REQUESTED("appointment.status.requested"),
+    DEPOSIT_PAID("appointment.status.deposit_paid"),
     CONFIRMED("appointment.status.confirmed"),
     BIKE_RECEIVED("appointment.status.bike_received"),
     IN_PROGRESS("appointment.status.in_progress"),
     COMPLETED("appointment.status.completed"),
-    BIKE_RETURNED("appointment.status.bike_returned"),
+    BIKE_PICKED_UP("appointment.status.bike_returned"),
     CANCELED("appointment.status.canceled"),
     REJECTED("appointment.status.rejected"),
     NO_SHOW("appointment.status.no_show"),
@@ -25,10 +26,14 @@ public enum AppointmentStatus {
     }
 
     public static AppointmentStatus from(String value) {
-        String normalized = value.toUpperCase(Locale.ROOT);
+        if (value == null || value.isBlank()) {
+            return UNKNOWN;
+        }
+
+        String normalized = value.trim().toUpperCase(Locale.ROOT);
 
         return Arrays.stream(values())
-                .filter(s -> s.name().equals(normalized) || s.key.equals(normalized))
+                .filter(s -> s.name().equals(normalized) || s.key.equalsIgnoreCase(value.trim()))
                 .findFirst()
                 .orElse(UNKNOWN);
     }

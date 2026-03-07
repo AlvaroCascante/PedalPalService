@@ -1,5 +1,6 @@
 package com.quetoquenana.pedalpal.appointment.application.command;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
@@ -11,6 +12,7 @@ public record ChangeAppointmentStatusCommand(
         String toStatus,
         String closureReason,
         UUID technicianId,
-        String note
+        String note,
+        BigDecimal deposit
 ) {
 }

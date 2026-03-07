@@ -7,6 +7,7 @@ CREATE TABLE appointments (
     status VARCHAR(50) NOT NULL,
     notes TEXT,
     closure_reason TEXT,
+    deposit NUMERIC(12,2),
 
     version BIGINT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,

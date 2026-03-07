@@ -10,6 +10,7 @@ public enum UserType {
         CUSTOMER,
         ADMIN,
         TECHNICIAN,
+        SYSTEM,
         UNKNOWN;
 
     public static UserType from(String value) {

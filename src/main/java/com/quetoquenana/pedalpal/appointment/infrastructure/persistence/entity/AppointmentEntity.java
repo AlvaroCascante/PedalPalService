@@ -6,6 +6,7 @@ import com.quetoquenana.pedalpal.auditing.domain.model.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
@@ -46,6 +47,9 @@ public class AppointmentEntity extends AuditableEntity {
 
     @Column(name = "closure_reason", columnDefinition = "text")
     private String closureReason;
+
+    @Column(name = "deposit", precision = 10, scale = 2, nullable = false)
+    private BigDecimal deposit;
 
     @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference

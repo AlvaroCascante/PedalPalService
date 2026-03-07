@@ -26,10 +26,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -90,6 +90,7 @@ class AppointmentControllerTest {
                 Instant.parse("2026-02-25T10:00:00Z"),
                 AppointmentStatus.REQUESTED,
                 "notes",
+                new BigDecimal("19.99"),
                 List.of()
         );
 
@@ -111,7 +112,8 @@ class AppointmentControllerTest {
                 AppointmentStatus.REQUESTED,
                 AppointmentStatus.CONFIRMED,
                 Instant.parse("2026-02-25T10:00:00Z"),
-                "SO-2026-000123"
+                "SO-2026-000123",
+                new BigDecimal("19.99")
         );
 
         when(changeAppointmentStatusUseCase.execute(any())).thenReturn(result);
@@ -139,7 +141,7 @@ class AppointmentControllerTest {
         UUID bikeId = UUID.randomUUID();
 
         when(appointmentQueryService.getUpcomingAppointments(eq(bikeId)))
-                .thenReturn(Set.of(
+                .thenReturn(List.of(
                         new AppointmentListItemResult(
                                 UUID.randomUUID(),
                                 bikeId,

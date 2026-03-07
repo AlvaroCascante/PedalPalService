@@ -48,15 +48,18 @@ CREATE INDEX idx_service_details_order ON service_order_details(service_order_id
 CREATE INDEX idx_service_details_status ON service_order_details(status);
 CREATE INDEX idx_service_details_technician ON service_order_details(technician_id);
 
-CREATE TABLE service_order_detail_comments (
+CREATE TABLE service_order_comments (
     id UUID PRIMARY KEY,
-    service_order_detail_id UUID NOT NULL REFERENCES service_order_details(id) ON DELETE CASCADE,
-    comment TEXT NOT NULL,
-    image_url VARCHAR(250),
-
-    version BIGINT NOT NULL DEFAULT 0,
+    service_order_id UUID NOT NULL REFERENCES service_orders(id) ON DELETE CASCADE,
+    comment VARCHAR(1000) NOT NULL,
+    customer_visible BOOLEAN NOT NULL DEFAULT FALSE,
+    created_by_type VARCHAR(30) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by UUID NOT NULL,
-    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by UUID NULL
+    created_by UUID NOT NULL
 );
+
+CREATE INDEX idx_service_order_comments_service_order
+    ON service_order_comments(service_order_id);
+
+CREATE INDEX idx_service_order_comments_created_at
+    ON service_order_comments(created_at);

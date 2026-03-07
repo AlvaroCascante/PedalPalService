@@ -4,16 +4,13 @@ import com.quetoquenana.pedalpal.appointment.application.command.ChangeAppointme
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
-import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrder;
-import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrderDetail;
-import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrderDetailStatus;
-import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrderStatus;
-import com.quetoquenana.pedalpal.serviceOrder.domain.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.serviceorder.domain.model.ServiceOrder;
+import com.quetoquenana.pedalpal.serviceorder.domain.model.ServiceOrderStatus;
+import com.quetoquenana.pedalpal.serviceorder.domain.repository.ServiceOrderRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -40,20 +37,10 @@ public class InProgressUpdatesServiceOrderHandler implements AppointmentTransiti
         ServiceOrder serviceOrder = serviceOrderRepository.findByAppointmentId(appointment.getId())
                 .orElseThrow(() -> new RecordNotFoundException("serviceOrder.not.found"));
 
-        UUID technicianId = command.technicianId() != null ? command.technicianId() : actorUserId;
         Instant now = Instant.now(clock);
 
         serviceOrder.setStartedAt(now);
         serviceOrder.setStatus(ServiceOrderStatus.IN_PROGRESS);
-
-        List<ServiceOrderDetail> details = serviceOrder.getRequestedServices();
-        if (details != null) {
-            details.forEach(detail -> {
-                detail.setTechnicianId(technicianId);
-                detail.setStartedAt(now);
-                detail.setStatus(ServiceOrderDetailStatus.IN_PROGRESS);
-            });
-        }
 
         serviceOrderRepository.save(serviceOrder);
         return null;

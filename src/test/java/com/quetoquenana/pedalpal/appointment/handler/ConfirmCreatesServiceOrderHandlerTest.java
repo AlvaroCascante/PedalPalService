@@ -4,9 +4,9 @@ import com.quetoquenana.pedalpal.appointment.application.command.ChangeAppointme
 import com.quetoquenana.pedalpal.appointment.application.handler.ConfirmCreatesServiceOrderHandler;
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
-import com.quetoquenana.pedalpal.serviceOrder.application.util.ServiceOrderNumberGenerator;
-import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrder;
-import com.quetoquenana.pedalpal.serviceOrder.domain.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.serviceorder.application.util.ServiceOrderNumberGenerator;
+import com.quetoquenana.pedalpal.serviceorder.domain.model.ServiceOrder;
+import com.quetoquenana.pedalpal.serviceorder.domain.repository.ServiceOrderRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -55,7 +55,7 @@ class ConfirmCreatesServiceOrderHandlerTest {
         String result = handler.handle(
                 appointment,
                 AppointmentStatus.REQUESTED,
-                new ChangeAppointmentStatusCommand(customerId, customerId, "CONFIRMED", null, null, null),
+                new ChangeAppointmentStatusCommand(customerId, customerId, "CONFIRMED", null, null, null, null),
                 UUID.randomUUID()
         );
 
@@ -85,7 +85,7 @@ class ConfirmCreatesServiceOrderHandlerTest {
         String result = handler.handle(
                 appointment,
                 AppointmentStatus.REQUESTED,
-                new ChangeAppointmentStatusCommand(appointmentId, customerId, "CONFIRMED", null, null, null),
+                new ChangeAppointmentStatusCommand(appointmentId, customerId, "CONFIRMED", null, null, null, null),
                 UUID.randomUUID()
         );
 

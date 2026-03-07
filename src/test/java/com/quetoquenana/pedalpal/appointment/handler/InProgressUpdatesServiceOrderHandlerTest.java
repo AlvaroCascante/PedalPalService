@@ -4,11 +4,11 @@ import com.quetoquenana.pedalpal.appointment.application.command.ChangeAppointme
 import com.quetoquenana.pedalpal.appointment.application.handler.InProgressUpdatesServiceOrderHandler;
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
-import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrder;
-import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrderDetail;
-import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrderDetailStatus;
-import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrderStatus;
-import com.quetoquenana.pedalpal.serviceOrder.domain.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.serviceorder.domain.model.ServiceOrder;
+import com.quetoquenana.pedalpal.serviceorder.domain.model.ServiceOrderDetail;
+import com.quetoquenana.pedalpal.serviceorder.domain.model.ServiceOrderDetailStatus;
+import com.quetoquenana.pedalpal.serviceorder.domain.model.ServiceOrderStatus;
+import com.quetoquenana.pedalpal.serviceorder.domain.repository.ServiceOrderRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -70,6 +70,7 @@ class InProgressUpdatesServiceOrderHandlerTest {
                         "IN_PROGRESS",
                         null,
                         null,
+                        null,
                         null
                 ),
                 authenticatedUserId
@@ -81,7 +82,6 @@ class InProgressUpdatesServiceOrderHandlerTest {
         ServiceOrder saved = captor.getValue();
         assertEquals(ServiceOrderStatus.IN_PROGRESS, saved.getStatus());
         assertEquals(Instant.parse("2026-03-01T12:00:00Z"), saved.getStartedAt());
-        assertEquals(authenticatedUserId, saved.getRequestedServices().getFirst().getTechnicianId());
-        assertEquals(ServiceOrderDetailStatus.IN_PROGRESS, saved.getRequestedServices().getFirst().getStatus());
+        assertEquals(ServiceOrderDetailStatus.PENDING, saved.getRequestedServices().getFirst().getStatus());
     }
 }

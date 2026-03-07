@@ -5,6 +5,7 @@ import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
@@ -25,13 +26,14 @@ public class Appointment extends Auditable {
     private AppointmentStatus status;
     private String notes;
     private String closureReason;
+    private BigDecimal deposit;
 
     private List<RequestedService> requestedServices;
 
     /**
-     * Applies a status transition and validates mandatory closure reason for canceled/rejected statuses.
+     * Applies a status transition and validates required data for specific targets.
      */
-    public void changeStatusTo(AppointmentStatus toStatus, AppointmentStatusChangeContext context) {
+    public void changeStatusTo(AppointmentStatus toStatus, String closureReason, BigDecimal deposit) {
         AppointmentStatus fromStatus = this.status;
 
         if (toStatus == null || toStatus == AppointmentStatus.UNKNOWN) {
@@ -43,23 +45,22 @@ public class Appointment extends Auditable {
         }
 
         if (toStatus == AppointmentStatus.CANCELED || toStatus == AppointmentStatus.REJECTED) {
-            if (context == null || isBlank(context.closureReason())) {
+            if (isBlank(closureReason)) {
                 throw new BadRequestException("appointment.status.reason.required");
             }
-            this.closureReason = context.closureReason().trim();
+            this.closureReason = closureReason.trim();
         } else {
             this.closureReason = null;
         }
 
-        this.status = toStatus;
-    }
+        if (toStatus == AppointmentStatus.CONFIRMED) {
+            if (deposit == null || deposit.compareTo(BigDecimal.ZERO) <= 0) {
+                throw new BadRequestException("appointment.status.deposit.required");
+            }
+            this.deposit = deposit;
+        }
 
-    public record AppointmentStatusChangeContext(
-            UUID authenticatedUserId,
-            UUID technicianId,
-            String closureReason,
-            String note
-    ) {
+        this.status = toStatus;
     }
 
     private boolean isBlank(String value) {

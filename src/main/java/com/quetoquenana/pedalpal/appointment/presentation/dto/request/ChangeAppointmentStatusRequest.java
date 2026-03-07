@@ -2,6 +2,7 @@ package com.quetoquenana.pedalpal.appointment.presentation.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
@@ -13,7 +14,8 @@ public record ChangeAppointmentStatusRequest(
         UUID customerId,
         String closureReason,
         UUID technicianId,
-        String note
+        String note,
+        BigDecimal deposit
 ) {
 }
 

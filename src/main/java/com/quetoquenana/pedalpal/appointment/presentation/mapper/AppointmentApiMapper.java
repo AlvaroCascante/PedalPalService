@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -46,6 +47,7 @@ public class AppointmentApiMapper {
                 request.storeLocationId(),
                 request.scheduledAt(),
                 request.notes(),
+                new BigDecimal(0),
                 items
         );
     }
@@ -66,7 +68,8 @@ public class AppointmentApiMapper {
                 request.toStatus(),
                 request.closureReason(),
                 request.technicianId(),
-                request.note()
+                request.note(),
+                request.deposit()
         );
     }
 
@@ -85,6 +88,7 @@ public class AppointmentApiMapper {
                 result.scheduledAt(),
                 statusLabel,
                 result.notes(),
+                result.deposit(),
                 requestedServices
         );
     }
@@ -99,7 +103,8 @@ public class AppointmentApiMapper {
                 fromStatus,
                 toStatus,
                 result.changedAt(),
-                result.serviceOrderNumber()
+                result.serviceOrderNumber(),
+                result.deposit()
         );
     }
 

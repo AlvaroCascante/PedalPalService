@@ -3,8 +3,11 @@ package com.quetoquenana.pedalpal.config;
 import com.quetoquenana.pedalpal.appointment.application.handler.CompletedUpdatesServiceOrderHandler;
 import com.quetoquenana.pedalpal.appointment.application.handler.ConfirmCreatesServiceOrderHandler;
 import com.quetoquenana.pedalpal.appointment.application.handler.InProgressUpdatesServiceOrderHandler;
-import com.quetoquenana.pedalpal.serviceOrder.application.util.ServiceOrderNumberGenerator;
-import com.quetoquenana.pedalpal.serviceOrder.domain.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.serviceorder.application.handler.CompleteWorkHandler;
+import com.quetoquenana.pedalpal.serviceorder.application.handler.StartWorkHandler;
+import com.quetoquenana.pedalpal.serviceorder.application.port.CompleteAppointmentPort;
+import com.quetoquenana.pedalpal.serviceorder.application.util.ServiceOrderNumberGenerator;
+import com.quetoquenana.pedalpal.serviceorder.domain.repository.ServiceOrderRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -47,5 +50,17 @@ public class HandlerConfig {
                 clock
         );
     }
-}
 
+    @Bean
+    public StartWorkHandler createStartWorkHandler(Clock clock) {
+        return new StartWorkHandler(clock);
+    }
+
+    @Bean
+    public CompleteWorkHandler createCompleteWorkHandler(
+            CompleteAppointmentPort completeAppointmentPort,
+            Clock clock
+    ) {
+        return new CompleteWorkHandler(completeAppointmentPort, clock);
+    }
+}

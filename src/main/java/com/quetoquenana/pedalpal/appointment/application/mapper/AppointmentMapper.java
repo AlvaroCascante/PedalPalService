@@ -29,6 +29,7 @@ public class AppointmentMapper {
                 model.getScheduledAt(),
                 model.getStatus(),
                 model.getNotes(),
+                model.getDeposit(),
                 requestedServices
         );
     }
@@ -52,7 +53,8 @@ public class AppointmentMapper {
                 fromStatus,
                 model.getStatus(),
                 now,
-                serviceOrderNumber
+                serviceOrderNumber,
+                model.getDeposit()
         );
     }
 
@@ -66,6 +68,7 @@ public class AppointmentMapper {
                 .scheduledAt(command.scheduledAt())
                 .status(AppointmentStatus.REQUESTED)
                 .notes(command.notes())
+                .deposit(command.deposit())
                 .build();
     }
 

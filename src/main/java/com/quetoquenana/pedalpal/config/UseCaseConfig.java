@@ -10,6 +10,7 @@ import com.quetoquenana.pedalpal.appointment.application.handler.CompletedUpdate
 import com.quetoquenana.pedalpal.appointment.application.handler.ConfirmCreatesServiceOrderHandler;
 import com.quetoquenana.pedalpal.appointment.application.handler.InProgressUpdatesServiceOrderHandler;
 import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
+import com.quetoquenana.pedalpal.appointment.application.service.CompleteAppointmentFromServiceOrderService;
 import com.quetoquenana.pedalpal.appointment.application.usecase.*;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
 import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
@@ -26,6 +27,13 @@ import com.quetoquenana.pedalpal.media.application.useCase.MediaUploadUseCase;
 import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
+import com.quetoquenana.pedalpal.serviceorder.application.handler.CompleteWorkHandler;
+import com.quetoquenana.pedalpal.serviceorder.application.handler.StartWorkHandler;
+import com.quetoquenana.pedalpal.serviceorder.application.mapper.ServiceOrderMapper;
+import com.quetoquenana.pedalpal.serviceorder.application.usecase.AddServiceOrderCommentUseCase;
+import com.quetoquenana.pedalpal.serviceorder.application.usecase.ChangeServiceOrderStatusUseCase;
+import com.quetoquenana.pedalpal.serviceorder.domain.repository.ServiceOrderCommentRepository;
+import com.quetoquenana.pedalpal.serviceorder.domain.repository.ServiceOrderRepository;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -308,6 +316,52 @@ public class UseCaseConfig {
                 authenticatedUserPort,
                 defaultStorageProvider
 
+        );
+    }
+
+    /*
+     * Service Order Use Cases
+     */
+    @Bean
+    public ChangeServiceOrderStatusUseCase createChangeServiceOrderStatusUseCase(
+            ServiceOrderMapper mapper,
+            ServiceOrderRepository repository,
+            AuthenticatedUserPort authenticatedUserPort,
+            StartWorkHandler startWorkHandler,
+            CompleteWorkHandler completeWorkHandler
+    ) {
+        return new ChangeServiceOrderStatusUseCase(
+                mapper,
+                repository,
+                authenticatedUserPort,
+                List.of(
+                        startWorkHandler,
+                        completeWorkHandler
+                )
+        );
+    }
+
+    @Bean
+    public CompleteAppointmentFromServiceOrderService createCompleteAppointmentFromServiceOrderService(
+            AppointmentRepository appointmentRepository
+    ) {
+        return new CompleteAppointmentFromServiceOrderService(appointmentRepository);
+    }
+
+    @Bean
+    public AddServiceOrderCommentUseCase createAddServiceOrderCommentUseCase(
+            AuthenticatedUserPort authenticatedUserPort,
+            ServiceOrderRepository repository,
+            ServiceOrderCommentRepository commentRepository,
+            ServiceOrderMapper mapper,
+            Clock clock
+    ) {
+        return new AddServiceOrderCommentUseCase(
+                authenticatedUserPort,
+                repository,
+                commentRepository,
+                mapper,
+                clock
         );
     }
 }

@@ -20,6 +20,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Single entry point for appointment status transitions.
@@ -54,31 +55,27 @@ public class ChangeAppointmentStatusUseCase {
 
         appointment.changeStatusTo(
                 toStatus,
-                new Appointment.AppointmentStatusChangeContext(
-                        authenticatedUser.userId(),
-                        command.technicianId(),
-                        command.closureReason(),
-                        command.note()
-                )
+                command.closureReason(),
+                command.deposit()
         );
 
         repository.save(appointment);
 
-        String serviceOrderNumber = null;
-        for (AppointmentTransitionHandler handler : transitionHandlers) {
-            if (handler.supports(fromStatus, toStatus)) {
-                String handlerResult = handler.handle(appointment, fromStatus, command, authenticatedUser.userId());
-                if (handlerResult != null && !handlerResult.isBlank()) {
-                    serviceOrderNumber = handlerResult;
-                }
-            }
-        }
+        AtomicReference<String> serviceOrderNumber = new AtomicReference<>();
+        transitionHandlers.stream()
+                .filter(handler -> handler.supports(fromStatus, toStatus))
+                .forEach(handler -> {
+                    String handlerResult = handler.handle(appointment, fromStatus, command, authenticatedUser.userId());
+                    if (handlerResult != null && !handlerResult.isBlank()) {
+                        serviceOrderNumber.set(handlerResult);
+                    }
+                });
 
         return mapper.toResult(
                 appointment,
                 fromStatus,
                 Instant.now(clock),
-                serviceOrderNumber
+                serviceOrderNumber.get()
         );
     }
 
@@ -92,15 +89,15 @@ public class ChangeAppointmentStatusUseCase {
         }
 
         if (userType == UserType.CUSTOMER) {
-            return fromStatus == AppointmentStatus.REQUESTED && toStatus == AppointmentStatus.CANCELED;
+            return (fromStatus == AppointmentStatus.REQUESTED && toStatus == AppointmentStatus.CANCELED)
+                    || (fromStatus == AppointmentStatus.REQUESTED && toStatus == AppointmentStatus.DEPOSIT_PAID);
         }
 
         if (userType == UserType.TECHNICIAN) {
             return (fromStatus == AppointmentStatus.BIKE_RECEIVED && toStatus == AppointmentStatus.IN_PROGRESS)
                     || (fromStatus == AppointmentStatus.IN_PROGRESS && toStatus == AppointmentStatus.COMPLETED)
-                    || (fromStatus == AppointmentStatus.COMPLETED && toStatus == AppointmentStatus.BIKE_RETURNED);
+                    || (fromStatus == AppointmentStatus.COMPLETED && toStatus == AppointmentStatus.BIKE_PICKED_UP);
         }
-
         return false;
     }
 }

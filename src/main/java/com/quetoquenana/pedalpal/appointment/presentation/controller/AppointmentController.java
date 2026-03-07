@@ -26,9 +26,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/api/appointments")
@@ -95,8 +94,8 @@ public class AppointmentController {
             @PathVariable UUID bikeId
     ) {
         log.info("GET /v1/api/appointments/bike/{}/upcoming Received request to get upcoming appointments", bikeId);
-        Set<AppointmentListItemResult> results = queryService.getUpcomingAppointments(bikeId);
-        Set<AppointmentListItemResponse> response = results.stream().map(apiMapper::toListItemResponse).collect(Collectors.toSet());
+        List<AppointmentListItemResult> results = queryService.getUpcomingAppointments(bikeId);
+        List<AppointmentListItemResponse> response = results.stream().map(apiMapper::toListItemResponse).toList();
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
@@ -105,7 +104,8 @@ public class AppointmentController {
     public ResponseEntity<ApiResponse> getPast(
             @PathVariable UUID bikeId
     ) {
-        Set<AppointmentListItemResult> results = queryService.getPastAppointments(bikeId);
-        return ResponseEntity.ok(new ApiResponse(results.stream().map(apiMapper::toListItemResponse).collect(Collectors.toSet())));
+        List<AppointmentListItemResult> results = queryService.getPastAppointments(bikeId);
+        List<AppointmentListItemResponse> response = results.stream().map(apiMapper::toListItemResponse).toList();
+        return ResponseEntity.ok(new ApiResponse(response));
     }
 }

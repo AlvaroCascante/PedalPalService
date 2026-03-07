@@ -114,6 +114,7 @@ class CreateAppointmentUseCaseTest {
                         a.getScheduledAt(),
                         a.getStatus(),
                         a.getNotes(),
+                        a.getDeposit(),
                         List.of()
                 );
             });
@@ -153,6 +154,7 @@ class CreateAppointmentUseCaseTest {
                     storeLocationId,
                     Instant.parse("2026-02-25T10:00:00Z"),
                     "notes",
+                    new BigDecimal("19.99"),
                     List.of(new RequestedServiceCommand(productId, ServiceType.PRODUCT))
             );
 
@@ -188,6 +190,7 @@ class CreateAppointmentUseCaseTest {
                     UUID.randomUUID(),
                     Instant.parse("2026-02-25T10:00:00Z"),
                     null,
+                    new BigDecimal("19.99"),
                     List.of(new RequestedServiceCommand(UUID.randomUUID(), ServiceType.PRODUCT))
             );
 

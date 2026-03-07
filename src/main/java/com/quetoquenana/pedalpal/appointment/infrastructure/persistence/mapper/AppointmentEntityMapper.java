@@ -27,6 +27,7 @@ public class AppointmentEntityMapper {
                 .status(model.getStatus())
                 .notes(model.getNotes())
                 .closureReason(model.getClosureReason())
+                .deposit(model.getDeposit())
                 .build();
         entity.setVersion(model.getVersion());
         model.getRequestedServices()
@@ -60,6 +61,7 @@ public class AppointmentEntityMapper {
                 .notes(entity.getNotes())
                 .closureReason(entity.getClosureReason())
                 .requestedServices(requestedServices)
+                .deposit(entity.getDeposit())
                 .build();
 
         domain.setVersion(entity.getVersion());

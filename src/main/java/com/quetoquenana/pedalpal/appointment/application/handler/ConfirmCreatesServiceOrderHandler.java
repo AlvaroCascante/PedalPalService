@@ -3,9 +3,9 @@ package com.quetoquenana.pedalpal.appointment.application.handler;
 import com.quetoquenana.pedalpal.appointment.application.command.ChangeAppointmentStatusCommand;
 import com.quetoquenana.pedalpal.appointment.domain.model.Appointment;
 import com.quetoquenana.pedalpal.appointment.domain.model.AppointmentStatus;
-import com.quetoquenana.pedalpal.serviceOrder.application.util.ServiceOrderNumberGenerator;
-import com.quetoquenana.pedalpal.serviceOrder.domain.model.ServiceOrder;
-import com.quetoquenana.pedalpal.serviceOrder.domain.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.serviceorder.application.util.ServiceOrderNumberGenerator;
+import com.quetoquenana.pedalpal.serviceorder.domain.model.ServiceOrder;
+import com.quetoquenana.pedalpal.serviceorder.domain.repository.ServiceOrderRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Clock;

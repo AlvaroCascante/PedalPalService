@@ -16,9 +16,11 @@ import com.quetoquenana.pedalpal.product.application.mapper.ProductMapper;
 import com.quetoquenana.pedalpal.product.application.query.ProductQueryService;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductRepository;
-import com.quetoquenana.pedalpal.serviceOrder.application.query.ServiceOrderQueryService;
-import com.quetoquenana.pedalpal.serviceOrder.application.mapper.ServiceOrderMapper;
-import com.quetoquenana.pedalpal.serviceOrder.domain.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.serviceorder.application.query.ServiceOrderQueryService;
+import com.quetoquenana.pedalpal.serviceorder.application.mapper.ServiceOrderMapper;
+import com.quetoquenana.pedalpal.serviceorder.domain.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.serviceorder.application.query.GetServiceOrderCommentsQueryService;
+import com.quetoquenana.pedalpal.serviceorder.domain.repository.ServiceOrderCommentRepository;
 import com.quetoquenana.pedalpal.store.application.mapper.StoreMapper;
 import com.quetoquenana.pedalpal.store.application.query.StoreQueryService;
 import com.quetoquenana.pedalpal.store.domain.repository.StoreLocationRepository;
@@ -125,6 +127,19 @@ public class QueryServicesConfig {
     ) {
         return new SystemCodeQueryService(
                 mapper,
+                repository
+        );
+    }
+
+    @Bean
+    public GetServiceOrderCommentsQueryService createGetServiceOrderCommentsQueryService(
+            ServiceOrderMapper mapper,
+            ServiceOrderCommentRepository commentRepository,
+            ServiceOrderRepository repository
+    ) {
+        return new GetServiceOrderCommentsQueryService(
+                mapper,
+                commentRepository,
                 repository
         );
     }
