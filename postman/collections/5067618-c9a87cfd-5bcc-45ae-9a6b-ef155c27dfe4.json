@@ -548,6 +548,67 @@
 					"response": []
 				},
 				{
+					"name": "Create Bike Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0b65a5be-c503-4029-88c8-6f933d6971c5",
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    const bikeId = jsonData.data.id;",
+									"    pm.collectionVariables.set(\"bikeId\", bikeId);",
+									"    console.log(\"bikeId extracted:\", bikeId);",
+									"    console.log(\"bikeId set in collection:\", pm.collectionVariables.get(\"bikeId\"));",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "5067618-a3c1952e-eb66-4c1c-a635-2a8c31d3d418",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Pilsen\",\n    \"type\": \"ROAD\",\n    \"brand\": \"Pinarello\",\n    \"model\": \"Razha\",\n    \"year\": 2017,\n    \"serialNumber\": \"SN-123456789AB\",\n    \"notes\": \"Purchased at local store.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/bikes",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"bikes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get By ID",
 					"id": "5067618-3fe0398f-8e72-4278-acd7-f7276760639e",
 					"protocolProfileBehavior": {
