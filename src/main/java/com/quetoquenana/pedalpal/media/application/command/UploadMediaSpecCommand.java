@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.common.application.command;
+package com.quetoquenana.pedalpal.media.application.command;
 
 public record UploadMediaSpecCommand(
         String mediaType, // The type of media (e.g., "image", "video", "document", etc.)

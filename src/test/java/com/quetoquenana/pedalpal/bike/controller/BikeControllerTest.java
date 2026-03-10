@@ -1,7 +1,11 @@
 package com.quetoquenana.pedalpal.bike.controller;
 
+import com.quetoquenana.pedalpal.bike.application.command.CreateBikeUploadMediaCommand;
 import com.quetoquenana.pedalpal.bike.application.query.BikeQueryService;
 import com.quetoquenana.pedalpal.bike.application.query.BikeHistoryQueryService;
+import com.quetoquenana.pedalpal.bike.application.result.BikeMediaResult;
+import com.quetoquenana.pedalpal.common.application.result.MediaResult;
+import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import com.quetoquenana.pedalpal.bike.application.useCase.CreateBikeUseCase;
 import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeStatusUseCase;
 import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeUseCase;
@@ -9,9 +13,7 @@ import com.quetoquenana.pedalpal.bike.application.useCase.AddBikeComponentUseCas
 import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeComponentUseCase;
 import com.quetoquenana.pedalpal.bike.application.useCase.ReplaceBikeComponentUseCase;
 import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeComponentStatusUseCase;
-import com.quetoquenana.pedalpal.bike.application.useCase.CreateBikeUploadMediaUseCase;
-import com.quetoquenana.pedalpal.bike.application.result.BikeUploadMediaResult;
-import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
+import com.quetoquenana.pedalpal.bike.application.useCase.UploadBikeMediaUseCase;
 import com.quetoquenana.pedalpal.bike.presentation.controller.BikeController;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
@@ -37,11 +39,11 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -89,7 +91,7 @@ class BikeControllerTest {
     BikeHistoryQueryService bikeHistoryQueryService;
 
     @MockitoBean
-    CreateBikeUploadMediaUseCase createBikeUploadMediaUseCase;
+    UploadBikeMediaUseCase uploadBikeMediaUseCase;
 
     private static final UUID AUTH_USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
@@ -444,24 +446,33 @@ class BikeControllerTest {
     void shouldReturn200_whenValidUploadMedia() throws Exception {
         UUID bikeId = UUID.randomUUID();
 
-        BikeUploadMediaResult uploadResult = new BikeUploadMediaResult(Set.of(
-                new UploadMediaResult(
-                        UUID.randomUUID(),
-                        "bike/media/key.jpg",
-                        "https://upload.example/key",
-                        Instant.now().plusSeconds(300)
+        BikeMediaResult uploadResult = new BikeMediaResult(
+                bikeId,
+                java.util.List.of(
+                        new MediaResult(
+                                UUID.randomUUID(),
+                                "image/jpeg",
+                                "r2",
+                                true,
+                                MediaStatus.DRAFT,
+                                "front",
+                                "Front view",
+                                "https://upload.example/key",
+                                Instant.now().plusSeconds(300)
+                        )
                 )
-        ));
+        );
 
-        when(createBikeUploadMediaUseCase.execute(any())).thenReturn(uploadResult);
+        doReturn(uploadResult)
+                .when(uploadBikeMediaUseCase)
+                .execute(any(CreateBikeUploadMediaCommand.class));
 
         mockMvc.perform(post("/v1/api/bikes/{id}/media", bikeId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(TestJsonBodies.uploadBikeMediaMinimal("image/jpeg", "IMAGE")))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.uploadMediaResponse[0].mediaId").isNotEmpty())
-                .andExpect(jsonPath("$.data.uploadMediaResponse[0].uploadUrl").value("bike/media/key.jpg"))
-                .andExpect(jsonPath("$.data.uploadMediaResponse[0].storageKey").value("https://upload.example/key"));
+                .andExpect(jsonPath("$.data.mediaUrlResponse[0].id").isNotEmpty())
+                .andExpect(jsonPath("$.data.mediaUrlResponse[0].url").value("https://upload.example/key"));
     }
 
     @Test

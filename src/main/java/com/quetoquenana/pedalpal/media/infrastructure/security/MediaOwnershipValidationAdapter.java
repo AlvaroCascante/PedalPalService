@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.media.infrastructure.security;
 
-import com.quetoquenana.pedalpal.media.application.port.OwnershipValidationPort;
+import com.quetoquenana.pedalpal.media.application.port.MediaOwnershipValidationPort;
 import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.security.application.OwnershipValidator;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.UUID;
  */
 @Component
 @RequiredArgsConstructor
-public class OwnershipValidationAdapter implements OwnershipValidationPort {
+public class MediaOwnershipValidationAdapter implements MediaOwnershipValidationPort {
 
     private final OwnershipValidator ownershipValidator;
 

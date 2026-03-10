@@ -1,11 +1,10 @@
-package com.quetoquenana.pedalpal.media.presentation.dto.response;
+package com.quetoquenana.pedalpal.common.presentation.dto.response;
 
 import java.time.Instant;
 import java.util.UUID;
 
-public record UploadMediaResponse(
+public record MediaUrlResponse(
         UUID mediaId,
         String uploadUrl,
-        String storageKey,
         Instant expiresAt
 ) {}

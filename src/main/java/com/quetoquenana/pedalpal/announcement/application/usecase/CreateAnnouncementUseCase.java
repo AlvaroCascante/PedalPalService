@@ -5,14 +5,14 @@ import com.quetoquenana.pedalpal.announcement.application.mapper.AnnouncementMap
 import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementResult;
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
-import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
-import com.quetoquenana.pedalpal.common.application.port.UploadMediaPort;
-import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
+import com.quetoquenana.pedalpal.common.application.result.MediaResult;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
+import com.quetoquenana.pedalpal.media.application.port.UploadMediaPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
+import java.util.List;
 
 /*
  * Use case for creating a new announcement.
@@ -34,7 +34,7 @@ public class CreateAnnouncementUseCase {
         announcement = repository.save(announcement);
 
         UploadMediaCommand mediaRequest = mapper.toMediaUploadRequest(announcement, command);
-        Set<UploadMediaResult> mediaResul =  uploadMediaPort.generateUploadUrls(mediaRequest);
+        List<MediaResult> mediaResul =  uploadMediaPort.generateUploadUrls(mediaRequest);
 
         return mapper.toResult(announcement, mediaResul);
     }

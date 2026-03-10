@@ -1,10 +1,13 @@
 package com.quetoquenana.pedalpal.media.presentation.controller;
 
 import com.quetoquenana.pedalpal.config.SecurityConfig;
+import com.quetoquenana.pedalpal.common.application.result.MediaResult;
 import com.quetoquenana.pedalpal.media.application.command.ConfirmUploadCommand;
-import com.quetoquenana.pedalpal.media.application.result.ConfirmedUploadResult;
+import com.quetoquenana.pedalpal.media.application.query.MediaQueryService;
 import com.quetoquenana.pedalpal.media.application.useCase.ConfirmMediaUploadUseCase;
 import com.quetoquenana.pedalpal.media.application.useCase.MediaUploadUseCase;
+import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
+import com.quetoquenana.pedalpal.media.presentation.dto.response.MediaResponse;
 import com.quetoquenana.pedalpal.media.presentation.mapper.MediaApiMapper;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
 import org.junit.jupiter.api.Test;
@@ -48,23 +51,50 @@ class MediaControllerTest {
     @MockitoBean
     MessageSource messageSource;
 
+    @MockitoBean
+    MediaQueryService queryService;
+
     @Test
     void shouldReturn200_whenConfirmUpload() throws Exception {
         UUID mediaId = UUID.randomUUID();
         ConfirmUploadCommand command = new ConfirmUploadCommand(mediaId);
-        ConfirmedUploadResult result = new ConfirmedUploadResult(mediaId, "media/key", "ACTIVE", "https://cdn");
+        MediaResult result = new MediaResult(
+                mediaId,
+                "image/jpeg",
+                "r2",
+                true,
+                MediaStatus.ACTIVE,
+                "front",
+                "Front view",
+                "https://cdn.example/media/key",
+                java.time.Instant.now().plusSeconds(60)
+        );
+        MediaResponse response = new MediaResponse(
+                mediaId,
+                "image/jpeg",
+                "r2",
+                true,
+                "ACTIVE",
+                "front",
+                "Front view",
+                "https://cdn.example/media/key",
+                result.expiresAt()
+        );
 
         when(mapper.toCommand(mediaId)).thenReturn(command);
-        when(confirmMediaUploadUseCase.execute(any())).thenReturn(result);
+        when(queryService.getById(mediaId)).thenReturn(result);
+        when(mapper.toResponse(result)).thenReturn(response);
 
         mockMvc.perform(post("/v1/api/media/{id}/confirm", mediaId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.mediaId").value(mediaId.toString()))
-                .andExpect(jsonPath("$.data.storageKey").value("media/key"));
+                .andExpect(jsonPath("$.data.id").value(mediaId.toString()))
+                .andExpect(jsonPath("$.data.url").value("https://cdn.example/media/key"));
 
         verify(confirmMediaUploadUseCase, times(1)).execute(any());
+        verify(queryService, times(1)).getById(mediaId);
         verify(mapper, times(1)).toCommand(mediaId);
+        verify(mapper, times(1)).toResponse(result);
     }
 
     @Test

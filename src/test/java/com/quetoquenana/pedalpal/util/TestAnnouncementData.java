@@ -81,15 +81,16 @@ public final class TestAnnouncementData {
     }
 
     public static AnnouncementResult result(UUID id) {
-        return AnnouncementResult.builder()
-                .id(id)
-                .title("Title")
-                .subTitle("Subtitle")
-                .description("Description")
-                .position(1)
-                .url("https://example.com")
-                .status(AnnouncementStatus.DRAFT)
-                .build();
+        return new AnnouncementResult(
+                id,
+                "Title",
+                "Subtitle",
+                "Description",
+                1,
+                "https://example.com",
+                AnnouncementStatus.DRAFT,
+                java.util.List.of()
+        );
     }
 
     public static AnnouncementResponse response(UUID id) {
@@ -101,7 +102,7 @@ public final class TestAnnouncementData {
                 1,
                 "https://example.com",
                 "Active",
-                null
+                java.util.Set.of()
         );
     }
 }

@@ -15,7 +15,7 @@ public enum MediaContentType {
     IMAGE_WEBP("image/webp", "webp"),
     VIDEO_MP4("video/mp4", "mp4"),
     VIDEO_WEBM("video/webm", "webm"),
-    UNKNOWN("", "");
+    OTHER("", "");
 
     private final String contentType;
     private final String extension;
@@ -40,6 +40,6 @@ public enum MediaContentType {
         return Arrays.stream(values())
                 .filter(type -> type.contentType.equals(normalized))
                 .findFirst()
-                .orElse(UNKNOWN);
+                .orElse(OTHER);
     }
 }

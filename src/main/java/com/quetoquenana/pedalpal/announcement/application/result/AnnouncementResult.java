@@ -1,13 +1,11 @@
 package com.quetoquenana.pedalpal.announcement.application.result;
 
 import com.quetoquenana.pedalpal.announcement.domain.model.AnnouncementStatus;
-import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
-import lombok.Builder;
+import com.quetoquenana.pedalpal.common.application.result.MediaResult;
 
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
-@Builder
 public record AnnouncementResult(
         UUID id,
         String title,
@@ -16,6 +14,6 @@ public record AnnouncementResult(
         Integer position,
         String url,
         AnnouncementStatus status,
-        Set<UploadMediaResult> uploadMediaResults
+        List<MediaResult> mediaResults
 ) {
 }

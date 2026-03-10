@@ -6,12 +6,13 @@ import com.quetoquenana.pedalpal.announcement.application.command.UpdateAnnounce
 import com.quetoquenana.pedalpal.announcement.application.result.AnnouncementResult;
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
 import com.quetoquenana.pedalpal.announcement.domain.model.AnnouncementStatus;
-import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
-import com.quetoquenana.pedalpal.common.application.command.UploadMediaSpecCommand;
-import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaSpecCommand;
+import com.quetoquenana.pedalpal.common.application.result.MediaResult;
 import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,30 +29,26 @@ public class AnnouncementMapper {
                 .build();
     }
 
-    public AnnouncementResult toResult(Announcement model) {
-        return this.toResult(model, Collections.emptySet());
+    public AnnouncementResult toResult(
+            Announcement model
+    ) {
+        return this.toResult(model, Collections.emptyList());
     }
 
-    public AnnouncementResult toResult(Announcement model, Set<UploadMediaResult> mediaUploadResponse) {
+    public AnnouncementResult toResult(
+            Announcement model,
+            List<MediaResult> mediaResults
+    ) {
 
-        return AnnouncementResult.builder()
-                .id(model.getId())
-                .title(model.getTitle())
-                .subTitle(model.getSubTitle())
-                .description(model.getDescription())
-                .position(model.getPosition())
-                .url(model.getUrl())
-                .status(model.getStatus())
-                .uploadMediaResults(mediaUploadResponse.stream().map(this::toResult).collect(Collectors.toSet()))
-                .build();
-    }
-
-    public UploadMediaResult toResult(UploadMediaResult mediaUploadResponse) {
-        return new UploadMediaResult(
-                mediaUploadResponse.mediaId(),
-                mediaUploadResponse.uploadUrl(),
-                mediaUploadResponse.storageKey(),
-                mediaUploadResponse.expiresAt()
+        return new AnnouncementResult(
+                model.getId(),
+                model.getTitle(),
+                model.getSubTitle(),
+                model.getDescription(),
+                model.getPosition(),
+                model.getUrl(),
+                model.getStatus(),
+                mediaResults
         );
     }
 

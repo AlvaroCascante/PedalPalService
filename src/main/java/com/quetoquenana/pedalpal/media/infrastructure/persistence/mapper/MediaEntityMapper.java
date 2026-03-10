@@ -16,19 +16,14 @@ public class MediaEntityMapper {
     public static Media toModel(MediaEntity entity) {
         Media model = Media.builder()
                 .id(entity.getId())
-                .ownerId(entity.getOwnerId())
                 .referenceId(entity.getReferenceId())
                 .referenceType(entity.getReferenceType())
-                .mediaType(entity.getMediaType())
                 .contentType(entity.getContentType())
+                .provider(entity.getProvider())
                 .isPrimary(entity.getIsPrimary())
                 .status(entity.getStatus())
                 .storageKey(entity.getStorageKey())
-                .provider(entity.getProvider())
-                .providerAssetId(entity.getProviderAssetId())
-                .sizeBytes(entity.getSizeBytes())
-                .metadata(entity.getMetadata())
-                .title(entity.getName())
+                .name(entity.getName())
                 .altText(entity.getAltText())
                 .build();
         model.setVersion(entity.getVersion());
@@ -38,19 +33,14 @@ public class MediaEntityMapper {
     public static MediaEntity toEntity(Media model) {
         MediaEntity entity = MediaEntity.builder()
                 .id(model.getId())
-                .ownerId(model.getOwnerId())
                 .referenceId(model.getReferenceId())
                 .referenceType(model.getReferenceType())
-                .mediaType(model.getMediaType())
                 .contentType(model.getContentType())
+                .provider(model.getProvider())
                 .isPrimary(model.getIsPrimary())
                 .status(model.getStatus())
                 .storageKey(model.getStorageKey())
-                .provider(model.getProvider())
-                .providerAssetId(model.getProviderAssetId())
-                .sizeBytes(model.getSizeBytes())
-                .metadata(model.getMetadata())
-                .name(model.getTitle())
+                .name(model.getName())
                 .altText(model.getAltText())
                 .build();
         entity.setVersion(model.getVersion());

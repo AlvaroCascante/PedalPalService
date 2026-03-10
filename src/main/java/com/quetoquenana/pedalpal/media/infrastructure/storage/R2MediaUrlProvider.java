@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.media.infrastructure.storage;
 
 import com.quetoquenana.pedalpal.media.application.model.SignedUrl;
-import com.quetoquenana.pedalpal.media.application.port.StorageProvider;
+import com.quetoquenana.pedalpal.media.application.port.MediaUrlProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @Component
 @RequiredArgsConstructor
-public class R2StorageProvider implements StorageProvider {
+public class R2MediaUrlProvider implements MediaUrlProvider {
 
     private final S3Presigner presigner;
 

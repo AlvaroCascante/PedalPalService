@@ -11,17 +11,18 @@ import com.quetoquenana.pedalpal.appointment.application.handler.ConfirmCreatesS
 import com.quetoquenana.pedalpal.appointment.application.handler.InProgressUpdatesServiceOrderHandler;
 import com.quetoquenana.pedalpal.appointment.application.mapper.AppointmentMapper;
 import com.quetoquenana.pedalpal.appointment.application.service.CompleteAppointmentFromServiceOrderService;
-import com.quetoquenana.pedalpal.appointment.application.usecase.*;
+import com.quetoquenana.pedalpal.appointment.application.usecase.ChangeAppointmentStatusUseCase;
+import com.quetoquenana.pedalpal.appointment.application.usecase.CreateAppointmentUseCase;
+import com.quetoquenana.pedalpal.appointment.application.usecase.UpdateAppointmentUseCase;
 import com.quetoquenana.pedalpal.appointment.domain.repository.AppointmentRepository;
 import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.useCase.*;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
-import com.quetoquenana.pedalpal.common.application.port.UploadMediaPort;
 import com.quetoquenana.pedalpal.media.application.mapper.MediaMapper;
-import com.quetoquenana.pedalpal.media.application.port.CdnUrlProvider;
-import com.quetoquenana.pedalpal.media.application.port.OwnershipValidationPort;
-import com.quetoquenana.pedalpal.media.application.port.StorageProvider;
+import com.quetoquenana.pedalpal.media.application.port.MediaOwnershipValidationPort;
+import com.quetoquenana.pedalpal.media.application.port.MediaUrlProvider;
+import com.quetoquenana.pedalpal.media.application.port.UploadMediaPort;
 import com.quetoquenana.pedalpal.media.application.useCase.ConfirmMediaUploadUseCase;
 import com.quetoquenana.pedalpal.media.application.useCase.MediaUploadUseCase;
 import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
@@ -268,13 +269,13 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public CreateBikeUploadMediaUseCase createCreateBikeUploadMediaUseCase(
+    public UploadBikeMediaUseCase createCreateBikeUploadMediaUseCase(
             BikeMapper mapper,
             BikeRepository repository,
             UploadMediaPort uploadMediaPort,
             AuthenticatedUserPort authenticatedUserPort
     ) {
-        return new CreateBikeUploadMediaUseCase(
+        return new UploadBikeMediaUseCase(
                 authenticatedUserPort,
                 mapper,
                 repository,
@@ -287,14 +288,10 @@ public class UseCaseConfig {
      */
     @Bean
     public ConfirmMediaUploadUseCase createConfirmUploadUseCase(
-            MediaRepository repository,
-            MediaMapper mapper,
-            CdnUrlProvider cdnUrlProvider
+            MediaRepository repository
     ) {
         return new ConfirmMediaUploadUseCase(
-                repository,
-                mapper,
-                cdnUrlProvider
+                repository
         );
     }
 
@@ -302,8 +299,8 @@ public class UseCaseConfig {
     public MediaUploadUseCase createGenerateUploadUrlUseCase(
             MediaRepository repository,
             MediaMapper mapper,
-            StorageProvider storageProvider,
-            OwnershipValidationPort ownershipValidationPort,
+            MediaUrlProvider mediaUrlProvider,
+            MediaOwnershipValidationPort mediaOwnershipValidationPort,
             AuthenticatedUserPort authenticatedUserPort,
             @Value("${app.media.default-provider}")
             String defaultStorageProvider
@@ -311,8 +308,8 @@ public class UseCaseConfig {
         return new MediaUploadUseCase(
                 repository,
                 mapper,
-                storageProvider,
-                ownershipValidationPort,
+                mediaUrlProvider,
+                mediaOwnershipValidationPort,
                 authenticatedUserPort,
                 defaultStorageProvider
 

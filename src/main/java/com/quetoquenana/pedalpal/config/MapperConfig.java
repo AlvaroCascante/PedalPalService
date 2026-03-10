@@ -65,8 +65,8 @@ public class MapperConfig {
     }
 
     @Bean
-    public MediaApiMapper createMediaApiMapper() {
-        return new MediaApiMapper();
+    public MediaApiMapper createMediaApiMapper(MessageSource messageSource) {
+        return new MediaApiMapper(messageSource);
     }
 
     @Bean

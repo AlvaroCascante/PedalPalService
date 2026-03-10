@@ -7,7 +7,7 @@ import java.util.UUID;
 /**
  * Port for validating ownership rules in the media module.
  */
-public interface OwnershipValidationPort {
+public interface MediaOwnershipValidationPort {
 
     /**
      * Validates whether the authenticated user can manage media for the reference.

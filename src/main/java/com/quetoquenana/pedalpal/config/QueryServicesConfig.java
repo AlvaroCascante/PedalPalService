@@ -12,6 +12,10 @@ import com.quetoquenana.pedalpal.bike.application.query.BikeQueryService;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeHistoryRepository;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.media.application.mapper.MediaMapper;
+import com.quetoquenana.pedalpal.media.application.port.MediaLookupPort;
+import com.quetoquenana.pedalpal.media.application.query.MediaQueryService;
+import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
 import com.quetoquenana.pedalpal.product.application.mapper.ProductMapper;
 import com.quetoquenana.pedalpal.product.application.query.ProductQueryService;
 import com.quetoquenana.pedalpal.product.domain.repository.ProductPackageRepository;
@@ -37,11 +41,13 @@ public class QueryServicesConfig {
     @Bean
     public AnnouncementQueryService createAnnouncementQueryService(
             AnnouncementMapper mapper,
-            AnnouncementRepository repository
+            AnnouncementRepository repository,
+            MediaLookupPort mediaLookupPort
     ) {
         return new AnnouncementQueryService(
                 mapper,
-                repository
+                repository,
+                mediaLookupPort
         );
     }
 
@@ -81,6 +87,14 @@ public class QueryServicesConfig {
                 mapper,
                 repository,
                 bikeHistoryRepository);
+    }
+
+    @Bean
+    public MediaQueryService createMediaQueryService(
+            MediaMapper mapper,
+            MediaRepository repository
+    ) {
+        return new MediaQueryService(mapper, repository);
     }
 
     @Bean

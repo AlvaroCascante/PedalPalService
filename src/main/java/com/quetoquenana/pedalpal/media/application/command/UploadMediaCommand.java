@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.common.application.command;
+package com.quetoquenana.pedalpal.media.application.command;
 
 import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
 

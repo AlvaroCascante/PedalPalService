@@ -8,8 +8,8 @@ import com.quetoquenana.pedalpal.announcement.presentation.dto.request.Announcem
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.CreateAnnouncementRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.request.UpdateAnnouncementRequest;
 import com.quetoquenana.pedalpal.announcement.presentation.dto.response.AnnouncementResponse;
-import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
-import com.quetoquenana.pedalpal.media.presentation.dto.response.UploadMediaResponse;
+import com.quetoquenana.pedalpal.common.application.result.MediaResult;
+import com.quetoquenana.pedalpal.common.presentation.dto.response.MediaUrlResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -78,17 +78,19 @@ public class AnnouncementApiMapper {
                 result.position(),
                 result.url(),
                 statusLabel,
-                result.uploadMediaResults()
+                result.mediaResults() == null
+                        ? java.util.Collections.emptySet()
+                        : result.mediaResults()
                         .stream()
                         .map(this::toResponse)
-                        .collect(Collectors.toSet()));
+                        .collect(Collectors.toSet())
+        );
     }
 
-    private UploadMediaResponse toResponse(UploadMediaResult result) {
-        return new UploadMediaResponse(
-                result.mediaId(),
-                result.uploadUrl(),
-                result.storageKey(),
+    private MediaUrlResponse toResponse(MediaResult result) {
+        return new MediaUrlResponse(
+                result.id(),
+                result.url(),
                 result.expiresAt()
         );
     }

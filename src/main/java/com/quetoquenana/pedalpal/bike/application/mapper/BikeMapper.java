@@ -7,12 +7,12 @@ import com.quetoquenana.pedalpal.bike.application.command.CreateBikeCommand;
 import com.quetoquenana.pedalpal.bike.application.command.CreateBikeUploadMediaCommand;
 import com.quetoquenana.pedalpal.bike.application.result.BikeComponentResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeHistoryResult;
+import com.quetoquenana.pedalpal.bike.application.result.BikeMediaResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
-import com.quetoquenana.pedalpal.bike.application.result.BikeUploadMediaResult;
 import com.quetoquenana.pedalpal.bike.domain.model.*;
-import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
-import com.quetoquenana.pedalpal.common.application.command.UploadMediaSpecCommand;
-import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
+import com.quetoquenana.pedalpal.common.application.result.MediaResult;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaSpecCommand;
 import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 import lombok.RequiredArgsConstructor;
@@ -116,9 +116,13 @@ public class BikeMapper {
         );
     }
 
-    public BikeUploadMediaResult toResult(java.util.Set<UploadMediaResult> mediaUploadResponse) {
-        return new BikeUploadMediaResult(
-                mediaUploadResponse.stream().map(this::toResult).collect(Collectors.toSet())
+    public BikeMediaResult toResult(
+            Bike model,
+            List<MediaResult> mediaResults
+    ) {
+        return new BikeMediaResult(
+                model.getId(),
+                mediaResults
         );
     }
 
@@ -137,15 +141,6 @@ public class BikeMapper {
                                 spec.altText()
                         ))
                         .collect(Collectors.toSet())
-        );
-    }
-
-    private UploadMediaResult toResult(UploadMediaResult mediaUploadResponse) {
-        return new UploadMediaResult(
-                mediaUploadResponse.mediaId(),
-                mediaUploadResponse.uploadUrl(),
-                mediaUploadResponse.storageKey(),
-                mediaUploadResponse.expiresAt()
         );
     }
 

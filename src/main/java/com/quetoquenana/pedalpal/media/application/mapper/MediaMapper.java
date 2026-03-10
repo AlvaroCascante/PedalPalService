@@ -1,18 +1,19 @@
 package com.quetoquenana.pedalpal.media.application.mapper;
 
-import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
-import com.quetoquenana.pedalpal.common.application.command.UploadMediaSpecCommand;
-import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
+import com.quetoquenana.pedalpal.common.application.result.MediaResult;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaSpecCommand;
 import com.quetoquenana.pedalpal.media.application.model.SignedUrl;
-import com.quetoquenana.pedalpal.media.application.result.ConfirmedUploadResult;
-import com.quetoquenana.pedalpal.media.domain.model.*;
+import com.quetoquenana.pedalpal.media.domain.model.Media;
+import com.quetoquenana.pedalpal.media.domain.model.MediaContentType;
+import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
+import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 
 import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Locale;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class MediaMapper {
 
@@ -23,11 +24,9 @@ public class MediaMapper {
         UUID mediaId = UUID.randomUUID();
         return Media.builder()
                 .id(mediaId)
-                .ownerId(ownerId)
                 .referenceId(command.referenceId())
                 .referenceType(command.referenceType())
-                .mediaType(MediaType.from(spec.mediaType()))
-                .contentType(spec.contentType())
+                .contentType(MediaContentType.fromContentType(spec.contentType()))
                 .isPrimary(spec.isPrimary())
                 .status(MediaStatus.DRAFT)
                 .storageKey(buildStorageKey(
@@ -38,8 +37,7 @@ public class MediaMapper {
                         command.referenceType(),
                         Clock.systemDefaultZone())
                 )
-                // provider may be decided by backend/storageProvider; keep unset unless command/spec provides it
-                .title(spec.name())
+                .name(spec.name())
                 .altText(spec.altText())
                 .build();
     }
@@ -64,33 +62,26 @@ public class MediaMapper {
                 mediaId + "." + ext;
     }
 
-    public Set<UploadMediaResult> toResult(
-            Set<Media> models,
-            java.util.Map<UUID, SignedUrl> signedUrls
-    ) {
-        return models.stream()
-                .map(model -> toResult(model, signedUrls.get(model.getId())))
-                .collect(Collectors.toSet());
+    public MediaResult toResult(Media model, SignedUrl signedUrl) {
+        return this.toResult(model, signedUrl.url(), signedUrl.expiresAt());
     }
 
-    public UploadMediaResult toResult(
-            Media model,
-            SignedUrl signedUrl
-    ) {
-        return new UploadMediaResult(
+    public MediaResult toResult(Media model, String cdnUrl) {
+        return this.toResult(model, cdnUrl, null);
+    }
+
+    public MediaResult toResult(Media model, String cdnUrl, Instant expiration) {
+
+        return new MediaResult(
                 model.getId(),
-                signedUrl.url(),
-                model.getStorageKey(),
-                signedUrl.expiresAt()
-        );
-    }
-
-    public ConfirmedUploadResult toConfirmedResult(Media model, String cdnUrl) {
-        return new ConfirmedUploadResult(
-            model.getId(),
-            model.getStorageKey(),
-            model.getStatus().name(),
-            cdnUrl
+                model.getContentType().name(),
+                model.getProvider(),
+                model.getIsPrimary(),
+                model.getStatus(),
+                model.getName(),
+                model.getAltText(),
+                cdnUrl,
+                expiration
         );
     }
 }

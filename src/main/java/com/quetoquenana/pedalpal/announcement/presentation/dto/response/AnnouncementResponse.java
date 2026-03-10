@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.announcement.presentation.dto.response;
 
-import com.quetoquenana.pedalpal.media.presentation.dto.response.UploadMediaResponse;
+import com.quetoquenana.pedalpal.common.presentation.dto.response.MediaUrlResponse;
 
 import java.util.Set;
 import java.util.UUID;
@@ -13,6 +13,6 @@ public record AnnouncementResponse(
         Integer position,
         String url,
         String status,
-        Set<UploadMediaResponse> uploadMediaResponse
+        Set<MediaUrlResponse> mediaUrlResponse
 ) {
 }

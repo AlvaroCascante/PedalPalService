@@ -3,9 +3,6 @@ package com.quetoquenana.pedalpal.media.application.useCase;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
 import com.quetoquenana.pedalpal.media.application.command.ConfirmUploadCommand;
-import com.quetoquenana.pedalpal.media.application.mapper.MediaMapper;
-import com.quetoquenana.pedalpal.media.application.port.CdnUrlProvider;
-import com.quetoquenana.pedalpal.media.application.result.ConfirmedUploadResult;
 import com.quetoquenana.pedalpal.media.domain.model.Media;
 import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
@@ -28,17 +25,11 @@ class ConfirmMediaUploadUseCaseTest {
     @Mock
     MediaRepository repository;
 
-    @Mock
-    MediaMapper mapper;
-
-    @Mock
-    CdnUrlProvider cdnUrlProvider;
-
     ConfirmMediaUploadUseCase useCase;
 
     @BeforeEach
     void setUp() {
-        useCase = new ConfirmMediaUploadUseCase(repository, mapper, cdnUrlProvider);
+        useCase = new ConfirmMediaUploadUseCase(repository);
     }
 
     @Test
@@ -70,7 +61,7 @@ class ConfirmMediaUploadUseCaseTest {
     }
 
     @Test
-    void shouldConfirmUploadAndReturnResult() {
+    void shouldConfirmUploadAndPersist() {
         UUID mediaId = UUID.randomUUID();
         ConfirmUploadCommand command = new ConfirmUploadCommand(mediaId);
         Media model = Media.builder()
@@ -79,16 +70,11 @@ class ConfirmMediaUploadUseCaseTest {
                 .status(MediaStatus.DRAFT)
                 .build();
 
-        ConfirmedUploadResult result = new ConfirmedUploadResult(mediaId, "key", "ACTIVE", "https://cdn");
-
         when(repository.getById(mediaId)).thenReturn(Optional.of(model));
-        when(repository.save(model)).thenReturn(model);
-        when(cdnUrlProvider.providePublic("key")).thenReturn("https://cdn");
-        when(mapper.toConfirmedResult(model, "https://cdn")).thenReturn(result);
 
-        ConfirmedUploadResult actual = useCase.execute(command);
+        useCase.execute(command);
 
-        assertEquals(result, actual);
         verify(repository).save(model);
+        assertEquals(MediaStatus.ACTIVE, model.getStatus());
     }
 }

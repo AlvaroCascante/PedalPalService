@@ -1,19 +1,20 @@
 package com.quetoquenana.pedalpal.media.application.useCase;
 
-import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
-import com.quetoquenana.pedalpal.common.application.command.UploadMediaSpecCommand;
-import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
-import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
-import com.quetoquenana.pedalpal.media.application.mapper.MediaMapper;
-import com.quetoquenana.pedalpal.media.application.model.SignedUrl;
-import com.quetoquenana.pedalpal.media.application.port.OwnershipValidationPort;
-import com.quetoquenana.pedalpal.media.application.port.StorageProvider;
+import com.quetoquenana.pedalpal.common.application.result.MediaResult;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaSpecCommand;
+import com.quetoquenana.pedalpal.media.application.port.MediaOwnershipValidationPort;
+import com.quetoquenana.pedalpal.media.application.port.MediaUrlProvider;
 import com.quetoquenana.pedalpal.media.domain.model.Media;
+import com.quetoquenana.pedalpal.media.domain.model.MediaContentType;
 import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.domain.model.UserType;
+import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.media.application.mapper.MediaMapper;
+import com.quetoquenana.pedalpal.media.application.model.SignedUrl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,10 +51,10 @@ class MediaUploadUseCaseTest {
     MediaMapper mapper;
 
     @Mock
-    StorageProvider storageProvider;
+    MediaUrlProvider mediaUrlProvider;
 
     @Mock
-    OwnershipValidationPort ownershipValidationPort;
+    MediaOwnershipValidationPort mediaOwnershipValidationPort;
 
     @Mock
     AuthenticatedUserPort authenticatedUserPort;
@@ -68,8 +69,8 @@ class MediaUploadUseCaseTest {
         useCase = new MediaUploadUseCase(
                 repository,
                 mapper,
-                storageProvider,
-                ownershipValidationPort,
+                mediaUrlProvider,
+                mediaOwnershipValidationPort,
                 authenticatedUserPort,
                 DEFAULT_PROVIDER
         );
@@ -108,41 +109,61 @@ class MediaUploadUseCaseTest {
         Media media1 = Media.builder()
                 .id(UUID.randomUUID())
                 .storageKey("media/key-1")
-                .contentType("image/jpeg")
+                .contentType(MediaContentType.IMAGE_JPEG)
                 .status(MediaStatus.DRAFT)
                 .build();
         Media media2 = Media.builder()
                 .id(UUID.randomUUID())
                 .storageKey("media/key-2")
-                .contentType("image/png")
+                .contentType(MediaContentType.IMAGE_PNG)
                 .status(MediaStatus.DRAFT)
                 .build();
 
         SignedUrl signedUrl1 = new SignedUrl("https://upload/1", Instant.now().plusSeconds(60), Map.of("Content-Type", "image/jpeg"));
         SignedUrl signedUrl2 = new SignedUrl("https://upload/2", Instant.now().plusSeconds(60), Map.of("Content-Type", "image/png"));
 
-        UploadMediaResult result1 = new UploadMediaResult(media1.getId(), signedUrl1.url(), media1.getStorageKey(), signedUrl1.expiresAt());
-        UploadMediaResult result2 = new UploadMediaResult(media2.getId(), signedUrl2.url(), media2.getStorageKey(), signedUrl2.expiresAt());
+        MediaResult result1 = new MediaResult(
+                media1.getId(),
+                media1.getContentType().name(),
+                DEFAULT_PROVIDER,
+                true,
+                MediaStatus.DRAFT,
+                "front",
+                "Front view",
+                signedUrl1.url(),
+                signedUrl1.expiresAt()
+        );
+        MediaResult result2 = new MediaResult(
+                media2.getId(),
+                media2.getContentType().name(),
+                DEFAULT_PROVIDER,
+                false,
+                MediaStatus.DRAFT,
+                "side",
+                "Side view",
+                signedUrl2.url(),
+                signedUrl2.expiresAt()
+        );
 
         when(mapper.toModel(eq(authUserId), eq(command), eq(spec1))).thenReturn(media1);
         when(mapper.toModel(eq(authUserId), eq(command), eq(spec2))).thenReturn(media2);
-        when(storageProvider.generateUploadUrl(media1.getStorageKey(), media1.getContentType(), false)).thenReturn(signedUrl1);
-        when(storageProvider.generateUploadUrl(media2.getStorageKey(), media2.getContentType(), false)).thenReturn(signedUrl2);
+        when(mediaUrlProvider.generateUploadUrl(media1.getStorageKey(), media1.getContentType().getContentType(), false)).thenReturn(signedUrl1);
+        when(mediaUrlProvider.generateUploadUrl(media2.getStorageKey(), media2.getContentType().getContentType(), false)).thenReturn(signedUrl2);
         when(mapper.toResult(any(Media.class), eq(signedUrl1))).thenReturn(result1);
         when(mapper.toResult(any(Media.class), eq(signedUrl2))).thenReturn(result2);
 
-        Set<UploadMediaResult> results = useCase.execute(command);
+        List<MediaResult> results = useCase.execute(command);
 
         assertNotNull(results);
         assertEquals(2, results.size());
-        assertTrue(results.containsAll(Set.of(result1, result2)));
+        assertTrue(results.containsAll(List.of(result1, result2)));
 
-        verify(ownershipValidationPort, times(1)).validate(
+        verify(mediaOwnershipValidationPort, times(1)).validate(
                 MediaReferenceType.BIKE,
                 referenceId
         );
-        verify(storageProvider, times(1)).generateUploadUrl(media1.getStorageKey(), media1.getContentType(), false);
-        verify(storageProvider, times(1)).generateUploadUrl(media2.getStorageKey(), media2.getContentType(), false);
+        verify(mediaUrlProvider, times(1)).generateUploadUrl(media1.getStorageKey(), media1.getContentType().getContentType(), false);
+        verify(mediaUrlProvider, times(1)).generateUploadUrl(media2.getStorageKey(), media2.getContentType().getContentType(), false);
         verify(repository, times(2)).save(mediaCaptor.capture());
 
         List<Media> persisted = mediaCaptor.getAllValues();

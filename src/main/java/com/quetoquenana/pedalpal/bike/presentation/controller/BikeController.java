@@ -4,14 +4,14 @@ import com.quetoquenana.pedalpal.bike.application.command.*;
 import com.quetoquenana.pedalpal.bike.application.query.BikeHistoryQueryService;
 import com.quetoquenana.pedalpal.bike.application.query.BikeQueryService;
 import com.quetoquenana.pedalpal.bike.application.result.BikeHistoryResult;
+import com.quetoquenana.pedalpal.bike.application.result.BikeMediaResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
-import com.quetoquenana.pedalpal.bike.application.result.BikeUploadMediaResult;
 import com.quetoquenana.pedalpal.bike.application.useCase.*;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
 import com.quetoquenana.pedalpal.bike.presentation.dto.request.*;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeHistoryResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeResponse;
-import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeUploadMediaResponse;
+import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeMediaResponse;
 import com.quetoquenana.pedalpal.bike.presentation.mapper.BikeApiMapper;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import jakarta.validation.Valid;
@@ -35,7 +35,7 @@ public class BikeController {
 
     private final AddBikeComponentUseCase addBikeComponentUseCase;
     private final CreateBikeUseCase createBikeUseCase;
-    private final CreateBikeUploadMediaUseCase createBikeUploadMediaUseCase;
+    private final UploadBikeMediaUseCase uploadBikeMediaUseCase;
     private final ReplaceBikeComponentUseCase replaceBikeComponentUseCase;
     private final UpdateBikeComponentUseCase updateBikeComponentUseCase;
     private final UpdateBikeComponentStatusUseCase updateBikeComponentStatusUseCase;
@@ -80,9 +80,7 @@ public class BikeController {
 
     @PostMapping
     @PreAuthorize("(hasRole('USER'))")
-    public ResponseEntity<ApiResponse> create(
-            @Valid @RequestBody CreateBikeRequest request
-    ) {
+    public ResponseEntity<ApiResponse> create(@Valid @RequestBody CreateBikeRequest request) {
         log.info("POST /v1/api/bikes Received request to create bike: {}", request);
         // Map the incoming request to a command object
         CreateBikeCommand command = apiMapper.toCommand(request);
@@ -210,8 +208,8 @@ public class BikeController {
                 request
         );
 
-        BikeUploadMediaResult result = createBikeUploadMediaUseCase.execute(command);
-        BikeUploadMediaResponse response = apiMapper.toResponse(result);
+        BikeMediaResult result = uploadBikeMediaUseCase.execute(command);
+        BikeMediaResponse response = apiMapper.toResponse(result);
 
         return ResponseEntity.ok(new ApiResponse(response));
     }

@@ -7,9 +7,9 @@ import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
 import com.quetoquenana.pedalpal.announcement.domain.model.AnnouncementStatus;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
 import com.quetoquenana.pedalpal.announcement.application.mapper.AnnouncementMapper;
-import com.quetoquenana.pedalpal.common.application.command.UploadMediaCommand;
-import com.quetoquenana.pedalpal.common.application.port.UploadMediaPort;
-import com.quetoquenana.pedalpal.common.application.result.UploadMediaResult;
+import com.quetoquenana.pedalpal.common.application.result.MediaResult;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
+import com.quetoquenana.pedalpal.media.application.port.UploadMediaPort;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
 import com.quetoquenana.pedalpal.util.TestAnnouncementData;
 import org.junit.jupiter.api.Nested;
@@ -22,7 +22,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -78,8 +77,18 @@ class CreateAnnouncementUseCaseTest {
                     com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType.ANNOUNCEMENT,
                     java.util.Set.of()
             );
-            Set<UploadMediaResult> mediaResult = Set.of(
-                    new UploadMediaResult(UUID.randomUUID(), "announcements/key", "https://upload.url", Instant.now().plusSeconds(60))
+            java.util.List<MediaResult> mediaResult = java.util.List.of(
+                    new MediaResult(
+                            UUID.randomUUID(),
+                            "image/jpeg",
+                            "r2",
+                            true,
+                            com.quetoquenana.pedalpal.media.domain.model.MediaStatus.DRAFT,
+                            "front",
+                            "Front view",
+                            "https://upload.url",
+                            Instant.now().plusSeconds(60)
+                    )
             );
 
             AnnouncementResult result = TestAnnouncementData.result(savedId);
@@ -120,26 +129,40 @@ class CreateAnnouncementUseCaseTest {
                     java.util.Set.of()
             );
 
-            UploadMediaResult m1 = new UploadMediaResult(
+            MediaResult m1 = new MediaResult(
                     UUID.randomUUID(),
-                    "announcements/key-1",
+                    "image/jpeg",
+                    "r2",
+                    true,
+                    com.quetoquenana.pedalpal.media.domain.model.MediaStatus.DRAFT,
+                    "front",
+                    "Front view",
                     "https://upload.url/1",
                     Instant.now().plusSeconds(60)
             );
-            UploadMediaResult m2 = new UploadMediaResult(
+            MediaResult m2 = new MediaResult(
                     UUID.randomUUID(),
-                    "announcements/key-2",
+                    "image/png",
+                    "r2",
+                    false,
+                    com.quetoquenana.pedalpal.media.domain.model.MediaStatus.DRAFT,
+                    "side",
+                    "Side view",
                     "https://upload.url/2",
                     Instant.now().plusSeconds(60)
             );
-            Set<UploadMediaResult> mediaResults = Set.of(m1, m2);
+            java.util.List<MediaResult> mediaResults = java.util.List.of(m1, m2);
 
-            AnnouncementResult expected = AnnouncementResult.builder()
-                    .id(savedId)
-                    .title(saved.getTitle())
-                    .status(saved.getStatus())
-                    .uploadMediaResults(mediaResults)
-                    .build();
+            AnnouncementResult expected = new AnnouncementResult(
+                    savedId,
+                    saved.getTitle(),
+                    saved.getSubTitle(),
+                    saved.getDescription(),
+                    saved.getPosition(),
+                    saved.getUrl(),
+                    saved.getStatus(),
+                    mediaResults
+            );
 
             when(mapper.toModel(command)).thenReturn(model);
             when(repository.save(any(Announcement.class))).thenReturn(saved);
@@ -150,10 +173,10 @@ class CreateAnnouncementUseCaseTest {
             AnnouncementResult actual = useCase.execute(command);
 
             assertNotNull(actual);
-            assertNotNull(actual.uploadMediaResults());
-            assertEquals(2, actual.uploadMediaResults().size());
-            assertTrue(actual.uploadMediaResults().contains(m1));
-            assertTrue(actual.uploadMediaResults().contains(m2));
+            assertNotNull(actual.mediaResults());
+            assertEquals(2, actual.mediaResults().size());
+            assertTrue(actual.mediaResults().contains(m1));
+            assertTrue(actual.mediaResults().contains(m2));
 
             verify(uploadMediaPort, times(1)).generateUploadUrls(mediaCommand);
             verify(mapper, times(1)).toResult(saved, mediaResults);

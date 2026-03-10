@@ -9,8 +9,6 @@ import lombok.*;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
-@Table(name = "maintenance_suggestions")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

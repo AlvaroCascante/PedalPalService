@@ -1,6 +1,7 @@
 package com.quetoquenana.pedalpal.media.infrastructure.persistence.repository;
 
 import com.quetoquenana.pedalpal.media.domain.model.Media;
+import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
 import com.quetoquenana.pedalpal.media.infrastructure.persistence.entity.MediaEntity;
 import com.quetoquenana.pedalpal.media.infrastructure.persistence.mapper.MediaEntityMapper;
@@ -23,18 +24,11 @@ public class MediaRepositoryImpl implements MediaRepository {
     }
 
     @Override
-    public Optional<Media> getByStorageKey(String storageKey) {
-        return repository.getByStorageKey(storageKey).map(MediaEntityMapper::toModel);
-    }
-
-    @Override
-    public List<Media> findByOwnerId(UUID id) {
-        return repository.findByOwnerId(id).stream().map(MediaEntityMapper::toModel).toList();
-    }
-
-    @Override
-    public List<Media> findByReferenceId(UUID id) {
-        return repository.findByReferenceId(id).stream().map(MediaEntityMapper::toModel).toList();
+    public List<Media> findByReferenceIdAndReferenceType(UUID referenceId, MediaReferenceType referenceType) {
+        return repository.findByReferenceIdAndReferenceType(referenceId, referenceType)
+                .stream()
+                .map(MediaEntityMapper::toModel)
+                .toList();
     }
 
     @Override
@@ -43,4 +37,3 @@ public class MediaRepositoryImpl implements MediaRepository {
         return MediaEntityMapper.toModel(repository.save(entity));
     }
 }
-
