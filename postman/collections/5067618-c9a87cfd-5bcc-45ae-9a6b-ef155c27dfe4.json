@@ -1055,7 +1055,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "cac2574b-43f8-4c26-8efb-eff867b2db7c"
+									"value": "b131d36e-25d2-4cab-907d-31c5a192ad89"
 								}
 							]
 						}
@@ -1081,7 +1081,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://pedal-pal-media-public-dev.db53fcf7aaa7edb74ff2679ba7f97863.r2.cloudflarestorage.com/announcement/4f080e84-c7f2-4831-b900-659e99c67c87/2026/03/06/cac2574b-43f8-4c26-8efb-eff867b2db7c.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260307T024754Z&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Credential=b9af4e01241674c802ab8eef1cde5d5c%2F20260307%2Fauto%2Fs3%2Faws4_request&X-Amz-Expires=600&X-Amz-Signature=e17bdd109cc60d0d1d91645e5b022c73ac0f31a38120dcc1fd84716489b3609a",
+							"raw": "https://pedal-pal-media-public-dev.db53fcf7aaa7edb74ff2679ba7f97863.r2.cloudflarestorage.com/announcement/4f080e84-c7f2-4831-b900-659e99c67c87/2026/03/09/b131d36e-25d2-4cab-907d-31c5a192ad89.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260310T034408Z&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Credential=b9af4e01241674c802ab8eef1cde5d5c%2F20260310%2Fauto%2Fs3%2Faws4_request&X-Amz-Expires=600&X-Amz-Signature=6ce216f6383ac8da9f05d9626d30526747833ff7242a79aae9e9dc5420464d8f",
 							"protocol": "https",
 							"host": [
 								"pedal-pal-media-public-dev",
@@ -1095,8 +1095,8 @@
 								"4f080e84-c7f2-4831-b900-659e99c67c87",
 								"2026",
 								"03",
-								"06",
-								"cac2574b-43f8-4c26-8efb-eff867b2db7c.png"
+								"09",
+								"b131d36e-25d2-4cab-907d-31c5a192ad89.png"
 							],
 							"query": [
 								{
@@ -1105,7 +1105,7 @@
 								},
 								{
 									"key": "X-Amz-Date",
-									"value": "20260307T024754Z"
+									"value": "20260310T034408Z"
 								},
 								{
 									"key": "X-Amz-SignedHeaders",
@@ -1113,7 +1113,7 @@
 								},
 								{
 									"key": "X-Amz-Credential",
-									"value": "b9af4e01241674c802ab8eef1cde5d5c%2F20260307%2Fauto%2Fs3%2Faws4_request"
+									"value": "b9af4e01241674c802ab8eef1cde5d5c%2F20260310%2Fauto%2Fs3%2Faws4_request"
 								},
 								{
 									"key": "X-Amz-Expires",
@@ -1121,7 +1121,7 @@
 								},
 								{
 									"key": "X-Amz-Signature",
-									"value": "e17bdd109cc60d0d1d91645e5b022c73ac0f31a38120dcc1fd84716489b3609a"
+									"value": "6ce216f6383ac8da9f05d9626d30526747833ff7242a79aae9e9dc5420464d8f"
 								}
 							]
 						}
