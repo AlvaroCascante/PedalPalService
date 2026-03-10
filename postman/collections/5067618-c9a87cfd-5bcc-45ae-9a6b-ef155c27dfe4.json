@@ -1095,7 +1095,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{admin_token}}",
+									"value": "{{user_token}}",
 									"type": "string"
 								}
 							]
@@ -1116,7 +1116,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "b131d36e-25d2-4cab-907d-31c5a192ad89"
+									"value": "83874d97-4409-4464-9e1c-7af1be98ec8c"
 								}
 							]
 						}
@@ -1138,26 +1138,26 @@
 						"body": {
 							"mode": "file",
 							"file": {
-								"src": "/Users/alvarocascanteretana/Documents/user.png"
+								"src": "/Users/alvarocascanteretana/Documents/f942dfdb-9abd-4ccf-ad48-f2a445602663.png"
 							}
 						},
 						"url": {
-							"raw": "https://pedal-pal-media-public-dev.db53fcf7aaa7edb74ff2679ba7f97863.r2.cloudflarestorage.com/announcement/4f080e84-c7f2-4831-b900-659e99c67c87/2026/03/09/b131d36e-25d2-4cab-907d-31c5a192ad89.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260310T034408Z&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Credential=b9af4e01241674c802ab8eef1cde5d5c%2F20260310%2Fauto%2Fs3%2Faws4_request&X-Amz-Expires=600&X-Amz-Signature=6ce216f6383ac8da9f05d9626d30526747833ff7242a79aae9e9dc5420464d8f",
+							"raw": "https://pedal-pal-media-private-dev.db53fcf7aaa7edb74ff2679ba7f97863.r2.cloudflarestorage.com/bike/9c84b698-b3fc-4c9d-91f1-9bab8a53a466/2026/03/10/FirstBikeImage.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260310T234136Z&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Credential=b9af4e01241674c802ab8eef1cde5d5c%2F20260310%2Fauto%2Fs3%2Faws4_request&X-Amz-Expires=600&X-Amz-Signature=1d7c48b77bb7b7c21752a13ffead028f88844eb755800d09feb0572a46dca18c",
 							"protocol": "https",
 							"host": [
-								"pedal-pal-media-public-dev",
+								"pedal-pal-media-private-dev",
 								"db53fcf7aaa7edb74ff2679ba7f97863",
 								"r2",
 								"cloudflarestorage",
 								"com"
 							],
 							"path": [
-								"announcement",
-								"4f080e84-c7f2-4831-b900-659e99c67c87",
+								"bike",
+								"9c84b698-b3fc-4c9d-91f1-9bab8a53a466",
 								"2026",
 								"03",
-								"09",
-								"b131d36e-25d2-4cab-907d-31c5a192ad89.png"
+								"10",
+								"FirstBikeImage.png"
 							],
 							"query": [
 								{
@@ -1166,7 +1166,7 @@
 								},
 								{
 									"key": "X-Amz-Date",
-									"value": "20260310T034408Z"
+									"value": "20260310T234136Z"
 								},
 								{
 									"key": "X-Amz-SignedHeaders",
@@ -1182,7 +1182,7 @@
 								},
 								{
 									"key": "X-Amz-Signature",
-									"value": "6ce216f6383ac8da9f05d9626d30526747833ff7242a79aae9e9dc5420464d8f"
+									"value": "1d7c48b77bb7b7c21752a13ffead028f88844eb755800d09feb0572a46dca18c"
 								}
 							]
 						}
