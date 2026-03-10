@@ -548,7 +548,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Bike Copy",
+					"name": "Upload Bike Media",
 					"event": [
 						{
 							"listen": "test",
