@@ -588,7 +588,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Pilsen\",\n    \"type\": \"ROAD\",\n    \"brand\": \"Pinarello\",\n    \"model\": \"Razha\",\n    \"year\": 2017,\n    \"serialNumber\": \"SN-123456789AB\",\n    \"notes\": \"Purchased at local store.\"\n}",
+							"raw": "{\n    \"mediaFiles\": [\n        {\n            \"contentType\": \"image/png\",\n            \"isPrimary\": true,\n            \"name\": \"FirstBikeImage\",\n            \"altText\": \"Alt text\"\n        },\n        {\n            \"contentType\": \"image/png\",\n            \"isPrimary\": false,\n            \"name\": \"SecondBikeImage\",\n            \"altText\": \"Alt text\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -596,13 +596,21 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/bikes",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/bikes/:id/media",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
-								"bikes"
+								"bikes",
+								":id",
+								"media"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{bikeId}}"
+								}
 							]
 						}
 					},
@@ -689,6 +697,47 @@
 							],
 							"variable": [
 								{
+									"key": "id",
+									"value": "{{bikeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bike Media",
+					"id": "5067618-0a847835-22aa-4cbf-a1ec-657f0d734525",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_pedal_pal}}/{{path}}/bikes/:id/history",
+							"host": [
+								"{{host_pedal_pal}}"
+							],
+							"path": [
+								"{{path}}",
+								"bikes",
+								":id",
+								"history"
+							],
+							"variable": [
+								{
+									"id": "165b2c86-b9eb-4a02-80c9-bd52296165ab",
 									"key": "id",
 									"value": "{{bikeId}}"
 								}
