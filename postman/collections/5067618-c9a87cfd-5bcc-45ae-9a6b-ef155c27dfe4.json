@@ -725,19 +725,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/bikes/:id/history",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/bikes/:id/media",
 							"host": [
-								"{{host_pedal_pal}}"
+								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
 								"bikes",
 								":id",
-								"history"
+								"media"
 							],
 							"variable": [
 								{
-									"id": "165b2c86-b9eb-4a02-80c9-bd52296165ab",
 									"key": "id",
 									"value": "{{bikeId}}"
 								}
