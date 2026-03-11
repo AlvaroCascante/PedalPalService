@@ -1694,34 +1694,28 @@
 					},
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"object_type\": \"activity\",\n    \"aspect_type\": \"create\",\n    \"object_id\": 123456,\n    \"owner_id\": 999999,\n    \"updates\": null,\n    \"event_time\": 334541\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/media/:id/confirm",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/webhook",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
-								"media",
-								":id",
-								"confirm"
-							],
-							"variable": [
-								{
-									"id": "dfca509a-1edd-49dc-8501-c069206ff793",
-									"key": "id",
-									"value": "83874d97-4409-4464-9e1c-7af1be98ec8c"
-								}
+								"strava",
+								"webhook"
 							]
 						}
 					},
@@ -1766,7 +1760,7 @@
 							]
 						},
 						"url": {
-							"raw": "https://www.strava.com/api/v3/push_subscriptions?client_id",
+							"raw": "https://www.strava.com/api/v3/push_subscriptions",
 							"protocol": "https",
 							"host": [
 								"www",
@@ -1777,12 +1771,6 @@
 								"api",
 								"v3",
 								"push_subscriptions"
-							],
-							"query": [
-								{
-									"key": "client_id",
-									"value": null
-								}
 							]
 						}
 					},
