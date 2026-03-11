@@ -1722,6 +1722,41 @@
 					"response": []
 				},
 				{
+					"name": "Connect URL",
+					"id": "5067618-b8bf3cfb-758c-48c7-88e1-07150d62ed9c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"object_type\": \"activity\",\n    \"aspect_type\": \"create\",\n    \"object_id\": 123456,\n    \"owner_id\": 999999,\n    \"updates\": null,\n    \"event_time\": 334541\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/webhook",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"strava",
+								"webhook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Subscribe",
 					"id": "5067618-dcf95c0d-0b6b-4842-857f-b53ba01df081",
 					"protocolProfileBehavior": {
