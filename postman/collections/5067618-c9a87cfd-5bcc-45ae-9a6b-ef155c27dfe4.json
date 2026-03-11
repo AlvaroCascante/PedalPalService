@@ -1682,6 +1682,24 @@
 				}
 			],
 			"id": "5067618-26a90c92-e6ae-4d52-922d-53bd64c41b69"
+		},
+		{
+			"name": "Strava",
+			"item": [
+				{
+					"name": "New Request",
+					"id": "5067618-d0dbe36a-7145-4d9e-abf3-02a3fa6979d1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			],
+			"id": "5067618-950fed14-442f-4b70-a038-9d084bf2f2e8"
 		}
 	],
 	"event": [
