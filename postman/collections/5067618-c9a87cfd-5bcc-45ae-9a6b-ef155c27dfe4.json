@@ -1687,6 +1687,47 @@
 			"name": "Strava",
 			"item": [
 				{
+					"name": "Confirm Upload Copy",
+					"id": "5067618-4a21e148-4053-4648-b3ed-6aad5db1fb18",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/media/:id/confirm",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"media",
+								":id",
+								"confirm"
+							],
+							"variable": [
+								{
+									"id": "dfca509a-1edd-49dc-8501-c069206ff793",
+									"key": "id",
+									"value": "83874d97-4409-4464-9e1c-7af1be98ec8c"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Subscription",
 					"id": "5067618-d0dbe36a-7145-4d9e-abf3-02a3fa6979d1",
 					"protocolProfileBehavior": {
