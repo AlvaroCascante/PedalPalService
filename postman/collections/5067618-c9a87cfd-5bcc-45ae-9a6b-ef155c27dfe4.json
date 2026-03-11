@@ -48,6 +48,39 @@
 					"response": []
 				},
 				{
+					"name": "Get Active",
+					"id": "5067618-19c53cea-2058-4cae-a175-b905ea25f264",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/announcements/active",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"announcements",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Activate Announcement",
 					"id": "5067618-08086b57-d7ed-41ab-8eeb-44f14e13428f",
 					"protocolProfileBehavior": {
