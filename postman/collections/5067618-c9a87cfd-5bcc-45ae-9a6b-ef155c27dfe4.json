@@ -1687,7 +1687,7 @@
 			"name": "Strava",
 			"item": [
 				{
-					"name": "Confirm Upload Copy",
+					"name": "Webhook",
 					"id": "5067618-4a21e148-4053-4648-b3ed-6aad5db1fb18",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
