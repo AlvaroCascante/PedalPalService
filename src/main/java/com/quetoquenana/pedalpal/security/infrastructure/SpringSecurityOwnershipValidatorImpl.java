@@ -6,7 +6,7 @@ import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.domain.model.UserType;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
-import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.security.application.OwnershipValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

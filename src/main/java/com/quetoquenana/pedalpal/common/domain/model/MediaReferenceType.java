@@ -1,4 +1,4 @@
-package com.quetoquenana.pedalpal.media.domain.model;
+package com.quetoquenana.pedalpal.common.domain.model;
 
 import lombok.Getter;
 

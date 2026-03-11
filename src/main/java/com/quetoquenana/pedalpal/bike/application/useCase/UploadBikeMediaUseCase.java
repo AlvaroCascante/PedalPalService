@@ -40,12 +40,12 @@ public class UploadBikeMediaUseCase {
 
         validate(command);
 
-        Bike bike = repository.findByIdAndOwnerId(command.bikeId(), currentUser.userId())
+        Bike model = repository.findByIdAndOwnerId(command.bikeId(), currentUser.userId())
                 .orElseThrow(() -> new RecordNotFoundException("bike.not.found"));
 
-        UploadMediaCommand mediaRequest = mapper.toMediaUploadRequest(bike, command);
+        UploadMediaCommand mediaRequest = mapper.toMediaUploadRequest(model, command);
         List<MediaResult> mediaResult = uploadMediaPort.generateUploadUrls(mediaRequest);
-        return mapper.toResult(bike, mediaResult);
+        return mapper.toResult(model, mediaResult);
     }
 
     private void validate(CreateBikeUploadMediaCommand command) {

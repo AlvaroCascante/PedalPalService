@@ -1,8 +1,8 @@
 package com.quetoquenana.pedalpal.announcement.infrastructure.persistence.repository;
 
 import com.quetoquenana.pedalpal.announcement.domain.model.Announcement;
+import com.quetoquenana.pedalpal.announcement.domain.model.AnnouncementStatus;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
-import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.announcement.infrastructure.persistence.entity.AnnouncementEntity;
 import com.quetoquenana.pedalpal.announcement.infrastructure.persistence.mapper.AnnouncementEntityMapper;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
 
     @Override
     public List<Announcement> getActive() {
-        return jpaRepository.findByStatusOrderByPositionAscTitleAsc(GeneralStatus.ACTIVE)
+        return jpaRepository.findByStatusOrderByPositionAsc(AnnouncementStatus.ACTIVE)
                 .stream()
                 .map(AnnouncementEntityMapper::toModel)
                 .toList();

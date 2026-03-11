@@ -1,6 +1,6 @@
 package com.quetoquenana.pedalpal.media.application.command;
 
-import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 
 import java.util.Set;
 import java.util.UUID;

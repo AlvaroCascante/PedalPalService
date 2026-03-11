@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.media.infrastructure.persistence.repository;
 
 import com.quetoquenana.pedalpal.media.infrastructure.persistence.entity.MediaEntity;
-import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

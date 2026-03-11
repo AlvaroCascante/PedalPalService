@@ -6,7 +6,7 @@ import com.quetoquenana.pedalpal.media.application.command.UploadMediaSpecComman
 import com.quetoquenana.pedalpal.media.application.model.SignedUrl;
 import com.quetoquenana.pedalpal.media.domain.model.Media;
 import com.quetoquenana.pedalpal.media.domain.model.MediaContentType;
-import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 
 import java.time.Clock;
@@ -32,7 +32,6 @@ public class MediaMapper {
                 .storageKey(buildStorageKey(
                         mediaId,
                         ownerId,
-                        command,
                         spec,
                         command.referenceType(),
                         Clock.systemDefaultZone())
@@ -45,7 +44,6 @@ public class MediaMapper {
     private String buildStorageKey(
             UUID mediaId,
             UUID ownerId,
-            UploadMediaCommand command,
             UploadMediaSpecCommand spec,
             MediaReferenceType referenceType,
             Clock clock
@@ -53,13 +51,14 @@ public class MediaMapper {
         LocalDate today = LocalDate.now(clock);
         String ext = MediaContentType.extensionFor(spec.contentType());
         String type = referenceType.name().toLowerCase(Locale.ROOT);
+        String name = spec.name() == null ? mediaId.toString() : spec.name().replaceAll("\\s+", "_");
 
         return type + "/" +  //announcement, profile, etc.
                 ownerId + "/" +
                 today.getYear() + "/" +
                 String.format("%02d", today.getMonthValue()) + "/" +
                 String.format("%02d", today.getDayOfMonth()) + "/" +
-                mediaId + "." + ext;
+                name + "." + ext;
     }
 
     public MediaResult toResult(Media model, SignedUrl signedUrl) {

@@ -199,7 +199,7 @@ public class BikeController {
     @PreAuthorize("(hasRole('USER'))")
     public ResponseEntity<ApiResponse> uploadMedia(
             @PathVariable("id") UUID id,
-            @Valid @RequestBody CreateBikeUploadMediaRequest request
+            @Valid @RequestBody UploadBikeMediaRequest request
     ) {
         log.info("POST /v1/api/bikes/{}/media Received request to generate upload URLs: {}", id, request);
 
@@ -211,6 +211,18 @@ public class BikeController {
         BikeMediaResult result = uploadBikeMediaUseCase.execute(command);
         BikeMediaResponse response = apiMapper.toResponse(result);
 
+        return ResponseEntity.ok(new ApiResponse(response));
+    }
+
+
+    @GetMapping("/{id}/media")
+    @PreAuthorize("(hasRole('USER'))")
+    public ResponseEntity<ApiResponse> getMedia(
+            @PathVariable("id") UUID id
+    ) {
+        log.info("POST /v1/api/bikes/{}/media Received request to get bike media", id);
+        BikeMediaResult result = queryService.getMediaById(id);
+        BikeMediaResponse response = apiMapper.toResponse(result);
         return ResponseEntity.ok(new ApiResponse(response));
     }
 }

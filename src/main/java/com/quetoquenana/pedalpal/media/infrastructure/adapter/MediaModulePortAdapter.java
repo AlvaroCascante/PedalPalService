@@ -1,5 +1,6 @@
 package com.quetoquenana.pedalpal.media.infrastructure.adapter;
 
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.media.application.port.MediaLookupPort;
 import com.quetoquenana.pedalpal.media.application.query.MediaQueryService;
 import com.quetoquenana.pedalpal.common.application.result.MediaResult;
@@ -22,7 +23,7 @@ public class MediaModulePortAdapter implements MediaLookupPort {
      * Returns media metadata for a given reference.
      */
     @Override
-    public List<MediaResult> findByReferenceId(UUID referenceId, String referenceType) {
+    public List<MediaResult> findByReferenceId(UUID referenceId, MediaReferenceType referenceType) {
         return queryService.getByReferenceIdAndReferenceType(referenceId, referenceType);
     }
 }

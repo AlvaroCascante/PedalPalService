@@ -123,11 +123,10 @@ public class BikeApiMapper {
 
     public CreateBikeUploadMediaCommand toCommand(
             UUID bikeId,
-            CreateBikeUploadMediaRequest request
+            UploadBikeMediaRequest request
     ) {
         return new CreateBikeUploadMediaCommand(
                 bikeId,
-                request.isPublic(),
                 request.mediaFiles()
                         .stream()
                         .map(this::toCommand)
@@ -138,7 +137,6 @@ public class BikeApiMapper {
     private BikeMediaCommand toCommand(BikeMediaRequest request) {
         return new BikeMediaCommand(
                 request.contentType(),
-                request.mediaType(),
                 request.isPrimary(),
                 request.name(),
                 request.altText()

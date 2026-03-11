@@ -7,7 +7,7 @@ import com.quetoquenana.pedalpal.media.application.port.MediaOwnershipValidation
 import com.quetoquenana.pedalpal.media.application.port.MediaUrlProvider;
 import com.quetoquenana.pedalpal.media.domain.model.Media;
 import com.quetoquenana.pedalpal.media.domain.model.MediaContentType;
-import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
@@ -85,14 +85,12 @@ class MediaUploadUseCaseTest {
                 .thenReturn(Optional.of(new AuthenticatedUser(authUserId, "test-user", "Test User", UserType.CUSTOMER)));
 
         UploadMediaSpecCommand spec1 = new UploadMediaSpecCommand(
-                "image",
                 "image/jpeg",
                 true,
                 "front",
                 "Front view"
         );
         UploadMediaSpecCommand spec2 = new UploadMediaSpecCommand(
-                "image",
                 "image/png",
                 false,
                 "side",

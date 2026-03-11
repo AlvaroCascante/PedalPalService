@@ -13,7 +13,7 @@ import com.quetoquenana.pedalpal.bike.domain.model.*;
 import com.quetoquenana.pedalpal.common.application.result.MediaResult;
 import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.media.application.command.UploadMediaSpecCommand;
-import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 import lombok.RequiredArgsConstructor;
 
@@ -128,13 +128,12 @@ public class BikeMapper {
 
     public UploadMediaCommand toMediaUploadRequest(Bike bike, CreateBikeUploadMediaCommand command) {
         return new UploadMediaCommand(
-                command.isPublic(),
+                false,
                 bike.getId(),
                 MediaReferenceType.BIKE,
                 command.mediaFiles()
                         .stream()
                         .map(spec -> new UploadMediaSpecCommand(
-                                spec.mediaType(),
                                 spec.contentType(),
                                 spec.isPrimary(),
                                 spec.title(),

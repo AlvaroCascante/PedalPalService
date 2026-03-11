@@ -8,6 +8,7 @@ import com.quetoquenana.pedalpal.announcement.domain.model.AnnouncementStatus;
 import com.quetoquenana.pedalpal.announcement.domain.repository.AnnouncementRepository;
 import com.quetoquenana.pedalpal.announcement.application.mapper.AnnouncementMapper;
 import com.quetoquenana.pedalpal.common.application.result.MediaResult;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.media.application.port.UploadMediaPort;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
@@ -74,7 +75,7 @@ class CreateAnnouncementUseCaseTest {
             UploadMediaCommand mediaCommand = new UploadMediaCommand(
                     true,
                     savedId,
-                    com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType.ANNOUNCEMENT,
+                    MediaReferenceType.ANNOUNCEMENT,
                     java.util.Set.of()
             );
             java.util.List<MediaResult> mediaResult = java.util.List.of(
@@ -125,7 +126,7 @@ class CreateAnnouncementUseCaseTest {
             UploadMediaCommand mediaCommand = new UploadMediaCommand(
                     true,
                     savedId,
-                    com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType.ANNOUNCEMENT,
+                    MediaReferenceType.ANNOUNCEMENT,
                     java.util.Set.of()
             );
 

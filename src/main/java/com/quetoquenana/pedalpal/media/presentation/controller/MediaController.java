@@ -1,6 +1,7 @@
 package com.quetoquenana.pedalpal.media.presentation.controller;
 
 import com.quetoquenana.pedalpal.common.application.result.MediaResult;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.media.application.command.ConfirmUploadCommand;
 import com.quetoquenana.pedalpal.media.application.query.MediaQueryService;
@@ -34,7 +35,7 @@ public class MediaController {
             @PathVariable("referenceId") UUID referenceId
     ) {
         log.info("GET /v1/api/media/{}/{} Received request to get media by reference", referenceType, referenceId);
-        List<MediaResult> result = queryService.getByReferenceIdAndReferenceType(referenceId, referenceType);
+        List<MediaResult> result = queryService.getByReferenceIdAndReferenceType(referenceId, MediaReferenceType.from(referenceType));
         List<MediaResponse> response = result.stream().map(apiMapper::toResponse).toList();
         return ResponseEntity.ok(new ApiResponse(response));
     }

@@ -44,7 +44,6 @@ public class AnnouncementApiMapper {
     private AnnouncementMediaCommand toCommand(AnnouncementMediaRequest request) {
         return new AnnouncementMediaCommand(
                 request.contentType(),
-                request.mediaType(),
                 request.isPrimary(),
                 request.name(),
                 request.altText()

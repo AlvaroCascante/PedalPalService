@@ -2,7 +2,7 @@ package com.quetoquenana.pedalpal.media.infrastructure.persistence.entity;
 
 import com.quetoquenana.pedalpal.auditing.domain.model.AuditableEntity;
 import com.quetoquenana.pedalpal.media.domain.model.MediaContentType;
-import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import jakarta.persistence.*;
 import lombok.*;

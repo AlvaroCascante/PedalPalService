@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.media.infrastructure.persistence.repository;
 
 import com.quetoquenana.pedalpal.media.domain.model.Media;
-import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.media.domain.repository.MediaRepository;
 import com.quetoquenana.pedalpal.media.infrastructure.persistence.entity.MediaEntity;
 import com.quetoquenana.pedalpal.media.infrastructure.persistence.mapper.MediaEntityMapper;
@@ -32,8 +32,8 @@ public class MediaRepositoryImpl implements MediaRepository {
     }
 
     @Override
-    public Media save(Media model) {
+    public void save(Media model) {
         MediaEntity entity = MediaEntityMapper.toEntity(model);
-        return MediaEntityMapper.toModel(repository.save(entity));
+        MediaEntityMapper.toModel(repository.save(entity));
     }
 }

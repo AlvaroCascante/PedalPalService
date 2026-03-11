@@ -8,10 +8,7 @@ import java.util.List;
 /**
  * Request for generating upload URLs for bike media files.
  */
-public record CreateBikeUploadMediaRequest(
-
-        boolean isPublic,
-
+public record UploadBikeMediaRequest(
         @NotNull(message = "{bike.upload.media.files.null}")
         @Valid
         List<BikeMediaRequest> mediaFiles

@@ -9,7 +9,7 @@ import com.quetoquenana.pedalpal.announcement.domain.model.AnnouncementStatus;
 import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.media.application.command.UploadMediaSpecCommand;
 import com.quetoquenana.pedalpal.common.application.result.MediaResult;
-import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 
 import java.util.Collections;
 import java.util.List;
@@ -70,7 +70,6 @@ public class AnnouncementMapper {
 
     private UploadMediaSpecCommand toMediaUploadRequest(AnnouncementMediaCommand command) {
         return new UploadMediaSpecCommand(
-                command.mediaType(),
                 command.contentType(),
                 command.isPrimary(),
                 command.name(),

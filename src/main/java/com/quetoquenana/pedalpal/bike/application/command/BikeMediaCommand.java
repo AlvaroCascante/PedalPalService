@@ -5,7 +5,6 @@ package com.quetoquenana.pedalpal.bike.application.command;
  */
 public record BikeMediaCommand(
         String contentType,
-        String mediaType,
         boolean isPrimary,
         String title,
         String altText

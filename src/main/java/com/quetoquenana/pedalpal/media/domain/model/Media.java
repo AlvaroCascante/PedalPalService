@@ -1,6 +1,7 @@
 package com.quetoquenana.pedalpal.media.domain.model;
 
 import com.quetoquenana.pedalpal.common.domain.model.Auditable;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.quetoquenana.pedalpal.media.infrastructure.security;
 
 import com.quetoquenana.pedalpal.media.application.port.MediaOwnershipValidationPort;
-import com.quetoquenana.pedalpal.media.domain.model.MediaReferenceType;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.security.application.OwnershipValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
