@@ -1706,19 +1706,19 @@
 								},
 								{
 									"key": "client_secret",
-									"value": "",
+									"value": "{{STRAVA_CLIENT_SECRET}}",
 									"type": "text",
 									"uuid": "ee36819b-79c7-4696-9b2b-92c28b3b7b1d"
 								},
 								{
 									"key": "callback_url",
-									"value": "",
+									"value": "{{STRAVA_WEBHOOK_CALLBACK_URL}}",
 									"type": "text",
 									"uuid": "efcaf57a-abde-42e8-bd76-56481015d3a0"
 								},
 								{
 									"key": "verify_token",
-									"value": "",
+									"value": "{{STRAVA_WEBHOOK_VERIFY_TOKEN}}",
 									"type": "text",
 									"uuid": "a8d12a15-c05d-46c6-b90e-db26458e99d8"
 								}
@@ -1740,8 +1740,7 @@
 							"query": [
 								{
 									"key": "client_id",
-									"value": null,
-									"type": "text"
+									"value": null
 								}
 							]
 						}
