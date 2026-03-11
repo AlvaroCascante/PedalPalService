@@ -1743,7 +1743,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/webhook?hub.mode=subscribe",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/webhook?hub.mode=subscribe&hub.verify_token=pedalpal-strava-webhook-secret",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
@@ -1756,6 +1756,11 @@
 								{
 									"key": "hub.mode",
 									"value": "subscribe"
+								},
+								{
+									"key": "hub.verify_token",
+									"value": "pedalpal-strava-webhook-secret",
+									"type": "text"
 								}
 							]
 						}
