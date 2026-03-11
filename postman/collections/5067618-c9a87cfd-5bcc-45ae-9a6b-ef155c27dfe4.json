@@ -1289,12 +1289,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/{{path}}/actuator",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/pedalpalservice/actuator",
 							"host": [
-								"{{HOST}}"
+								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
-								"{{path}}",
+								"pedalpalservice",
 								"actuator"
 							]
 						}
