@@ -1687,8 +1687,8 @@
 			"name": "Strava",
 			"item": [
 				{
-					"name": "Webhook",
-					"id": "5067618-4a21e148-4053-4648-b3ed-6aad5db1fb18",
+					"name": "Connect URL",
+					"id": "5067618-b8bf3cfb-758c-48c7-88e1-07150d62ed9c",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -1722,8 +1722,8 @@
 					"response": []
 				},
 				{
-					"name": "Connect URL",
-					"id": "5067618-b8bf3cfb-758c-48c7-88e1-07150d62ed9c",
+					"name": "Webhook",
+					"id": "5067618-4a21e148-4053-4648-b3ed-6aad5db1fb18",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
