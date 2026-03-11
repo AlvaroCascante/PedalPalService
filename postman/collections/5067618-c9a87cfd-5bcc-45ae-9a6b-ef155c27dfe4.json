@@ -1687,14 +1687,64 @@
 			"name": "Strava",
 			"item": [
 				{
-					"name": "New Request",
+					"name": "Subscription",
 					"id": "5067618-d0dbe36a-7145-4d9e-abf3-02a3fa6979d1",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{STRAVA_CLIENT_ID}}",
+									"type": "text",
+									"uuid": "cbdea59e-b4d1-4447-ad43-2eee123f2d3a"
+								},
+								{
+									"key": "client_secret",
+									"value": "",
+									"type": "text",
+									"uuid": "ee36819b-79c7-4696-9b2b-92c28b3b7b1d"
+								},
+								{
+									"key": "callback_url",
+									"value": "",
+									"type": "text",
+									"uuid": "efcaf57a-abde-42e8-bd76-56481015d3a0"
+								},
+								{
+									"key": "verify_token",
+									"value": "",
+									"type": "text",
+									"uuid": "a8d12a15-c05d-46c6-b90e-db26458e99d8"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://www.strava.com/api/v3/push_subscriptions?client_id",
+							"protocol": "https",
+							"host": [
+								"www",
+								"strava",
+								"com"
+							],
+							"path": [
+								"api",
+								"v3",
+								"push_subscriptions"
+							],
+							"query": [
+								{
+									"key": "client_id",
+									"value": null,
+									"type": "text"
+								}
+							]
+						}
 					},
 					"response": []
 				}
