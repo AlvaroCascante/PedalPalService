@@ -1731,7 +1731,7 @@
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "POST",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -1743,7 +1743,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/webhook",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/webhook?hub.mode=subscribe",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
@@ -1751,6 +1751,12 @@
 								"{{path}}",
 								"strava",
 								"webhook"
+							],
+							"query": [
+								{
+									"key": "hub.mode",
+									"value": "subscribe"
+								}
 							]
 						}
 					},
