@@ -1687,8 +1687,50 @@
 			"name": "Strava",
 			"item": [
 				{
-					"name": "Connect URL",
+					"name": "1 - Connect URL",
 					"id": "5067618-b8bf3cfb-758c-48c7-88e1-07150d62ed9c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/connect-url",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"strava",
+								"connect-url"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1 - Connect URL Copy",
+					"id": "5067618-528f80e6-36c8-46dd-9b76-7ecd453a8718",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
