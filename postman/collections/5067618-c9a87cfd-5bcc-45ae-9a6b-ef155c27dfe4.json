@@ -1696,11 +1696,11 @@
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "POST",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"object_type\": \"activity\",\n    \"aspect_type\": \"create\",\n    \"object_id\": 123456,\n    \"owner_id\": 999999,\n    \"updates\": null,\n    \"event_time\": 334541\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1708,14 +1708,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/webhook",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/connect-url",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
 								"strava",
-								"webhook"
+								"connect-url"
 							]
 						}
 					},
@@ -1768,17 +1768,8 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"object_type\": \"activity\",\n    \"aspect_type\": \"create\",\n    \"object_id\": 123456,\n    \"owner_id\": 999999,\n    \"updates\": null,\n    \"event_time\": 334541\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/webhook?hub.mode=subscribe&hub.verify_token=pedalpal-strava-webhook-secret",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/webhook?hub.mode=subscribe&hub.verify_token=pedalpal-strava-webhook-secret&hub.challenge=test",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
@@ -1794,7 +1785,11 @@
 								},
 								{
 									"key": "hub.verify_token",
-									"value": "pedalpal-strava-webhook-secret",
+									"value": "pedalpal-strava-webhook-secret"
+								},
+								{
+									"key": "hub.challenge",
+									"value": "test",
 									"type": "text"
 								}
 							]
