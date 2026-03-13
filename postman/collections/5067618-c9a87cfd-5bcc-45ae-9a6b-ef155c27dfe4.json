@@ -1800,15 +1800,15 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/connection/status",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/gear/active",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
 								"strava",
-								"connection",
-								"status"
+								"gear",
+								"active"
 							]
 						}
 					},
