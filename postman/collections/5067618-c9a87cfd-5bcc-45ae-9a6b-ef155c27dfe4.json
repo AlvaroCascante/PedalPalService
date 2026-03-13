@@ -1772,7 +1772,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Gears",
+					"name": "Get Athlete Bikes",
 					"id": "5067618-11a238bd-a0ea-4899-8e7f-4a234238f7ce",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
