@@ -1,6 +1,7 @@
 package com.quetoquenana.pedalpal.bike.infrastructure.persistence.repository;
 
 import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
+import com.quetoquenana.pedalpal.bike.domain.model.ExternalSyncProvider;
 import com.quetoquenana.pedalpal.bike.infrastructure.persistence.entity.BikeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,5 +17,6 @@ public interface BikeJpaRepository extends JpaRepository<BikeEntity, UUID> {
     Optional<BikeEntity> findByIdAndOwnerId(UUID id, UUID ownerId);
 
     List<BikeEntity> findByOwnerIdAndStatus(UUID ownerId, BikeStatus bikeStatus);
-}
 
+    Optional<BikeEntity> findByOwnerIdAndExternalGearIdAndExternalSyncProviderAndIsExternalSyncTrue(UUID ownerId, String externalGearId, ExternalSyncProvider provider);
+}

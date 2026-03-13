@@ -19,6 +19,7 @@ import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.useCase.*;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
+import com.quetoquenana.pedalpal.common.application.port.BackgroundJobDispatcher;
 import com.quetoquenana.pedalpal.media.application.mapper.MediaMapper;
 import com.quetoquenana.pedalpal.media.application.port.MediaOwnershipValidationPort;
 import com.quetoquenana.pedalpal.media.application.port.MediaUrlProvider;
@@ -35,6 +36,16 @@ import com.quetoquenana.pedalpal.serviceorder.application.usecase.AddServiceOrde
 import com.quetoquenana.pedalpal.serviceorder.application.usecase.ChangeServiceOrderStatusUseCase;
 import com.quetoquenana.pedalpal.serviceorder.domain.repository.ServiceOrderCommentRepository;
 import com.quetoquenana.pedalpal.serviceorder.domain.repository.ServiceOrderRepository;
+import com.quetoquenana.pedalpal.strava.application.mapper.StravaMapper;
+import com.quetoquenana.pedalpal.strava.application.query.StravaConnectionStatusQuery;
+import com.quetoquenana.pedalpal.strava.application.service.StravaActivityFilteringService;
+import com.quetoquenana.pedalpal.strava.application.service.StravaBikeMatchingService;
+import com.quetoquenana.pedalpal.strava.application.service.StravaTokenService;
+import com.quetoquenana.pedalpal.strava.application.useCase.*;
+import com.quetoquenana.pedalpal.strava.config.StravaProperties;
+import com.quetoquenana.pedalpal.strava.domain.repository.StravaActivitySyncRepository;
+import com.quetoquenana.pedalpal.strava.domain.port.StravaApiClient;
+import com.quetoquenana.pedalpal.strava.domain.repository.StravaConnectionRepository;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -359,6 +370,101 @@ public class UseCaseConfig {
                 commentRepository,
                 mapper,
                 clock
+        );
+    }
+
+    /*
+     * Strava Use Cases
+     */
+    @Bean
+    public StravaBikeMatchingService createStravaBikeMatchingService(
+            BikeRepository bikeRepository
+    ) {
+        return new StravaBikeMatchingService(bikeRepository);
+    }
+
+    @Bean
+    public StravaActivityFilteringService createStravaActivityFilteringService() {
+        return new StravaActivityFilteringService();
+    }
+
+    @Bean
+    public StravaTokenService createStravaTokenService(
+            StravaApiClient stravaApiClient,
+            StravaConnectionRepository connectionRepository,
+            StravaProperties properties
+    ) {
+        return new StravaTokenService(
+                stravaApiClient,
+                connectionRepository,
+                properties
+        );
+    }
+
+    @Bean
+    public GetStravaConnectUrlUseCase createGetStravaConnectUrlUseCase(
+            AuthenticatedUserPort authenticatedUserPort,
+            StravaProperties properties
+    ) {
+        return new GetStravaConnectUrlUseCase(
+                authenticatedUserPort,
+                properties
+        );
+    }
+
+    @Bean
+    public StravaConnectionStatusQuery createGetStravaConnectionStatusUseCase(
+            AuthenticatedUserPort authenticatedUserPort,
+            StravaConnectionRepository connectionRepository,
+            StravaMapper mapper
+    ) {
+        return new StravaConnectionStatusQuery(
+                authenticatedUserPort,
+                connectionRepository,
+                mapper
+        );
+    }
+
+    @Bean
+    public HandleStravaOAuthCallbackUseCase createHandleStravaOAuthCallbackUseCase(
+            StravaApiClient stravaApiClient,
+            StravaConnectionRepository connectionRepository
+    ) {
+        return new HandleStravaOAuthCallbackUseCase(
+                stravaApiClient,
+                connectionRepository
+        );
+    }
+
+    @Bean
+    public SyncStravaActivityUseCase createSyncStravaActivityUseCase(
+            StravaConnectionRepository connectionRepository,
+            StravaActivitySyncRepository activitySyncRepository,
+            StravaApiClient stravaApiClient,
+            StravaTokenService tokenService,
+            StravaBikeMatchingService bikeMatchingService,
+            StravaActivityFilteringService filteringService,
+            BikeRepository bikeRepository
+    ) {
+        return new SyncStravaActivityUseCase(
+                connectionRepository,
+                activitySyncRepository,
+                stravaApiClient,
+                tokenService,
+                bikeMatchingService,
+                filteringService,
+                bikeRepository
+        );
+    }
+
+    @Bean
+    public ProcessStravaWebhookUseCase createProcessStravaWebhookUseCase(
+            BackgroundJobDispatcher backgroundJobDispatcher,
+            SyncStravaActivityUseCase syncStravaActivityUseCase
+    ) {
+        return new ProcessStravaWebhookUseCase(
+                backgroundJobDispatcher,
+                syncStravaActivityUseCase
         );
     }
 }

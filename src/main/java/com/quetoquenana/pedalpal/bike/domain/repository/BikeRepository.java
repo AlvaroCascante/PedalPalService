@@ -2,6 +2,7 @@ package com.quetoquenana.pedalpal.bike.domain.repository;
 
 import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
+import com.quetoquenana.pedalpal.bike.domain.model.ExternalSyncProvider;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,4 +23,6 @@ public interface BikeRepository {
     Optional<Bike> findByIdAndOwnerId(UUID id, UUID ownerId);
 
     List<Bike> findByOwnerIdAndStatus(UUID ownerId, BikeStatus bikeStatus);
+
+    Optional<Bike> findByOwnerIdAndExternalGearId(UUID ownerId, String externalGearId, ExternalSyncProvider provider);
 }

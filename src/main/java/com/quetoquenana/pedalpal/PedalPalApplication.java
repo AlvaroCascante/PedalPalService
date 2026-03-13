@@ -2,6 +2,7 @@ package com.quetoquenana.pedalpal;
 
 import com.quetoquenana.pedalpal.config.MaintenanceSuggestionJobProperties;
 import com.quetoquenana.pedalpal.config.MaintenanceSuggestionPromptProperties;
+import com.quetoquenana.pedalpal.strava.config.StravaProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -11,7 +12,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableConfigurationProperties({
 		MaintenanceSuggestionJobProperties.class,
-		MaintenanceSuggestionPromptProperties.class
+		MaintenanceSuggestionPromptProperties.class,
+		StravaProperties.class
 })
 public class PedalPalApplication {
 

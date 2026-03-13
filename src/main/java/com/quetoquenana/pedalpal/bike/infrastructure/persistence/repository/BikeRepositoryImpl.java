@@ -2,6 +2,7 @@ package com.quetoquenana.pedalpal.bike.infrastructure.persistence.repository;
 
 import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.Bike;
+import com.quetoquenana.pedalpal.bike.domain.model.ExternalSyncProvider;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.bike.infrastructure.persistence.entity.BikeEntity;
 import com.quetoquenana.pedalpal.bike.infrastructure.persistence.mapper.BikeEntityMapper;
@@ -57,5 +58,10 @@ public class BikeRepositoryImpl implements BikeRepository {
                 .map(BikeEntityMapper::toModel)
                 .toList();
     }
-}
 
+    @Override
+    public Optional<Bike> findByOwnerIdAndExternalGearId(UUID ownerId, String externalGearId, ExternalSyncProvider provider) {
+        return repository.findByOwnerIdAndExternalGearIdAndExternalSyncProviderAndIsExternalSyncTrue(ownerId, externalGearId, provider)
+                .map(BikeEntityMapper::toModel);
+    }
+}

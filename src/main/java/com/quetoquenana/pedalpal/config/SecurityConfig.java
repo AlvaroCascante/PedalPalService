@@ -48,6 +48,10 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/v1/api/strava/webhook").permitAll()
+                        .requestMatchers("/v1/api/strava/webhook/**").permitAll()
+                        .requestMatchers("/v1/api/strava/oauth/callback").permitAll()
+                        .requestMatchers("/v1/api/strava/oauth/callback/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

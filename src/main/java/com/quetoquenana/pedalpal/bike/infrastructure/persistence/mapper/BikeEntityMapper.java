@@ -34,6 +34,8 @@ public class BikeEntityMapper {
                 .notes(entity.getNotes())
                 .odometerKm(entity.getOdometerKm())
                 .usageTimeMinutes(entity.getUsageTimeMinutes())
+                .externalSyncProvider(entity.getExternalSyncProvider())
+                .externalGearId(entity.getExternalGearId())
                 .build();
         model.setVersion(entity.getVersion());
         if (entity.getComponents() != null) {
@@ -88,6 +90,8 @@ public class BikeEntityMapper {
                 .notes(model.getNotes())
                 .odometerKm(model.getOdometerKm())
                 .usageTimeMinutes(model.getUsageTimeMinutes())
+                .externalSyncProvider(model.getExternalSyncProvider())
+                .externalGearId(model.getExternalGearId())
                 .build();
         entity.setVersion(model.getVersion());
         model.getComponents()

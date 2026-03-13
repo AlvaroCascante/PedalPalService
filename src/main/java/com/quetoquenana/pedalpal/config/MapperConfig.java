@@ -17,6 +17,8 @@ import com.quetoquenana.pedalpal.serviceorder.application.mapper.ServiceOrderMap
 import com.quetoquenana.pedalpal.serviceorder.presentation.mapper.ServiceOrderApiMapper;
 import com.quetoquenana.pedalpal.store.application.mapper.StoreMapper;
 import com.quetoquenana.pedalpal.store.presentation.mapper.StoreApiMapper;
+import com.quetoquenana.pedalpal.strava.application.mapper.StravaMapper;
+import com.quetoquenana.pedalpal.strava.presentation.mapper.StravaApiMapper;
 import com.quetoquenana.pedalpal.systemCode.application.mapper.SystemCodeMapper;
 import com.quetoquenana.pedalpal.systemCode.presentation.mapper.SystemCodeApiMapper;
 import org.springframework.context.MessageSource;
@@ -105,6 +107,17 @@ public class MapperConfig {
         return new StoreMapper();
     }
 
+
+    @Bean
+    public StravaApiMapper createStravaApiMapper() {
+        return new StravaApiMapper();
+    }
+
+    @Bean
+    public StravaMapper createStravaMapper() {
+        return new StravaMapper();
+    }
+
     @Bean
     public SystemCodeApiMapper createSystemCodeApiMapper(MessageSource messageSource) {
         return new SystemCodeApiMapper(messageSource);
@@ -114,4 +127,5 @@ public class MapperConfig {
     public SystemCodeMapper createSystemCodeMapper() {
         return new SystemCodeMapper();
     }
+
 }

@@ -6,6 +6,8 @@ CREATE TABLE bikes (
     status VARCHAR(50) NOT NULL,
     is_public BOOLEAN,
     is_external_sync BOOLEAN,
+    external_sync_provider VARCHAR(50),
+    external_gear_id VARCHAR(100),
 
     brand VARCHAR(50),
     model VARCHAR(50),

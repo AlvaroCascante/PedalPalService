@@ -25,6 +25,8 @@ public class Bike extends Auditable {
     private String notes;
     private Integer odometerKm;
     private Integer usageTimeMinutes;
+    private ExternalSyncProvider externalSyncProvider;
+    private String externalGearId;
 
     private final Set<BikeComponent> components = new HashSet<>();
 

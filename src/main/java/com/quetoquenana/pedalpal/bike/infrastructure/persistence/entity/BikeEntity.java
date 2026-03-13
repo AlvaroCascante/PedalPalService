@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeType;
 import com.quetoquenana.pedalpal.auditing.domain.model.AuditableEntity;
+import com.quetoquenana.pedalpal.bike.domain.model.ExternalSyncProvider;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -65,6 +66,13 @@ public class BikeEntity extends AuditableEntity {
 
     @Column(name = "usage_time_minutes")
     private Integer usageTimeMinutes;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "external_sync_provider", length = 50)
+    private ExternalSyncProvider externalSyncProvider;
+
+    @Column(name = "external_gear_id", length = 100)
+    private String externalGearId;
 
     @OneToMany(mappedBy = "bike", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference

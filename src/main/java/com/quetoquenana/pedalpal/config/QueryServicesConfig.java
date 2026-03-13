@@ -30,6 +30,10 @@ import com.quetoquenana.pedalpal.store.application.mapper.StoreMapper;
 import com.quetoquenana.pedalpal.store.application.query.StoreQueryService;
 import com.quetoquenana.pedalpal.store.domain.repository.StoreLocationRepository;
 import com.quetoquenana.pedalpal.store.domain.repository.StoreRepository;
+import com.quetoquenana.pedalpal.strava.application.mapper.StravaMapper;
+import com.quetoquenana.pedalpal.strava.application.query.StravaAthleteQuery;
+import com.quetoquenana.pedalpal.strava.domain.repository.StravaConnectionRepository;
+import com.quetoquenana.pedalpal.strava.infrastructure.adapter.api.StravaApiApiAdapter;
 import com.quetoquenana.pedalpal.systemCode.application.query.SystemCodeQueryService;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import com.quetoquenana.pedalpal.systemCode.application.mapper.SystemCodeMapper;
@@ -162,6 +166,21 @@ public class QueryServicesConfig {
                 mapper,
                 commentRepository,
                 repository
+        );
+    }
+
+    @Bean
+    public StravaAthleteQuery createStravaGearQuery(
+            AuthenticatedUserPort authenticatedUserPort,
+            StravaConnectionRepository connectionRepository,
+            StravaApiApiAdapter stravaApiAdapter,
+            StravaMapper mapper
+    ) {
+        return new StravaAthleteQuery(
+                authenticatedUserPort,
+                connectionRepository,
+                stravaApiAdapter,
+                mapper
         );
     }
 }
