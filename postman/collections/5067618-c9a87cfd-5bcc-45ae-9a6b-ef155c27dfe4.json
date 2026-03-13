@@ -1772,6 +1772,49 @@
 					"response": []
 				},
 				{
+					"name": "Get Gears",
+					"id": "5067618-11a238bd-a0ea-4899-8e7f-4a234238f7ce",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/connection/status",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"strava",
+								"connection",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Webhook",
 					"id": "5067618-4a21e148-4053-4648-b3ed-6aad5db1fb18",
 					"protocolProfileBehavior": {
