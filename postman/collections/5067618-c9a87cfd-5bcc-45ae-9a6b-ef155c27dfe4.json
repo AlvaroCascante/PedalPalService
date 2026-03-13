@@ -1850,7 +1850,7 @@
 					"response": []
 				},
 				{
-					"name": "Subscribe",
+					"name": "Verify",
 					"id": "5067618-dcf95c0d-0b6b-4842-857f-b53ba01df081",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
