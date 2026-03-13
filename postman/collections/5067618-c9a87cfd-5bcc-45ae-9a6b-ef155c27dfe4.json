@@ -1771,6 +1771,48 @@
 					"response": []
 				},
 				{
+					"name": "3 - Connection Status",
+					"id": "5067618-59fa8f9a-adb0-46a2-bad7-7948bc349322",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/connect-url",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"strava",
+								"connect-url"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Webhook",
 					"id": "5067618-4a21e148-4053-4648-b3ed-6aad5db1fb18",
 					"protocolProfileBehavior": {
