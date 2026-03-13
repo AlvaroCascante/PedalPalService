@@ -1850,47 +1850,6 @@
 					"response": []
 				},
 				{
-					"name": "Verify",
-					"id": "5067618-dcf95c0d-0b6b-4842-857f-b53ba01df081",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/webhook?hub.mode=subscribe&hub.verify_token=pedalpal-strava-webhook-secret&hub.challenge=test",
-							"host": [
-								"{{HOST_PEDALPAL_SERVICE}}"
-							],
-							"path": [
-								"{{path}}",
-								"strava",
-								"webhook"
-							],
-							"query": [
-								{
-									"key": "hub.mode",
-									"value": "subscribe"
-								},
-								{
-									"key": "hub.verify_token",
-									"value": "pedalpal-strava-webhook-secret"
-								},
-								{
-									"key": "hub.challenge",
-									"value": "test",
-									"type": "text"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Subscription",
 					"id": "5067618-d0dbe36a-7145-4d9e-abf3-02a3fa6979d1",
 					"protocolProfileBehavior": {
@@ -1940,6 +1899,47 @@
 								"api",
 								"v3",
 								"push_subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Webhook",
+					"id": "5067618-dcf95c0d-0b6b-4842-857f-b53ba01df081",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/webhook?hub.mode=subscribe&hub.verify_token=pedalpal-strava-webhook-secret&hub.challenge=test",
+							"host": [
+								"{{HOST_PEDALPAL_SERVICE}}"
+							],
+							"path": [
+								"{{path}}",
+								"strava",
+								"webhook"
+							],
+							"query": [
+								{
+									"key": "hub.mode",
+									"value": "subscribe"
+								},
+								{
+									"key": "hub.verify_token",
+									"value": "pedalpal-strava-webhook-secret"
+								},
+								{
+									"key": "hub.challenge",
+									"value": "test",
+									"type": "text"
+								}
 							]
 						}
 					},
