@@ -1757,14 +1757,15 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/connect-url",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/connection/status",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
 								"strava",
-								"connect-url"
+								"connection",
+								"status"
 							]
 						}
 					},
