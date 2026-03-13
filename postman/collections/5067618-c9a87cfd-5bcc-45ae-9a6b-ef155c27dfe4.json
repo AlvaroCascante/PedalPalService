@@ -1952,14 +1952,38 @@
 			"name": "Strava Direct",
 			"item": [
 				{
-					"name": "New Request",
+					"name": "Athlete",
 					"id": "5067618-03480d71-94ae-41df-b402-bb98739a3e15",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{strava_athlete_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "https://www.strava.com/api/v3/athlete",
+							"protocol": "https",
+							"host": [
+								"www",
+								"strava",
+								"com"
+							],
+							"path": [
+								"api",
+								"v3",
+								"athlete"
+							]
+						}
 					},
 					"response": []
 				}
