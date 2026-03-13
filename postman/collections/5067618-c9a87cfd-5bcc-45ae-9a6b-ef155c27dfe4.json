@@ -1800,15 +1800,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/gear/active",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/strava/bikes",
 							"host": [
 								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
 								"strava",
-								"gear",
-								"active"
+								"bikes"
 							]
 						}
 					},
