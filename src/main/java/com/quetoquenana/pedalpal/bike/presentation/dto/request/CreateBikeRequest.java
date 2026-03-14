@@ -33,6 +33,12 @@ public record CreateBikeRequest(
         @Min(value = 0, message = "{bike.usage.invalid}")
         Integer usageTimeMinutes,
 
+        @Size(max = 100, message = "{bike.externalGearId.max}")
+        String externalGearId,
+
+        @Size(max = 50, message = "{bike.externalSyncProvider.max}")
+        String externalSyncProvider,
+
         boolean isPublic,
 
         boolean isExternalSync

@@ -22,6 +22,8 @@ public record BikeResult(
         String notes,
         int odometerKm,
         int usageTimeMinutes,
+        String externalGearId,
+        String externalSyncProvider,
         Set<BikeComponentResult> components
 ) {
     public BikeResult {

@@ -112,7 +112,7 @@ public class StravaApiApiAdapter implements StravaApiClient {
         return StravaActivity.builder()
                 .id(response.getId())
                 .gearId(response.getGearId())
-                .sportType(StravaSportType.fromStravaValue(response.getSportType()))
+                .sportType(StravaSportType.from(response.getSportType()))
                 .distanceMeters(response.getDistance())
                 .movingTimeSeconds(response.getMovingTime())
                 .build();

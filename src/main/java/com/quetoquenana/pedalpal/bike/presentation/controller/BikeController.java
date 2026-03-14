@@ -105,7 +105,6 @@ public class BikeController {
         UpdateBikeCommand command = apiMapper.toCommand(id, request);
         BikeResult result = updateBikeUseCase.execute(command);
         BikeResponse response = apiMapper.toResponse(result);
-
         return ResponseEntity.ok(new ApiResponse(response));
     }
 

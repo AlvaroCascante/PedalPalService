@@ -1,5 +1,6 @@
 package com.quetoquenana.pedalpal.strava.domain.model;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -14,16 +15,12 @@ public enum StravaSportType {
     /**
      * Maps Strava sport type strings to enum values.
      */
-    public static StravaSportType fromStravaValue(String value) {
-        if (value == null) {
-            return OTHER;
-        }
-        String normalized = value.trim().toUpperCase(Locale.US);
-        return switch (normalized) {
-            case "RIDE" -> RIDE;
-            case "VIRTUALRIDE" -> VIRTUAL_RIDE;
-            case "EBIKERIDE" -> E_BIKE_RIDE;
-            default -> OTHER;
-        };
+    public static StravaSportType from(String value) {
+        String normalized = value.toUpperCase(Locale.ROOT);
+
+        return Arrays.stream(values())
+                .filter(s -> s.name().equals(normalized))
+                .findFirst()
+                .orElse(OTHER);
     }
 }

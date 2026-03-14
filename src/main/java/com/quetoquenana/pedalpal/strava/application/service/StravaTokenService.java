@@ -5,6 +5,7 @@ import com.quetoquenana.pedalpal.strava.domain.model.StravaConnection;
 import com.quetoquenana.pedalpal.strava.domain.model.StravaToken;
 import com.quetoquenana.pedalpal.strava.domain.port.StravaApiClient;
 import com.quetoquenana.pedalpal.strava.domain.repository.StravaConnectionRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
@@ -13,21 +14,12 @@ import java.time.Instant;
  * Application service for handling Strava token refresh logic.
  */
 @Slf4j
+@RequiredArgsConstructor
 public class StravaTokenService {
 
     private final StravaApiClient stravaApiClient;
     private final StravaConnectionRepository connectionRepository;
     private final StravaProperties properties;
-
-    public StravaTokenService(
-            StravaApiClient stravaApiClient,
-            StravaConnectionRepository connectionRepository,
-            StravaProperties properties
-    ) {
-        this.stravaApiClient = stravaApiClient;
-        this.connectionRepository = connectionRepository;
-        this.properties = properties;
-    }
 
     /**
      * Ensures a valid access token exists and refreshes if needed.

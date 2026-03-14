@@ -31,6 +31,19 @@ public class Constants {
         public static final String SYSTEM = "SYSTEM";
     }
 
+    public static class Strava {
+        public static final String AUTH_URL_PATH = "/authorize";
+        public static final String AUTH_PARAM_CLIENT_ID = "client_id";
+        public static final String AUTH_PARAM_REDIRECT_URI = "redirect_uri";
+        public static final String AUTH_PARAM_RESPONSE_TYPE = "response_type";
+        public static final String AUTH_PARAM_APPROVAL_PROMPT = "approval_prompt";
+        public static final String AUTH_PARAM_SCOPE = "scope";
+        public static final String AUTH_PARAM_STATE = "state";
+        public static final String AUTH_PARAM_RESPONSE_TYPE_CODE = "code";
+        public static final String AUTH_PARAM_APPROVAL_PROMPT_AUTO = "auto";
+
+    }
+
     public static class SystemCodes {
         public static final String SUGGESTION_TYPE_IA = "SUGGESTION_TYPE_IA";
     }

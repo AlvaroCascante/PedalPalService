@@ -4,14 +4,10 @@ import com.quetoquenana.pedalpal.bike.application.mapper.BikeMapper;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.application.command.CreateBikeCommand;
 import com.quetoquenana.pedalpal.bike.application.useCase.CreateBikeUseCase;
+import com.quetoquenana.pedalpal.bike.domain.model.*;
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeType;
-import com.quetoquenana.pedalpal.bike.domain.model.Bike;
 import com.quetoquenana.pedalpal.bike.domain.repository.BikeRepository;
 import com.quetoquenana.pedalpal.util.TestBikeData;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEvent;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeHistoryEventType;
 import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.domain.model.UserType;
@@ -79,6 +75,7 @@ class CreateBikeUseCaseTest {
                     .serialNumber(command.serialNumber())
                     .isPublic(command.isPublic())
                     .isExternalSync(command.isExternalSync())
+                    .externalSyncProvider(ExternalSyncProvider.from(command.externalSyncProvider()))
                     .build();
 
             when(bikeMapper.toModel(ownerId, command)).thenReturn(mapped);
@@ -98,6 +95,8 @@ class CreateBikeUseCaseTest {
                         b.getNotes(),
                         b.getOdometerKm() == null ? 0 : b.getOdometerKm(),
                         b.getUsageTimeMinutes() == null ? 0 : b.getUsageTimeMinutes(),
+                        b.getExternalGearId(),
+                        b.getExternalSyncProvider().name(),
                         java.util.Set.of()
                 );
             });

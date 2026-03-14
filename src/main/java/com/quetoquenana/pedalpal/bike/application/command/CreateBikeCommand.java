@@ -10,6 +10,8 @@ public record CreateBikeCommand(
         String notes,
         Integer odometerKm,
         Integer usageTimeMinutes,
+        String externalGearId,
+        String externalSyncProvider,
         boolean isPublic,
         boolean isExternalSync
 ){ }

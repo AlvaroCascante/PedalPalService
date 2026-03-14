@@ -41,6 +41,8 @@ public class BikeMapper {
                 .notes(command.notes())
                 .odometerKm(command.odometerKm())
                 .usageTimeMinutes(command.usageTimeMinutes())
+                .externalGearId(command.externalGearId())
+                .externalSyncProvider(ExternalSyncProvider.from(command.externalSyncProvider()))
                 .build();
     }
 
@@ -87,6 +89,8 @@ public class BikeMapper {
                 model.getNotes(),
                 model.getOdometerKm() == null ? 0 : model.getOdometerKm(),
                 model.getUsageTimeMinutes() == null ? 0 : model.getUsageTimeMinutes(),
+                model.getExternalGearId(),
+                model.getExternalSyncProvider().name(),
                 model.getComponents().stream().map(this::toResult).collect(Collectors.toSet())
         );
     }

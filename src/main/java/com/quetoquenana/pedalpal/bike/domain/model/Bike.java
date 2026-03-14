@@ -34,171 +34,199 @@ public class Bike extends Auditable {
         components.add(component);
     }
 
-    public Optional<BikeChangeItem> changeName(String newName) {
-        if (newName == null || Objects.equals(this.name, newName)) {
+    public Optional<BikeChangeItem> changeName(String newValue) {
+        if (newValue == null || Objects.equals(this.name, newValue)) {
             return Optional.empty();
         }
 
         BikeChangeItem change = BikeChangeItem.of(
                 BikeField.BIKE_NAME,
                 this.name,
-                newName
+                newValue
         );
-        this.name = newName;
+        this.name = newValue;
         return Optional.of(change);
     }
 
-    public Optional<BikeChangeItem> changeType(BikeType newType) {
-        if (newType == null || Objects.equals(this.type, newType)) {
+    public Optional<BikeChangeItem> changeType(BikeType newValue) {
+        if (newValue == null || Objects.equals(this.type, newValue)) {
             return Optional.empty();
         }
 
         BikeChangeItem change = BikeChangeItem.of(
                 BikeField.BIKE_TYPE,
                 this.type,
-                newType
+                newValue
         );
-        this.type = newType;
+        this.type = newValue;
         return Optional.of(change);
     }
 
-    public Optional<BikeChangeItem> changeIsPublic(Boolean newIsPublic) {
-        if (newIsPublic == null || this.isPublic == newIsPublic) {
+    public Optional<BikeChangeItem> changeIsPublic(Boolean newValue) {
+        if (newValue == null || this.isPublic == newValue) {
             return Optional.empty();
         }
 
         BikeChangeItem change = BikeChangeItem.of(
                 BikeField.BIKE_IS_PUBLIC,
                 this.isPublic,
-                newIsPublic
+                newValue
         );
-        this.isPublic = newIsPublic;
+        this.isPublic = newValue;
         return Optional.of(change);
     }
 
-    public Optional<BikeChangeItem> changeIsExternalSync(Boolean newIsExternalSync) {
-        if (newIsExternalSync == null || this.isExternalSync == newIsExternalSync) {
+    public Optional<BikeChangeItem> changeIsExternalSync(Boolean newValue) {
+        if (newValue == null || this.isExternalSync == newValue) {
             return Optional.empty();
         }
 
         BikeChangeItem change = BikeChangeItem.of(
                 BikeField.BIKE_IS_EXTERNAL_SYNC,
                 this.isExternalSync,
-                newIsExternalSync
+                newValue
         );
-        this.isExternalSync = newIsExternalSync;
+        this.isExternalSync = newValue;
         return Optional.of(change);
     }
 
-    public Optional<BikeChangeItem> changeStatus(BikeStatus newStatus) {
-        if (newStatus == null || Objects.equals(this.status, newStatus)) {
+    public Optional<BikeChangeItem> changeStatus(BikeStatus newValue) {
+        if (newValue == null || Objects.equals(this.status, newValue)) {
             return Optional.empty();
         }
 
         BikeChangeItem change = BikeChangeItem.of(
                 BikeField.BIKE_STATUS,
                 this.status,
-                newStatus
+                newValue
         );
-        this.status = newStatus;
+        this.status = newValue;
         return Optional.of(change);
     }
 
-    public Optional<BikeChangeItem> changeBrand(String newBrand) {
-        if (newBrand == null || Objects.equals(this.brand, newBrand)) {
+    public Optional<BikeChangeItem> changeBrand(String newValue) {
+        if (newValue == null || Objects.equals(this.brand, newValue)) {
             return Optional.empty();
         }
 
         BikeChangeItem change = BikeChangeItem.of(
                 BikeField.BIKE_BRAND,
                 this.brand,
-                newBrand
+                newValue
         );
-        this.brand = newBrand;
+        this.brand = newValue;
         return Optional.of(change);
     }
 
-    public Optional<BikeChangeItem> changeModel(String newModel) {
-        if (newModel == null || Objects.equals(this.model, newModel)) {
+    public Optional<BikeChangeItem> changeModel(String newValue) {
+        if (newValue == null || Objects.equals(this.model, newValue)) {
             return Optional.empty();
         }
 
         BikeChangeItem change = BikeChangeItem.of(
                 BikeField.BIKE_MODEL,
                 this.model,
-                newModel
+                newValue
         );
-        this.model = newModel;
+        this.model = newValue;
         return Optional.of(change);
     }
 
-    public Optional<BikeChangeItem> changeYear(Integer newYear) {
-        if (newYear == null || Objects.equals(this.year, newYear)) {
+    public Optional<BikeChangeItem> changeYear(Integer newValue) {
+        if (newValue == null || Objects.equals(this.year, newValue)) {
             return Optional.empty();
         }
 
         BikeChangeItem change = BikeChangeItem.of(
                 BikeField.BIKE_YEAR,
                 this.year,
-                newYear
+                newValue
         );
-        this.year = newYear;
+        this.year = newValue;
         return Optional.of(change);
     }
 
-    public Optional<BikeChangeItem> changeSerialNumber(String newSerialNumber) {
-        if (newSerialNumber == null || Objects.equals(this.serialNumber, newSerialNumber)) {
+    public Optional<BikeChangeItem> changeSerialNumber(String newValue) {
+        if (newValue == null || Objects.equals(this.serialNumber, newValue)) {
             return Optional.empty();
         }
 
         BikeChangeItem change = BikeChangeItem.of(
                 BikeField.BIKE_SERIAL_NUMBER,
                 this.serialNumber,
-                newSerialNumber
+                newValue
         );
-        this.serialNumber = newSerialNumber;
+        this.serialNumber = newValue;
         return Optional.of(change);
     }
 
-    public Optional<BikeChangeItem> changeNotes(String newNotes) {
-        if (newNotes == null || Objects.equals(this.notes, newNotes)) {
+    public Optional<BikeChangeItem> changeNotes(String newValue) {
+        if (newValue == null || Objects.equals(this.notes, newValue)) {
             return Optional.empty();
         }
 
         BikeChangeItem change = BikeChangeItem.of(
                 BikeField.BIKE_NOTES,
                 this.notes,
-                newNotes
+                newValue
         );
-        this.notes = newNotes;
+        this.notes = newValue;
         return Optional.of(change);
     }
 
-    public Optional<BikeChangeItem> changeOdometerKm(Integer newOdometerKm) {
-        if (newOdometerKm == null || Objects.equals(this.odometerKm, newOdometerKm)) {
+    public Optional<BikeChangeItem> changeOdometerKm(Integer newValue) {
+        if (newValue == null || Objects.equals(this.odometerKm, newValue)) {
             return Optional.empty();
         }
 
         BikeChangeItem change = BikeChangeItem.of(
                 BikeField.BIKE_ODOMETER,
                 this.odometerKm,
-                newOdometerKm
+                newValue
         );
-        this.odometerKm = newOdometerKm;
+        this.odometerKm = newValue;
         return Optional.of(change);
     }
 
-    public Optional<BikeChangeItem> changeUsageTimeMinutes(Integer newUsageTimeMinutes) {
-        if (newUsageTimeMinutes == null || Objects.equals(this.usageTimeMinutes, newUsageTimeMinutes)) {
+    public Optional<BikeChangeItem> changeUsageTimeMinutes(Integer newValue) {
+        if (newValue == null || Objects.equals(this.usageTimeMinutes, newValue)) {
             return Optional.empty();
         }
 
         BikeChangeItem change = BikeChangeItem.of(
                 BikeField.BIKE_USAGE_MINUTES,
                 this.usageTimeMinutes,
-                newUsageTimeMinutes
+                newValue
         );
-        this.usageTimeMinutes = newUsageTimeMinutes;
+        this.usageTimeMinutes = newValue;
+        return Optional.of(change);
+    }
+
+    public Optional<BikeChangeItem> changeExternalGearId(String newValue) {
+        if (newValue == null || Objects.equals(this.externalGearId, newValue)) {
+            return Optional.empty();
+        }
+
+        BikeChangeItem change = BikeChangeItem.of(
+                BikeField.BIKE_EXTERNAL_GEAR_ID,
+                this.usageTimeMinutes,
+                newValue
+        );
+        this.externalGearId = newValue;
+        return Optional.of(change);
+    }
+
+    public Optional<BikeChangeItem> changeExternalSyncProvider(ExternalSyncProvider newValue) {
+        if (newValue == null || Objects.equals(this.externalSyncProvider, newValue)) {
+            return Optional.empty();
+        }
+
+        BikeChangeItem change = BikeChangeItem.of(
+                BikeField.BIKE_EXTERNAL_SYNC_PROVIDER,
+                this.usageTimeMinutes,
+                newValue
+        );
+        this.externalSyncProvider = newValue;
         return Optional.of(change);
     }
 
@@ -212,4 +240,5 @@ public class Bike extends Auditable {
     public int hashCode() {
         return Objects.hash(ownerId, name, type, brand, model, year, serialNumber);
     }
+
 }

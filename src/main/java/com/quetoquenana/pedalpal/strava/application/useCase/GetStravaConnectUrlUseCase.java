@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static com.quetoquenana.pedalpal.common.util.Constants.Strava.*;
+
 /**
  * Use case that generates a Strava OAuth authorization URL.
  */
@@ -28,13 +30,13 @@ public class GetStravaConnectUrlUseCase {
 
         String scope = properties.getScopes() == null ? "" : properties.getScopes();
         String url = UriComponentsBuilder.fromUriString(properties.getOauthBaseUrl())
-                .path("/authorize")
-                .queryParam("client_id", properties.getClientId())
-                .queryParam("redirect_uri", properties.getRedirectUri())
-                .queryParam("response_type", "code")
-                .queryParam("approval_prompt", "auto")
-                .queryParam("scope", scope)
-                .queryParam("state", user.userId())
+                .path(AUTH_URL_PATH)
+                .queryParam(AUTH_PARAM_CLIENT_ID, properties.getClientId())
+                .queryParam(AUTH_PARAM_REDIRECT_URI, properties.getRedirectUri())
+                .queryParam(AUTH_PARAM_RESPONSE_TYPE, AUTH_PARAM_RESPONSE_TYPE_CODE)
+                .queryParam(AUTH_PARAM_APPROVAL_PROMPT, AUTH_PARAM_APPROVAL_PROMPT_AUTO)
+                .queryParam(AUTH_PARAM_SCOPE, scope)
+                .queryParam(AUTH_PARAM_STATE, user.userId())
                 .build()
                 .toUriString();
 

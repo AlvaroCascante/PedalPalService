@@ -56,6 +56,12 @@ public record UpdateBikeRequest(
         Boolean isPublic,
 
         @JsonSetter(contentNulls = Nulls.FAIL)
-        Boolean isExternalSync
+        Boolean isExternalSync,
+
+        @Size(max = 100, message = "{bike.externalGearId.max}")
+        String externalGearId,
+
+        @Size(max = 50, message = "{bike.externalSyncProvider.max}")
+        String externalSyncProvider
 ) {
 }

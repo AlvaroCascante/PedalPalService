@@ -128,6 +128,14 @@ public class UpdateBikeUseCase {
         if (command.isExternalSync() != null) {
             bike.changeIsExternalSync(command.isExternalSync()).ifPresent(bikeChangeItems::add);
         }
+
+        if (command.externalGearId() != null) {
+            bike.changeExternalGearId(command.externalGearId()).ifPresent(bikeChangeItems::add);
+        }
+
+        if (command.externalSyncProvider() != null) {
+            bike.changeExternalSyncProvider(ExternalSyncProvider.from(command.externalSyncProvider())).ifPresent(bikeChangeItems::add);
+        }
         return bikeChangeItems;
     }
 

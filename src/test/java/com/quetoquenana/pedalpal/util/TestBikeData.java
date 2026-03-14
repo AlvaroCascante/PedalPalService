@@ -4,11 +4,7 @@ import com.quetoquenana.pedalpal.bike.application.command.CreateBikeCommand;
 import com.quetoquenana.pedalpal.bike.application.command.UpdateBikeCommand;
 import com.quetoquenana.pedalpal.bike.application.result.BikeComponentResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeComponent;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeStatus;
-import com.quetoquenana.pedalpal.bike.domain.model.BikeType;
-import com.quetoquenana.pedalpal.bike.domain.model.Bike;
+import com.quetoquenana.pedalpal.bike.domain.model.*;
 import com.quetoquenana.pedalpal.common.domain.model.GeneralStatus;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 
@@ -27,6 +23,8 @@ public final class TestBikeData {
         return new UpdateBikeCommand(
                 bikeId,
                 name,
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -70,6 +68,8 @@ public final class TestBikeData {
                 null,
                 null,
                 null,
+                null,
+                "STRAVA",
                 false,
                 false
         );
@@ -86,6 +86,8 @@ public final class TestBikeData {
                 "Some notes",
                 1234,
                 5678,
+                null,
+                null,
                 true,
                 true
         );
@@ -99,6 +101,8 @@ public final class TestBikeData {
                 null,
                 null,
                 "SN-123",
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -118,6 +122,8 @@ public final class TestBikeData {
                 null,
                 null,
                 null,
+                null,
+                null,
                 true,
                 false
         );
@@ -127,6 +133,8 @@ public final class TestBikeData {
         return new CreateBikeCommand(
                 "Bike",
                 "ROAD",
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -152,13 +160,17 @@ public final class TestBikeData {
                 999,
                 888,
                 true,
-                true
+                true,
+        null,
+                null
         );
     }
 
     public static UpdateBikeCommand updateBikeCommand_noFields(UUID bikeId, UUID ownerId) {
         return new UpdateBikeCommand(
                 bikeId,
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -290,6 +302,8 @@ public final class TestBikeData {
                 null,
                 0,
                 0,
+                null,
+                null,
                 Set.of(component)
         );
     }
@@ -365,9 +379,9 @@ public final class TestBikeData {
                 notes,
                 odometerKm,
                 usageTimeMinutes,
+                null,
+                null,
                 components
         );
     }
-
-    // NOTE: older CreateBikeResult/UpdateBikeResult factories keep existing unit tests working.
 }

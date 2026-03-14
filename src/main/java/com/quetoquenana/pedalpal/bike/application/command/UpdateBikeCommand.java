@@ -14,6 +14,8 @@ public record UpdateBikeCommand(
         Integer odometerKm,
         Integer usageTimeMinutes,
         Boolean isPublic,
-        Boolean isExternalSync
+        Boolean isExternalSync,
+        String externalGearId,
+        String externalSyncProvider
 ) { }
 

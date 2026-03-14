@@ -38,6 +38,8 @@ public class BikeApiMapper {
                 request.notes(),
                 request.odometerKm(),
                 request.usageTimeMinutes(),
+                request.externalGearId(),
+                request.externalSyncProvider(),
                 request.isPublic(),
                 request.isExternalSync()
         );
@@ -59,7 +61,9 @@ public class BikeApiMapper {
                 request.odometerKm(),
                 request.usageTimeMinutes(),
                 request.isPublic(),
-                request.isExternalSync()
+                request.isExternalSync(),
+                request.externalGearId(),
+                request.externalSyncProvider()
         );
     }
 
@@ -173,6 +177,8 @@ public class BikeApiMapper {
                 result.notes(),
                 result.odometerKm(),
                 result.usageTimeMinutes(),
+                result.externalGearId(),
+                result.externalSyncProvider(),
                 components
         );
     }
