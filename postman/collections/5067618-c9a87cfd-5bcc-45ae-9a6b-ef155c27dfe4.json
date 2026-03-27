@@ -804,9 +804,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host_pedal_pal}}/{{path}}/bikes/active",
+							"raw": "{{HOST_PEDALPAL_SERVICE}}/{{path}}/bikes/active",
 							"host": [
-								"{{host_pedal_pal}}"
+								"{{HOST_PEDALPAL_SERVICE}}"
 							],
 							"path": [
 								"{{path}}",
