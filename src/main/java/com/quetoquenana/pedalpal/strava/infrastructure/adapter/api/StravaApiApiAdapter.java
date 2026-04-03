@@ -120,12 +120,14 @@ public class StravaApiApiAdapter implements StravaApiClient {
 
     @Override
     public List<StravaAthleteBike> getAthleteBikes(String accessToken) {
+        log.debug("Getting athlete bikes for access token: {}", accessToken);
         StravaAthleteResponse response =  restClient.get()
                 .uri("/athlete")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 
+        log.debug("Strava athlete response: {}", response);
 
         assert response != null;
         List<StravaAthleteBikeResponse> bikeResponse = response.getBikes() == null ? Collections.emptyList() : response.getBikes();

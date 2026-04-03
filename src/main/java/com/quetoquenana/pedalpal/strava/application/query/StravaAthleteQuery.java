@@ -10,6 +10,7 @@ import com.quetoquenana.pedalpal.strava.domain.model.StravaAthleteBike;
 import com.quetoquenana.pedalpal.strava.domain.repository.StravaConnectionRepository;
 import com.quetoquenana.pedalpal.strava.infrastructure.adapter.api.StravaApiApiAdapter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * Query for generating the Strava authorization URL.
  */
 @RequiredArgsConstructor
+@Slf4j
 public class StravaAthleteQuery {
 
     private final AuthenticatedUserPort authenticatedUserPort;
@@ -27,9 +29,11 @@ public class StravaAthleteQuery {
     public List<StravaAthleteBikeResult> getAthleteBikes() {
         AuthenticatedUser user = authenticatedUserPort.getAuthenticatedUser()
                 .orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
+        log.debug("Authenticated user: {}", user);
 
         StravaConnection connection = connectionRepository.findByUserId(user.userId())
                 .orElseThrow(() -> new ForbiddenAccessException("authentication.strava.required"));
+        log.debug("Strava connection: {}", connection);
 
         List<StravaAthleteBike> models = stravaApiAdapter.getAthleteBikes(connection.getAccessToken());
         return models.stream()

@@ -7,7 +7,6 @@ public class Constants {
     }
 
     public static class JWTClaims {
-        public static final String KEY_FACTORY_ALGORITHM = "RS256";
         public static final String KEY_NAME = "name";
         public static final String KEY_ROLES = "roles";
         public static final String KEY_USER_ID = "userId";

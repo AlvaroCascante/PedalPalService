@@ -1,5 +1,6 @@
 package com.quetoquenana.pedalpal.config;
 
+import com.nimbusds.jose.JWSAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +19,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.List;
 
-import static com.quetoquenana.pedalpal.common.util.Constants.JWTClaims.KEY_FACTORY_ALGORITHM;
 import static com.quetoquenana.pedalpal.common.util.Constants.JWTClaims.KEY_ROLES;
 import static com.quetoquenana.pedalpal.common.util.Constants.Roles.ROLE_PREFIX;
 
@@ -83,7 +83,7 @@ public class SecurityConfig {
         OAuth2TokenValidator<Jwt> audienceValidator = new AudienceValidator(audience);
 
         // Algorithm validator (optional) - ensure token uses expected signing algorithm
-        OAuth2TokenValidator<Jwt> algValidator = new AlgorithmValidator(KEY_FACTORY_ALGORITHM);
+        OAuth2TokenValidator<Jwt> algValidator = new AlgorithmValidator(JWSAlgorithm.RS256);
 
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(withTimestamp, withIssuer, audienceValidator, algValidator);
 
@@ -112,18 +112,18 @@ public class SecurityConfig {
 
     // Simple validator that checks the JWT header 'alg' value (optional but can help prevent alg confusion attacks)
     static class AlgorithmValidator implements OAuth2TokenValidator<Jwt> {
-        private final String expectedAlg;
+        private final JWSAlgorithm expectedAlg;
         private final OAuth2Error error;
 
-        AlgorithmValidator(String expectedAlg) {
+        AlgorithmValidator(JWSAlgorithm expectedAlg) {
             this.expectedAlg = expectedAlg;
             this.error = new OAuth2Error("invalid_token", "Unexpected signing algorithm", null);
         }
 
         @Override
         public OAuth2TokenValidatorResult validate(Jwt token) {
-            Object algObj = token.getHeaders().get("alg");
-            if (algObj instanceof String && expectedAlg.equals(algObj)) {
+            JWSAlgorithm algObj = (JWSAlgorithm)token.getHeaders().get("alg");
+            if (expectedAlg.equals(algObj)) {
                 return OAuth2TokenValidatorResult.success();
             }
             return OAuth2TokenValidatorResult.failure(error);
