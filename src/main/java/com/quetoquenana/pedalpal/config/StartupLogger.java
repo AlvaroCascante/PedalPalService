@@ -32,7 +32,8 @@ public class StartupLogger implements ApplicationRunner {
     }
 
     private static String[] getKeys() {
-        return new String[]{
+        return new String[] {
+                    "strava.client.id",
                     "spring.security.oauth2.resourceserver.jwt.jwk-set-uri",
                     "security.jwt.issuer",
                     "security.jwt.aud",
