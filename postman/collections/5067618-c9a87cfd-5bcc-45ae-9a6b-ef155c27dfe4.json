@@ -48,7 +48,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Active",
+					"name": "Announcements Get Active",
 					"id": "5067618-19c53cea-2058-4cae-a175-b905ea25f264",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
