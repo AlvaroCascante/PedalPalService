@@ -1789,7 +1789,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{user_token_local}}",
+									"value": "{{user_token}}",
 									"type": "string"
 								}
 							]
