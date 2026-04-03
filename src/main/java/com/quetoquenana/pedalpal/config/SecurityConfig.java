@@ -83,7 +83,7 @@ public class SecurityConfig {
         OAuth2TokenValidator<Jwt> audienceValidator = new AudienceValidator(audience);
 
         // Algorithm validator (optional) - ensure token uses expected signing algorithm
-        OAuth2TokenValidator<Jwt> algValidator = new AlgorithmValidator(JWSAlgorithm.RS256);
+        OAuth2TokenValidator<Jwt> algValidator = new AlgorithmValidator(JWSAlgorithm.RS256.getName());
 
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(withTimestamp, withIssuer, audienceValidator, algValidator);
 
@@ -112,18 +112,18 @@ public class SecurityConfig {
 
     // Simple validator that checks the JWT header 'alg' value (optional but can help prevent alg confusion attacks)
     static class AlgorithmValidator implements OAuth2TokenValidator<Jwt> {
-        private final JWSAlgorithm expectedAlg;
+        private final String expectedAlg;
         private final OAuth2Error error;
 
-        AlgorithmValidator(JWSAlgorithm expectedAlg) {
+        AlgorithmValidator(String expectedAlg) {
             this.expectedAlg = expectedAlg;
             this.error = new OAuth2Error("invalid_token", "Unexpected signing algorithm", null);
         }
 
         @Override
         public OAuth2TokenValidatorResult validate(Jwt token) {
-            JWSAlgorithm algObj = (JWSAlgorithm)token.getHeaders().get("alg");
-            if (expectedAlg.equals(algObj)) {
+            Object algObj = token.getHeaders().get("alg");
+            if (algObj instanceof String && expectedAlg.equals(algObj)) {
                 return OAuth2TokenValidatorResult.success();
             }
             return OAuth2TokenValidatorResult.failure(error);
