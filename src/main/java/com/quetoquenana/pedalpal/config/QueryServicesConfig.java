@@ -59,11 +59,13 @@ public class QueryServicesConfig {
     @Bean
     public AppointmentQueryService createAppointmentQueryService(
             AppointmentMapper mapper,
+            AuthenticatedUserPort authenticatedUserPort,
             AppointmentRepository repository
     ) {
         return new AppointmentQueryService(
                 mapper,
-                repository
+                repository,
+                authenticatedUserPort
         );
     }
 
@@ -72,7 +74,7 @@ public class QueryServicesConfig {
             BikeMapper mapper,
             BikeRepository repository,
             AuthenticatedUserPort authenticatedUserPort,
-                MediaLookupPort mediaLookupPort
+            MediaLookupPort mediaLookupPort
     ) {
         return new BikeQueryService(
                 authenticatedUserPort,

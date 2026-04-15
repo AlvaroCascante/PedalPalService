@@ -14,6 +14,8 @@ public interface AppointmentRepository {
 
     Optional<Appointment> findByIdAndCustomerId(UUID id, UUID customerId);
 
+    List<Appointment> findByCustomerId(UUID customerId);
+
     List<Appointment> findUpcomingByBikeId(UUID bikeId, Instant now);
 
     List<Appointment> findPastByBikeId(UUID bikeId, Instant now);

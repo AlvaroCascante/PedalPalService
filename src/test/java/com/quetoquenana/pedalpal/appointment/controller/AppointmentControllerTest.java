@@ -157,6 +157,26 @@ class AppointmentControllerTest {
     }
 
     @Test
+    void shouldReturn200_whenGetAllAppointments() throws Exception {
+        UUID bikeId = UUID.randomUUID();
+
+        when(appointmentQueryService.getAppointments())
+                .thenReturn(List.of(
+                        new AppointmentListItemResult(
+                                UUID.randomUUID(),
+                                bikeId,
+                                UUID.randomUUID(),
+                                Instant.parse("2026-02-25T10:00:00Z"),
+                                AppointmentStatus.CONFIRMED
+                        )
+                ));
+
+        mockMvc.perform(get("/v1/api/appointments"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[0].bikeId").value(bikeId.toString()));
+    }
+
+    @Test
     @WithMockJwt(userId = "00000000-0000-0000-0000-000000000001", roles = {})
     void shouldReturn403_whenMissingRole() throws Exception {
         UUID appointmentId = UUID.randomUUID();

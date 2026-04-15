@@ -36,6 +36,13 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     }
 
     @Override
+    public List<Appointment> findByCustomerId(UUID customerId) {
+        return repository.findByCustomerId(customerId).stream()
+                .map(AppointmentEntityMapper::toModel)
+                .toList();
+    }
+
+    @Override
     public List<Appointment> findUpcomingByBikeId(UUID bikeId, Instant now) {
         return repository.findUpcomingByBikeId(bikeId, now).stream()
                 .map(AppointmentEntityMapper::toModel)

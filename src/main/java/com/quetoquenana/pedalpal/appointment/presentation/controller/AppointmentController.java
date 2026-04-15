@@ -88,6 +88,16 @@ public class AppointmentController {
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
+    @GetMapping()
+    @PreAuthorize("(hasRole('USER'))")
+    public ResponseEntity<ApiResponse> getAll(
+    ) {
+        log.info("GET /v1/api/appointments Received request to get all appointments");
+        List<AppointmentListItemResult> results = queryService.getAppointments();
+        List<AppointmentListItemResponse> response = results.stream().map(apiMapper::toListItemResponse).toList();
+        return ResponseEntity.ok(new ApiResponse(response));
+    }
+
     @GetMapping("/bike/{bikeId}/upcoming")
     @PreAuthorize("(hasRole('USER'))")
     public ResponseEntity<ApiResponse> getUpcoming(
@@ -104,6 +114,7 @@ public class AppointmentController {
     public ResponseEntity<ApiResponse> getPast(
             @PathVariable UUID bikeId
     ) {
+        log.info("GET /v1/api/appointments/bike/{}/past Received request to get upcoming appointments", bikeId);
         List<AppointmentListItemResult> results = queryService.getPastAppointments(bikeId);
         List<AppointmentListItemResponse> response = results.stream().map(apiMapper::toListItemResponse).toList();
         return ResponseEntity.ok(new ApiResponse(response));

@@ -19,4 +19,6 @@ public interface AppointmentJpaRepository extends JpaRepository<AppointmentEntit
     List<AppointmentEntity> findPastByBikeId(@Param("bikeId") UUID bikeId, @Param("now") Instant now);
 
     Optional<AppointmentEntity> findByIdAndCustomerId(UUID id, UUID customerId);
+
+    List<AppointmentEntity> findByCustomerId(UUID customerId);
 }
