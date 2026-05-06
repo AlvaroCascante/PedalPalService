@@ -74,7 +74,7 @@ public class BikeController {
     public ResponseEntity<ApiResponse> findActive() {
         log.info("GET /v1/api/bikes/active Received request to find active bikes");
         List<BikeResult> result = queryService.findActiveByOwnerId();
-        Set<BikeResponse> response = result.stream().map(apiMapper::toResponse).collect(Collectors.toSet());
+        List<BikeResponse> response = result.stream().map(apiMapper::toResponse).toList();
         return ResponseEntity.ok(new ApiResponse(response));
     }
 
