@@ -153,7 +153,6 @@ public class BikeApiMapper {
 
     public BikeResponse toResponse(BikeResult result, Set<BikeComponentStatus> componentStatuses) {
         Locale locale = LocaleContextHolder.getLocale();
-        String typeLabel = messageSource.getMessage(result.type().getKey(), null, locale);
         String statusLabel = messageSource.getMessage(result.status().getKey(), null, locale);
 
         Set<BikeComponentResponse> components = result.components() == null
@@ -166,7 +165,7 @@ public class BikeApiMapper {
         return new BikeResponse(
                 result.id(),
                 result.name(),
-                typeLabel,
+                result.type().name(),
                 statusLabel,
                 result.isPublic(),
                 result.isExternalSync(),
