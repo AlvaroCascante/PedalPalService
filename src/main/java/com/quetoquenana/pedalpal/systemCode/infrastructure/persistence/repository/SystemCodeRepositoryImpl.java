@@ -46,7 +46,7 @@ class SystemCodeRepositoryImpl implements SystemCodeRepository {
 
     @Override
     public List<SystemCode> findByCategoryAndStatus(String category, GeneralStatus status) {
-        return repository.findByCategoryAndStatus(category, status)
+        return repository.findByCategoryAndStatusOrderByCode(category, status)
                 .stream()
                 .map(SystemCodeEntityMapper::toModel)
                 .toList();

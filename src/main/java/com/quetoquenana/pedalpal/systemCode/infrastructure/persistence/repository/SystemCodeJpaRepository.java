@@ -12,6 +12,6 @@ public interface SystemCodeJpaRepository extends JpaRepository<SystemCodeEntity,
 
     Optional<SystemCodeEntity> findByCategoryAndCode(String category, String code);
 
-    List<SystemCodeEntity> findByCategoryAndStatus(String category, GeneralStatus status);
+    List<SystemCodeEntity> findByCategoryAndStatusOrderByCode(String category, GeneralStatus status);
 }
 

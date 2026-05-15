@@ -61,14 +61,14 @@ class SystemCodeRepositoryImplTest {
     void shouldReturnModelsWhenFindByCategoryAndStatus() {
         SystemCodeEntity entity = buildEntity(UUID.randomUUID());
 
-        when(repository.findByCategoryAndStatus("COMPONENT_TYPE", GeneralStatus.ACTIVE))
+        when(repository.findByCategoryAndStatusOrderByCode("COMPONENT_TYPE", GeneralStatus.ACTIVE))
                 .thenReturn(List.of(entity));
 
         List<SystemCode> models = adapter.findByCategoryAndStatus("COMPONENT_TYPE", GeneralStatus.ACTIVE);
 
         assertEquals(1, models.size());
         assertEquals("CHAIN", models.getFirst().getCode());
-        verify(repository).findByCategoryAndStatus("COMPONENT_TYPE", GeneralStatus.ACTIVE);
+        verify(repository).findByCategoryAndStatusOrderByCode("COMPONENT_TYPE", GeneralStatus.ACTIVE);
     }
 
     @Test

@@ -54,7 +54,7 @@ public class SystemCodeController {
     public ResponseEntity<ApiResponse> getActiveComponents() {
         log.info("GET /v1/api/components Received request to get active components");
         List<SystemCodeResult> result = queryService.getActiveComponents();
-        Set<SystemCodeResponse> response = result.stream().map(apiMapper::toResponse).collect(Collectors.toSet());
+        List<SystemCodeResponse> response = result.stream().map(apiMapper::toResponse).toList();
         return ResponseEntity.ok(new ApiResponse(response));
     }
 }
