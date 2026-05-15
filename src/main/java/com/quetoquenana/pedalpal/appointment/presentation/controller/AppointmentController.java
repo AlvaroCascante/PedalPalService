@@ -46,6 +46,8 @@ public class AppointmentController {
     public ResponseEntity<ApiResponse> create(
             @Valid @RequestBody CreateAppointmentRequest request
     ) {
+        log.info("POST /v1/api/appointments Received request to create appointment for bikeId: {}, dateTime: {}",
+                request.bikeId(), request.scheduledAt());
         CreateAppointmentCommand command = apiMapper.toCommand(request);
         AppointmentResult result = createAppointmentUseCase.execute(command);
         AppointmentResponse response = apiMapper.toResponse(result);
