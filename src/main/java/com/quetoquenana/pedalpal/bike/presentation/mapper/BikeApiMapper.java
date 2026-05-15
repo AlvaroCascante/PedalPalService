@@ -201,15 +201,13 @@ public class BikeApiMapper {
     }
 
     public BikeHistoryResponse toResponse(BikeHistoryResult result) {
-        Locale locale = LocaleContextHolder.getLocale();
-        String typeLabel = messageSource.getMessage(result.type().getKey(), null, locale);
 
         return new BikeHistoryResponse(
                 result.id(),
                 result.bikeId(),
                 result.occurredAt(),
                 result.performedBy(),
-                typeLabel,
+                result.type().name(),
                 result.payload()
         );
     }
