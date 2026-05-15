@@ -19,6 +19,7 @@ INSERT INTO store_locations (
                              longitude,
                              phone,
                              timezone,
+                             currency,
                              status,
                              created_by)
     VALUES ('11111111-1111-1111-1111-111111111112',
@@ -30,6 +31,7 @@ INSERT INTO store_locations (
             -84.15251747519727,
             '+506 2265-7676',
             'America/Costa_Rica',
+            'CRC',
             'ACTIVE',
             '11111111-1111-1111-1111-111111111111') ON CONFLICT (id) DO NOTHING;
 

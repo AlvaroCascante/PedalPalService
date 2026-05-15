@@ -21,6 +21,7 @@ CREATE TABLE store_locations (
     longitude DECIMAL(9,6),
     phone VARCHAR(50),
     timezone VARCHAR(50) NOT NULL,
+    currency CHAR(3) NOT NULL,
     status VARCHAR(50) NOT NULL,
 
     version BIGINT NOT NULL DEFAULT 0,
