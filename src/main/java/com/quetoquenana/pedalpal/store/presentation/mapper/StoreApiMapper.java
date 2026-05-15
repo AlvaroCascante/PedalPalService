@@ -56,6 +56,7 @@ public class StoreApiMapper {
                 result.latitude(),
                 result.longitude(),
                 result.phone(),
+                result.currency(),
                 result.timezone(),
                 statusLabel
         );

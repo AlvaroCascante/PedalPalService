@@ -38,6 +38,7 @@ public class StoreMapper {
                 model.getLatitude(),
                 model.getLongitude(),
                 model.getPhone(),
+                model.getCurrency(),
                 model.getTimezone(),
                 model.getStatus()
         );
