@@ -51,6 +51,7 @@ public final class StoreEntityMapper {
                 .latitude(entity.getLatitude())
                 .longitude(entity.getLongitude())
                 .phone(entity.getPhone())
+                .currency(entity.getCurrency())
                 .status(entity.getStatus())
                 .timezone(entity.getTimezone())
                 .build();

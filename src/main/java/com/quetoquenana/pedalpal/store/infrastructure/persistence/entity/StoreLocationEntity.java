@@ -51,6 +51,9 @@ public class StoreLocationEntity extends AuditableEntity {
     @Column(name = "phone", length = 50)
     private String phone;
 
+    @Column(name = "currency", length = 3)
+    private String currency;
+
     @Column(name = "timezone", length = 50, nullable = false)
     private String timezone;
 

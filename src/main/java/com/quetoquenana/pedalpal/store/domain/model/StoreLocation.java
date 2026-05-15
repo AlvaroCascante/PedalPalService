@@ -41,6 +41,7 @@ public class StoreLocation extends Auditable {
                          BigDecimal latitude,
                          BigDecimal longitude,
                          String phone,
+                         String currency,
                          String timezone,
                          GeneralStatus status) {
         validateNotBlank("name", name);
@@ -53,6 +54,7 @@ public class StoreLocation extends Auditable {
         this.latitude = latitude;
         this.longitude = longitude;
         this.phone = phone;
+        this.currency = currency;
         this.timezone = timezone;
         this.status = status;
     }
