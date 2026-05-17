@@ -1,7 +1,11 @@
 package com.quetoquenana.pedalpal.media.presentation.mapper;
 
 import com.quetoquenana.pedalpal.common.application.result.MediaResult;
+import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.media.application.command.ConfirmUploadCommand;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaSpecCommand;
+import com.quetoquenana.pedalpal.media.presentation.dto.request.UploadMediaRequest;
 import com.quetoquenana.pedalpal.media.presentation.dto.response.MediaResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -33,6 +37,22 @@ public class MediaApiMapper {
                 result.altText(),
                 result.url(),
                 result.expiresAt()
+        );
+    }
+
+    public UploadMediaCommand toCommand(UUID id, UploadMediaRequest request) {
+        return new UploadMediaCommand(
+                request.isPublic(), // Assuming media is not public by default
+                id,
+                MediaReferenceType.from(request.referenceType()), // Convert string to enum
+                request.mediaFiles().stream()
+                        .map(file -> new UploadMediaSpecCommand(
+                                file.contentType(),
+                                file.isPrimary(),
+                                file.name(),
+                                file.altText()
+                        ))
+                        .toList()
         );
     }
 }

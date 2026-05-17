@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -76,7 +77,7 @@ class CreateAnnouncementUseCaseTest {
                     true,
                     savedId,
                     MediaReferenceType.ANNOUNCEMENT,
-                    java.util.Set.of()
+                    List.of()
             );
             java.util.List<MediaResult> mediaResult = java.util.List.of(
                     new MediaResult(
@@ -127,7 +128,7 @@ class CreateAnnouncementUseCaseTest {
                     true,
                     savedId,
                     MediaReferenceType.ANNOUNCEMENT,
-                    java.util.Set.of()
+                    List.of()
             );
 
             MediaResult m1 = new MediaResult(

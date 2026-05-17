@@ -53,12 +53,12 @@ public class AnnouncementMapper {
     }
 
     public UploadMediaCommand toMediaUploadRequest(Announcement announcement, CreateAnnouncementCommand command) {
-        Set<UploadMediaSpecCommand> specs = command.mediaFiles() == null
-                ? Collections.emptySet()
+        List<UploadMediaSpecCommand> specs = command.mediaFiles() == null
+                ? Collections.emptyList()
                 : command.mediaFiles()
                 .stream()
                 .map(this::toMediaUploadRequest)
-                .collect(Collectors.toSet());
+                .toList();
 
         return new UploadMediaCommand(
                 true,

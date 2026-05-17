@@ -1,16 +1,25 @@
 package com.quetoquenana.pedalpal.media.presentation.controller;
 
+import com.quetoquenana.pedalpal.bike.application.command.CreateBikeUploadMediaCommand;
+import com.quetoquenana.pedalpal.bike.application.result.BikeMediaResult;
+import com.quetoquenana.pedalpal.bike.presentation.dto.request.UploadBikeMediaRequest;
+import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeMediaResponse;
 import com.quetoquenana.pedalpal.common.application.result.MediaResult;
 import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;
 import com.quetoquenana.pedalpal.media.application.command.ConfirmUploadCommand;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.media.application.query.MediaQueryService;
 import com.quetoquenana.pedalpal.media.application.useCase.ConfirmMediaUploadUseCase;
+import com.quetoquenana.pedalpal.media.application.useCase.MediaUploadUseCase;
+import com.quetoquenana.pedalpal.media.presentation.dto.request.UploadMediaRequest;
 import com.quetoquenana.pedalpal.media.presentation.dto.response.MediaResponse;
 import com.quetoquenana.pedalpal.media.presentation.mapper.MediaApiMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +37,7 @@ public class MediaController {
     private final ConfirmMediaUploadUseCase confirmMediaUploadUseCase;
     private final MediaQueryService queryService;
     private final MediaApiMapper apiMapper;
+    private final MediaUploadUseCase mediaUploadUseCase;
 
     @GetMapping("/{referenceType}/{referenceId}")
     public ResponseEntity<ApiResponse> getMediaByReference(
@@ -51,6 +61,22 @@ public class MediaController {
 
         MediaResult result = queryService.getById(id);
         MediaResponse response = apiMapper.toResponse(result);
+        return ResponseEntity.ok(new ApiResponse(response));
+    }
+
+    @PostMapping("/{id}")
+    @PreAuthorize("(hasRole('USER'))")
+    public ResponseEntity<ApiResponse> uploadMedia(
+            @PathVariable("id") UUID id,
+            @Valid @RequestBody UploadMediaRequest request
+    ) {
+        log.info("POST /v1/api/media/{} Received request to upload media: {}", id, request);
+
+        UploadMediaCommand command = apiMapper.toCommand(id, request);
+
+        List<MediaResult> result = mediaUploadUseCase.execute(command);
+        List<MediaResponse> response = result.stream().map(apiMapper::toResponse).toList();
+
         return ResponseEntity.ok(new ApiResponse(response));
     }
 }

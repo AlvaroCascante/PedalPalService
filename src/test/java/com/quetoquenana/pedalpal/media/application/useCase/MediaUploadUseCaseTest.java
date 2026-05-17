@@ -101,7 +101,7 @@ class MediaUploadUseCaseTest {
                 false,
                 referenceId,
                 MediaReferenceType.BIKE,
-                Set.of(spec1, spec2)
+                List.of(spec1, spec2)
         );
 
         Media media1 = Media.builder()

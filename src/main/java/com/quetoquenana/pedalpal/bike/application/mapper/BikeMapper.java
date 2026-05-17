@@ -143,7 +143,7 @@ public class BikeMapper {
                                 spec.title(),
                                 spec.altText()
                         ))
-                        .collect(Collectors.toSet())
+                        .toList()
         );
     }
 
