@@ -16,7 +16,7 @@ public class StravaEntityMapper {
         if (entity == null) {
             return null;
         }
-        return StravaConnection.builder()
+        StravaConnection model = StravaConnection.builder()
                 .id(entity.getId())
                 .userId(entity.getUserId())
                 .stravaAthleteId(entity.getStravaAthleteId())
@@ -26,6 +26,8 @@ public class StravaEntityMapper {
                 .scope(entity.getScope())
                 .status(entity.getStatus())
                 .build();
+        model.setVersion(entity.getVersion());
+        return model;
     }
 
     public static StravaConnectionEntity toEntity(StravaConnection model) {
@@ -42,6 +44,7 @@ public class StravaEntityMapper {
                 .scope(model.getScope())
                 .status(model.getStatus())
                 .build();
+        entity.setVersion(model.getVersion());
         entity.setCreatedBy(model.getUserId());
         entity.setUpdatedBy(model.getUserId());
         return entity;

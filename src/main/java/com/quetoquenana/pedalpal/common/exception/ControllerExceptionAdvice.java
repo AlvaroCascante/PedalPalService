@@ -44,7 +44,7 @@ public class ControllerExceptionAdvice {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse> handleDataIntegrityViolationException(
-            DomainException ex, Locale locale) {
+            DataIntegrityViolationException ex, Locale locale) {
         log.error("DataIntegrityViolationException: {}", ex.getMessage());
         String message = messageSource.getMessage("bad.request", null, locale);
         return ResponseEntity.internalServerError().body(new ApiResponse(message, HttpStatus.INTERNAL_SERVER_ERROR.value()));

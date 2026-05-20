@@ -1,5 +1,7 @@
 package com.quetoquenana.pedalpal.strava.domain.model;
 
+import com.quetoquenana.pedalpal.common.domain.model.Auditable;
+
 import lombok.*;
 
 import java.time.Instant;
@@ -14,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class StravaConnection {
+public class StravaConnection extends Auditable {
     private UUID id;
     private UUID userId;
     private Long stravaAthleteId;
