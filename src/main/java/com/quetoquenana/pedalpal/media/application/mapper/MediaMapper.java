@@ -97,7 +97,7 @@ public class MediaMapper {
                                 String provider
     ) {
         UUID storageKeyId = UUID.randomUUID();
-        return existing.toBuilder()
+        Media updated = existing.toBuilder()
                 .contentType(MediaContentType.fromContentType(spec.contentType()))
                 .status(MediaStatus.DRAFT)
                 .storageKey(buildStorageKey(
@@ -113,5 +113,7 @@ public class MediaMapper {
                 .isPublic(command.isPublic())
                 .provider(provider)
                 .build();
+        updated.setVersion(existing.getVersion());
+        return updated;
     }
 }

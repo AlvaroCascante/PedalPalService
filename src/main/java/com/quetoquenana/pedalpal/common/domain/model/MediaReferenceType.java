@@ -8,7 +8,8 @@ import java.util.Locale;
 @Getter
 public enum MediaReferenceType {
     ANNOUNCEMENT(true, false),
-    APPOINTMENT(false, false),
+    APPOINTMENT_DEPOSIT(false, true),
+    APPOINTMENT_PAYMENT(false, false),
     BIKE(false, false),
     BIKE_PROFILE(false, true),
     COMPONENT(true, false),
