@@ -9,10 +9,10 @@ public record MediaResult(
         UUID id,
         String contentType,
         String provider,
-        Boolean isPrimary,
         MediaStatus status,
         String name,
         String altText,
         String url,
-        Instant expiresAt
+        Instant expiresAt,
+        Boolean isPublic
 ) {}

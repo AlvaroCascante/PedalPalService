@@ -84,12 +84,12 @@ class CreateAnnouncementUseCaseTest {
                             UUID.randomUUID(),
                             "image/jpeg",
                             "r2",
-                            true,
                             com.quetoquenana.pedalpal.media.domain.model.MediaStatus.DRAFT,
                             "front",
                             "Front view",
                             "https://upload.url",
-                            Instant.now().plusSeconds(60)
+                            Instant.now().plusSeconds(60),
+                            true
                     )
             );
 
@@ -135,23 +135,23 @@ class CreateAnnouncementUseCaseTest {
                     UUID.randomUUID(),
                     "image/jpeg",
                     "r2",
-                    true,
                     com.quetoquenana.pedalpal.media.domain.model.MediaStatus.DRAFT,
                     "front",
                     "Front view",
                     "https://upload.url/1",
-                    Instant.now().plusSeconds(60)
+                    Instant.now().plusSeconds(60),
+                    true
             );
             MediaResult m2 = new MediaResult(
                     UUID.randomUUID(),
                     "image/png",
                     "r2",
-                    false,
                     com.quetoquenana.pedalpal.media.domain.model.MediaStatus.DRAFT,
                     "side",
                     "Side view",
                     "https://upload.url/2",
-                    Instant.now().plusSeconds(60)
+                    Instant.now().plusSeconds(60),
+                    true
             );
             java.util.List<MediaResult> mediaResults = java.util.List.of(m1, m2);
 

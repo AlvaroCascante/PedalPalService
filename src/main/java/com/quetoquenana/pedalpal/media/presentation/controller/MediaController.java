@@ -1,9 +1,5 @@
 package com.quetoquenana.pedalpal.media.presentation.controller;
 
-import com.quetoquenana.pedalpal.bike.application.command.CreateBikeUploadMediaCommand;
-import com.quetoquenana.pedalpal.bike.application.result.BikeMediaResult;
-import com.quetoquenana.pedalpal.bike.presentation.dto.request.UploadBikeMediaRequest;
-import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeMediaResponse;
 import com.quetoquenana.pedalpal.common.application.result.MediaResult;
 import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.common.presentation.dto.response.ApiResponse;

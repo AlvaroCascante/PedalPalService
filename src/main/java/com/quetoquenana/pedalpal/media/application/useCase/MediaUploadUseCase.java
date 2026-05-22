@@ -39,18 +39,52 @@ public class MediaUploadUseCase {
                 command.referenceId()
         );
 
+        if (command.referenceType().isUnique()) {
+            if (command.mediaSpecs().isEmpty()) {
+                return List.of();
+            }
+
+            if (command.mediaSpecs().size() > 1) {
+                log.info("Unique reference type {} received {} media specs; only the first will be processed",
+                        command.referenceType(),
+                        command.mediaSpecs().size());
+            }
+
+            Media model = repository.findByReferenceIdAndReferenceType(command.referenceId(), command.referenceType())
+                    .stream()
+                    .findFirst()
+                    .map(existing -> mapper.toUpdatedModel(
+                            existing,
+                            currentUser.userId(),
+                            command,
+                            command.mediaSpecs().getFirst(),
+                            defaultStorageProvider))
+                    .orElseGet(() -> mapper.toModel(
+                            currentUser.userId(),
+                            command,
+                            command.mediaSpecs().getFirst(),
+                            defaultStorageProvider));
+
+            SignedUrl signedUrl = mediaUrlProvider.generateUploadUrl(
+                    model.getStorageKey(),
+                    model.getContentType().getContentType(),
+                    command.isPublic()
+            );
+            repository.save(model);
+            return List.of(mapper.toResult(model, signedUrl));
+        }
+
         // Build models + signedUrl in one pass
         return command.mediaSpecs().stream()
                 .map(spec -> {
-                    Media model = mapper.toModel(currentUser.userId(), command, spec);
+                    Media model = mapper.toModel(currentUser.userId(), command, spec, defaultStorageProvider);
                     SignedUrl signedUrl = mediaUrlProvider.generateUploadUrl(
                             model.getStorageKey(),
                             model.getContentType().getContentType(),
                             command.isPublic()
                     );
-                    Media persisted = model.assignProvider(defaultStorageProvider);
-                    repository.save(persisted);
-                    return mapper.toResult(persisted, signedUrl);
+                    repository.save(model);
+                    return mapper.toResult(model, signedUrl);
                 })
                 .toList();
     }

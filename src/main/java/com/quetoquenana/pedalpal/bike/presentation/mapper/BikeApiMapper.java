@@ -229,12 +229,12 @@ public class BikeApiMapper {
                 result.id(),
                 result.contentType(),
                 result.provider(),
-                result.isPrimary(),
                 statusLabel,
                 result.name(),
                 result.altText(),
                 result.url(),
-                result.expiresAt()
+                result.expiresAt(),
+                result.isPublic()
         );
     }
 }

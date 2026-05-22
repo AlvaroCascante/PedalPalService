@@ -37,7 +37,7 @@ public class MediaEntityMapper {
                 .referenceType(model.getReferenceType())
                 .contentType(model.getContentType())
                 .provider(model.getProvider())
-                .isPrimary(model.getIsPrimary())
+                .isPrimary(model.isPrimary())
                 .status(model.getStatus())
                 .storageKey(model.getStorageKey())
                 .name(model.getName())

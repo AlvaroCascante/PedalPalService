@@ -28,14 +28,15 @@ public class GetStravaConnectUrlUseCase {
         AuthenticatedUser user = authenticatedUserPort.getAuthenticatedUser()
                 .orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
 
-        String scope = properties.getScopes() == null ? "" : properties.getScopes();
+        // Check about this on the  Details About Requesting Access on the Strava documentation
+        // https://developers.strava.com/docs/authentication/
         String url = UriComponentsBuilder.fromUriString(properties.getOauthBaseUrl())
                 .path(AUTH_URL_PATH)
                 .queryParam(AUTH_PARAM_CLIENT_ID, properties.getClientId())
                 .queryParam(AUTH_PARAM_REDIRECT_URI, properties.getRedirectUri())
                 .queryParam(AUTH_PARAM_RESPONSE_TYPE, AUTH_PARAM_RESPONSE_TYPE_CODE)
                 .queryParam(AUTH_PARAM_APPROVAL_PROMPT, AUTH_PARAM_APPROVAL_PROMPT_AUTO)
-                .queryParam(AUTH_PARAM_SCOPE, scope)
+                .queryParam(AUTH_PARAM_SCOPE, properties.getScopes())
                 .queryParam(AUTH_PARAM_STATE, user.userId())
                 .build()
                 .toUriString();

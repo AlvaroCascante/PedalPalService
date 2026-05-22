@@ -13,8 +13,6 @@ import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class AnnouncementMapper {
 
@@ -71,7 +69,6 @@ public class AnnouncementMapper {
     private UploadMediaSpecCommand toMediaUploadRequest(AnnouncementMediaCommand command) {
         return new UploadMediaSpecCommand(
                 command.contentType(),
-                command.isPrimary(),
                 command.name(),
                 command.altText()
         );

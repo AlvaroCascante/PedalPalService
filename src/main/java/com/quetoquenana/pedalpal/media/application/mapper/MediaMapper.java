@@ -19,7 +19,8 @@ public class MediaMapper {
 
     public Media toModel(UUID ownerId,
                          UploadMediaCommand command,
-                         UploadMediaSpecCommand spec
+                         UploadMediaSpecCommand spec,
+                         String provider
     ) {
         UUID mediaId = UUID.randomUUID();
         return Media.builder()
@@ -27,7 +28,6 @@ public class MediaMapper {
                 .referenceId(command.referenceId())
                 .referenceType(command.referenceType())
                 .contentType(MediaContentType.fromContentType(spec.contentType()))
-                .isPrimary(spec.isPrimary())
                 .status(MediaStatus.DRAFT)
                 .storageKey(buildStorageKey(
                         mediaId,
@@ -36,8 +36,11 @@ public class MediaMapper {
                         command.referenceType(),
                         Clock.systemDefaultZone())
                 )
+                .isPrimary(false) // Not using this for now
                 .name(spec.name())
                 .altText(spec.altText())
+                .isPublic(command.isPublic())
+                .provider(provider)
                 .build();
     }
 
@@ -75,12 +78,40 @@ public class MediaMapper {
                 model.getId(),
                 model.getContentType().name(),
                 model.getProvider(),
-                model.getIsPrimary(),
                 model.getStatus(),
                 model.getName(),
                 model.getAltText(),
                 cdnUrl,
-                expiration
+                expiration,
+                model.getIsPublic()
         );
+    }
+
+    /**
+     * Updates an existing media record while generating a new storage key for the upload.
+     */
+    public Media toUpdatedModel(Media existing,
+                                UUID ownerId,
+                                UploadMediaCommand command,
+                                UploadMediaSpecCommand spec,
+                                String provider
+    ) {
+        UUID storageKeyId = UUID.randomUUID();
+        return existing.toBuilder()
+                .contentType(MediaContentType.fromContentType(spec.contentType()))
+                .status(MediaStatus.DRAFT)
+                .storageKey(buildStorageKey(
+                        storageKeyId,
+                        ownerId,
+                        spec,
+                        command.referenceType(),
+                        Clock.systemDefaultZone())
+                )
+                .isPrimary(false)
+                .name(spec.name())
+                .altText(spec.altText())
+                .isPublic(command.isPublic())
+                .provider(provider)
+                .build();
     }
 }

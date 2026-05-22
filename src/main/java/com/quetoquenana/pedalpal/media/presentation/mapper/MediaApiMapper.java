@@ -31,12 +31,12 @@ public class MediaApiMapper {
                 result.id(),
                 result.contentType(),
                 result.provider(),
-                result.isPrimary(),
                 statusLabel,
                 result.name(),
                 result.altText(),
                 result.url(),
-                result.expiresAt()
+                result.expiresAt(),
+                result.isPublic() != null ? result.isPublic() : false
         );
     }
 
@@ -48,7 +48,6 @@ public class MediaApiMapper {
                 request.mediaFiles().stream()
                         .map(file -> new UploadMediaSpecCommand(
                                 file.contentType(),
-                                file.isPrimary(),
                                 file.name(),
                                 file.altText()
                         ))

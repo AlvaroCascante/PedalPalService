@@ -139,7 +139,6 @@ public class BikeMapper {
                         .stream()
                         .map(spec -> new UploadMediaSpecCommand(
                                 spec.contentType(),
-                                spec.isPrimary(),
                                 spec.title(),
                                 spec.altText()
                         ))

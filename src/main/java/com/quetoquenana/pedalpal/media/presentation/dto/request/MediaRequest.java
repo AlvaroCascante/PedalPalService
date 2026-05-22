@@ -10,8 +10,6 @@ public record MediaRequest(
         @NotNull(message = "{upload.media.name.null}")
         String name,
 
-        String altText,
-
-        boolean isPrimary
+        String altText
 ) {
 }

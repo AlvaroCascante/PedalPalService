@@ -453,12 +453,12 @@ class BikeControllerTest {
                                 UUID.randomUUID(),
                                 "image/jpeg",
                                 "r2",
-                                true,
                                 MediaStatus.DRAFT,
                                 "front",
                                 "Front view",
                                 "https://upload.example/key",
-                                Instant.now().plusSeconds(300)
+                                Instant.now().plusSeconds(300),
+                                true
                         )
                 )
         );

@@ -23,26 +23,18 @@ public class Media extends Auditable {
     private MediaReferenceType referenceType; // e.g., ANNOUNCEMENT, USER_PROFILE, BIKE, etc.
     private MediaContentType contentType;
     private String provider;
-    private Boolean isPrimary;
+    private boolean isPrimary;
     private MediaStatus status;
     private String storageKey;
     private String name;
     private String altText;
+    private Boolean isPublic;
 
     /**
      * Confirms an upload by storing provider details and activating the media.
      */
     public void confirmUploaded() {
         this.status = MediaStatus.ACTIVE;
-    }
-
-    /**
-     * Assigns the storage provider for the media.
-     */
-    public Media assignProvider(String provider) {
-        return this.toBuilder()
-                .provider(provider)
-                .build();
     }
 
     @Override

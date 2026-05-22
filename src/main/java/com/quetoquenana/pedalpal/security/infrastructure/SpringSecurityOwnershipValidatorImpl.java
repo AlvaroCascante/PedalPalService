@@ -30,7 +30,7 @@ public class SpringSecurityOwnershipValidatorImpl implements OwnershipValidator 
                 orElseThrow(() -> new ForbiddenAccessException("authentication.required"));
 
         boolean allowed = switch (ownerType) {
-            case BIKE -> bikeRepository.existsBydAndOwnerId(referenceId, currentUser.userId());
+            case BIKE, BIKE_PROFILE -> bikeRepository.existsBydAndOwnerId(referenceId, currentUser.userId());
             case ANNOUNCEMENT -> currentUser.type().equals(UserType.ADMIN);
             case PROFILE -> true;
             default -> false;

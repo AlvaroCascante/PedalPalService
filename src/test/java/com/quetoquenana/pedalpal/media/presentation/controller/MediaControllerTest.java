@@ -70,23 +70,23 @@ class MediaControllerTest {
                 mediaId,
                 "image/jpeg",
                 "r2",
-                true,
                 MediaStatus.ACTIVE,
                 "front",
                 "Front view",
                 "https://cdn.example/media/key",
-                java.time.Instant.now().plusSeconds(60)
+                java.time.Instant.now().plusSeconds(60),
+                true
         );
         MediaResponse response = new MediaResponse(
                 mediaId,
                 "image/jpeg",
                 "r2",
-                true,
                 "ACTIVE",
                 "front",
                 "Front view",
                 "https://cdn.example/media/key",
-                result.expiresAt()
+                result.expiresAt(),
+                true
         );
 
         when(mapper.toCommand(mediaId)).thenReturn(command);
@@ -123,35 +123,35 @@ class MediaControllerTest {
         UploadMediaRequest request = new UploadMediaRequest(
                 true,
                 "BIKE",
-                List.of(new MediaRequest("image/jpeg", "front.jpg", "Front view", true))
+                List.of(new MediaRequest("image/jpeg", "front.jpg", "Front view"))
         );
         UploadMediaCommand command = new UploadMediaCommand(
                 true,
                 mediaId,
                 MediaReferenceType.BIKE,
-                List.of(new UploadMediaSpecCommand("image/jpeg", true, "front.jpg", "Front view"))
+                List.of(new UploadMediaSpecCommand("image/jpeg", "front.jpg", "Front view"))
         );
         MediaResult result = new MediaResult(
                 mediaId,
                 "image/jpeg",
                 "r2",
-                true,
                 MediaStatus.ACTIVE,
                 "front",
                 "Front view",
                 "https://cdn.example/media/key",
-                Instant.now().plusSeconds(60)
+                Instant.now().plusSeconds(60),
+                true
         );
         MediaResponse response = new MediaResponse(
                 mediaId,
                 "image/jpeg",
                 "r2",
-                true,
                 "ACTIVE",
                 "front",
                 "Front view",
                 "https://cdn.example/media/key",
-                result.expiresAt()
+                result.expiresAt(),
+                true
         );
 
         when(mapper.toCommand(eq(mediaId), any(UploadMediaRequest.class))).thenReturn(command);

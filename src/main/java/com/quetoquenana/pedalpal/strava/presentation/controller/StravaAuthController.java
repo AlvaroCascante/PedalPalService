@@ -58,6 +58,8 @@ public class StravaAuthController {
     /**
      * Handles Strava OAuth callback code exchange.
      */
+    // INFO -- This is the call back when the user auth strava, Token Exchange
+    // https://developers.strava.com/docs/authentication/
     @GetMapping("/oauth/callback")
     public ResponseEntity<ApiResponse> handleCallback(
             @RequestParam("code") String code,

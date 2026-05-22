@@ -31,6 +31,7 @@ public class HandleStravaOAuthCallbackUseCase {
     public StravaConnectionStatusResult execute(HandleStravaOAuthCallbackCommand command) {
         UUID userId = UUID.fromString(command.state());
 
+        // INFO -- This is the Token Exchange part, after receiving the redirect call from Strava
         StravaToken token = stravaApiClient.exchangeAuthorizationCode(command.code());
         Optional<StravaConnection> existing = connectionRepository.findByUserId(userId);
 
@@ -47,6 +48,7 @@ public class HandleStravaOAuthCallbackUseCase {
         log.info("Stored Strava connection for user {}", userId);
 
         // TODO: validate OAuth state param against stored nonce for CSRF protection.
+        // TODO implement the refresh token
         return new StravaConnectionStatusResult(true, connection.getStatus(), connection.getStravaAthleteId(), connection.getScope());
     }
 }

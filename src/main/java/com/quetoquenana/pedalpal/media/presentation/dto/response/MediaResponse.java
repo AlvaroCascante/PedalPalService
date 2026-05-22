@@ -7,10 +7,10 @@ public record MediaResponse(
         UUID id,
         String contentType,
         String provider,
-        Boolean isPrimary,
         String status,
         String name,
         String altText,
         String url,
-        Instant expiresAt
+        Instant expiresAt,
+        Boolean isPublic
 ) {}
