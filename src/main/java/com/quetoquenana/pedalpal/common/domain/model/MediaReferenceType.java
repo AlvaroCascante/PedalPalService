@@ -13,7 +13,7 @@ public enum MediaReferenceType {
     BIKE(false, false),
     BIKE_PROFILE(false, true),
     COMPONENT(true, false),
-    PROFILE(true, true),
+    PROFILE(false, true),
     SERVICE_ORDER(true, false),
     OTHER(true, false);
 
