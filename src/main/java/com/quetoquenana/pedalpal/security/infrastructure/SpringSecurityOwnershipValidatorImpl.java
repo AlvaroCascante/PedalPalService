@@ -32,7 +32,8 @@ public class SpringSecurityOwnershipValidatorImpl implements OwnershipValidator 
         boolean allowed = switch (ownerType) {
             case BIKE, BIKE_PROFILE -> bikeRepository.existsBydAndOwnerId(referenceId, currentUser.userId());
             case ANNOUNCEMENT -> currentUser.type().equals(UserType.ADMIN);
-            case PROFILE -> true;
+            case APPOINTMENT_DEPOSIT, APPOINTMENT_PAYMENT -> appointmentRepository.existsByIdAndCustomerId(referenceId, currentUser.userId());
+            case PROFILE -> referenceId.equals(currentUser.userId());
             default -> false;
         };
 

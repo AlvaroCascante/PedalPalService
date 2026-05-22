@@ -18,6 +18,9 @@ public interface AppointmentJpaRepository extends JpaRepository<AppointmentEntit
     @Query("select a from AppointmentEntity a where a.bikeId = :bikeId and a.scheduledAt < :now order by a.scheduledAt desc")
     List<AppointmentEntity> findPastByBikeId(@Param("bikeId") UUID bikeId, @Param("now") Instant now);
 
+
+    boolean existsByIdAndCustomerId(UUID id, UUID ownerId);
+
     Optional<AppointmentEntity> findByIdAndCustomerId(UUID id, UUID customerId);
 
     List<AppointmentEntity> findByCustomerId(UUID customerId);

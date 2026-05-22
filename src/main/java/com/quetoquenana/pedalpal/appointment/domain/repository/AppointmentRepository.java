@@ -14,6 +14,8 @@ public interface AppointmentRepository {
 
     Optional<Appointment> findByIdAndCustomerId(UUID id, UUID customerId);
 
+    boolean existsByIdAndCustomerId(UUID id, UUID customerId);
+
     List<Appointment> findByCustomerId(UUID customerId);
 
     List<Appointment> findUpcomingByBikeId(UUID bikeId, Instant now);

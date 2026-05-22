@@ -36,6 +36,11 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     }
 
     @Override
+    public boolean existsByIdAndCustomerId(UUID id, UUID customerId) {
+        return repository.existsByIdAndCustomerId(id, customerId);
+    }
+
+    @Override
     public List<Appointment> findByCustomerId(UUID customerId) {
         return repository.findByCustomerId(customerId).stream()
                 .map(AppointmentEntityMapper::toModel)
