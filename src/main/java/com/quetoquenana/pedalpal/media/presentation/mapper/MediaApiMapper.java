@@ -29,6 +29,7 @@ public class MediaApiMapper {
 
         return new MediaResponse(
                 result.id(),
+                result.correlationId(),
                 result.contentType(),
                 result.provider(),
                 statusLabel,
@@ -47,6 +48,7 @@ public class MediaApiMapper {
                 MediaReferenceType.from(request.referenceType()), // Convert string to enum
                 request.mediaFiles().stream()
                         .map(file -> new UploadMediaSpecCommand(
+                                file.id(),
                                 file.contentType(),
                                 file.name(),
                                 file.altText()

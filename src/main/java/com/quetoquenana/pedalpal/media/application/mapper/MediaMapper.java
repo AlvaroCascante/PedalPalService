@@ -64,18 +64,19 @@ public class MediaMapper {
                 name + "." + ext;
     }
 
-    public MediaResult toResult(Media model, SignedUrl signedUrl) {
-        return this.toResult(model, signedUrl.url(), signedUrl.expiresAt());
+    public MediaResult toResult(Media model, SignedUrl signedUrl, UUID correlationId) {
+        return this.toResult(model, signedUrl.url(), signedUrl.expiresAt(), correlationId);
     }
 
-    public MediaResult toResult(Media model, String cdnUrl) {
-        return this.toResult(model, cdnUrl, null);
+    public MediaResult toResult(Media model, String cdnUrl, UUID correlationId) {
+        return this.toResult(model, cdnUrl, null, correlationId);
     }
 
-    public MediaResult toResult(Media model, String cdnUrl, Instant expiration) {
+    public MediaResult toResult(Media model, String cdnUrl, Instant expiration, UUID correlationId) {
 
         return new MediaResult(
                 model.getId(),
+                correlationId,
                 model.getContentType().name(),
                 model.getProvider(),
                 model.getStatus(),

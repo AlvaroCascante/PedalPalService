@@ -12,6 +12,7 @@ import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
 import com.quetoquenana.pedalpal.media.application.port.UploadMediaPort;
 import com.quetoquenana.pedalpal.common.exception.BadRequestException;
+import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
 import com.quetoquenana.pedalpal.util.TestAnnouncementData;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -82,6 +83,7 @@ class CreateAnnouncementUseCaseTest {
             java.util.List<MediaResult> mediaResult = java.util.List.of(
                     new MediaResult(
                             UUID.randomUUID(),
+                            UUID.randomUUID(),
                             "image/jpeg",
                             "r2",
                             com.quetoquenana.pedalpal.media.domain.model.MediaStatus.DRAFT,
@@ -133,9 +135,11 @@ class CreateAnnouncementUseCaseTest {
 
             MediaResult m1 = new MediaResult(
                     UUID.randomUUID(),
+                    UUID.randomUUID(),
                     "image/jpeg",
                     "r2",
-                    com.quetoquenana.pedalpal.media.domain.model.MediaStatus.DRAFT,
+
+                    MediaStatus.DRAFT,
                     "front",
                     "Front view",
                     "https://upload.url/1",
@@ -143,6 +147,7 @@ class CreateAnnouncementUseCaseTest {
                     true
             );
             MediaResult m2 = new MediaResult(
+                    UUID.randomUUID(),
                     UUID.randomUUID(),
                     "image/png",
                     "r2",

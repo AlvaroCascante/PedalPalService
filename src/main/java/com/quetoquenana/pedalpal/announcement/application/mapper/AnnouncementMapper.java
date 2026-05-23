@@ -13,6 +13,7 @@ import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class AnnouncementMapper {
 
@@ -68,6 +69,7 @@ public class AnnouncementMapper {
 
     private UploadMediaSpecCommand toMediaUploadRequest(AnnouncementMediaCommand command) {
         return new UploadMediaSpecCommand(
+                UUID.randomUUID(),
                 command.contentType(),
                 command.name(),
                 command.altText()

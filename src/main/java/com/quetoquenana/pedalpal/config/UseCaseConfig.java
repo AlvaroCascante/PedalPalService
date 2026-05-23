@@ -41,10 +41,13 @@ import com.quetoquenana.pedalpal.strava.application.query.StravaConnectionStatus
 import com.quetoquenana.pedalpal.strava.application.service.StravaActivityFilteringService;
 import com.quetoquenana.pedalpal.strava.application.service.StravaBikeMatchingService;
 import com.quetoquenana.pedalpal.strava.application.service.StravaTokenService;
-import com.quetoquenana.pedalpal.strava.application.useCase.*;
+import com.quetoquenana.pedalpal.strava.application.useCase.GetStravaConnectUrlUseCase;
+import com.quetoquenana.pedalpal.strava.application.useCase.HandleStravaOAuthCallbackUseCase;
+import com.quetoquenana.pedalpal.strava.application.useCase.ProcessStravaWebhookUseCase;
+import com.quetoquenana.pedalpal.strava.application.useCase.SyncStravaActivityUseCase;
 import com.quetoquenana.pedalpal.strava.config.StravaProperties;
-import com.quetoquenana.pedalpal.strava.domain.repository.StravaActivitySyncRepository;
 import com.quetoquenana.pedalpal.strava.domain.port.StravaApiClient;
+import com.quetoquenana.pedalpal.strava.domain.repository.StravaActivitySyncRepository;
 import com.quetoquenana.pedalpal.strava.domain.repository.StravaConnectionRepository;
 import com.quetoquenana.pedalpal.systemCode.domain.repository.SystemCodeRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -276,21 +279,6 @@ public class UseCaseConfig {
                 authenticatedUserPort,
                 mapper,
                 repository
-        );
-    }
-
-    @Bean
-    public UploadBikeMediaUseCase createCreateBikeUploadMediaUseCase(
-            BikeMapper mapper,
-            BikeRepository repository,
-            UploadMediaPort uploadMediaPort,
-            AuthenticatedUserPort authenticatedUserPort
-    ) {
-        return new UploadBikeMediaUseCase(
-                authenticatedUserPort,
-                mapper,
-                repository,
-                uploadMediaPort
         );
     }
 

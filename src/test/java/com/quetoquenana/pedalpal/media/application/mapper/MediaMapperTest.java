@@ -30,6 +30,7 @@ public class MediaMapperTest {
         long version = 3L;
 
         UploadMediaSpecCommand spec = new UploadMediaSpecCommand(
+                UUID.randomUUID(),
                 "image/jpeg",
                 "bike-photo",
                 "Bike photo"

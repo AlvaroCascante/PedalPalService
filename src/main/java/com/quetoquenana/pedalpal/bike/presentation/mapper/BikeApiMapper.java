@@ -3,21 +3,20 @@ package com.quetoquenana.pedalpal.bike.presentation.mapper;
 import com.quetoquenana.pedalpal.bike.application.command.*;
 import com.quetoquenana.pedalpal.bike.application.result.BikeComponentResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeHistoryResult;
-import com.quetoquenana.pedalpal.bike.application.result.BikeMediaResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
 import com.quetoquenana.pedalpal.bike.presentation.dto.request.*;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeComponentResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeHistoryResponse;
-import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeMediaResponse;
 import com.quetoquenana.pedalpal.bike.presentation.dto.response.BikeResponse;
-import com.quetoquenana.pedalpal.common.application.result.MediaResult;
-import com.quetoquenana.pedalpal.media.presentation.dto.response.MediaResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -125,28 +124,6 @@ public class BikeApiMapper {
         );
     }
 
-    public CreateBikeUploadMediaCommand toCommand(
-            UUID bikeId,
-            UploadBikeMediaRequest request
-    ) {
-        return new CreateBikeUploadMediaCommand(
-                bikeId,
-                request.mediaFiles()
-                        .stream()
-                        .map(this::toCommand)
-                        .toList()
-        );
-    }
-
-    private BikeMediaCommand toCommand(BikeMediaRequest request) {
-        return new BikeMediaCommand(
-                request.contentType(),
-                request.isPrimary(),
-                request.name(),
-                request.altText()
-        );
-    }
-
     public BikeResponse toResponse(BikeResult result) {
         return toResponse(result, Set.of(BikeComponentStatus.ACTIVE));
     }
@@ -209,32 +186,6 @@ public class BikeApiMapper {
                 result.performedBy(),
                 result.type().name(),
                 result.payload()
-        );
-    }
-
-    public BikeMediaResponse toResponse(BikeMediaResult result) {
-        return new BikeMediaResponse(
-                result.id(),
-                result.mediaResults().stream()
-                        .map(this::toResponse)
-                        .toList()
-        );
-    }
-
-    private MediaResponse toResponse(MediaResult result) {
-        Locale locale = LocaleContextHolder.getLocale();
-        String statusLabel = messageSource.getMessage(result.status().getKey(), null, locale);
-
-        return new MediaResponse(
-                result.id(),
-                result.contentType(),
-                result.provider(),
-                statusLabel,
-                result.name(),
-                result.altText(),
-                result.url(),
-                result.expiresAt(),
-                result.isPublic()
         );
     }
 }

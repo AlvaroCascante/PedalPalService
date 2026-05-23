@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public record MediaResponse(
         UUID id,
+        UUID correlationId,
         String contentType,
         String provider,
         String status,

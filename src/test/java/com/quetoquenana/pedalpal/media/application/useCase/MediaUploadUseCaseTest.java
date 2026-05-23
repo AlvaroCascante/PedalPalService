@@ -73,16 +73,19 @@ class MediaUploadUseCaseTest {
     void shouldGenerateUploadUrlsAndPersistMedia() {
         UUID authUserId = UUID.randomUUID();
         UUID referenceId = UUID.randomUUID();
-
+        UUID correlationId1 = UUID.randomUUID();
+        UUID correlationId2 = UUID.randomUUID();
         when(authenticatedUserPort.getAuthenticatedUser())
                 .thenReturn(Optional.of(new AuthenticatedUser(authUserId, "test-user", "Test User", UserType.CUSTOMER)));
 
         UploadMediaSpecCommand spec1 = new UploadMediaSpecCommand(
+                correlationId1,
                 "image/jpeg",
                 "front",
                 "Front view"
         );
         UploadMediaSpecCommand spec2 = new UploadMediaSpecCommand(
+                correlationId2,
                 "image/png",
                 "side",
                 "Side view"
@@ -113,6 +116,7 @@ class MediaUploadUseCaseTest {
 
         MediaResult result1 = new MediaResult(
                 media1.getId(),
+                correlationId1,
                 media1.getContentType().name(),
                 DEFAULT_PROVIDER,
                 MediaStatus.DRAFT,
@@ -124,6 +128,7 @@ class MediaUploadUseCaseTest {
         );
         MediaResult result2 = new MediaResult(
                 media2.getId(),
+                correlationId2,
                 media2.getContentType().name(),
                 DEFAULT_PROVIDER,
                 MediaStatus.DRAFT,
@@ -138,8 +143,8 @@ class MediaUploadUseCaseTest {
         when(mapper.toModel(eq(authUserId), eq(command), eq(spec2), eq(DEFAULT_PROVIDER))).thenReturn(media2);
         when(mediaUrlProvider.generateUploadUrl(media1.getStorageKey(), media1.getContentType().getContentType(), false)).thenReturn(signedUrl1);
         when(mediaUrlProvider.generateUploadUrl(media2.getStorageKey(), media2.getContentType().getContentType(), false)).thenReturn(signedUrl2);
-        when(mapper.toResult(any(Media.class), eq(signedUrl1))).thenReturn(result1);
-        when(mapper.toResult(any(Media.class), eq(signedUrl2))).thenReturn(result2);
+        when(mapper.toResult(any(Media.class), eq(signedUrl1), eq(correlationId1))).thenReturn(result1);
+        when(mapper.toResult(any(Media.class), eq(signedUrl2), eq(correlationId2))).thenReturn(result2);
 
         List<MediaResult> results = useCase.execute(command);
 
@@ -163,16 +168,19 @@ class MediaUploadUseCaseTest {
     void shouldUpdateExistingMediaForUniqueReferenceTypeUsingFirstSpec() {
         UUID authUserId = UUID.randomUUID();
         UUID referenceId = UUID.randomUUID();
+        UUID correlationId = UUID.randomUUID();
 
         when(authenticatedUserPort.getAuthenticatedUser())
                 .thenReturn(Optional.of(new AuthenticatedUser(authUserId, "test-user", "Test User", UserType.CUSTOMER)));
 
         UploadMediaSpecCommand spec1 = new UploadMediaSpecCommand(
+                correlationId,
                 "image/jpeg",
                 "profile",
                 "Profile photo"
         );
         UploadMediaSpecCommand spec2 = new UploadMediaSpecCommand(
+                correlationId,
                 "image/png",
                 "ignored",
                 "Ignored"
@@ -201,6 +209,7 @@ class MediaUploadUseCaseTest {
 
         SignedUrl signedUrl = new SignedUrl("https://upload/unique", Instant.now().plusSeconds(60), Map.of("Content-Type", "image/jpeg"));
         MediaResult result = new MediaResult(
+                UUID.randomUUID(),
                 updated.getId(),
                 updated.getContentType().name(),
                 DEFAULT_PROVIDER,
@@ -218,7 +227,7 @@ class MediaUploadUseCaseTest {
                 .thenReturn(updated);
         when(mediaUrlProvider.generateUploadUrl(updated.getStorageKey(), updated.getContentType().getContentType(), true))
                 .thenReturn(signedUrl);
-        when(mapper.toResult(eq(updated), eq(signedUrl))).thenReturn(result);
+        when(mapper.toResult(eq(updated), eq(signedUrl), eq(correlationId))).thenReturn(result);
 
         List<MediaResult> results = useCase.execute(command);
 

@@ -1,30 +1,19 @@
 package com.quetoquenana.pedalpal.bike.controller;
 
-import com.quetoquenana.pedalpal.bike.application.command.CreateBikeUploadMediaCommand;
-import com.quetoquenana.pedalpal.bike.application.query.BikeQueryService;
 import com.quetoquenana.pedalpal.bike.application.query.BikeHistoryQueryService;
-import com.quetoquenana.pedalpal.bike.application.result.BikeMediaResult;
-import com.quetoquenana.pedalpal.common.application.result.MediaResult;
-import com.quetoquenana.pedalpal.media.domain.model.MediaStatus;
-import com.quetoquenana.pedalpal.bike.application.useCase.CreateBikeUseCase;
-import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeStatusUseCase;
-import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeUseCase;
-import com.quetoquenana.pedalpal.bike.application.useCase.AddBikeComponentUseCase;
-import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeComponentUseCase;
-import com.quetoquenana.pedalpal.bike.application.useCase.ReplaceBikeComponentUseCase;
-import com.quetoquenana.pedalpal.bike.application.useCase.UpdateBikeComponentStatusUseCase;
-import com.quetoquenana.pedalpal.bike.application.useCase.UploadBikeMediaUseCase;
-import com.quetoquenana.pedalpal.bike.presentation.controller.BikeController;
-import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
-import com.quetoquenana.pedalpal.config.SecurityConfig;
+import com.quetoquenana.pedalpal.bike.application.query.BikeQueryService;
+import com.quetoquenana.pedalpal.bike.application.useCase.*;
 import com.quetoquenana.pedalpal.bike.domain.model.BikeComponentStatus;
+import com.quetoquenana.pedalpal.bike.presentation.controller.BikeController;
 import com.quetoquenana.pedalpal.bike.presentation.mapper.BikeApiMapper;
-import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
-import com.quetoquenana.pedalpal.util.TestBikeData;
-import com.quetoquenana.pedalpal.util.TestJsonBodies;
 import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.domain.model.UserType;
+import com.quetoquenana.pedalpal.common.exception.RecordNotFoundException;
+import com.quetoquenana.pedalpal.config.SecurityConfig;
+import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
+import com.quetoquenana.pedalpal.util.TestBikeData;
+import com.quetoquenana.pedalpal.util.TestJsonBodies;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,7 +24,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.validation.FieldError;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -43,7 +31,6 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -89,9 +76,6 @@ class BikeControllerTest {
 
     @MockitoBean
     BikeHistoryQueryService bikeHistoryQueryService;
-
-    @MockitoBean
-    UploadBikeMediaUseCase uploadBikeMediaUseCase;
 
     private static final UUID AUTH_USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
@@ -440,53 +424,5 @@ class BikeControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(TestJsonBodies.addBikeComponentMinimal("Chain", "CHAIN")))
                 .andExpect(status().isNotFound());
-    }
-
-    @Test
-    void shouldReturn200_whenValidUploadMedia() throws Exception {
-        UUID bikeId = UUID.randomUUID();
-
-        BikeMediaResult uploadResult = new BikeMediaResult(
-                bikeId,
-                java.util.List.of(
-                        new MediaResult(
-                                UUID.randomUUID(),
-                                "image/jpeg",
-                                "r2",
-                                MediaStatus.DRAFT,
-                                "front",
-                                "Front view",
-                                "https://upload.example/key",
-                                Instant.now().plusSeconds(300),
-                                true
-                        )
-                )
-        );
-
-        doReturn(uploadResult)
-                .when(uploadBikeMediaUseCase)
-                .execute(any(CreateBikeUploadMediaCommand.class));
-
-        mockMvc.perform(post("/v1/api/bikes/{id}/media", bikeId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(TestJsonBodies.uploadBikeMediaMinimal("image/jpeg", "IMAGE")))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.mediaUrlResponse[0].id").isNotEmpty())
-                .andExpect(jsonPath("$.data.mediaUrlResponse[0].url").value("https://upload.example/key"));
-    }
-
-    @Test
-    void shouldReturn400_whenUploadMediaValidationFails_missingMediaFiles() throws Exception {
-        when(messageSource.getMessage(any(FieldError.class), any(Locale.class)))
-                .thenReturn("Media files are required");
-        when(messageSource.getMessage(eq("validation.failed"), any(), any(Locale.class)))
-                .thenReturn("Validation failed");
-
-        UUID bikeId = UUID.randomUUID();
-
-        mockMvc.perform(post("/v1/api/bikes/{id}/media", bikeId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
-                .andExpect(status().isBadRequest());
     }
 }

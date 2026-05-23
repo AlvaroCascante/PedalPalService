@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public record MediaResult(
         UUID id,
+        UUID correlationId,
         String contentType,
         String provider,
         MediaStatus status,

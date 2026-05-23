@@ -5,6 +5,7 @@ import com.quetoquenana.pedalpal.common.application.result.MediaResult;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.exception.ForbiddenAccessException;
 import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
+import com.quetoquenana.pedalpal.media.application.command.UploadMediaSpecCommand;
 import com.quetoquenana.pedalpal.media.application.mapper.MediaMapper;
 import com.quetoquenana.pedalpal.media.application.model.SignedUrl;
 import com.quetoquenana.pedalpal.media.application.port.MediaOwnershipValidationPort;
@@ -50,6 +51,7 @@ public class MediaUploadUseCase {
                         command.mediaSpecs().size());
             }
 
+            UploadMediaSpecCommand spec = command.mediaSpecs().getFirst();
             Media model = repository.findByReferenceIdAndReferenceType(command.referenceId(), command.referenceType())
                     .stream()
                     .findFirst()
@@ -57,12 +59,12 @@ public class MediaUploadUseCase {
                             existing,
                             currentUser.userId(),
                             command,
-                            command.mediaSpecs().getFirst(),
+                            spec,
                             defaultStorageProvider))
                     .orElseGet(() -> mapper.toModel(
                             currentUser.userId(),
                             command,
-                            command.mediaSpecs().getFirst(),
+                            spec,
                             defaultStorageProvider));
 
             SignedUrl signedUrl = mediaUrlProvider.generateUploadUrl(
@@ -71,7 +73,7 @@ public class MediaUploadUseCase {
                     command.isPublic()
             );
             repository.save(model);
-            return List.of(mapper.toResult(model, signedUrl));
+            return List.of(mapper.toResult(model, signedUrl, spec.id()));
         }
 
         // Build models + signedUrl in one pass
@@ -84,7 +86,7 @@ public class MediaUploadUseCase {
                             command.isPublic()
                     );
                     repository.save(model);
-                    return mapper.toResult(model, signedUrl);
+                    return mapper.toResult(model, signedUrl, spec.id());
                 })
                 .toList();
     }

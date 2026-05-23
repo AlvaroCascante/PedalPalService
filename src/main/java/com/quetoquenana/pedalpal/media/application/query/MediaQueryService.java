@@ -38,7 +38,7 @@ public class MediaQueryService {
                 model.getContentType().name(),
                 model.getReferenceType().isPublic()
         );
-        return mapper.toResult(model, signedUrl.url(), signedUrl.expiresAt());
+        return mapper.toResult(model, signedUrl.url(), signedUrl.expiresAt(), null);
     }
 
     /**
@@ -55,7 +55,7 @@ public class MediaQueryService {
                         model.getContentType().name(),
                         referenceType.isPublic()
                 );
-                results.add(mapper.toResult(model, signedUrl.url(), signedUrl.expiresAt()));
+                results.add(mapper.toResult(model, signedUrl.url(), signedUrl.expiresAt(), null));
             }
         });
         return results;

@@ -67,6 +67,7 @@ class MediaControllerTest {
         UUID mediaId = UUID.randomUUID();
         ConfirmUploadCommand command = new ConfirmUploadCommand(mediaId);
         MediaResult result = new MediaResult(
+                UUID.randomUUID(),
                 mediaId,
                 "image/jpeg",
                 "r2",
@@ -79,6 +80,7 @@ class MediaControllerTest {
         );
         MediaResponse response = new MediaResponse(
                 mediaId,
+                UUID.randomUUID(),
                 "image/jpeg",
                 "r2",
                 "ACTIVE",
@@ -123,15 +125,17 @@ class MediaControllerTest {
         UploadMediaRequest request = new UploadMediaRequest(
                 true,
                 "BIKE",
-                List.of(new MediaRequest("image/jpeg", "front.jpg", "Front view"))
+                List.of(new MediaRequest(UUID.randomUUID(), "image/jpeg", "front.jpg", "Front view"))
         );
         UploadMediaCommand command = new UploadMediaCommand(
                 true,
                 mediaId,
                 MediaReferenceType.BIKE,
-                List.of(new UploadMediaSpecCommand("image/jpeg", "front.jpg", "Front view"))
+                List.of(new UploadMediaSpecCommand(
+                        UUID.randomUUID(),"image/jpeg", "front.jpg", "Front view"))
         );
         MediaResult result = new MediaResult(
+                UUID.randomUUID(),
                 mediaId,
                 "image/jpeg",
                 "r2",
@@ -144,6 +148,7 @@ class MediaControllerTest {
         );
         MediaResponse response = new MediaResponse(
                 mediaId,
+                UUID.randomUUID(),
                 "image/jpeg",
                 "r2",
                 "ACTIVE",
@@ -161,7 +166,7 @@ class MediaControllerTest {
         mockMvc.perform(post("/v1/api/media/{id}", mediaId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {"isPublic":true,"referenceType":"BIKE","mediaFiles":[{"contentType":"image/jpeg","name":"front.jpg","altText":"Front view","isPrimary":true}]}
+                                {"isPublic":true,"referenceType":"BIKE","mediaFiles":[{"id":"00000000-0000-0000-0000-000000000002","contentType":"image/jpeg","name":"front.jpg","altText":"Front view"}]}
                                 """))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].id").value(mediaId.toString()))
@@ -178,7 +183,7 @@ class MediaControllerTest {
         mockMvc.perform(post("/v1/api/media/{id}", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {"isPublic":true,"referenceType":"BIKE","mediaFiles":[{"contentType":"image/jpeg","name":"front.jpg","altText":"Front view","isPrimary":true}]}
+                                {"isPublic":true,"referenceType":"BIKE","mediaFiles":[{"id":"00000000-0000-0000-0000-000000000002","contentType":"image/jpeg","name":"front.jpg","altText":"Front view"}]}
                                 """))
                 .andExpect(status().isForbidden());
 

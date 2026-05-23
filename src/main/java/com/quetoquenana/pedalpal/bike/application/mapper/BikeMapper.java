@@ -4,16 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quetoquenana.pedalpal.bike.application.command.AddBikeComponentCommand;
 import com.quetoquenana.pedalpal.bike.application.command.CreateBikeCommand;
-import com.quetoquenana.pedalpal.bike.application.command.CreateBikeUploadMediaCommand;
 import com.quetoquenana.pedalpal.bike.application.result.BikeComponentResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeHistoryResult;
-import com.quetoquenana.pedalpal.bike.application.result.BikeMediaResult;
 import com.quetoquenana.pedalpal.bike.application.result.BikeResult;
 import com.quetoquenana.pedalpal.bike.domain.model.*;
-import com.quetoquenana.pedalpal.common.application.result.MediaResult;
-import com.quetoquenana.pedalpal.media.application.command.UploadMediaCommand;
-import com.quetoquenana.pedalpal.media.application.command.UploadMediaSpecCommand;
-import com.quetoquenana.pedalpal.common.domain.model.MediaReferenceType;
 import com.quetoquenana.pedalpal.systemCode.domain.model.SystemCode;
 import lombok.RequiredArgsConstructor;
 
@@ -117,32 +111,6 @@ public class BikeMapper {
                 model.getPerformedBy(),
                 model.getType(),
                 model.getPayload()
-        );
-    }
-
-    public BikeMediaResult toResult(
-            Bike model,
-            List<MediaResult> mediaResults
-    ) {
-        return new BikeMediaResult(
-                model.getId(),
-                mediaResults
-        );
-    }
-
-    public UploadMediaCommand toMediaUploadRequest(Bike bike, CreateBikeUploadMediaCommand command) {
-        return new UploadMediaCommand(
-                false,
-                bike.getId(),
-                MediaReferenceType.BIKE,
-                command.mediaFiles()
-                        .stream()
-                        .map(spec -> new UploadMediaSpecCommand(
-                                spec.contentType(),
-                                spec.title(),
-                                spec.altText()
-                        ))
-                        .toList()
         );
     }
 
