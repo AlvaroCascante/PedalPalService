@@ -67,6 +67,7 @@ public class StravaAuthController {
             @RequestParam(value = "state", required = false) String state
     ) {
         log.info("Strava OAuth callback received for code exchange");
+        log.debug("code: {}, scope: {}, state: {}", code, scope, state);
         HandleStravaOAuthCallbackCommand command = new HandleStravaOAuthCallbackCommand(code, scope, state);
         StravaConnectionStatusResult result = handleStravaOAuthCallbackUseCase.execute(command);
         StravaConnectionStatusResponse response = apiMapper.toResponse(result);
