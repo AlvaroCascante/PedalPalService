@@ -29,6 +29,7 @@ public class HandleStravaOAuthCallbackUseCase {
      * Exchanges the authorization code for tokens and persists the connection.
      */
     public StravaConnectionStatusResult execute(HandleStravaOAuthCallbackCommand command) {
+        log.debug("HandleStravaOAuthCallbackUseCase command: {}", command);
         UUID userId = UUID.fromString(command.state());
 
         // INFO -- This is the Token Exchange part, after receiving the redirect call from Strava
