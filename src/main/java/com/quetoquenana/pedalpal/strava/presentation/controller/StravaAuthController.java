@@ -15,6 +15,7 @@ import com.quetoquenana.pedalpal.strava.presentation.mapper.StravaApiMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -91,9 +95,13 @@ public class StravaAuthController {
         try {
             StravaConnectionStatusResult result = handleStravaOAuthCallbackUseCase.execute(command);
             log.info("Strava OAuth callback completed for athleteId {}", result.athleteId());
-            return ResponseEntity.ok()
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .location(URI.create("https://quetoquenana.com/strava/callback?status=success&state=" +
+                            URLEncoder.encode(state, StandardCharsets.UTF_8)))
+                    .build();
+            /*return ResponseEntity.ok()
                     .contentType(MediaType.TEXT_HTML)
-                    .body(buildOAuthCompletionHtml(state, "success", null, null));
+                    .body(buildOAuthCompletionHtml(state, "success", null, null));*/
         } catch (BusinessException ex) {
             String errorCode = ex.getMessageKey();
             log.error("Business error completing Strava OAuth callback for state {} with code {}", state, errorCode, ex);
