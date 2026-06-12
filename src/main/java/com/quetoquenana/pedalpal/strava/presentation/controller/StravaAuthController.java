@@ -115,12 +115,14 @@ public class StravaAuthController {
                 ? "Authorization completed. Return to the app."
                 : "Authorization failed. Return to the app and try again.";
 
-        return readOauthCallbackTemplate()
+        String response = readOauthCallbackTemplate()
                 .replace(PLACEHOLDER_APP_LINK_URL, escapeForJsSingleQuotedString(appLinkUrl))
                 .replace(PLACEHOLDER_DEEP_LINK_URL, escapeForJsSingleQuotedString(deepLinkUrl))
                 .replace(PLACEHOLDER_COMPLETION_MESSAGE, escapeForJsSingleQuotedString(completionMessage))
                 .replace(PLACEHOLDER_DEEP_LINK_DELAY_MS, Long.toString(stravaProperties.getMobileCallbackDeepLinkDelayMs()))
                 .replace(PLACEHOLDER_MESSAGE_DELAY_MS, Long.toString(stravaProperties.getMobileCallbackMessageDelayMs()));
+        log.debug("buildOAuthCompletionHtml response: {}", response);
+        return response;
     }
 
     private String readOauthCallbackTemplate() {

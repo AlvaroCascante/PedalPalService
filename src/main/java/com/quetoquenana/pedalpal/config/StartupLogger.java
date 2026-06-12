@@ -35,9 +35,9 @@ public class StartupLogger implements ApplicationRunner {
         return new String[] {
                     "strava.client.id",
                     "spring.security.oauth2.resourceserver.jwt.jwk-set-uri",
-                    "security.jwt.issuer",
-                    "security.jwt.aud",
-                    "spring.datasource.url",
+                    "strava.mobile-callback-deep-link-delay-ms",
+                    "strava.mobile-callback-message-delay-ms",
+                    "strava.scopes",
                     "spring.datasource.username",
                     "app.support.email"
         };
