@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Authorization finished</title>
+  </head>
+  <body>
+    <p>Finishing authorization...</p>
+    <script>
+      var appLinkUrl = '__APP_LINK_URL__';
+      var deepLinkUrl = '__DEEP_LINK_URL__';
+      var completionMessage = '__COMPLETION_MESSAGE__';
+
+      window.location = appLinkUrl;
+      setTimeout(function () {
+        window.location = deepLinkUrl;
+      }, __DEEP_LINK_DELAY_MS__);
+      setTimeout(function () {
+        document.body.innerHTML = '<p>' + completionMessage + '</p><p><a href="' + appLinkUrl + '">Open the app</a></p>';
+      }, __MESSAGE_DELAY_MS__);
+    </script>
+    <noscript>
+      <p>Authorization completed. Return to the app.</p>
+    </noscript>
+  </body>
+</html>
+
+

@@ -3,6 +3,7 @@ package com.quetoquenana.pedalpal.strava.presentation.controller;
 import com.quetoquenana.pedalpal.common.application.port.AuthenticatedUserPort;
 import com.quetoquenana.pedalpal.common.domain.model.AuthenticatedUser;
 import com.quetoquenana.pedalpal.common.domain.model.UserType;
+import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.config.SecurityConfig;
 import com.quetoquenana.pedalpal.presentation.security.WithMockJwt;
 import com.quetoquenana.pedalpal.strava.application.query.StravaConnectionStatusQuery;
@@ -10,6 +11,7 @@ import com.quetoquenana.pedalpal.strava.application.result.StravaConnectUrlResul
 import com.quetoquenana.pedalpal.strava.application.result.StravaConnectionStatusResult;
 import com.quetoquenana.pedalpal.strava.application.useCase.GetStravaConnectUrlUseCase;
 import com.quetoquenana.pedalpal.strava.application.useCase.HandleStravaOAuthCallbackUseCase;
+import com.quetoquenana.pedalpal.strava.config.StravaProperties;
 import com.quetoquenana.pedalpal.strava.domain.model.StravaConnectionStatus;
 import com.quetoquenana.pedalpal.strava.presentation.dto.response.StravaConnectUrlResponse;
 import com.quetoquenana.pedalpal.strava.presentation.dto.response.StravaConnectionStatusResponse;
@@ -20,14 +22,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,6 +57,9 @@ class StravaAuthControllerTest {
 
     @MockitoBean
     StravaApiMapper apiMapper;
+
+    @MockitoBean
+    StravaProperties stravaProperties;
 
     @MockitoBean
     AuthenticatedUserPort authenticatedUserPort;
@@ -89,5 +97,45 @@ class StravaAuthControllerTest {
         mockMvc.perform(get("/v1/api/strava/connection/status"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.connected").value(true));
+    }
+
+    @Test
+    void shouldReturnHtmlCallbackPageAfterOauthCallback() throws Exception {
+        when(stravaProperties.getMobileCallbackAppLinkUrl()).thenReturn("https://quetoquenana.com/strava/callback");
+        when(stravaProperties.getMobileCallbackDeepLinkUrl()).thenReturn("pedalpal://strava-callback");
+        when(stravaProperties.getMobileCallbackDeepLinkDelayMs()).thenReturn(700L);
+        when(stravaProperties.getMobileCallbackMessageDelayMs()).thenReturn(1500L);
+        when(handleStravaOAuthCallbackUseCase.execute(any()))
+                .thenReturn(new StravaConnectionStatusResult(true, StravaConnectionStatus.CONNECTED, 123L, "read"));
+
+        mockMvc.perform(get("/v1/api/strava/oauth/callback")
+                        .param("code", "abc123")
+                        .param("scope", "read")
+                        .param("state", "state-1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("https://quetoquenana.com/strava/callback?status=success&state=state-1")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("pedalpal://strava-callback?status=success&state=state-1")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("}, 700);")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("}, 1500);")));
+    }
+
+    @Test
+    void shouldReturnHtmlCallbackPageWithErrorDetailsWhenOauthCallbackFails() throws Exception {
+        when(stravaProperties.getMobileCallbackAppLinkUrl()).thenReturn("https://quetoquenana.com/strava/callback");
+        when(stravaProperties.getMobileCallbackDeepLinkUrl()).thenReturn("pedalpal://strava-callback");
+        when(stravaProperties.getMobileCallbackDeepLinkDelayMs()).thenReturn(700L);
+        when(stravaProperties.getMobileCallbackMessageDelayMs()).thenReturn(1500L);
+        when(handleStravaOAuthCallbackUseCase.execute(any()))
+                .thenThrow(new BusinessException("strava.oauth.exchange.failed"));
+
+        mockMvc.perform(get("/v1/api/strava/oauth/callback")
+                        .param("code", "abc123")
+                        .param("scope", "read")
+                        .param("state", "state-1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("https://quetoquenana.com/strava/callback?status=error&state=state-1&errorCode=strava.oauth.exchange.failed&reason=oauth_exchange_failed")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("pedalpal://strava-callback?status=error&state=state-1&errorCode=strava.oauth.exchange.failed&reason=oauth_exchange_failed")));
     }
 }
