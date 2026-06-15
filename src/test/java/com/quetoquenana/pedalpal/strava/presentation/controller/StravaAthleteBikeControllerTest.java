@@ -47,7 +47,12 @@ class StravaAthleteBikeControllerTest {
                 "Roadie",
                 true,
                 false,
-                new BigDecimal("123.45")
+                new BigDecimal("123.45"),
+                new BigDecimal("123.25"),
+                "brand",
+                "model",
+                1,
+                "des"
         );
         StravaAthleteBikeResponse response = new StravaAthleteBikeResponse(
                 result.id(),
@@ -55,7 +60,11 @@ class StravaAthleteBikeControllerTest {
                 result.nickname(),
                 result.primary(),
                 result.retired(),
-                result.distance()
+                result.distance(),
+                result.brandName(),
+                result.modelName(),
+                result.frameType(),
+                result.description()
         );
 
         when(stravaAthleteQuery.getAthleteBikes()).thenReturn(List.of(result));

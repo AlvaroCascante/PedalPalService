@@ -2,6 +2,7 @@ package com.quetoquenana.pedalpal.strava.domain.port;
 
 import com.quetoquenana.pedalpal.strava.domain.model.StravaActivity;
 import com.quetoquenana.pedalpal.strava.domain.model.StravaAthleteBike;
+import com.quetoquenana.pedalpal.strava.domain.model.StravaAthleteBikeDetail;
 import com.quetoquenana.pedalpal.strava.domain.model.StravaToken;
 
 import java.util.List;
@@ -27,4 +28,6 @@ public interface StravaApiClient {
     StravaActivity getActivityById(Long activityId, String accessToken);
 
     List<StravaAthleteBike> getAthleteBikes(String accessToken);
+
+    StravaAthleteBikeDetail getBikeDetail(String bikeId, String accessToken);
 }

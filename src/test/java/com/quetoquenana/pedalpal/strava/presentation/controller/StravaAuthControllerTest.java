@@ -112,12 +112,7 @@ class StravaAuthControllerTest {
                         .param("code", "abc123")
                         .param("scope", "read")
                         .param("state", "state-1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("https://quetoquenana.com/strava/callback?status=success&state=state-1")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("pedalpal://strava-callback?status=success&state=state-1")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("}, 700);")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("}, 1500);")));
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test

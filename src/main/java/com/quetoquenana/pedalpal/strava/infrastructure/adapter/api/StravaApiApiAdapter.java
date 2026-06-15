@@ -2,15 +2,9 @@ package com.quetoquenana.pedalpal.strava.infrastructure.adapter.api;
 
 import com.quetoquenana.pedalpal.common.exception.BusinessException;
 import com.quetoquenana.pedalpal.strava.config.StravaProperties;
-import com.quetoquenana.pedalpal.strava.domain.model.StravaActivity;
-import com.quetoquenana.pedalpal.strava.domain.model.StravaAthleteBike;
-import com.quetoquenana.pedalpal.strava.domain.model.StravaSportType;
-import com.quetoquenana.pedalpal.strava.domain.model.StravaToken;
+import com.quetoquenana.pedalpal.strava.domain.model.*;
 import com.quetoquenana.pedalpal.strava.domain.port.StravaApiClient;
-import com.quetoquenana.pedalpal.strava.infrastructure.adapter.dto.StravaActivityResponse;
-import com.quetoquenana.pedalpal.strava.infrastructure.adapter.dto.StravaAthleteResponse;
-import com.quetoquenana.pedalpal.strava.infrastructure.adapter.dto.StravaAthleteBikeResponse;
-import com.quetoquenana.pedalpal.strava.infrastructure.adapter.dto.StravaTokenResponse;
+import com.quetoquenana.pedalpal.strava.infrastructure.adapter.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -141,6 +135,34 @@ public class StravaApiApiAdapter implements StravaApiClient {
                         .retired(r.retired())
                         .build()
         ).toList();
+    }
+
+    @Override
+    public StravaAthleteBikeDetail getBikeDetail(String bikeId, String accessToken) {
+        log.debug("Getting bike detail for bikeId: {}", bikeId);
+        StravaAthleteBikeDetailResponse response =  restClient.get()
+                .uri("/gears/{id}", bikeId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+
+        log.debug("Strava bike detail response: {}", response);
+        assert response != null;
+        return StravaAthleteBikeDetail.builder()
+                .id(response.id())
+                .primary(response.primary())
+                .name(response.name())
+                .nickname(response.nickname())
+                .resourceState(response.resourceState())
+                .retired(response.retired())
+                .distance(BigDecimal.valueOf(response.distance()))
+                .convertedDistance(BigDecimal.valueOf(response.convertedDistance()))
+                .brandName(response.brandName())
+                .modelName(response.modelName())
+                .frameType(response.frameType())
+                .description(response.description())
+                .weight(response.weight())
+                .build();
     }
 
     private StravaToken toToken(StravaTokenResponse response) {

@@ -8,5 +8,10 @@ public record StravaAthleteBikeResult(
         String nickname,
         boolean primary,
         boolean retired,
-        BigDecimal distance
+        BigDecimal distance,
+        BigDecimal convertedDistance,
+        String brandName,
+        String modelName,
+        Integer frameType,
+        String description
 ) {}

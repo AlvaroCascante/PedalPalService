@@ -3,6 +3,7 @@ package com.quetoquenana.pedalpal.strava.application.mapper;
 import com.quetoquenana.pedalpal.strava.application.command.StravaGearCommand;
 import com.quetoquenana.pedalpal.strava.application.result.StravaConnectionStatusResult;
 import com.quetoquenana.pedalpal.strava.application.result.StravaAthleteBikeResult;
+import com.quetoquenana.pedalpal.strava.domain.model.StravaAthleteBikeDetail;
 import com.quetoquenana.pedalpal.strava.domain.model.StravaConnection;
 import com.quetoquenana.pedalpal.strava.domain.model.StravaConnectionStatus;
 import com.quetoquenana.pedalpal.strava.domain.model.StravaAthleteBike;
@@ -24,14 +25,19 @@ public class StravaMapper {
                 .build();
     }
 
-    public StravaAthleteBikeResult toResult(StravaAthleteBike model) {
+    public StravaAthleteBikeResult toResult(StravaAthleteBikeDetail model) {
         return new StravaAthleteBikeResult(
                 model.getId(),
                 model.getName(),
                 model.getNickname(),
                 model.isPrimary(),
                 model.isRetired(),
-                model.getDistance()
+                model.getDistance(),
+                model.getConvertedDistance(),
+                model.getBrandName(),
+                model.getModelName(),
+                model.getFrameType(),
+                model.getDescription()
         );
     }
 

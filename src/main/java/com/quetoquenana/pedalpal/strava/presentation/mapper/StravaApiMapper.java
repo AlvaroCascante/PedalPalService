@@ -68,7 +68,11 @@ public class StravaApiMapper {
                 result.nickname(),
                 result.primary(),
                 result.retired(),
-                result.distance()
+                result.convertedDistance(),
+                result.brandName(),
+                result.modelName(),
+                result.frameType(),
+                result.description()
         );
     }
 }
