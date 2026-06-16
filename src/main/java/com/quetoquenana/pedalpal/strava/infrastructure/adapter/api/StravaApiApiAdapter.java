@@ -141,7 +141,7 @@ public class StravaApiApiAdapter implements StravaApiClient {
     public StravaAthleteBikeDetail getBikeDetail(String bikeId, String accessToken) {
         log.debug("Getting bike detail for bikeId: {}", bikeId);
         StravaAthleteBikeDetailResponse response =  restClient.get()
-                .uri("/gears/{id}", bikeId)
+                .uri("/gear/{id}", bikeId)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
